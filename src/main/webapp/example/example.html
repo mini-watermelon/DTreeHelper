@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="example.css">
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">以下介绍了开启大部分功能的效果及配置（部分事件属于互斥事件，所以不是全部配置）。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="yjfxk">
+					<legend>示例</legend>
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;" id="toolbarDiv"><ul id="commonTree3" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<div style="height: 450px; width:100%;overflow: auto;">
+									<iframe src="../case/iframeContent.html" id="iframe_content" name="iframe_content" frameborder="0" style="width: 100%;height: 99%;"></iframe>
+								</div>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="HTML部分" lay-encode="true">
+									<link rel="stylesheet" href="../layui/css/layui.css">
+									<script type="text/javascript" src="../layui/layui.js"></script>
+									
+									<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+									<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+									
+									<div class="container">
+									  <div class="layui-row layui-col-space10">
+									    <div class="layui-fluid">
+									      <fieldset class="layui-elem-field layui-field-title" id="yjfxk">
+									        <legend>示例</legend>
+									        <div class="layui-field-box">
+									          <div class="layui-row layui-col-space10" style="margin-top: 10px;">
+									            <div class="layui-col-lg4">
+									              <div style="height: 450px;overflow: auto;">
+									                <ul id="commonTree3" class="dtree" data-id="0"></ul>
+									              </div>
+									            </div>
+									            <div class="layui-col-lg8">
+									              <div style="height: 450px; width:100%;overflow: auto;">
+									                <iframe src="../case/iframeContent.html" id="iframe_content" name="iframe_content" frameborder="0" style="width: 100%;height: 99%;"></iframe>
+									              </div>
+									            </div>
+									          </div>
+									        </div>
+									      </fieldset>
+									    </div>
+									  </div>
+									</div>
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JS部分" lay-encode="true">
+										layui.extend({
+										  dtree: '{/}../layui_ext/dtree/dtree'
+										}).use(['element','layer', 'dtree'], function(){
+										  var element = layui.element, layer = layui.layer, dtree = layui.dtree, $ = layui.$;
+										  dtree.render({
+										    elem: "#commonTree3",
+										    url: "../json/case/commonTree3.json",
+										    icon: "2",
+										    skin:"layui",
+										    menubar:true,
+										    menubarTips:{
+										      toolbar:["remove",{menubarId:"zdy",icon:"dtree-icon-rate",title:"自定义menu",handler: function(node,$div){layer.msg(JSON.stringify(node));}}]
+										    },
+										    menubarFun:{
+										      remove: function(checkbarNodes){
+										        layer.msg(JSON.stringify(checkbarNodes));
+										        return true;
+										      }
+										    },
+										    toolbar:true,
+										    toolbarScroll:"#toolbarDiv",
+										    toolbarShow:["add"],
+										    toolbarBtn:[
+										      [{"label":"级别","name":"level","type":"text"},{"label":"下拉","name":"test","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"}}],[]
+										    ],
+										    toolbarExt:[{toolbarId: "test",icon:"dtree-icon-wefill",title:"自定义toolbar",handler: function(node,$div){layer.msg(JSON.stringify(node));}}],
+										    toolbarFun: {
+										      addTreeNode: function(treeNode){
+										        DTree.changeTreeNodeAdd(treeNode.nodeId);
+										      }
+										    },
+										    checkbar: true,
+										    checkbarType: "self",
+										    checkbarFun: {
+										      chooseBefore: function($i, node){
+										        console.log($i);
+										        return true;
+										      },
+										      chooseDone: function(nodes){
+										        layer.msg(JSON.stringify(nodes));
+										      }
+										    },
+										    useIframe:true,
+										    iframe: {
+										      iframeElem: "#iframe_content",
+										      iframeUrl: "../case/iframeContent.html"
+										    }
+										  });
+										  // 绑定节点的单击事件
+										  dtree.on("iframeDone('commonTree3')", function(obj){
+										    layer.msg(JSON.stringify(obj));
+										    console.log(obj);
+										  });
+										});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 2.commonTree3
+		var DTree = dtree.render({
+			elem: "#commonTree3",
+			url: "../json/case/commonTree3.json",
+			icon: "2",
+			skin:"layui",
+			menubar:true,
+			menubarTips:{
+				toolbar:["remove",{menubarId:"zdy",icon:"dtree-icon-rate",title:"自定义menu",handler: function(node,$div){console.log(1);layer.msg(JSON.stringify(node));}}],
+				group:["moveUp",{menubarId:"zdy2",icon:"dtree-icon-rate",title:"自定义menu",handler: function(node,$div){console.log(1);layer.msg(JSON.stringify(node));}}]
+			},
+			menubarFun:{
+				remove: function(checkbarNodes){
+					console.log(2);
+					layer.msg(JSON.stringify(checkbarNodes));
+				    return true;
+				}
+			},
+			toolbar:true,
+			toolbarScroll:"#toolbarDiv",
+			toolbarShow:["add"],
+			toolbarBtn:[
+				[{"label":"级别","name":"level","type":"text"},{"label":"下拉","name":"test","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"}}],[]
+			],
+			toolbarExt:[{toolbarId: "test",icon:"dtree-icon-wefill",title:"自定义toolbar",handler: function(node,$div){layer.msg(JSON.stringify(node));}}],
+			toolbarFun: {
+				addTreeNode: function(treeNode){
+					DTree.changeTreeNodeAdd(treeNode.nodeId);
+			    }
+			},
+			checkbar: true,
+			checkbarType: "self",
+			checkbarFun: {
+				chooseBefore: function($i, node){
+					console.log($i);
+					return true;
+				},
+				chooseDone: function(nodes){
+					layer.msg(JSON.stringify(nodes));
+				}
+			},
+			useIframe:true,
+			iframe: {
+				iframeElem: "#iframe_content",
+				iframeUrl: "../case/iframeContent.html"
+			}
+		});
+					
+		// 绑定节点的单击事件
+		dtree.on("iframeDone('commonTree3')", function(obj){
+			layer.msg(JSON.stringify(obj));
+			console.log(obj);
+		});
+	});
+</script>
+</html>

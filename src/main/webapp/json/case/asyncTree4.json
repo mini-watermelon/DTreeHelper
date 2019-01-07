@@ -1,0 +1,39 @@
+{
+	"status":{"code":200,"message":"操作成功"},
+	"data":[{
+		"id":"001",
+		"title": "湖南省",
+		"isLast": false,
+		"level": "1",
+		"parentId": "0",
+		"children":[]
+	},{
+		"id":"002",
+		"title": "湖北省",
+		"isLast": false,
+		"parentId": "0",
+		"level": "1",
+		"children":[]
+	},{
+		"id":"003",
+		"title": "广东省",
+		"isLast": false,
+		"parentId": "0",
+		"level": "1",
+		"children":[]
+	},{
+		"id":"004",
+		"title": "浙江省",
+		"isLast": false,
+		"level": "1",
+		"parentId": "0",
+		"children":[]
+	},{
+		"id":"005",
+		"title": "福建省",
+		"isLast": false,
+		"parentId": "0",
+		"level": "1",
+		"children":[]
+	}]
+}

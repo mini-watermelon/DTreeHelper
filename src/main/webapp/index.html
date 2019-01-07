@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="layui/css/layui.css">
+<script type="text/javascript" src="layui/layui.js"></script>
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+			<div class="layui-logo">dtree帮助手册</div>
+			<a href="version/dtree_v2.4.5_finally_201812221902.zip" class="layui-layout-right" style="width: 400px;height: 100%;line-height: 60px;text-align: center;color: #009688;font-size: 16px;cursor: pointer;">下载当前版本：v2.4.5_finally（20181222）</a>
+		</div>
+		
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<ul class="layui-nav layui-nav-tree" lay-filter="operate">
+					<li class="layui-nav-item layui-nav-itemed layui-this">
+						<a href="javascript:void(0);" data-id="doc/basicDoc.html">基础文档<span class='layui-badge-dot'></span></a>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);">案例演示</a>
+						<dl class="layui-nav-child">
+							<dd><a href="javascript:void(0);" data-id="case/common.html">常见使用<span class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/async.html">异步加载<span class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/open.html">弹出框选中回调</a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/iframe.html">点击加载iframe</a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/toolbar.html">开启工具栏</a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/menubar.html">开启菜单栏</a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/checkbar.html">开启复选框<span class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/complex.html">数据格式</a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/style.html">图标及配色方案</a></dd>
+						</dl>
+					</li>
+					<!-- <li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="other/other.html">其他可实现功能</a>
+					</li> -->
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="depend/icon.html">依赖图标</a>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="log/log.html">开发者日志<span class='layui-badge-dot'></span></a>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="example/example.html">开启全部功能</a>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="question/question.html">常见问题解答</a>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="finish/finish.html">小额赞赏~</a>
+					</li>
+					<!-- <li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="test/test.html">测试</a>
+					</li> -->
+				</ul>
+			</div>
+		</div>
+		
+		<div class="layui-body">
+			<iframe id="iframe_page" name="iframePage" src="doc/basicDoc.html" frameborder="0" style="width: 100%;height: 99%;"></iframe>
+		</div>
+		
+		<div class="layui-footer">
+			@ layui.dtree(基于layui2.4.5)
+		</div>
+		
+	</div>
+</body>
+<script type="text/javascript">
+	layui.use(['element','layer'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			$ = layui.$;
+		
+		// 统计访问
+        $.post("http://www.wisdomelon.com/insertVisitor2", {moduleName: "dtree"});
+
+		element.on("nav(operate)", function(elem){
+			var $iframe = $("#iframe_page");
+			var did = $(elem).attr("data-id");
+			$iframe.attr("src",did);
+		});
+	});
+</script>
+</html>

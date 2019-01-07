@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+</head>
+<body>
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">以下介绍了一些数据格式的用法，可能每个地方都要使用，也可能用不上，全靠你自己把握。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="defaultJ">
+					<legend>标准数据格式</legend>
+					<div class="layui-field-box">
+						<p>以下介绍了树展示所需的标准JSON格式。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 200px;overflow: auto;"><ul id="dataTree" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									dtree.render({
+									  elem: "#dataTree1",
+									  url: "../json/case/dataTree.json"
+									});
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<p>此json的数据格式为：</p>
+								<pre class="layui-code" lay-title="数据格式" lay-encode="true">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [{
+									  "id":"001",
+									  "title": "湖南省",
+									  "parentId": "0",
+									  "children":[]
+									},{
+									  "id":"002",
+									  "title": "湖北省",
+									  "parentId": "0",
+									  "children":[]
+									},{
+									  "id":"003",
+									  "title": "广东省",
+									  "parentId": "0",
+									  "children":[]
+									},{
+									  "id":"004",
+									  "title": "浙江省",
+									  "parentId": "0",
+									  "children":[]
+									},{
+									  "id":"005",
+									  "title": "福建省",
+									  "parentId": "0",
+									  "children":[]
+									}]
+									}
+								</pre>
+								<p>标准数据格式中，code和message是包括在status中的。data中的数据是有子集关系的。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="layui">
+					<legend>layui风格数据格式</legend>
+					<div class="layui-field-box">
+						<p>考虑到一部分用户在使用组件的时候，已经使用了一套layui的数据格式，并且所有的数据返回都遵循这一套数据格式的情况，因此，组件开放适用于layui的数据格式模式。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 200px;overflow: auto;"><ul id="dataTree1" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									dtree.render({
+									  elem: "#dataTree1",
+									  url: "../json/case/dataTree1.json",
+									  dataStyle: "layuiStyle",  //使用layui风格的数据格式
+									  response:{message:"msg",statusCode:0}  //修改response中返回数据的定义
+									});
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<p>此json的数据格式为：</p>
+								<pre class="layui-code" lay-title="数据格式" lay-encode="true">
+									{
+									"code":0,
+									"msg":"操作成功",
+									"data": [{
+									  "id":"001",
+									  "title": "湖南省",
+									  "parentId": "0",
+									  "children":[]
+									},{
+									  "id":"002",
+									  "title": "湖北省",
+									  "parentId": "0",
+									  "children":[]
+									},{
+									  "id":"003",
+									  "title": "广东省",
+									  "parentId": "0",
+									  "children":[]
+									},{
+									  "id":"004",
+									  "title": "浙江省",
+									  "parentId": "0",
+									  "children":[]
+									},{
+									  "id":"005",
+									  "title": "福建省",
+									  "parentId": "0",
+									  "children":[]
+									}]
+									}
+								</pre>
+								<p>layui风格数据格式中，code和msg是独立的。data中的数据是有子集关系的。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="list">
+					<legend>list集合数据格式</legend>
+					<div class="layui-field-box">
+						<p>考虑到一部分用户在使用组件之前，已经使用了其他树组件，而其他组件提供的数据格式并没有这么复杂，因此，组件开放适用于list集合形式的数据格式模式。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 400px;overflow: auto;"><ul id="dataTree2" class="dtree" data-id="null"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="html" lay-encode="true">
+									<div style="height: 400px;overflow: auto;">
+									  <ul id="dataTree2" class="dtree" data-id="0"></ul>
+									</div>
+								</pre>
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									dtree.render({
+									  elem: "#dataTree2",
+									  url: "../json/case/dataTree2.json",
+									  dataStyle: "layuiStyle",  //使用layui风格的数据格式
+									  dataFormat: "list",  //配置data的风格为list
+									  response:{message:"msg",statusCode:0},  //修改response中返回数据的定义
+									  checkbar:true //开启复选框
+									});
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<p>此json的数据格式为：</p>
+								<pre class="layui-code" lay-title="数据格式" lay-encode="true">
+									{
+									"code":0,
+									"msg":"操作成功",
+									"data": [
+									  {"id":"001","title": "湖南省","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "0"},
+									  {"id":"002","title": "湖北省","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "0"},
+									  {"id":"003","title": "广东省","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "0"},
+									  {"id":"004","title": "浙江省","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "0"},
+									  {"id":"005","title": "福建省","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "0"},
+									  {"id":"001001","title": "长沙市","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "001"},
+									  {"id":"001002","title": "株洲市","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "001"},
+									  {"id":"001003","title": "湘潭市","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "001"},
+									  {"id":"001004","title": "衡阳市","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "001"},
+									  {"id":"001005","title": "郴州市","checkArr": [{"type": "0", "isChecked": "0"}],"iconClass": "dtree-icon-caidan_xunzhang","parentId": "001"}
+									]
+									}
+								</pre>
+								<p>layui风格+list集合数据格式中，code和msg是独立的。data中的数据是无子集关系的。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">为了适应各种各样的使用场景，dtree正在不断的努力，希望大家使用方便，使用愉快!。</blockquote>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="complex.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3"
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		dtree.render({
+			elem: "#dataTree",
+			url: "../json/case/dataTree1.json",
+			dataStyle: "layuiStyle",
+			response:{message:"msg",statusCode:0}
+		});
+		
+		dtree.render({
+			elem: "#dataTree1",
+			url: "../json/case/dataTree1.json",
+			dataStyle: "layuiStyle",
+			response:{message:"msg",statusCode:0}
+		});
+		
+		dtree.render({
+			elem: "#dataTree2",
+			url: "../json/case/dataTree2.json",
+			dataStyle: "layuiStyle",
+			dataFormat: "list",
+			initLevel:"1",
+			response:{message:"msg",statusCode:0},
+			checkbar:true
+		});
+		
+		dtree.on("node('dataTree2')", function(obj){
+			layer.msg(JSON.stringify(obj.param));
+		});
+		
+	});
+</script>
+</html>

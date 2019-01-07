@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>layui.dtree帮助手册</title>
+	<link rel="stylesheet" href="../layui/css/layui.css">
+	<script type="text/javascript" src="../layui/layui.js"></script>
+	
+	<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+	<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+	<style type="text/css">
+		.layui-card{cursor: pointer;border:2px solid #FFF;}
+		/* .layui-card:hover{border:2px solid pink;} */
+		.layui-choose{border:2px solid pink;}
+		.layui-card-header{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+		.dtreefont{font-size: 24px!important;display: inline!important;color: #333!important;}
+	</style>
+</head>
+<body>
+	<div class="layui-container">
+		<h3 style="text-align: center;margin: 15px 0;"><span style="color: pink">粉红</span>表示树已使用的图标</h3>
+		<div class="layui-row layui-col-space10" id="ttt"></div>
+	</div>
+	
+	<script>
+		layui.use(['layer','util'], function(){
+			var $ = layui.$,
+				layer = layui.layer,
+				util = layui.util;
+			
+			$.get("../layui_ext/dtree/font/icons.json", {}, function(result){
+				if (typeof result == 'string') {
+					result = $.parseJSON(result);
+				}
+				
+				var datas = result.data;
+				for(var i=0; i<datas.length; i++){
+					if(typeof datas[i] == "object"){
+						var div = ['<div class="layui-lg-col2 layui-col-md2 layui-col-sm2 layui-col-xs2">' +
+									'<div class="layui-card" title="'+datas[i].cls+'" data-uncode="'+datas[i].uncode+'" data-cls="'+datas[i].cls+'">' +
+									'<div class="layui-card-header">'+datas[i].cls+'</div>' +
+									'<div class="layui-card-body"><i class="dtreefont '+datas[i].cls+'"></i></div></div></div>'].join('');
+						$("#ttt").append(div);
+					}
+				}
+				
+				// 基础图标
+				$("div[data-cls='dtree-icon-xiangxia1']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-xiangyou']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-jian']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-jia']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-weibiaoti5']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-wenjianjiazhankai']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-dian']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-yonghu']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-fenzhijigou']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-fenguangbaobiao']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-xinxipilu']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-shuye1']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-caidan_xunzhang']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-normal-file']").addClass("layui-choose");
+				
+				// 工具栏图标
+				$("div[data-cls='dtree-icon-roundclose']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-roundadd']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-bianji']").addClass("layui-choose");
+				
+				// 复选框图标
+				$("div[data-cls='dtree-icon-fuxuankuangxuanzhong']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-fuxuankuang']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-fuxuankuang-banxuan']").addClass("layui-choose");
+				
+				// 菜单栏图标
+				$("div[data-cls='dtree-icon-search_list_light']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-move-up']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-move-down']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-delete1']").addClass("layui-choose");
+				$("div[data-cls='dtree-icon-refresh']").addClass("layui-choose");
+			});
+			
+			util.fixbar();
+			
+		})
+	</script>
+</body>
+</html>

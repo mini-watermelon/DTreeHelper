@@ -1,0 +1,1941 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="doc.css">
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">layui应用日益广泛的情况下，人们对"树"这种特殊数据结构的需求日益增多，而layui开发到2.4.0版本以来，在树的这方面还是比较薄弱，因此本数据树应运而生。本树是由一个java程序员通过日常空余时间完成，涵盖的功能点基本全面，包括了：选中树、复选树、逐级加载、树的菜单选择、图标更换、快捷增删改等等。尽管如此，本人仍将对其进行完善，在控制代码量和性能的前提下，不定期增加更多人性化功能。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="kssy">
+					<legend>快速使用</legend>
+					<div class="layui-field-box">
+						<p>创建一个dtree实例最简单的方式是，在页面放置一个元素 <em>&lt;ul id="demoTree" class="dtree" data-id="0"&gt;&lt;/ul&gt;</em>，然后通过 <em>dtree.render()</em> 方法指定该容器，如下所示：</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="demoTree" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<p>你已经看到了一个简单树的基本样子，你一定迫不及待地想知道它的使用方式。下面就是它对应的代码：</p>
+								<pre class="layui-code" lay-title="JavaScript">
+									var DemoTree = dtree.render({
+									  elem: "#demoTree",
+									  data: demoTree,
+									  type: "all",
+									  initLevel: "1"
+									});
+									
+									dtree.on("node('demoTree')" ,function(obj){
+									  layer.msg(JSON.stringify(obj.param));
+									});
+								</pre>
+								<p>一切都并不会陌生：绑定容器、设置数据接口、剩下的…就交给 dtree 吧。你的牛刀是否早已饥渴难耐？那么不妨现在就去小试一波吧。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="jccsylb">
+					<legend>基础参数一览表</legend>
+					<div class="layui-field-box">
+						<p style="padding: 5px 0px;">基础参数并非所有都要出现，有必选也有可选，结合你的实际需求自由设定。</p>
+						<p style="padding: 5px 0px;">下面是目前 dtree 模块所支持的全部基础参数一览表，我对重点参数进行了的详细说明，你可以点击下述表格最右侧的“示例”去查看</p>
+						<p style="padding: 5px 0px;">参数名称：<span style="color:#FF5722;">红色</span>为重要参数，黑色为可选参数，<span style="color:#c2c2c2;">灰色</span>为不需要配置项</p>
+						<table class="layui-table" lay-size="sm">
+							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
+							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
+							<tbody>
+								<tr>
+									<td colspan="6"><span style="font-weight: bold;">基础参数</span></td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">elem</span></td>
+									<td>String</td>
+									<td>树绑定的元素ID，唯一值，后面的事件监听也需要绑定ID，但不需要带#号。</td>
+									<td>-</td>
+									<td>-</td>
+									<td>"#demoTree"</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">obj</span></td>
+									<td>Dom</td>
+									<td>树绑定的jquery元素。</td>
+									<td>$(elem)</td>
+									<td>自定义Dom</td>
+									<td>$("#demoTree")</td>
+								</tr>
+								<tr>
+									<td>initLevel</td>
+									<td>String/Number</td>
+									<td>默认展开层级，当该值大于level时，则会展开树的节点，直到不大于当前待展开节点的level。</td>
+									<td>2</td>
+									<td>1 / 2 / 3 / 4 / 5 / 6 / 7</td>
+									<td>5</td>
+								</tr>
+								<tr>
+									<td>type</td>
+									<td>String</td>
+									<td>加载方式，"load"为增量加载，"all"为全量加载。</td>
+									<td>"load"</td>
+									<td>"load" / "all"</td>
+									<td>"all"</td>
+								</tr>
+								<tr>
+									<td>cache</td>
+									<td>Boolean</td>
+									<td>数据缓存，开启后，当节点收缩后展开时，不会重新访问url。</td>
+									<td>true</td>
+									<td>true / false</td>
+									<td>false</td>
+								</tr>
+								<tr>
+									<td>record<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></td>
+									<td>Boolean</td>
+									<td>数据记录模式，开启后，用于记录用户提供的JSON数据串中，指定当前节点的JSON数据（排除basicData字段和children字段）。</td>
+									<td>false</td>
+									<td>true / false</td>
+									<td>true</td>
+								</tr>
+								<tr>
+									<td>load<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></td>
+									<td>Boolean</td>
+									<td>加载遮罩，开启后，初始化加载和加载子节点时，会出现遮罩层。</td>
+									<td>true</td>
+									<td>true / false</td>
+									<td>false</td>
+								</tr>
+								<tr>
+									<td colspan="6"><span style="font-weight: bold;">数据参数</span></td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">data</span></td>
+									<td>Array</td>
+									<td>树数据参数，指定该参数后初始化状态下不会访问异步数据接口。该参数的数据格式即为标准数据格式中data的内容。</td>
+									<td>-</td>
+									<td>-</td>
+									<td>[{},{},{}...]</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">url（等）</span></td>
+									<td>String</td>
+									<td>异步数据接口相关参数。其中 url 参数为必填项</td>
+									<td>-</td>
+									<td>-</td>
+									<td><a href="javascript:void(0);" data-id="ybsjjkgf" class="position-a">详见异步数据接口规范</a></td>
+								</tr>
+								<tr>
+									<td colspan="6"><span style="font-weight: bold;">树样式风格图标参数</span></td>
+								</tr>
+								<tr>
+									<td>skin</td>
+									<td>String</td>
+									<td>树主题。<a href="javascript:void(0);" data-id="skin" class="position-a">详见参数释义</a></td>
+									<td>"theme"</td>
+									<td>"layui" / 用户自定义</td>
+									<td>"zdy" / 更多请看图标及配色方案（自定义主题）</td>
+								</tr>
+								<tr>
+									<td>dot</td>
+									<td>boolean</td>
+									<td>一级图标小圆点</td>
+									<td>true</td>
+									<td>true / false</td>
+									<td>false</td>
+								</tr>
+								<tr>
+									<td>ficon</td>
+									<td>String</td>
+									<td>一级图标样式，0：方形+-，1：三角形， -1：不显示一级图标。</td>
+									<td>"0"</td>
+									<td>"-1" / "0" / "1" </td>
+									<td>"1"</td>
+								</tr>
+								<tr>
+									<td>icon</td>
+									<td>String / Array</td>
+									<td>二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章， -1：不显示二级图标。</td>
+									<td>"5"</td>
+									<td>"-1" / 0 / 1 / 2 / 3 / 4 / 5 / 6</td>
+									<td>"3" / ['0', '6'] / "-1"</td>
+								</tr>
+								<tr>
+									<td>firstIconArray</td>
+									<td>Object</td>
+									<td>用户自定义一级图标集合，作用于非最后一级节点，定义该属性会扩展组件的内置属性。</td>
+									<td><a href="javascript:void(0);" data-id="firstIconArray" class="position-a">详见参数释义</a></td>
+									<td>-</td>
+									<td>{"2" : {"open" : "demo-open" , "close" : "demo-close"}}</td>
+								</tr>
+								<tr>
+									<td>nodeIconArray</td>
+									<td>Object</td>
+									<td>用户自定义二级图标集合，作用于非最后一级节点，定义该属性会扩展组件的内置属性。</td>
+									<td><a href="javascript:void(0);" data-id="nodeIconArray" class="position-a">详见参数释义</a></td>
+									<td>-</td>
+									<td>{"1" : {"open" : "demo-open" , "close" : "demo-close"}}</td>
+								</tr>
+								<tr>
+									<td>leafIconArray</td>
+									<td>Object</td>
+									<td>用户自定义二级图标集合，作用于最后一级节点，定义该属性会扩展组件的内置属性。</td>
+									<td><a href="javascript:void(0);" data-id="leafIconArray" class="position-a">详见参数释义</a></td>
+									<td>-</td>
+									<td>{"8" : "demo-class"}</td>
+								</tr>
+								<tr>
+									<td colspan="6"><span style="font-weight: bold;">扩展模块参数</span></td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">toolbar（等）</span></td>
+									<td>Boolean</td>
+									<td>是否开启可编辑模式</td>
+									<td>false</td>
+									<td>true / false</td>
+									<td><a href="javascript:void(0);" data-id="toolbar" class="position-a">详见工具栏配置</a></td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">menubar（等）</span></td>
+									<td>Boolean</td>
+									<td>是否打开菜单栏</td>
+									<td>false</td>
+									<td>true / false</td>
+									<td><a href="javascript:void(0);" data-id="menubar" class="position-a">详见菜单栏配置</a></td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">checkbar（等）</span></td>
+									<td>Boolean</td>
+									<td>是否开启复选框模式</td>
+									<td>false</td>
+									<td>true / false</td>
+									<td><a href="javascript:void(0);" data-id="checkbar" class="position-a">详见复选框配置</a></td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">useIframe（等）</span></td>
+									<td>Boolean</td>
+									<td>是否加载iframe</td>
+									<td>false</td>
+									<td>true / false</td>
+									<td><a href="javascript:void(0);" data-id="useIframe" class="position-a">详见iframe加载配置</a></td>
+								</tr>
+								<tr>
+									<td colspan="6"><span style="font-weight: bold;">重要内置参数（无需配置）</span></td>
+								</tr>
+								<tr>
+									<td><span style="color:#c2c2c2;">node</span></td>
+									<td>Object</td>
+									<td>当前选中节点数据</td>
+									<td><a href="javascript:void(0);" data-id="node" class="position-a">详见参数释义</a></td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td><span style="color:#c2c2c2;">checkbarNode</span></td>
+									<td>Array</td>
+									<td>复选框标记的全部节点数据集，即为node的集合</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="jccssy" style="padding-top: 15px;">
+					<legend>基础参数释义</legend>
+					<div class="layui-field-box" style="background: #F2F2F2">
+						<div class="layui-card card" style="margin-top:0px;" id="elemandobj">
+							<div class="layui-card-header">elem和obj的区别</div>
+							<div class="layui-card-body">
+								elem：树绑定的元素ID。<br/>
+								obj：树绑定的DOM。<br/>
+								使用elem元素可以绑定已经在页面中存在的元素，而如果是页面中点击某个按钮生成的元素的话，则可以用obj来指定，这在使用layer.open()中打开一个树极为有效，它可以规避元素在生成之前被绑定从而找不到的问题。最终组件会将elem转换为该属性，elem和obj属性必须指定一个，如果同时指定，则优先obj属性的配置项
+								<pre class="layui-code" lay-title="elem参数使用示例">
+									dtree.render({
+									  elem: "#elemTree",
+									  data: elemTree
+									});
+								</pre>
+								<pre class="layui-code" lay-title="obj参数使用示例" >
+									layer.open({
+									  type: 1,
+									  title: "目录",
+									  content: '&lt;ul id="objTree" class="dtree" data-id="0"&gt;&lt;/ul&gt;',
+									  area:["180px", "500px"]
+									  success: function(layero, index){
+									    var obj = $(layero).find("#objTree");
+									    var DTree = dtree.render({
+									      obj: obj,
+									      url: '/objTree/objTree.json'
+									    });
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+						<div class="layui-card card" id="skin">
+							<div class="layui-card-header">skin</div>
+							<div class="layui-card-body">
+								<p>满足更多人对树的不同展示，组件内置了2套风格：layui风格/默认风格，内置主题会指定不同的图标和样式的默认值：</p>
+								<p>一般来说，主题都内置好的属性使用者无需在指定图标等参数，当然，一切都是可自定义的。</p>
+								<pre class="layui-code" lay-title="默认风格的skin设定">
+									{
+									 dot: true,  // 设定小圆点显示
+									 ficon: "0",  // 设定一级图标样式
+									 icon: ["0","5"] // 设定二级图标样式。0表示非子节点图标，5表示子节点图标
+									}
+									主题颜色： #eaeceb, #d2d2d2, black, orange, #fe7786
+								</pre>
+								<p>主题颜色：</p>
+								<div class="color-div" style="background-color: #eaeceb"></div>
+								<div class="color-div" style="background-color: #d2d2d2"></div>
+								<div class="color-div" style="background-color: black"></div>
+								<div class="color-div" style="background-color: orange"></div>
+								<div class="color-div" style="background-color: #fe7786"></div>
+								<pre class="layui-code" lay-title="layui风格的skin设定">
+									{
+									 dot: false,  // 设定小圆点隐藏
+									 ficon: "1",  // 设定一级图标样式
+									 icon: ["-1","8"] // 设定二级图标样式。-1表示非子节点图标不显示，8表示子节点图标
+									}
+									主题颜色： #eaeceb, #d2d2d2, #393D49, #01AAED
+								</pre>
+								<p>主题颜色：</p>
+								<div class="color-div" style="background-color: #eaeceb"></div>
+								<div class="color-div" style="background-color: #d2d2d2"></div>
+								<div class="color-div" style="background-color: #393D49"></div>
+								<div class="color-div" style="background-color: #01AAED"></div>
+							</div>
+						</div>
+						<div class="layui-card card" id="firstIconArray">
+							<div class="layui-card-header">firstIconArray</div>
+							<div class="layui-card-body">
+								<p>模块内已预定义好了一套展示方式，一般不需要用户自定义，但如果用户需要自定义图标，则需要满足如下的配置方式：</p>
+								<pre class="layui-code" lay-title="预定义的firstIconArray">
+									var firstIconArray = {
+									  "-1": {"open": "dtree-icon-null-open", "close": "dtree-icon-null-close"},  //未指定
+									  "0" : {"open": "dtree-icon-jian", "close": "dtree-icon-jia"},  //方形+-
+									  "1" : {"open": "dtree-icon-xiangxia1", "close": "dtree-icon-xiangyou"}  //三角形
+									};
+								</pre>
+								<p>预定义的图标一览：</p>
+								<div class="icon-div"><i class="dtreefont dtree-icon-jian"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-jia"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-xiangxia1"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-xiangyou"></i></div>
+								<pre class="layui-code" lay-title="自定义的firstIconArray">
+									dtree.render({
+									  firstIconArray: {"名称从2开始": {"open": "展开样式class", "close": "收缩样式class"}}
+									});
+								</pre>
+								<p>class为图标样式，dtree已准备好了丰富的图标，只需从中选取你喜欢的图标样式即可。</p>
+							</div>
+						</div>
+						<div class="layui-card card" id="nodeIconArray">
+							<div class="layui-card-header">nodeIconArray</div>
+							<div class="layui-card-body">
+								<p>模块内已预定义好了一套展示方式，一般不需要用户自定义，但如果用户需要自定义图标，则需要满足如下的配置方式：</p>
+								<pre class="layui-code" lay-title="预定义的nodeIconArray">
+									var nodeIconArray = {
+									  "-1": {"open": "dtree-icon-null-open", "close": "dtree-icon-null-close"}, //未指定
+									  "0" : {"open": "dtree-icon-wenjianjiazhankai", "close": "dtree-icon-weibiaoti5"}
+									};
+								</pre>
+								<p>预定义的图标一览：</p>
+								<div class="icon-div"><i class="dtreefont dtree-icon-wenjianjiazhankai"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-weibiaoti5"></i></div>
+								<pre class="layui-code" lay-title="自定义的nodeIconArray">
+									dtree.render({
+									  nodeIconArray: {"名称从1开始": {"open": "展开样式class", "close": "收缩样式class"}}
+									});
+								</pre>
+								<p>class为图标样式，dtree已准备好了丰富的图标，只需从中选取你喜欢的图标样式即可。</p>
+							</div>
+						</div>
+						<div class="layui-card card" id="leafIconArray">
+							<div class="layui-card-header">leafIconArray</div>
+							<div class="layui-card-body">
+								<p>模块内已预定义好了一套展示方式，一般不需要用户自定义，但如果用户需要自定义图标，则需要满足如下的配置方式：</p>
+								<pre class="layui-code" lay-title="预定义的leafIconArray">
+									var leafIconArray = {
+									  "-1": "dtree-icon-null", //未指定
+									  "0" : "dtree-icon-weibiaoti5", //文件夹
+									  "1" : "dtree-icon-yonghu", //人员
+									  "2" : "dtree-icon-fenzhijigou", //机构
+									  "3" : "dtree-icon-fenguangbaobiao", //报表
+									  "4" : "dtree-icon-xinxipilu", //信息
+									  "5" : "dtree-icon-shuye1", //叶子
+									  "6" : "dtree-icon-caidan_xunzhang", //勋章
+									  "7" : "dtree-icon-normal-file", //文件
+									};
+								</pre>
+								<p>预定义的图标一览：</p>
+								<div class="icon-div"><i class="dtreefont dtree-icon-weibiaoti5"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-yonghu"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-fenzhijigou"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-fenguangbaobiao"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-xinxipilu"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-shuye1"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-caidan_xunzhang"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-normal-file"></i></div>
+								
+								<pre class="layui-code" lay-title="自定义的nleafIconArray">
+									dtree.render({
+									  leafIconArray: {"名称从8开始": "样式class"}
+									});
+								</pre>
+								<p>class为图标样式，dtree已准备好了丰富的图标，只需从中选取你喜欢的图标样式即可。</p>
+							</div>
+						</div>
+						<div class="layui-card card" id="node">
+							<div class="layui-card-header">node</div>
+							<div class="layui-card-body">
+								<p>模块内置属性，当选中树节点时，会将树的当前选中节点的的结果放到该参数中，包含当前节点的全部信息</p>
+								<pre class="layui-code" lay-title="内置node">
+									var node = {
+									  nodeId: "", //节点ID
+									  parentId: "", //父节点ID
+									  context: "", //节点内容
+									  isLeaf: "", //是否叶子节点
+									  level: "", //层级
+									  spread: "", //节点展开状态
+									  dataType: "", //节点标记
+									  ischecked: "", //节点复选框选中状态
+									  initchecked: "", //节点复选框初始状态
+									  basicData: "", //用户自定义的记录节点数据
+									  recordData: "", //当前data数据
+									};
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="ybsjjkgf">
+					<legend>异步数据接口规范</legend>
+					<div class="layui-field-box" id="ybsjcsyl">
+						<p style="padding: 5px 0px;">数据的异步请求由以下几个参数组成：</p>
+						<p style="padding: 5px 0px;">参数名称：<span style="color:#FF5722;">红色</span>为重要参数，黑色为可选参数</p>
+						<table class="layui-table" lay-size="sm">
+							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
+							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
+							<tbody>
+								<tr>
+									<td><span style="color:#FF5722;">url</span></td>
+									<td>String</td>
+									<td>数据接口地址，默认请求会带上defaultRequest和request中的参数</td>
+									<td>-</td>
+									<td>-</td>
+									<td>"/objTree/objTree.json"</td>
+								</tr>
+								<tr>
+									<td>async</td>
+									<td>Boolean</td>
+									<td>同步或异步请求，默认异步。</td>
+									<td>true</td>
+									<td>true / false</td>
+									<td>false</td>
+								</tr>
+								<tr>
+									<td>headers</td>
+									<td>Object</td>
+									<td>ajax请求的headers。</td>
+									<td>{}</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>method</td>
+									<td>String</td>
+									<td>接口http请求类型。</td>
+									<td>"POST"</td>
+									<td>"GET" / "POST"</td>
+									<td>"GET"</td>
+								</tr>
+								<tr>
+									<td>dataType</td>
+									<td>String</td>
+									<td>参数类型</td>
+									<td>"json"</td>
+									<td>"string" / "json"</td>
+									<td>"string"</td>
+								</tr>
+								<tr>
+									<td>defaultRequest</td>
+									<td>Object</td>
+									<td>默认请求参数。</td>
+									<td><a href="javascript:void(0);" data-id="filterRequest" class="position-a">详见defaultRequest</a></td>
+									<td>-</td>
+									<td>{nodeId : "id"}</td>
+								</tr>
+								<tr>
+									<td>request</td>
+									<td>Object</td>
+									<td>用户自定义请求参数。</td>
+									<td><a href="javascript:void(0);" data-id="request" class="position-a">详见request</a></td>
+									<td>-</td>
+									<td>{"username" : "admin"}</td>
+								</tr>
+								<tr>
+									<td>filterRequest<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></td>
+									<td>Array</td>
+									<td>过滤树自动发起的请求中你不需要的参数。</td>
+									<td>-</td>
+									<td>-</td>
+									<td><a href="javascript:void(0);" data-id="defaultRequest" class="position-a">详见filterRequest</a></td>
+								</tr>
+								<tr>
+									<td>response</td>
+									<td>Object</td>
+									<td>返回json格式</td>
+									<td><a href="javascript:void(0);" data-id="response" class="position-a">详见response</a></td>
+									<td>-</td>
+									<td>{statusCode : 0}</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">success</span></td>
+									<td>Function</td>
+									<td>异步加载完毕后,树解析前的回调函数,携带两个参数，data:当前异步加载的数据，obj:当前组件的根节点</td>
+									<td>-</td>
+									<td>-</td>
+									<td>success:function(data, obj){}</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">done</span></td>
+									<td>Function</td>
+									<td>异步加载完毕后的回调函数,携带两个参数，data:当前异步加载的数据，obj:当前组件的根节点</td>
+									<td>-</td>
+									<td>-</td>
+									<td>done:function(data, obj){}</td>
+								</tr>
+								<tr>
+									<td>dataStyle</td>
+									<td>String</td>
+									<td>用于用户配置layui通用的json数据风格,layuiStyle:layui风格，defaultStyle：默认风格</td>
+									<td>defaultStyle</td>
+									<td>layuiStyle</td>
+									<td>layuiStyle</td>
+								</tr>
+								<tr>
+									<td><a href="javascript:void(0);" data-id="dataFormat" class="position-a">dataFormat</a></td>
+									<td>String</td>
+									<td>用于用户配置的data的数据格式,list:数组格式，levelRelationship：层级关系格式</td>
+									<td>levelRelationship</td>
+									<td>list</td>
+									<td>list</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="layui-field-box" style="background: #F2F2F2">
+						<div class="layui-card card" style="margin-top:0px;" id="defaultRequest">
+							<div class="layui-card-header">defaultRequest</div>
+							<div class="layui-card-body">
+								树的默认发起请求参数格式，最后会将value作为参数名称传递
+								<pre class="layui-code" lay-title="内置defaultRequest">
+									var defaultRequest = {
+									  nodeId: "nodeId", //节点ID
+									  parentId: "parentId", //父节点ID
+									  context: "context", //节点内容
+									  isLeaf: "isLeaf", //是否叶子节点
+									  level: "level", //层级
+									  spread: "spread", //节点展开状态
+									  dataType: "dataType", //节点标记
+									  ischecked: "ischecked", //节点复选框选中状态
+									  initchecked: "initchecked", //节点复选框初始状态
+									  basicData: "basicData", //用户自定义的记录节点数据
+									  recordData: "recordData", //当前data数据（排除basicData和children字段）（v2.4.5_finally版本新增）
+									};
+								</pre>
+								<p>以上参数值，最终会作为参数名称，传递到后台进行数据查询。如果用户需要更改默认参数，则可以如此：dtree.render({dequestRequest : {nodeId : "mynodeId"}});  则进行参数拼接时，组件就会根据你配置的参数值，替换默认的参数值，进行拼接，然后传递到后台进行数据查询。</p>
+							</div>
+						</div>
+						<div class="layui-card card" id="request">
+							<div class="layui-card-header">request</div>
+							<div class="layui-card-body">
+								<p>除了默认参数，用户可以定义其他的一些固定参数，比如：dtree.render({request : {"username" : "用户名"}}) 。组件进行参数拼接时，则会将该属性中的串拼接到url，然后传递到后台进行数据查询。</p>
+							</div>
+						</div>
+						<div class="layui-card card" id="filterRequest">
+							<div class="layui-card-header">filterRequest</div>
+							<div class="layui-card-body">
+								<p>初始化、动态加载子节点、和访问iframe时，默认情况下树都会自动的拼上defaultRequest和request中配置的参数。如果你觉得参数太过于臃肿，很多的参数你用不上的话，这个参数就派上用场了。</p>
+								<p>该参数是一个数组，配置项为你在defaultRequest中配置的映射的value 和 request中配置的映射key。 是不是难以理解？请看示例</p>
+								<pre class="layui-code" lay-title="filterRequest">
+									var DTree = dtree.render({
+									  elem: "#demo",
+									  url: "/demoTree.json",
+									  defaultRequest:{nodeId:"tree.id",parentId:"tree.pId"},  
+									  request:{username:"admin"},
+									  filterRequest:["context","tree.id","username"]  // context:树默认的参数，详细可见defaultRequest中的默认参数； tree.id:在当前defaultRequest中配置的nodeId的value；username:在当前request中配置的key
+									})
+								</pre>
+								<p>打开浏览器的调试模式，你可以看到，配置在filterRequest中的字符，将不会出现在你的请求中。</p>
+							</div>
+						</div>
+						<div class="layui-card card" id="response">
+							<div class="layui-card-header">response</div>
+							<div class="layui-card-body">
+								<p>树的默认返回参数格式，默认是一个json对象，以下则为json对象中的key</p>
+								<pre class="layui-code" lay-title="默认response">
+									var response = {
+									  statusName: "code", //返回标识（必填）
+									  statusCode: 200, //返回码（必填）
+									  message: "message", //返回信息（必填）
+									  rootName: "data", //根节点名称（必填）
+									  treeId: "id", //节点ID（必填）
+									  parentId: "parentId", //父节点ID（必填）
+									  title: "title", //节点名称（必填）
+									  iconClass: "iconClass", //自定义图标class（非必填）
+									  childName: "children", //子节点名称（默认数据格式必填）
+									  isLast: "isLast", //是否最后一级节点（true：是，false：否，布尔值，非必填）
+									  level: "level", //层级（v2.4.5_finally_beta版本之后，该属性移除）
+									  spread: "spread", //节点展开状态（v2.4.5_finally_beta版本新增。true：展开，false：不展开，布尔值，非必填）
+									  checkArr: "checkArr", //复选框列表（开启复选框，默认是json数组。必填）
+									  isChecked: "isChecked", //是否选中（开启复选框，0-未选中，1-选中，2-半选。非必填）
+									  type: "type", //复选框标记（开启复选框，从0开始。非必填）
+									  basicData: "basicData" //表示用户自定义需要存储在树节点中的数据（非必填）
+									};
+								</pre>
+								<p>如果用户需要更改默认返回参数，则可以如此：dtree.render({response : {statusName : "demo"}}) 。则组件在识别返回的json对象时，会将识别code更改为识别demo</p>
+								<pre class="layui-code" lay-title="默认标准返回数据格式" >
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [{
+									  "id":"001",
+									  "title": "湖南省",
+									  "parentId": "-1",
+									  "basicData": {"data1":"1","data2":"2"},
+									  "checkArr": [{"type": "0", "isChecked": "0"}],
+									  "children":[{
+									    "id":"001001",
+									    "title": "长沙市",
+									    "parentId": "001",
+									    "basicData": {"data1":"1","data2":"2"},
+									    "checkArr": [{"type": "0", "isChecked": "0"}],
+									    "children":[{
+									      "id":"001001001",
+									      "title": "雨花区",
+									      "parentId": "001001",
+									      "basicData": {"data1":"1","data2":"2"},
+									      "checkArr": [{"type": "0", "isChecked": "0"}]
+									    }]
+									  }]
+									}]
+									}
+								</pre>
+								<p>当你配置了dataStyle:"layuiStyle"，你就可以使用layui风格的数据格式了，详见左侧数据格式菜单栏。
+							</div>
+						</div>
+						<div class="layui-card card" id="dataFormat">
+							<div class="layui-card-header">dataFormat</div>
+							<div class="layui-card-body">
+								<p>自定义data中的数据格式，这个参数适配于当你不想让后台递归生成层级关系数据，而只想让前端处理一个完整的list时使用，<span style="color:#FF5722;">接下来的使用规范，很重要：</span></p>
+								<pre class="layui-code" lay-title="dataFormat规范" lay-encode="true">
+									// 规范1: 页面ul元素必须指定data-id，且data-id为第一级节点的父id。
+									<ul id="dataTree" class="dtree" data-id="0"></ul>
+									
+									// 规范2：加载的数据务必是全量的。如果是非全量数据，务必保证当前数据的被渲染出来的最后一级节点的isLast属性是false，否则数据也不能在被加载出来了。
+									// 规范3：当使用dataFormat属性时，不需要配置cache属性，否则会引起不必要的数据加载缓慢问题。
+								</pre>
+								<pre class="layui-code" lay-title="使用dataFormat的标准数据格式示例" lay-encode="true">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [
+									  {"id":"001","title": "湖南省","parentId": "0"},
+									  {"id":"002","title": "湖北省","parentId": "0"},
+									  {"id":"003","title": "广东省","parentId": "0"},
+									  {"id":"004","title": "浙江省","parentId": "0"},
+									  {"id":"005","title": "福建省","parentId": "0"},
+									  {"id":"001001","title": "长沙市","parentId": "001"},
+									  {"id":"001002","title": "株洲市","parentId": "001"},
+									  {"id":"001003","title": "湘潭市","parentId": "001"},
+									  {"id":"001004","title": "衡阳市","parentId": "001"},
+									  {"id":"001005","title": "郴州市","parentId": "001"}
+									]
+									}
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="kzcsyl">
+					<legend>扩展参数一览</legend>
+					<div class="layui-field-box" id="toolbar">
+						<p style="padding: 5px 0px;">工具栏的配置由以下几个参数组成：</p>
+						<table class="layui-table" lay-size="sm">
+							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
+							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
+							<tbody>
+								<tr>
+									<td><span style="color:#FF5722;">toolbar</span></td>
+									<td>Boolean</td>
+									<td>启用工具栏。</td>
+									<td>false</td>
+									<td>true / false</td>
+									<td>true</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">toolbarScroll</span></td>
+									<td>String</td>
+									<td>树的上级div容器，让树可以显示滚动条的div容器。</span></td>
+									<td>"#toolbarDiv"</td>
+									<td>-</td>
+									<td>"#toolbarDiv"</td>
+								</tr>
+								<tr>
+									<td>toolbarLoad</td>
+									<td>String</td>
+									<td>工具栏作用域：node:所有节点，noleaf:非最后一级节点，leaf:最后一级</td>
+									<td>"node"</td>
+									<td>"node" / "noleaf" / "leaf"</td>
+									<td>"leaf"</td>
+								</tr>
+								<tr>
+									<td>toolbarShow</td>
+									<td>Array</td>
+									<td>工具栏按钮自定义加载: add: 新增， edit：编辑， delete： 删除。</td>
+									<td>["add","edit","delete"]</td>
+									<td>-</td>
+									<td>["add"]</td>
+								</tr>
+								<tr>
+									<td>toolbarExt</td>
+									<td>Array</td>
+									<td>扩展工具栏中的按钮</td>
+									<td>[]</td>
+									<td>-</td>
+									<td><a href="javascript:void(0);" data-id="toolbarBtn" class="position-a">详见toolbarExt</a></td>
+								</tr>
+								<tr>
+									<td>toolbarBtn</td>
+									<td>Array</td>
+									<td>工具栏基础功能中的内容自定义添加</td>
+									<td>-</td>
+									<td>-</td>
+									<td><a href="javascript:void(0);" data-id="toolbarBtn" class="position-a">详见toolbarBtn</a></td>
+								</tr>
+								<tr>
+									<td>toolbarFun</td>
+									<td>Object</td>
+									<td>工具栏事件加载</td>
+									<td><a href="javascript:void(0);" data-id="toolbarFun" class="position-a">详见toolbarFun</a></td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>toolbarStyle</td>
+									<td>String</td>
+									<td>toolbar的自定义风格。</td>
+									<td>{
+										 title:"节点", 
+										 area:["60%","80%"] 
+										}</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<div class="layui-field-box" style="background: #F2F2F2">
+						<div class="layui-card card" style="margin-top:0px;" id="toolbarBtn">
+							<div class="layui-card-header">toolbarScroll</div>
+							<div class="layui-card-body">
+								<p>该参数是一个元素选择器的名称，可以是id选择器，也可以是class选择器，为什么需要配置这个元素，因为组件加载时，在页面中一般来说不仅仅只有一个ul元素，它必然会被一个div包裹着，而这个div可以让组件在内部自由加载，滚动等，我们需要绑定的就是这个div。当你使用了toolbar时，我们强烈建议你的dom格式为：</p>
+								<pre class="layui-code" lay-title="toolbarScroll配置" lay-encode="true">
+									// 给容器指定一个div，设置它的高度，并设置滚动条自动加载
+									<div style="height: 350px;overflow: auto;" id="toolbarDiv">
+									  <ul id="demoTree" class="dtree" data-id="0"></ul>
+									</div>
+									
+									// 那么你的js代码既可以如此写：
+									dtree.render({
+									  elem: "#demoTree",
+									  url: "../json/case/demo.json",
+									  toolbar:true,
+									  toolbarScroll:"#toolbarDiv" // 绑定div元素
+									});
+								</pre>
+								<p>再次强调，该元素必须配置，因为它会直接影响到右键菜单的生成位置！！！</p>
+							</div>
+						</div>
+						<div class="layui-card card" style="margin-top:0px;" id="toolbarExt">
+							<div class="layui-card-header">toolbarExt</div>
+							<div class="layui-card-body">
+								<p>该参数是一个一维数组，可以扩展toolbar的按钮：[{}]。{}中的全部内容如下：</p>
+								<pre class="layui-code" lay-title="toolbarExt配置参数一览">
+									{
+									  toolbarId: "唯一标识该扩展按钮的ID",
+									  icon: "扩展按钮的自定义图标",
+									  title: "扩展按钮的文字信息",
+									  handler: function(node, $div){}  //扩展按钮的回调函数
+									};
+								</pre>
+								<pre class="layui-code" lay-title="toolbarExt配置示例">
+									dtree.render({
+									  toolbar: true,
+									  toolbarExt:[{toolbarId: "test",icon:"dtree-icon-wefill",title:"我是自定义",handler: function(node){layer.msg(JSON.stringify(node));}}]
+									});
+								</pre>
+							</div>
+						</div>
+						<div class="layui-card card" style="margin-top:0px;" id="toolbarBtn">
+							<div class="layui-card-header">toolbarBtn</div>
+							<div class="layui-card-body">
+								<p>该参数是一个二维数组，可以指定toolbar页面中展示的内容：[[{}],[{}]]    其中，第一个[{}]表示addToolbar中的内容，第二个表示editToolbar中的内容,{}中的全部内容如下：</p>
+								<pre class="layui-code" lay-title="toolbarBtn配置参数一览">
+									{
+									  "label": "你的label名称",
+									  "name": "你的input标签指定的name",
+									  "type": "类型，可选值有（text、textarea、select、hidden），可不填，默认为text",
+									  "value": "input标签的默认值，可不填",
+									  "optionsData": "当类型为select时需要填写，表示一个json串，输出select的选项",
+									};
+								</pre>
+								<pre class="layui-code" lay-title="toolbarBtn配置示例">
+									dtree.render({
+									  toolbar: true,
+									  toolbarBtn: [[{"label":"text1","name":"name1"},{label":"text2","name":"name2","type":"textarea"}],[{"label":"text1","name":"name1"},{label":"text4","name":"name4","type":"textarea"}]]
+									});
+								</pre>
+							</div>
+						</div>
+						<div class="layui-card card" style="margin-top:0px;" id="toolbarFun">
+							<div class="layui-card-header">toolbarFun</div>
+							<div class="layui-card-body">
+								<p>当用户需要使用树的toolbar时，首先需要将toolbar属性的值设置为true，接着在树生成后，可以对树进行增删改操作，即添加节点，修改节点，删除节点，当操作被触发之后，可以在toolbarFun中获取操作之后的定义的函数:</p>
+								<pre class="layui-code" lay-title="toolbarFun配置函数一览">
+									var toolbarFun = {
+									  addTreeNode: function(treeNode, $div) { //添加树节点后调用的函数，用于用户自定义，如未指定则树不会发生变化
+									    console.log(treeNode);
+									    DemoTree.changeTreeNodeAdd(treeNode.nodeId); // 调用内置函数，新增节点后改变节点内容。传入null或false，则树不会发生变化
+									  },
+									  editTreeNode: function(treeNode, $div) { //编辑树节点后调用的函数，用于用户自定义，如未指定则树不会发生变化
+									    console.log(treeNode);
+									     DemoTree.changeTreeNodeEdit(true); // 调用内置函数，修改节点后改变节点内容。传入false，则树不会发生变化
+									  },
+									  editTreeLoad: function(treeNode) { //编辑树的数据回显，用于打开编辑时，回填数据，用于用户自定义。
+									    console.log(treeNode);
+									     DemoTree.changeTreeNodeDone(param); // 调用内置函数，编辑页打开后显示编辑页内容
+									  },
+									  delTreeNode: function(treeNode, $div){ //删除树后调用的函数，用于用户自定义，如未指定则树不会发生变化
+									    console.log(treeNode);
+									    DemoTree.changeTreeNodeDel(true); // 调用内置函数，删除节点后改变节点内容。传入false，则树不会发生变化
+									  },
+									  loadToolbarBefore: function(buttons, treeNode, $div){ // 右键菜单加载前的函数
+									    console.log(buttons);
+									    console.log(treeNode);
+									    return buttons; // 返回按钮组，如不返回则按钮将不会显示。
+									  }
+									};
+								</pre>
+								<p>treeNode参数，包含toolbarBtn中指定的name和它的值，还有默认元素，如果没有指定toolbarBtn的情况下，treeNode参数如下：</p>
+								<pre class="layui-code" lay-title="treeNode默认参数">
+									{
+									  leaf: true,
+									  level: "当前添加参数的level",
+									  nodeId: "当前添加参数的动态ID",
+									  nodeTitle: "当前添加参数的上级节点名称",
+									  parentId: "当前添加参数的上级节点ID",
+									  addNodeName: "当前添加参数的节点名称",
+									  editNodeName: "当前编辑参数的节点名称，与addNodeName只出现一个"
+									  basicData: "",
+									  recordData: ""
+									}
+								</pre>
+								<pre class="layui-code" lay-title="toolbarFun配置示例">
+									var DemoTree = dtree.render({
+									  toolbar: true,
+									  toolbarFun: {
+									    addTreeNode: function(treeNode) { 
+									      // 此处执行ajax，新增节点
+									      var id = $.ajax({ ...}) // 内容省略
+									      DemoTree.changeTreeNodeAdd(id); // 返回ID值
+									    }
+									  },
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+					
+					<div class="layui-field-box" id="menubar">
+						<p style="padding: 5px 0px;">菜单栏的配置由以下几个参数组成：</p>
+						<table class="layui-table" lay-size="sm">
+							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
+							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
+							<tbody>
+								<tr>
+									<td><span style="color:#FF5722;">menubar</span></td>
+									<td>Boolean</td>
+									<td>启用菜单栏。</td>
+									<td>false</td>
+									<td>true / false</td>
+									<td>true</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">menubarTips</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td>Array</td>
+									<td>菜单栏吸附</td>
+									<td><a href="javascript:void(0);" data-id="menubarTips" class="position-a">详见menubarTips</a></td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>menubarFun</td>
+									<td>Object</td>
+									<td>菜单栏事件加载</td>
+									<td><a href="javascript:void(0);" data-id="menubarFun" class="position-a">详见menubarFun</a></td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<div class="layui-field-box" style="background: #F2F2F2">
+						<div class="layui-card card" style="margin-top:0px;" id="menubarTips">
+							<div class="layui-card-header">menubarTips</div>
+							<div class="layui-card-body">
+								<p>当用户需要使用树的menubar时，默认情况下菜单栏的展示方式是在树的上方展示一排小图标，但为了方便用户自定义，现可以有三种不同的指定方式供用户展现菜单栏，更多示例请看：开启菜单栏。</p>
+								<pre class="layui-code" lay-title="menubarTips默认配置一览">
+									var menubarTips = {
+									  toolbar: [],  //依附工具栏
+									  group: ["moveDown", "moveUp", "refresh", "remove", "searchNode"], //按钮组
+									  freedom: [] // 自由指定
+									};
+								</pre>
+								<p>上面的默认指定可以看出，菜单栏默认是绑定在上方按钮组的，其中的内容即是菜单栏提供的默认功能，以下是对默认功能的解释。</p>
+								<pre class="layui-code" lay-title="菜单栏默认功能一览">
+									"moveDown": "展开节点",
+									"moveUp": "收缩节点",
+									"refresh": "刷新树",
+									"remove": "删除选中节点",
+									"searchNode": "模糊查询节点"
+								</pre>
+								<p>用户除了可以指定默认的配置之外，还可以自定义菜单栏配置，其中自定义的JSON格式为。</p>
+								<pre class="layui-code" lay-title="自定义菜单栏配置JSON格式">
+									{
+									  menubarId: "唯一标识该扩展按钮的ID",
+									  icon: "扩展按钮的自定义图标",
+									  title: "扩展按钮的文字信息",
+									  handler: function(node, $div){}  //扩展按钮的回调函数
+									};
+								</pre>
+								
+							</div>
+						</div>
+					</div>
+					
+					<div class="layui-field-box" style="background: #F2F2F2">
+						<div class="layui-card card" style="margin-top:0px;" id="menubarFun">
+							<div class="layui-card-header">menubarFun</div>
+							<div class="layui-card-body">
+								<p>当用户需要使用树的menubar时，首先需要将menubar属性的值设置为true，接着在树生成后，可以对树进行：展开节点，收缩节点，删除选中节点，查询匹配节点的操作，当操作被触发后，可以在menubarFun中获取删除选中节点操作之后的定义的函数</p>
+								<pre class="layui-code" lay-title="menubarFun配置函数一览">
+									var menubarFun = {
+									  remove: function(checkbarNodes){ //删除复选框选中节点，需要用户自定义，如未指定则树只是页面上做了修改
+									    return true;
+									  }
+									};
+								</pre>
+							</div>
+						</div>
+					</div>
+					
+					<div class="layui-field-box" id="checkbar">
+						<p style="padding: 5px 0px;">复选框栏的配置由以下几个参数组成：</p>
+						<table class="layui-table" lay-size="sm">
+							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
+							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
+							<tbody>
+								<tr>
+									<td><span style="color:#FF5722;">checkbar</span></td>
+									<td>Boolean</td>
+									<td>启用复选框。</td>
+									<td>false</td>
+									<td>true / false</td>
+									<td>true</td>
+								</tr>
+								<tr>
+									<td>checkbarLoad</td>
+									<td>String</td>
+									<td>复选框作用范围，node：所有节点， leaf：最后一级</td>
+									<td>"node"</td>
+									<td>"node" / "leaf"</td>
+									<td>"leaf"</td>
+								</tr>
+								<tr>
+									<td>checkbarType</td>
+									<td>String</td>
+									<td>复选框选中形式: all：子集选中父级也选中，  no-all：子集选中父级半选中，子集全选父级选中， p-casc：父级选中子集全选，子集无法改变父级选中状态， self：没有任何级联关系， <span style="color:#FF5722;">only：仅存一个</span></td>
+									<td>"all"</td>
+									<td>"all" / "no-all" / "p-casc" / "self" / "only"</td>
+									<td>"no-all"</td>
+								</tr>
+								<tr>
+									<td>checkbarData</td>
+									<td>String</td>
+									<td>复选框记录数据类型形式，  change: 记录变更数据，choose: 记录选中数据，all: 记录全部数据</td>
+									<td>"choose"</td>
+									<td>"choose" / "change" / "all"</td>
+									<td>"change"</td>
+								</tr>
+								<tr>
+									<td>checkbarFun</td>
+									<td>Object</td>
+									<td>复选框事件加载</td>
+									<td><a href="javascript:void(0);" data-id="checkbarFun" class="position-a">详见checkbarFun</a></td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<div class="layui-field-box" style="background: #F2F2F2">
+						<div class="layui-card card" style="margin-top:0px;" id="checkbarFun">
+							<div class="layui-card-header">checkbarFun</div>
+							<div class="layui-card-body">
+								<p>当用户需要使用树的checkbar时，首先需要将checkbar属性的值设置为true，接着在树生成后，可以对树进行：选中，取消选择的操作，当操作被触发后，可以在checkbarFun中获取操作之后的定义的函数：</p>
+								<pre class="layui-code" lay-title="checkbarFun配置函数一览">
+									var checkbarFun = {
+									  chooseBefore: function($i, node) { //复选框点击前的回调。
+									    return true;
+									  }
+									  chooseDone: function(checkbarNodesParam) { //复选框点击事件完毕后，返回该树关于复选框操作的全部信息。
+									    return ;
+									  }
+									};
+								</pre>
+							</div>
+						</div>
+					</div>
+					
+					<div class="layui-field-box" id="useIframe">
+						<p style="padding: 5px 0px;">iframe模式配置由以下几个参数组成：</p>
+						<table class="layui-table" lay-size="sm">
+							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
+							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
+							<tbody>
+								<tr>
+									<td><span style="color:#FF5722;">useIframe</span></td>
+									<td>Boolean</td>
+									<td>是否加载Iframe。</td>
+									<td>false</td>
+									<td>true / false</td>
+									<td>true</td>
+								</tr>
+								<tr>
+									<td>iframe</td>
+									<td>Object</td>
+									<td>iframe的具体配置</td>
+									<td><a href="javascript:void(0);" data-id="iframe" class="position-a">详见iframe</a></td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>iframeFun</td>
+									<td>Object</td>
+									<td>iframe事件加载</td>
+									<td><a href="javascript:void(0);" data-id="iframeFun" class="position-a">详见iframeFun</a></td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<div class="layui-field-box" style="background: #F2F2F2">
+						<div class="layui-card card" style="margin-top:0px;" id="iframe">
+							<div class="layui-card-header">iframe</div>
+							<div class="layui-card-body">
+								<p>当用户需要在点击树节点时打开iframe页面，则首先需要将useIframe属性的值设置为true，接着对该属性进行配置：</p>
+								<pre class="layui-code" lay-title="iframe配置参数一览">
+									var iframe = {
+									  iframeElem: "", //iframe的ID
+									  iframeUrl: "", //树关联的frame地址
+									  iframeLoad: "leaf", //点击哪一层加载iframe： node：所有节点， leaf：默认，最后一级
+									  iframeDefaultRequest: defaultRequest, //iframe的默认参数,目的是与加载树的参数不一样
+									  iframeRequest: {} //iframe的自定义参数
+									};
+								</pre>
+							</div>
+						</div>
+						
+						<div class="layui-card card" style="margin-top:0px;" id="iframeFun">
+							<div class="layui-card-header">iframeFun</div>
+							<div class="layui-card-body">
+								<p>当用户点击节点加载iframe后，可以在iframeFun中获取操作之后的定义的函数</p>
+								<pre class="layui-code" lay-title="iframe配置参数一览">
+									var iframeFun = {
+									  iframeDone: function(iframeParam){ //iframe加载完毕后，用于用户自定义事件
+									    return ;
+									  }
+									};
+								</pre>
+							</div>
+						</div>
+					</div>
+					
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="jcff">
+					<legend>基础方法</legend>
+					<div class="layui-field-box">
+						<p style="padding: 5px 0px;">基础方法均以dtree.开头，后面接上方法名。</p>
+						<p style="padding: 5px 0px;">下面是目前 dtree 模块所支持的全部基础方法一览表</p>
+						<p style="padding: 5px 0px;">方法名称：<span style="color:#FF5722;">红色</span>为重要方法</p>
+						<table class="layui-table" lay-size="sm">
+							<colgroup><col width="20%"><col width="10%"><col width="20%"><col width="50%"></colgroup>
+							<thead><tr><th>方法名称</th><th>参数类型</th><th>说明</th><th>用法示例</th></tr></thead>
+							<tbody>
+								<tr id="render">
+									<td><span style="color:#FF5722;">render</span></td>
+									<td>Object</td>
+									<td>初始化树</td>
+									<td>
+										<pre class="layui-code" lay-title="render方法示例">
+											var DemoTree = dtree.render({
+											  elem: 'siTree',
+											  url: '/siTree.json',
+											  initLevel: 2,
+											  icon: 3
+											});
+										</pre>
+									</td>
+								</tr>
+								<tr id="reload">
+									<td><span style="color:#FF5722;">reload</span></td>
+									<td>String / Object, Object</td>
+									<td>重新加载</td>
+									<td>
+										<pre class="layui-code" lay-title="reload方法示例">
+											dtree.reload(DemoTree, {
+											  url: '/demoTree2.json',
+											  initLevel: 2,
+											  icon: 3
+											});
+										</pre>
+									</td>
+								</tr>
+								<tr id="getNowParam">
+									<td>getNowParam</td>
+									<td>String / Object</td>
+									<td>获取当前选中值</td>
+									<td>
+										<pre class="layui-code" lay-title="getNowParam方法示例">
+											var param = dtree.getNowParam(DemoTree);
+											console.log(param);
+										</pre>
+									</td>
+								</tr>
+								<tr id="getParentParam">
+									<td>getParentParam</td>
+									<td>String / Object, String</td>
+									<td>获取上级节点值</td>
+									<td>
+										<pre class="layui-code" lay-title="getParentParam方法示例">
+											var param = dtree.getParentParam(DemoTree, "dataId");
+											console.log(param);
+										</pre>
+									</td>
+								</tr>
+								<tr id="getChildParam">
+									<td>getChildParam<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td>String / Object, String</td>
+									<td>获取下级节点值集</td>
+									<td>
+										<pre class="layui-code" lay-title="getChildParam方法示例">
+											var param = dtree.getChildParam(DemoTree, "dataId");
+											console.log(param);
+										</pre>
+									</td>
+								</tr>
+								<tr id="changeCheckbarNodes">
+									<td>changeCheckbarNodes</td>
+									<td>String / Object</td>
+									<td>判断复选框是否发生变更</td>
+									<td>
+										<pre class="layui-code" lay-title="changeCheckbarNodes方法示例">
+											var flag = dtree.changeCheckbarNodes("demoTree");
+											console.log(flag);
+										</pre>
+									</td>
+								</tr>
+								<tr id="dataInit">
+									<td>dataInit</td>
+									<td>String / Object, String</td>
+									<td>初始化选中节点，并设值</td>
+									<td>
+										<pre class="layui-code" lay-title="dataInit方法示例">
+											dtree.dataInit("demoTree", "001");
+										</pre>
+									</td>
+								</tr>
+								<tr id="chooseDataInit">
+									<td>chooseDataInit</td>
+									<td>String / Object, String</td>
+									<td>初始化选中复选框，并设值</td>
+									<td>
+										<pre class="layui-code" lay-title="chooseDataInit方法示例">
+											dtree.chooseDataInit("demoTree", "001,002,003");
+										</pre>
+									</td>
+								</tr>
+								<tr id="getCheckbarNodesParam">
+									<td>getCheckbarNodesParam</td>
+									<td>String / Object</td>
+									<td>获取复选框选中值</td>
+									<td>
+										<pre class="layui-code" lay-title="getCheckbarNodesParam方法示例">
+											var params = dtree.getCheckbarNodesParam("demoTree");
+											console.log(params);
+										</pre>
+									</td>
+								</tr>
+								<tr id="escape">
+									<td>escape</td>
+									<td>String</td>
+									<td>字符串格式化</td>
+									<td>
+										<pre class="layui-code" lay-title="escape方法示例">
+											var html = dtree.escape("需要被格式化的内容");
+											console.log(html);
+										</pre>
+									</td>
+								</tr>
+								<tr id="unescape">
+									<td>unescape</td>
+									<td>String</td>
+									<td>字符串反格式化</td>
+									<td>
+										<pre class="layui-code" lay-title="unescape方法示例">
+											var html = dtree.unescape("需要被反格式化的内容");
+											console.log(html);
+										</pre>
+									</td>
+								</tr>
+								<tr id="version">
+									<td>version</td>
+									<td>-</td>
+									<td>获取组件版本信息</td>
+									<td>
+										<pre class="layui-code" lay-title="version方法示例">
+											var v = dtree.version();
+											console.log(v);
+										</pre>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					
+						<p style="padding: 5px 0px;">以下列出重复使用<span style="color:#FF5722;">dtree.render</span>或使用<span style="color:#FF5722;">dtree.reload</span>方法之后对内置属性的影响：</p>
+						<p style="padding: 5px 0px;"><span style="color:#5FB878">覆盖</span>：即会重新定义该属性。</p>
+						<p style="padding: 5px 0px;"><span style="color:#FFB800">扩展</span>：即会在该属性原有的基础定义上扩展该属性。</p>
+						<!-- <p style="padding: 5px 0px;"><span style="color:#FF5722">无效</span>：即重复定义无效，只生效于第一次定义的属性。</p> -->
+						<table class="layui-table" lay-size="sm" id="yingxiang">
+							<thead><tr><th>属性</th><th>影响</th><th>属性</th><th>影响</th><th>属性</th><th>影响</th></tr></thead>
+							<tbody>
+								<tr><td colspan="6"><span style="font-weight: bold;">基础参数</span></td></tr>
+								<tr><td>initLevel</td><td><span style="color:#5FB878">覆盖</span></td><td>type</td><td><span style="color:#5FB878">覆盖</span></td><td>elem</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td> </td><td> </td><td>cache</td><td><span style="color:#5FB878">覆盖</span></td><td>obj</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td colspan="6"><span style="font-weight: bold;">数据参数</span></td></tr>
+								<tr><td>data</td><td><span style="color:#5FB878">覆盖</span></td><td>headers</td><td><span style="color:#5FB878">覆盖</span></td><td>defaultRequest</td><td><span style="color:#FFB800">扩展</span></td></tr>
+								<tr><td>url</td><td><span style="color:#5FB878">覆盖</span></td></td><td>method</td><td><span style="color:#5FB878">覆盖</span><td>response</td><td><span style="color:#FFB800">扩展</span></tr>
+								<tr><td>async</td><td><span style="color:#5FB878">覆盖</span></td><td>dataType</td><td><span style="color:#5FB878">覆盖</span></td><td>request</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>dataFormat</td><td><span style="color:#5FB878">覆盖</span></td><td>dataStyle</td><td><span style="color:#5FB878">覆盖</span></td><td>done</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td colspan="6"><span style="font-weight: bold;">树样式风格图标参数</span></td></tr>
+								<tr><td>skin</td><td><span style="color:#5FB878">覆盖</span></td><td>ficon</td><td><span style="color:#5FB878">覆盖</span></td><td>firstIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
+								<tr><td>icon</td><td><span style="color:#5FB878">覆盖</span></td><td>dot</td><td><span style="color:#5FB878">覆盖</span></td><td>nodeIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
+								<tr><td> </td><td> </td><td> </td><td> </td><td>leafIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
+								<tr><td colspan="6"><span style="font-weight: bold;">工具栏参数</span></td></tr>
+								<tr><td>toolbar</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarStyle</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarScroll</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>toolbarLoad</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarShow</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarBtn</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>toolbarExt</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarFun</td><td><span style="color:#5FB878">覆盖</span></td><td> </td><td> </td></tr>
+								<tr><td colspan="6"><span style="font-weight: bold;">菜单栏参数</span></td></tr>
+								<tr><td>menubar</td><td><span style="color:#5FB878">覆盖</span></td><td>menubarTips</td><td><span style="color:#5FB878">覆盖</span></td><td>menubarFun</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td colspan="6"><span style="font-weight: bold;">复选框参数</span></td></tr>
+								<tr><td>checkbar</td><td><span style="color:#5FB878">覆盖</span></td><td>checkbarLoad</td><td><span style="color:#5FB878">覆盖</span></td><td>checkbarType</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>checkbarData</td><td><span style="color:#5FB878">覆盖</span></td><td>checkbarFun</td><td><span style="color:#5FB878">覆盖</span></td><td> </td><td> </td></tr>
+								<tr><td colspan="6"><span style="font-weight: bold;">iframe模式参数</span></td></tr>
+								<tr><td>useIframe </td><td><span style="color:#5FB878">覆盖</span></td><td>iframe</td><td><span style="color:#5FB878">覆盖</span></td><td>iframeFun</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+							</tbody>
+						</table>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="sjjt">
+					<legend>事件监听</legend>
+					<div class="layui-field-box">
+						<p style="padding: 5px 0px;">事件监听均绑定在on中的方法，用法：dtree.on(“方法名称(树的id)”, function(参数){});</p>
+						<p style="padding: 5px 0px;">下面是目前 dtree 模块所支持的事件方法一览表</p>
+						<p style="padding: 5px 0px;">方法名称：<span style="color:#FF5722;">红色</span>为常用方法</p>
+						<table class="layui-table" lay-size="sm">
+							<colgroup><col width="20%"><col width="10%"><col width="20%"><col width="50%"></colgroup>
+							<thead><tr><th>方法名称</th><th>回调参数类型</th><th>说明</th><th>用法示例</th></tr></thead>
+							<tbody>
+								<tr id="changeTree">
+									<td>changeTree</td>
+									<td>Object</td>
+									<td>树状态改变（收缩/张开）后，用户自定义想做的事情</td>
+									<td>
+										<pre class="layui-code" lay-title="changeTree方法示例">
+											dtree.on("changeTree('demoTree')" ,function(obj){
+											  console.log(obj.param); // 点击当前节点传递的参数
+											  console.log(obj.dom); // 当前节点的jquery对象
+											  console.log(obj.show); // 节点展开为true，关闭为false
+											});
+										</pre>
+									</td>
+								</tr>
+								<tr id="nodeclick">
+									<td><span style="color:#FF5722;">node</span></td>
+									<td>Object</td>
+									<td>单击事件执行完毕后，用户自定义想做的事情</td>
+									<td>
+										<pre class="layui-code" lay-title="node方法示例">
+											dtree.on("node('demoTree')" ,function(obj){
+											  console.log(obj.param); // 点击当前节点传递的参数
+											  console.log(obj.dom); // 当前节点的jquery对象
+											  console.log(obj.childParams); // 当前节点的所有子节点参数
+											  console.log(obj.parentParam); // 当前节点的父节点参数
+											});
+										</pre>
+									</td>
+								</tr>
+								<tr id="nodedblclick">
+									<td><span style="color:#FF5722;">nodedblclick</span></td>
+									<td>Object</td>
+									<td>双击事件执行完毕后，用户自定义想做的事情</td>
+									<td>
+										<pre class="layui-code" lay-title="nodedblclick方法示例">
+											dtree.on("nodedblclick('demoTree')" ,function(obj){
+											  console.log(obj.param); // 点击当前节点传递的参数
+											  console.log(obj.dom); // 当前节点的jquery对象
+											  console.log(obj.childParams); // 当前节点的所有子节点参数
+											  console.log(obj.parentParam); // 当前节点的父节点参数
+											});
+										</pre>
+									</td>
+								</tr>
+								<tr id="chooseDone">
+									<td>chooseDone</td>
+									<td>Object</td>
+									<td>用户点击复选框后，用户自定义想做的事情</td>
+									<td>
+										<pre class="layui-code" lay-title="chooseDone方法示例">
+											dtree.on("chooseDone('demoTree')" ,function(obj){
+											  console.log(obj.checkbarParams); // 选中的所有复选框的参数
+											});
+										</pre>
+									</td>
+								</tr>
+								<tr id="iframeDone">
+									<td>iframeDone</td>
+									<td>Object</td>
+									<td>iframe加载完毕后，用户自定义想做的事情，<span style="color:#FF5722;">注意：该方法与node方法为互斥方法，在开启iframe功能后，如果点击节点加载了iframe则会回调该方法，如没加载，则会回调node方法。</span></td>
+									<td>
+										<pre class="layui-code" lay-title="iframeDone方法示例">
+											dtree.on("iframeDone('demoTree')" ,function(obj){
+											  console.log(obj.iframeParam); // 点击当前节点传递的参数
+											  console.log(obj.dom); // 当前节点的jquery对象
+											});
+										</pre>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="nzhsyl">
+					<legend>内置函数一览</legend>
+					<div class="layui-field-box">
+						<p style="padding: 5px 0px;">内置函数大多是组件内部使用的函数，对于用户来说用不着，此处列出加深用户对于组件的印象;</p>
+						<p style="padding: 5px 0px;">要使用内置函数，必须先使用组件将树对象定义出来，在用定义出来的对象进行操作,如：var DemoTree = dtree.render({...}); ，则操作DemoTree对象</p>
+						<p style="padding: 5px 0px;">函数名称：<span style="color:#FF5722;">红色</span>为可能使用的到的函数</p>
+						<table class="layui-table" lay-size="sm">
+							<colgroup><col width="30%"><col width="10%"><col width="20%"><col width="40%"></colgroup>
+							<thead><tr><th>函数名称</th><th>参数类型</th><th>说明</th><th>用法示例</th></tr></thead>
+							<tbody>
+								<tr><td colspan="5"><span style="font-weight: bold;">树初始化及基本事件函数</span></td></tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.escape</span></td>
+									<td>String</td>
+									<td>字符串格式化</td>
+									<td>
+										<pre class="layui-code" lay-title="escape方法示例">
+											var str = DemoTree.escape("需要被格式化的文本");
+											console.log(str);
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.unescape</span></td>
+									<td>String</td>
+									<td>字符串反格式化</td>
+									<td>
+										<pre class="layui-code" lay-title="unescape方法示例">
+											var str = DemoTree.unescape("需要被反格式化的文本");
+											console.log(str);
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.setting</td>
+									<td>Object</td>
+									<td>设置树的参数</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.reloadSetting</td>
+									<td>Object</td>
+									<td>重新设置树的参数</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.reload</td>
+									<td>Object</td>
+									<td>重新加载树</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.init</td>
+									<td>-</td>
+									<td>初始化树</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getChild</td>
+									<td>Dom, Array</td>
+									<td>加载子节点</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.loadListTree</td>
+									<td>Object, Object, String/Integer, Dom</td>
+									<td>初始化树或者拼接树（list数据格式初始化）</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.queryListTreeByPid</td>
+									<td>String, Object</td>
+									<td>根据父ID查找list数据中匹配的元素</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.loadTree</td>
+									<td>Object, Dom</td>
+									<td>初始化树或者拼接树（默认数据格式初始化）</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.parseData</td>
+									<td>Object</td>
+									<td>解析data数据</td>
+									<td>
+										<pre class="layui-code" lay-title="parseData方法示例">
+											DemoTree.parseData(data).treeId(); // 当前数据的treeId
+											DemoTree.parseData(data).parentId(); // 当前数据的parentId
+											DemoTree.parseData(data).title(); // 当前数据的title
+											DemoTree.parseData(data).level(); // 当前数据的level
+											DemoTree.parseData(data).iconClass(); // 当前数据的iconClass
+											DemoTree.parseData(data).isLast(); // 当前数据的isLast，如未指定则为false
+											DemoTree.parseData(data).isLastT(); // 当前数据的isLastT，如未指定则为true
+											DemoTree.parseData(data).checkArr(); // 当前数据的checkArr
+											DemoTree.parseData(data).children(); // 当前数据的children
+											DemoTree.parseData(data).basicData(); // 当前数据的basicData
+											DemoTree.parseData(data).data(); // 当前数据的data
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getDom</td>
+									<td>String, String, String, String, String, Array, String, String, String</td>
+									<td>新增节点的dom值</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getLiItemDom</td>
+									<td>String, String, String, String, String, Array, String, String, String, String, Boolean</td>
+									<td>新增节点拼接好的li</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.dataInit</td>
+									<td>String</td>
+									<td>初始化节点，用于数据回显</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.clickSpread</td>
+									<td>Dom</td>
+									<td>展开或隐藏节点</td>
+									<td>-</td>
+								</tr>
+								<tr><td colspan="5"><span style="font-weight: bold;">工具栏及菜单栏函数</span></td></tr>
+								<tr>
+									<td>DTree.prototype.initTreePlus<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td>-</td>
+									<td>初始化菜单栏和工具栏的div</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.openTreePlus<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td>-</td>
+									<td>开启工具栏和菜单栏</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getMenubarDom</td>
+									<td>-</td>
+									<td>获取菜单栏</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getExtMenubarDom<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td>-</td>
+									<td>获取扩展菜单栏</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getMenubarToolDom<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td>-</td>
+									<td>获取依附在工具栏的菜单栏</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getExtMenubarToolDom<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td>-</td>
+									<td>获取依附在工具栏的扩展菜单栏</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.menubarMethod<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td>-</td>
+									<td>menubar内置调用方法</td>
+									<td>
+										<pre class="layui-code" lay-title="menubarMethod方法示例">
+											DemoTree.menubarMethod().openAllNode($jquery); // 展开所有节点
+											DemoTree.menubarMethod().closeAllNode(); // 收缩所有节点
+											DemoTree.menubarMethod().refreshTree(); // 刷新树
+											DemoTree.menubarMethod().remove(); // 删除选中节点
+											DemoTree.menubarMethod().searchNode(); // 模糊查询该值，展开该值节点
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.menubarListener<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td>-</td>
+									<td>menubar内置监听</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.searchNode</td>
+									<td>-</td>
+									<td>模糊查询该值，展开该值节点（内置方法调用的真正查询方法）</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getToolbarDom</td>
+									<td>-</td>
+									<td>获取工具栏</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.setToolbarDom<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5新增）</span></td>
+									<td>Object</td>
+									<td>设置工具栏</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.loadToolBar</td>
+									<td>String, String</td>
+									<td>加载toolBar中的内容</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.loadToolBarDetail<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td>-</td>
+									<td>获取toolbar详细的标签信息</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.changeTreeNodeAdd</span></td>
+									<td>String / Object</td>
+									<td>新增节点后改变节点内容</td>
+									<td>
+										<pre class="layui-code" lay-title="changeTreeNodeAdd方法示例">
+											//该方法适用于在toolbar的addTreeNode回调中，获取后台返回数据改变树的状态
+											DemoTree.changeTreeNodeAdd(param);
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.changeTreeNodeEdit</span></td>
+									<td>Boolean</td>
+									<td>编辑节点后改变节点内容</td>
+									<td>
+										<pre class="layui-code" lay-title="changeTreeNodeEdit方法示例">
+											//该方法适用于在toolbar的editTreeNode回调中，获取后台返回数据改变树的状态
+											DemoTree.changeTreeNodeEdit(flag);
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.changeTreeNodeDel</span></td>
+									<td>Boolean</td>
+									<td>删除节点后改变节点内容</td>
+									<td>
+										<pre class="layui-code" lay-title="changeTreeNodeDel方法示例">
+											//该方法适用于在toolbar的delTreeNode回调中，获取后台返回数据改变树的状态
+											DemoTree.changeTreeNodeDel(flag);
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.changeTreeNodeDone</span></td>
+									<td>Object</td>
+									<td>编辑页打开后显示编辑页内容</td>
+									<td>
+										<pre class="layui-code" lay-title="changeTreeNodeDone方法示例">
+											//该方法适用于在toolbar的editTreeLoad回调中，获取后台返回数据改变树的状态
+											DemoTree.changeTreeNodeDone(param);
+										</pre>
+									</td>
+								</tr>
+								<tr><td colspan="5"><span style="font-weight: bold;">复选框函数</span></td></tr>
+								<tr>
+									<td>DTree.prototype.chooseDataInit</td>
+									<td>String</td>
+									<td>初始化复选框的值</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.checkAllOrNot</td>
+									<td>Dom</td>
+									<td>复选框点击，子集选中父级也选中</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.checkAllOrNoallOrNot</td>
+									<td>Dom</td>
+									<td>复选框点击， no-all 子集选中父级半选中，子集全选父级选中</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.checkAllOrPcascOrNot</td>
+									<td>Dom</td>
+									<td>复选框点击，p-casc：父级选中子集全选，子集无法改变父级选中状态</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.checkOrNot</td>
+									<td>Dom</td>
+									<td>复选框点击，self：各自选中互不影响</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.checkOnly<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></td>
+									<td>Dom</td>
+									<td>复选框点击，only：仅存一个</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.changeCheck</span></td>
+									<td>-</td>
+									<td>改变复选框当前选中状态</td>
+									<td>
+										<pre class="layui-code" lay-title="changeCheck方法示例">
+											//该方法适用于在checkbar的chooseBefore回调中
+											DemoTree.changeCheck(); // 根据定义的级联关系，改变复选框当前选中状态
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.initNoAllCheck</span></td>
+									<td>-</td>
+									<td>复选框半选状态初始化设置</td>
+									<td>
+										<pre class="layui-code" lay-title="initNoAllCheck方法示例">
+											//该方法适用于树加载完毕后，回显上级菜单的半选/选中状态
+											DemoTree.initNoAllCheck();
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.initAllCheck</span></td>
+									<td>-</td>
+									<td>复选框选中状态初始化设置</td>
+									<td>
+										<pre class="layui-code" lay-title="initAllCheck方法示例">
+											//该方法适用于树加载完毕后，回显上级菜单的选中状态
+											 DemoTree.initAllCheck();
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.checkStatus</span></td>
+									<td>Dom</td>
+									<td>设置复选框选中/未选中/半选</td>
+									<td>
+										<pre class="layui-code" lay-title="checkStatus方法示例">
+											//该方法适用于在checkbar的chooseBefore回调中,或者你想手动触发复选框选中时
+											DemoTree.checkStatus($i).check(); // 当前复选框选中
+											DemoTree.checkStatus($i).noCheck(); // 当前复选框未选中
+											DemoTree.checkStatus($i).noallCheck(); // 当前复选框半选中
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.setAndGetCheckbarNodesParam</td>
+									<td>-</td>
+									<td>设置树的复选框操作值的全部参数,并获取</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getCheckbarNodesParam</td>
+									<td>-</td>
+									<td>获取树的复选框操作值的全部参数</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getCheckbarNodeParam</td>
+									<td>Dom,Dom</td>
+									<td>获取树的一个复选框的参数</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.changeCheckbarNodes</td>
+									<td>-</td>
+									<td>判断复选框是否发生变更</td>
+									<td>-</td>
+								</tr>
+								<tr><td colspan="5"><span style="font-weight: bold;">iframe函数</span></td></tr>
+								<tr>
+									<td>DTree.prototype.loadIframe</td>
+									<td>Dom, Object</td>
+									<td>加载iframe</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getIframeRequestParam</td>
+									<td>Object</td>
+									<td>获取传递出去的参数，根据iframe.iframeDefaultRequest、iframe.iframeRequest和node拼出发出请求的参数</td>
+									<td>-</td>
+								</tr>
+								<tr><td colspan="5"><span style="font-weight: bold;">数据回调函数</span></td></tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.getNowNodeUl</span></td>
+									<td>-</td>
+									<td>获取当前选中节点下一个UL 或根节点。为了将新节点放入ul下</td>
+									<td>
+										<pre class="layui-code" lay-title="getNowNodeUl方法示例">
+											var $ul = DemoTree.getNowNodeUl();
+											console.log($ul);
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.getNowNode</span></td>
+									<td>-</td>
+									<td>获取当前选中节点,或根节点</td>
+									<td>
+										<pre class="layui-code" lay-title="getNowNode方法示例">
+											var $div = DemoTree.getNowNode();
+											console.log($div);
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.setNodeParam</td>
+									<td>Dom</td>
+									<td>设置当前选中节点的全部参数</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getNodeParam</td>
+									<td>Dom</td>
+									<td>获取当前选中节点的全部参数</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getTempNodeParam</td>
+									<td>Dom</td>
+									<td>获取一个临时的node参数</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.initNodeParam</td>
+									<td>-</td>
+									<td>重置参数</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getRequestParam</td>
+									<td>Object</td>
+									<td>获取传递出去的参数，根据defaultRequest、request和node拼出发出请求的参数</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">DTree.prototype.getNowParam</span></td>
+									<td>-</td>
+									<td>获取当前选中值</td>
+									<td>
+										<pre class="layui-code" lay-title="getNowParam方法示例">
+											var param = DemoTree.getNowParam();
+											console.log(param);
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getParentParam</td>
+									<td>String</td>
+									<td>获取参数的上级节点</td>
+									<td>
+										<pre class="layui-code" lay-title="getParentParam方法示例">
+											var param = DemoTree.getParentParam("001");
+											console.log(param);
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getChildParam</td>
+									<td>String</td>
+									<td>获取下级节点的node参数集</td>
+									<td>
+										<pre class="layui-code" lay-title="getParentParam方法示例">
+											var param = DemoTree.getChildParam("001");
+											console.log(param);
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.callbackData</td>
+									<td>Object</td>
+									<td>获取回调数据</td>
+									<td>-</td>
+								</tr>
+								<tr><td colspan="5"><span style="font-weight: bold;">事件绑定函数</span></td></tr>
+								<tr>
+									<td>DTree.prototype.bindBrowserEvent</td>
+									<td>-</td>
+									<td>绑定浏览器事件</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.unbindBrowserEvent<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td>-</td>
+									<td>解绑浏览器事件</td>
+									<td>-</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">文档到此结束，看的不过瘾，或者还是一知半解？请移步案例演示，我将手把手教你如何使用dtree组件。</blockquote>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="basicDocMenu.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'												//实际情况下将该路径指定为自己的路径
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3"
+				});
+				
+				dtree.on('node("menuTree")', function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		// 绑定表格链接点击事件
+		$(".position-a").click(function(){
+			var nodeId = $(this).attr("data-id");
+			$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+		})
+		
+		// 1.demoTree
+		var DemoTree = dtree.render({
+			elem: "#demoTree",
+			data: demoTree,
+			type: "all",
+			initLevel: "2"
+		});
+		
+		dtree.on("node('demoTree')" ,function(obj){
+		  layer.msg(JSON.stringify(obj.param));
+		});
+		
+	});
+</script>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="question.css">
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">dtree-常见问题解答（持续更新。。。）。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<ul class="layui-timeline">
+					<li class="layui-timeline-item">
+						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title" id="009">url加载和data加载的区别？</h3>
+							<ul>
+								<li>url加载是会访问路径请求的，所以需要确保你的路径是正确的、请求的数据是完整的、请求方式是正确的（默认是POST请求）。</li>
+								<li>data加载是加载一段你提供好的数据，不会访问后台。</li>
+								<li>初始化同时指定data属性和url，是不会访问url的。</li>
+								<li>data属性需要的值是标准返回数据格式中data中的值，不需要提供code和message。</li>
+								<li>当你未指定url，配置了data却报 "数据请求异常，url参数未指定" 的错误，说明你的data有问题。 </li>
+							</ul>
+						</div>
+					</li>
+					<li class="layui-timeline-item">
+						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title" id="008">如何自定义图标？</h3>
+							<ul>
+								<li>仔细查看组件的图标，主题相关的属性</li>
+								<li>仔细阅读图标及配色方案中提供的demo。</li>
+								<li>按照自己的需求一步步自定义css。</li>
+							</ul>
+						</div>
+					</li>
+					<li class="layui-timeline-item">
+						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title" id="007">是否可以每个节点的图标都不一样？</h3>
+							<ul>
+								<li>可以，response中iconClass属性就是干这事情的。</li>
+								<li>仅支持二级图标的每个节点的图标都不一样</li>
+								<li>指定iconClass的优先级大于icon属性配置</li>
+							</ul>
+						</div>
+					</li>
+					<li class="layui-timeline-item">
+						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title" id="006">如何引入dtree？dtree模块被占用？</h3>
+							<ul>
+								<li>请仔细阅读官方文档的模块规范。</li>
+							</ul>
+						</div>
+					</li>
+					<li class="layui-timeline-item">
+						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title" id="005">组件是否支持下拉树？tableTree？</h3>
+							<ul>
+								<li>默认不支持，但是你可以自己写js和样式来实现下拉树，或者下拉树可以用弹出层回调来代替。</li>
+								<li>不支持tableTree。</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">dtree问题汇总，发现更美的你。</blockquote>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'												//实际情况下将该路径指定为自己的路径
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+	});
+</script>
+</html>

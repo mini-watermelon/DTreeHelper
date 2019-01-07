@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="other.css">
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">以下介绍了异步加载的多种情况，包括数据格式转换，初始参数指定等。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="csk">
+					<legend>穿梭框</legend>
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4">
+								<div class="layui-card">
+									<div class="layui-card-header">左边的树</div>
+									<div class="layui-card-body">
+										<div style="height: 350px;overflow: auto;"><ul id="cskTree1" class="dtree" data-id="0"></ul></div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-col-lg2"><div style="height: 350px;"><button class="layui-btn layui-btn-normal" style="margin-top: 200px;" id="csk_btn">转移到右边</button></div></div>
+							<div class="layui-col-lg4">
+								<div class="layui-card">
+									<div class="layui-card-header">右边的树</div>
+									<div class="layui-card-body">
+										<div style="height: 350px;overflow: auto;"><ul id="cskTree2" class="dtree" data-id="0"></ul></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="csk">
+					<legend>穿梭框</legend>
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4">
+								<div id="test4" style="border: 1px solid;">hello layer<div>
+							</div>
+							<div class="layui-col-lg12"><div style="height: 350px;" id="page"></div></div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">你会发现，使用异步加载是如此的方便，当然参数的传递不仅仅局限于此，如果你配置了复选框，则还会带上复选框的数据，默认参数汇总请查看基础文档的defaultRequest。</blockquote>
+			</div>
+			
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="other.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree', 'laypage'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$,
+			laypage = layui.laypage;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		layer.tips("提示一下", "#test4");
+		/* laypage.render({
+		    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+		    ,count: 50 //数据总数，从服务端得到
+		    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+	    }); */
+		
+		
+		
+		
+		
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3"
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		// 1.cskTree1
+		dtree.render({
+			elem: "#cskTree1",
+			url: "../json/case/checkbarTree1.json",
+			checkbar:true,
+			load:false
+		});
+		
+		dtree.render({
+			elem: "#cskTree2",
+			data: [],
+			checkbar:true,
+		//	response:{treeId:"nodeId",title:"context"},
+			dataFormat:"list"
+		});
+		
+		$("#csk_btn").click(function(){
+			var param = dtree.getCheckbarNodesParam("cskTree1");  // 获取选中数据
+			
+			console.log(param);
+			dtree.reload("cskTree2",{data:param});
+			
+			layer.msg("ceshiyixia",{success:function(layero, index){console.log(123213123);}})
+		});
+		
+		dtree.on("node('cskTree1')" ,function(obj){
+			layer.msg(JSON.stringify(obj.param));
+		});
+		
+		
+	});
+</script>
+</html>

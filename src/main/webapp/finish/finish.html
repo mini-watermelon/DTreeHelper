@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="finish.css">
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">dtree发展到现在，离不开大家的支持与鼓励，如果你觉得组件好用，不妨稍加支持，我定将不懈努力，争取越来越好。</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="yjfxk">
+					<legend>小额赞赏</legend>
+					<div class="layui-field-box" style="background: #F2F2F2;margin-top: 12px;">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;margin-bottom: 10px;">
+							<div class="layui-col-lg1"></div>
+							<div class="layui-col-lg5">
+								<div class="layui-card">
+									<div class="layui-card-header">微信</div>
+									<div class="layui-card-body" style="text-align: center;height: 240px;"><img src="weixin.png" style="width: 200px;"></div>
+								</div>
+							</div>
+							<div class="layui-col-lg5">
+								<div class="layui-card">
+									<div class="layui-card-header">支付宝</div>
+									<div class="layui-card-body" style="text-align: center;height: 240px;"><img src="zhifubao.png" style="width: 200px;"></div>
+								</div>
+							</div>
+							<div class="layui-col-lg1"></div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+	</div>	
+</body>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+	});
+</script>
+</html>

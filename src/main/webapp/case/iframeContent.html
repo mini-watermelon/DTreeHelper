@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+</head>
+<body>
+
+	<div class="layui-container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="layui-collapse">
+					<div class="layui-colla-item">
+						<div class="layui-colla-title">iframe页表单元素显示传来的数据</div>
+						<div class="layui-colla-content layui-show">
+							<div class="layui-form layui-form-panel" lay-filter="show_form">
+								<div class="layui-form-item">
+									<label class="layui-form-label">nodeId：</label>
+									<div class="layui-input-block">
+										<input type="text" id="nodeId" name="nodeId" class="layui-input"/>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">parentId：</label>
+									<div class="layui-input-block">
+										<input type="text" id="parentId" name="parentId" class="layui-input"/>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">context：</label>
+									<div class="layui-input-block">
+										<input type="text" id="context" name="context" class="layui-input"/>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">isLeaf：</label>
+									<div class="layui-input-block">
+										<input type="text" id="isLeaf" name="isLeaf" class="layui-input"/>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">level：</label>
+									<div class="layui-input-block">
+										<input type="text" id="level" name="level" class="layui-input"/>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">spread：</label>
+									<div class="layui-input-block">
+										<input type="text" id="spread" name="spread" class="layui-input"/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="async.js"></script>
+<script type="text/javascript">
+/** 获取本页面url中的参数值 */
+var getUrlParam = function(name) {
+	var url = location.search;
+	url = url.substring(url.indexOf("?"));
+	if (url.indexOf("?") != -1) {
+		var str = url.substr(1);
+		strs = str.split("&");
+		for ( var i = 0; i < strs.length; i++) {
+			if (name == strs[i].split("=")[0]) {
+				return unescape(strs[i].split("=")[1]);
+			}
+		}
+	}
+	return "";
+}
+</script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'form'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			form = layui.form,
+			$ = layui.$;
+		
+		var nodeId = getUrlParam("nodeId"),
+			parentId = getUrlParam("parentId"),
+			context = decodeURI(getUrlParam("context")),
+			isLeaf = getUrlParam("isLeaf"),
+			level = getUrlParam("level"),
+			spread = getUrlParam("spread")
+			
+		form.val("show_form",{
+			"nodeId" : nodeId,
+			"parentId" : parentId,
+			"context" : context,
+			"isLeaf" : isLeaf,
+			"level" : level,
+			"spread" : spread
+		});
+		
+		form.render();
+		
+	});
+</script>
+</html>
