@@ -16,4 +16,16 @@ var menuTree = [{
 	"isLast": true,
 	"level": "1",
 	"children":[]
+},{
+	"id":"layuilist",
+	"title": "layui+list数据格式",
+	"isLast": true,
+	"level": "1",
+	"children":[]
+},{
+	"id":"formatter",
+	"title": "数据过滤",
+	"isLast": true,
+	"level": "1",
+	"children":[]
 }];

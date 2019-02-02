@@ -1,11 +1,62 @@
-------------------------v2.4.5_finally(2018/12/27)【修复】(未上线)：------------------------
+------------------------v2.5.0(2018/12/27)【大版本】(未上线)：------------------------
 1.【修复】toolbar模块修复：自定义的toolbar的回调函数的第二个$div参数修复，现在可以取到值
 1.【修复】toolbar模块修复：内置函数：changeTreeNodeEdit中的title未定义的问题。
 2.【优化】toolbar模块优化：内置的三个按钮中的label均加上title提示
+2.【优化】内置函数优化：getLiItemDom 当parentId为0时组件自动判定为false从而使用内置parentId的问题。
+2.【优化】基础方法优化：render方法和reload方法中，如果树在当前页面中被加载过一次了，再次加载会从缓存中取出树，并将树上次点击的节点作为参数记录下载，现在优化为还是从缓存中取，但是会重置上次记录的参数。
+
+新增属性：iconfont，用于定义使用图标数组或string
+新增属性：iconfontStyle：用于自定义树的每个关键部位使用的图标
+新增内置属性：usefontStyle：用于最终指定树的每个关键部位使用的图标
+新增内置方法：ensureTheme：确认最终主题。
+新增内置方法：useDefaultOrUserDefineFnodeStyle：赋值一级图标
+新增内置方法：useDefaultOrUserDefineSnodeStyle：赋值二级图标
+新增内置方法：useDefaultOrUserDefineCheckboxStyle：赋值复选框图标
+新增内置方法：useDefaultOrUserDefineMenubarStyle：赋值菜单栏图标
+新增内置方法：useDefaultOrUserDefineMenubarExtStyle：赋值扩展菜单栏图标
+新增内置方法：useDefaultOrUserDefineToolbarStyle：赋值扩展菜单栏图标
+新增内置方法：useDefaultOrUserDefineToolbarExtStyle：赋值扩展工具栏图标
+新增内置方法：operateIcon： 设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理
+
+新增内置方法：getParam： 获取指定节点选中值
+新增内置方法：getNode： 获取指定节点Div
+
+新增基础方法：getParam： 获取指定节点选中值
+新增基础方法：initNoAllCheck： 复选框半选状态初始化设置
+新增基础方法：initAllCheck： 复选框选中状态初始化设置
+新增基础方法：click：模拟单击事件
+
+新增属性：accordion，用于开启手风琴模式
+新增内置方法：accordionUL： 开启手风琴模式时对其他节点的处理
+
+内置属性新增：response属性中新增disabled，标识节点禁用。
+新增内置方法：setDisabledNodes： 设置节点为disabled
+新增内置方法：cancelDisabledNodes：将节点的disabled取消
+新增内置方法：getDisabledNodesParam： 获取指定disabled节点的值
+新增内置方法：getAllDisabledNodesParam： 获取全部disabled节点的值
+内置属性新增：response属性中新增isHide，标识节点隐藏。
+新增内置方法：setHideNodes： 设置节点为hide
+新增内置方法：cancelHideNodes： 将节点的hide取消
+新增内置方法：getHideNodesParam： 获取指定hide节点的值
+新增内置方法：getAllHideNodesParam： 获取全部hide节点的值
+
+checkbar模块新增：checkbarData新增属性："halfChoose"，用于记录选中和半选中的数据
+
+新增属性：toolbarWay，工具栏显示方式，contextmenu:右键，follow:跟随节点，fixed:固定在节点右侧
+新增内置方法:toolbarHide：隐藏toolbar
+新增内置方法:toolbarMethod：toolbar内置方法
+新增内置方法:toolbarListener：toolbar内置监听
+新增内置方法:navThis：选中div
+修改内置方法：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式
+
+menubar模块新增：checkAll：menubar全选
+			  unCheckAll：menubar全不选
+			  invertAll：menubar反选
+
 
 
 ------------------------v2.4.5_finally(2018/12/22)【修复】：------------------------
-1.【修复】单页应用中，未开始toolbar导致body上的所有事件失效。
+1.【修复】单页应用中，未开启toolbar导致body上的所有事件失效。
 2.【优化】更新dist文件夹中的dtree压缩
 3.【优化】toolbar模块优化:新增节点时，当开启了record参数时不会将参数新增到节点上的问题。
 

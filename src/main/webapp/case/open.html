@@ -58,7 +58,7 @@
 								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
 									$("#openTree1_btn").click(function(){
 									  layer.open({
-									    type: 1,	//type:0 也行
+									    type: 1,  //type:0 也行
 									    title: "选择树",
 									    area: ["400px", "80%"],
 									    content: '<ul id="openTree1" class="dtree" data-id="0"></ul>',
@@ -430,8 +430,10 @@
 			
 		</div>
 	</div>
-
 </body>
+<div id="opentree1div" >
+	<ul id="openTree1" class="dtree" data-id="openTree1" style="width:159px;"></ul>
+</div>
 <script type="text/javascript" src="open.js"></script>
 <script type="text/javascript">
 	layui.extend({
@@ -466,7 +468,19 @@
 					data: menuTree,
 					type: "all",
 					icon: "-1",
-					initLevel: "3"
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = [];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
 				});
 				
 				dtree.on("node('menuTree')", function(obj){
@@ -482,7 +496,7 @@
 				type: 1,	//type:0 也行
 				title: "选择树",
 				area: ["400px", "80%"],
-				content: '<ul id="openTree1" class="dtree" data-id="0"></ul>',
+				content: $("#opentree1div").html(),
 				btn: ['确认选择'],
 				success: function(layero, index){
 					var DTree = dtree.render({

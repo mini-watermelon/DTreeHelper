@@ -24,7 +24,19 @@ var menuTree = [{
 	"children":[]
 },{
 	"id":"qxzdjz",
-	"title": "取消自动加载子节点&nbsp;<span class='layui-badge-dot'></span>",
+	"title": "取消自动加载子节点",
+	"isLast": true,
+	"level": "1",
+	"children":[]
+},{
+	"id":"jdjy",
+	"title": "节点禁用",
+	"isLast": true,
+	"level": "1",
+	"children":[]
+},{
+	"id":"jdyc",
+	"title": "节点隐藏",
 	"isLast": true,
 	"level": "1",
 	"children":[]

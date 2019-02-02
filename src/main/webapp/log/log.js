@@ -1,6 +1,6 @@
 var menuTree = [{
 	"id":"012",
- 	"title": "v2.4.5_finally(2018/12/22)【修复】&nbsp;<span class='layui-badge-dot'></span>",
+ 	"title": "v2.4.5_finally(2018/12/22)【修复】",
  	"isLast": true,
  	"level": "1",
  	"children":[]

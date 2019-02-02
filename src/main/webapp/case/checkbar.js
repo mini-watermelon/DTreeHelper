@@ -1,6 +1,6 @@
 var menuTree = [{
 	"id":"jdsy",
-	"title": "checkbar的5种形态&nbsp;<span class='layui-badge-dot'></span>",
+	"title": "checkbar的5种形态",
 	"isLast": true,
 	"level": "1",
 	"children":[]
@@ -11,14 +11,14 @@ var menuTree = [{
 	"level": "1",
 	"children":[]
 },{
-	"id":"more",
-	"title": "多级checkbar",
+	"id":"all",
+	"title": "checkbar的4种记录",
 	"isLast": true,
 	"level": "1",
 	"children":[]
 },{
-	"id":"all",
-	"title": "记录全部数据",
+	"id":"more",
+	"title": "多级checkbar",
 	"isLast": true,
 	"level": "1",
 	"children":[]

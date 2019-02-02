@@ -10,6 +10,12 @@
 <link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
 
 <link rel="stylesheet" href="other.css">
+
+<style type="text/css">
+#test{position: absolute;max-height: 500px;height: 350px;overflow: auto;width: 100%;z-index: 123;display: none;border:1px solid silver;top: 42px;}
+.layui-show{display: block!important;}
+</style>
+
 </head>
 <body>
 
@@ -23,16 +29,53 @@
 			</div>
 			
 			<div class="layui-fluid">
-				<blockquote class="layui-elem-quote">以下介绍了异步加载的多种情况，包括数据格式转换，初始参数指定等。</blockquote>
+				<blockquote class="layui-elem-quote">以下介绍了树的其他使用场景，有兴趣的可以打开浏览器的开发者模式，查阅本页面的代码。</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
 			</div>
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="csk">
-					<legend>穿梭框</legend>
+					<legend>下拉框树的简易实现</legend>
 					<div class="layui-field-box">
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
-							<div class="layui-col-lg4">
+							<div class="layui-col-lg12">
+								<div class="layui-form layui-form-panel">
+									<div class="layui-form-item">
+										<label class="layui-form-label">城市：</label>
+										<div class="layui-input-block">
+											<div class="layui-unselect layui-form-select" id="city">
+												<div class="layui-select-title">
+													<input type="text" name="city" id="input_city" placeholder="请选择" readonly="" class="layui-input layui-unselect">
+													<i class="layui-edge"></i>
+												</div>
+											</div>
+											<div class="layui-card" id="test">
+												<div class="layui-card-body">
+													<div id="toolbarDiv"><ul id="slTree" class="dtree" data-id="0" style="width: 100%;"></ul></div>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">备注：</label>
+										<div class="layui-input-block">
+											<input type="text" id="level" name="level" class="layui-input"/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="csk">
+					<legend>穿梭框树的简易实现</legend>
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;background: #f2f2f2">
+							<div class="layui-col-lg5">
 								<div class="layui-card">
 									<div class="layui-card-header">左边的树</div>
 									<div class="layui-card-body">
@@ -40,8 +83,12 @@
 									</div>
 								</div>
 							</div>
-							<div class="layui-col-lg2"><div style="height: 350px;"><button class="layui-btn layui-btn-normal" style="margin-top: 200px;" id="csk_btn">转移到右边</button></div></div>
-							<div class="layui-col-lg4">
+							<div class="layui-col-lg2">
+								<div style="height: 350px;">
+									<button class="layui-btn layui-btn-normal" style="margin-top: 180px;" id="csk_btn">转移到右边</button>
+								</div>
+							</div>
+							<div class="layui-col-lg5">
 								<div class="layui-card">
 									<div class="layui-card-header">右边的树</div>
 									<div class="layui-card-body">
@@ -55,21 +102,7 @@
 			</div>
 			
 			<div class="layui-fluid">
-				<fieldset class="layui-elem-field layui-field-title" id="csk">
-					<legend>穿梭框</legend>
-					<div class="layui-field-box">
-						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
-							<div class="layui-col-lg4">
-								<div id="test4" style="border: 1px solid;">hello layer<div>
-							</div>
-							<div class="layui-col-lg12"><div style="height: 350px;" id="page"></div></div>
-						</div>
-					</div>
-				</fieldset>
-			</div>
-			
-			<div class="layui-fluid">
-				<blockquote class="layui-elem-quote">你会发现，使用异步加载是如此的方便，当然参数的传递不仅仅局限于此，如果你配置了复选框，则还会带上复选框的数据，默认参数汇总请查看基础文档的defaultRequest。</blockquote>
+				<blockquote class="layui-elem-quote">示例只是一个引导，实际上还有更多的应用场景，等着优秀的你去发掘。</blockquote>
 			</div>
 			
 		</div>
@@ -92,18 +125,6 @@
 		layui.code();	// 代码修饰器
 		util.fixbar();	// 置顶按钮
 		
-		layer.tips("提示一下", "#test4");
-		/* laypage.render({
-		    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
-		    ,count: 50 //数据总数，从服务端得到
-		    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-	    }); */
-		
-		
-		
-		
-		
-		
 		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
 		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
 		}
@@ -123,7 +144,19 @@
 					data: menuTree,
 					type: "all",
 					icon: "-1",
-					initLevel: "3"
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = ["下拉框","穿梭框"];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
 				});
 				
 				dtree.on("node('menuTree')", function(obj){
@@ -131,6 +164,24 @@
 					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
 				});
 			}
+		});
+		
+		var DTree = dtree.render({
+			elem: "#slTree",
+			url: "../json/case/checkbarTree1.json",
+			icon: "2",
+			accordion:true
+		});
+		
+		$("#city").on("click",function(){
+			$(this).toggleClass("layui-form-selected");
+			$("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
+		});
+		
+		dtree.on("node(slTree)", function(obj){
+			$("#input_city").val(obj.param.context);
+			$("#city").toggleClass("layui-form-selected");
+			$("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
 		});
 		
 		// 1.cskTree1
@@ -145,24 +196,17 @@
 			elem: "#cskTree2",
 			data: [],
 			checkbar:true,
-		//	response:{treeId:"nodeId",title:"context"},
+			response:{treeId:"nodeId",title:"context"},
 			dataFormat:"list"
 		});
 		
 		$("#csk_btn").click(function(){
 			var param = dtree.getCheckbarNodesParam("cskTree1");  // 获取选中数据
-			
-			console.log(param);
+			if(param.length == 0) {
+				layer.msg("请至少选择一个节点");
+			}
 			dtree.reload("cskTree2",{data:param});
-			
-			layer.msg("ceshiyixia",{success:function(layero, index){console.log(123213123);}})
 		});
-		
-		dtree.on("node('cskTree1')" ,function(obj){
-			layer.msg(JSON.stringify(obj.param));
-		});
-		
-		
 	});
 </script>
 </html>

@@ -18,7 +18,7 @@ var menuTree = [{
 	"children":[]
 },{
 	"id":"zdytitle",
-	"title": "自定义toolbar样式",
+	"title": "自定义toolbar内容样式",
 	"isLast": true,
 	"level": "1",
 	"children":[]
@@ -31,6 +31,18 @@ var menuTree = [{
 },{
 	"id":"before",
 	"title": "toolbar显示前回调",
+	"isLast": true,
+	"level": "1",
+	"children":[]
+},{
+	"id":"otherToolbar",
+	"title": "toolbar绑定每个节点",
+	"isLast": true,
+	"level": "1",
+	"children":[]
+},{
+	"id":"qtToolbar",
+	"title": "其他的toolbar功能",
 	"isLast": true,
 	"level": "1",
 	"children":[]

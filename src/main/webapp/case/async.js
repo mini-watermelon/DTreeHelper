@@ -36,13 +36,13 @@ var menuTree = [{
 	"children":[]
 },{
 	"id":"recordData",
-	"title": "recordData用法&nbsp;<span class='layui-badge-dot'></span>",
+	"title": "recordData用法",
 	"isLast": true,
 	"level": "1",
 	"children":[]
 },{
 	"id":"ybjzsuccess",
-	"title": "异步加载成功回调&nbsp;<span class='layui-badge-dot'></span>",
+	"title": "异步加载成功回调",
 	"isLast": true,
 	"level": "1",
 	"children":[]

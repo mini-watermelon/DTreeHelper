@@ -78,35 +78,16 @@
 								<pre class="layui-code" lay-title="数据示例" lay-encode="true">
 									{
 									"status":{"code":0,"message":"操作成功"},
-									"dataTree": [{
-									  "treeId":"001",
-									  "title": "湖南省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "treeId":"002",
-									  "title": "湖北省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "treeId":"003",
-									  "title": "广东省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "treeId":"004",
-									  "title": "浙江省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "treeId":"005",
-									  "title": "福建省",
-									  "parentId": "0",
-									  "children":[]
-									}]
+									"dataTree": [
+									  {"treeId":"001","title": "湖南省","parentId": "0","children":[]},
+									  {"treeId":"002","title": "湖北省","parentId": "0","children":[]},
+									  {"treeId":"003","title": "广东省","parentId": "0","children":[]},
+									  {"treeId":"004","title": "浙江省","parentId": "0","children":[]},
+									  {"treeId":"005","title": "福建省","parentId": "0","children":[]}
+									]
 									}
 								</pre>
-								<p>可以与基本数据格式对比下，看看有什么区别。</p>
+								<p>由于在response重新设定了映射关系，所以可以看到，默认的code的值变成了0，根节点变成了dataTree，原本的id变成了treeId。</p>
 							</div>
 						</div>
 					</div>
@@ -149,7 +130,7 @@
 				<fieldset class="layui-elem-field layui-field-title" id="dtjzzjd">
 					<legend>动态加载子节点</legend>
 					<div class="layui-field-box">
-						<p>很多情况下，你的树并不是一次就加载完成的，那么很简单，树会判断当前你点击的节点是否是最后一级了，如果不是，则还会根据你配置的url往后台发送请求，并且会带上一轮参数提供给后端进行数据筛选。</p>
+						<p>很多情况下，你的树并不是一次就加载完成的，那么很简单，树会判断当前你点击的节点是否是最后一级了(根据数据中的isLast字段进行判定，如不提供则树内部自动判定)，如果不是，则还会根据你配置的url往后台发送请求，并且会带上一轮参数提供给后端进行数据筛选。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
 							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTree4" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
@@ -520,7 +501,19 @@
 					data: menuTree,
 					type: "all",
 					icon: "-1",
-					initLevel: "3"
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = [];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
 				});
 				
 				dtree.on("node('menuTree')", function(obj){

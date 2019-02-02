@@ -8,6 +8,7 @@
 
 <link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
 <link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+<link rel="stylesheet" href="../test/font/iconfont.css">
 
 <link rel="stylesheet" href="case.css">
 <style type="text/css">
@@ -244,7 +245,56 @@
 			</div>
 			
 			<div class="layui-fluid">
-				<blockquote class="layui-elem-quote">自定义图标及配色方案为了满足各类人群的需求，经过不懈的努力，终于开放出来。</blockquote>
+				<fieldset class="layui-elem-field layui-field-title" id="zdyicon">
+					<legend>自定义图标<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>当你觉得树提供的内置图标太少了，你需要在树中使用layui的图标，亦或者是使用自己的一套图标库时，则你现在可以这么做。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 700px;overflow: auto;"><ul id="styleTree7" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree7",
+									  url: "../json/case/styleTree5.json",
+									  iconfont:["dtreefont", "layui-icon", "iconfont"],
+									  iconfontStyle:[{
+									    fnode:{
+									      node:{
+									        open: "dtree-icon-jia1"
+									      }
+									    }
+									  },{
+									    checkbox:{
+									      noall:"layui-icon-rate-half",
+									      on:"layui-icon-rate-solid",
+									      out:"layui-icon-rate"
+									    }
+									  },{
+									    fnode:{
+									      node:{
+									        close: "icon-phone1"
+									      },
+									      dot:"icon-warn"
+									    },
+									    snode:{
+									      leaf: "icon-xinxipilu",
+									      node:{
+									        open:"icon-appreciate"
+									      }
+									    }
+									  }]
+									});
+								</pre>
+							</div>
+						</div>
+						<p>上方使用了dtreefont、layui-icon、以及自定义的iconfont，你可以看到几乎所有的图标都发生了变化，希望树在你的手中，可以变得更加漂亮。</p>
+						<p>想了解具体的配置项请查询基础文档中相应的内容！</p>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">dtree，最美的树形。</blockquote>
 			</div>
 		</div>
 	</div>
@@ -285,7 +335,19 @@
 					data: menuTree,
 					type: "all",
 					icon: "-1",
-					initLevel: "3"
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = ["自定义图标"];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
 				});
 				
 				dtree.on("node('menuTree')", function(obj){
@@ -368,6 +430,39 @@
 			dot: false,
 			checkbar:true,
 			skin:"zdy"
+		});
+		
+		
+		dtree.render({
+			elem: "#styleTree7",
+			url: "../json/case/styleTree5.json",
+			iconfont:["dtreefont", "layui-icon", "iconfont"],
+			iconfontStyle:[{
+				fnode:{
+					node:{
+						open: "dtree-icon-jia1"
+					}
+				}
+			},{
+				checkbox:{
+					noall:"layui-icon-rate-half",
+					on:"layui-icon-rate-solid",
+					out:"layui-icon-rate"
+				}
+			},{
+				fnode:{
+					node:{
+						close: "icon-phone1"
+					},
+					dot:"icon-warn"
+				},
+				snode:{
+					leaf: "icon-xinxipilu",
+					node:{
+						open:"icon-appreciate"
+					}
+				}
+			}]
 		});
 		
 	});

@@ -22,7 +22,7 @@
 			</div>
 			
 			<div class="layui-fluid">
-				<blockquote class="layui-elem-quote">以下介绍了一些数据格式的用法，可能每个地方都要使用，也可能用不上，全靠你自己把握。</blockquote>
+				<blockquote class="layui-elem-quote">以下介绍了一些数据格式的用法，每种数据格式都有其对应的参数，如果你想使用除默认格式外的其他格式，请仔细阅读该篇。</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
 			</div>
 			
@@ -46,35 +46,16 @@
 								<pre class="layui-code" lay-title="数据格式" lay-encode="true">
 									{
 									"status":{"code":200,"message":"操作成功"},
-									"data": [{
-									  "id":"001",
-									  "title": "湖南省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "id":"002",
-									  "title": "湖北省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "id":"003",
-									  "title": "广东省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "id":"004",
-									  "title": "浙江省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "id":"005",
-									  "title": "福建省",
-									  "parentId": "0",
-									  "children":[]
-									}]
+									"data": [
+									  {"id":"001","title": "湖南省","parentId": "0","children":[]},
+									  {"id":"002","title": "湖北省","parentId": "0","children":[]},
+									  {"id":"003","title": "广东省","parentId": "0","children":[]},
+									  {"id":"004","title": "浙江省","parentId": "0","children":[]},
+									  {"id":"005","title": "福建省","parentId": "0","children":[]}
+									]
 									}
 								</pre>
-								<p>标准数据格式中，code和message是包括在status中的。data中的数据是有子集关系的。</p>
+								<p>标准数据格式中，code和message是包括在status中的，code的默认值是200。data中的数据是有子集关系的，即下级数据存储在children中。</p>
 							</div>
 						</div>
 					</div>
@@ -104,35 +85,16 @@
 									{
 									"code":0,
 									"msg":"操作成功",
-									"data": [{
-									  "id":"001",
-									  "title": "湖南省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "id":"002",
-									  "title": "湖北省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "id":"003",
-									  "title": "广东省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "id":"004",
-									  "title": "浙江省",
-									  "parentId": "0",
-									  "children":[]
-									},{
-									  "id":"005",
-									  "title": "福建省",
-									  "parentId": "0",
-									  "children":[]
-									}]
+									"data": [
+									  {"id":"001","title": "湖南省","parentId": "0","children":[]},
+									  {"id":"002","title": "湖北省","parentId": "0","children":[]},
+									  {"id":"003","title": "广东省","parentId": "0","children":[]},
+									  {"id":"004","title": "浙江省","parentId": "0","children":[]},
+									  {"id":"005","title": "福建省","parentId": "0","children":[]}
+									]
 									}
 								</pre>
-								<p>layui风格数据格式中，code和msg是独立的。data中的数据是有子集关系的。</p>
+								<p>layui风格数据格式中，code和msg是独立的，code的默认值是0。data中的数据是有子集关系的，即下级数据存储在children中。</p>
 							</div>
 						</div>
 					</div>
@@ -145,7 +107,7 @@
 					<div class="layui-field-box">
 						<p>考虑到一部分用户在使用组件之前，已经使用了其他树组件，而其他组件提供的数据格式并没有这么复杂，因此，组件开放适用于list集合形式的数据格式模式。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
-							<div class="layui-col-lg4"><div style="height: 400px;overflow: auto;"><ul id="dataTree2" class="dtree" data-id="null"></ul></div></div>
+							<div class="layui-col-lg4"><div style="height: 400px;overflow: auto;"><ul id="dataTree2" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<pre class="layui-code" lay-title="html" lay-encode="true">
 									<div style="height: 400px;overflow: auto;">
@@ -155,6 +117,56 @@
 								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
 									dtree.render({
 									  elem: "#dataTree2",
+									  url: "../json/case/dataTree2.json",
+									  dataFormat: "list",  //配置data的风格为list
+									  checkbar:true //开启复选框
+									});
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<p>此json的数据格式为：</p>
+								<pre class="layui-code" lay-title="数据格式" lay-encode="true">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [
+									  {"id":"001","title": "湖南省","checkArr": "0","parentId": "0"},
+									  {"id":"002","title": "湖北省","checkArr": "0","parentId": "0"},
+									  {"id":"003","title": "广东省","checkArr": "0","parentId": "0"},
+									  {"id":"004","title": "浙江省","checkArr": "0","parentId": "0"},
+									  {"id":"005","title": "福建省","checkArr": "0","parentId": "0"},
+									  {"id":"001001","title": "长沙市","checkArr": "0","parentId": "001"},
+									  {"id":"001002","title": "株洲市","checkArr": "0","parentId": "001"},
+									  {"id":"001003","title": "湘潭市","checkArr": "0","parentId": "001"},
+									  {"id":"001004","title": "衡阳市","checkArr": "0","parentId": "001"},
+									  {"id":"001005","title": "郴州市","checkArr": "0","iconClass": "dtree-icon-caidan_xunzhang","parentId": "001"}
+									]
+									}
+								</pre>
+								<p>list集合数据格式中，code和message是包括在status中的，code的默认值是200。data中的数据是无子集关系的，只需提供一个具有上下级关系映射的list形式的数据即可。</p>
+								<p>list集合数据格式中，顶级节点的parentId是ul标签上的data-id中的值。</p>
+								<p>例如该数据中顶级标签是湖南省，它的parentId为0，则ul标签的data-id="0"。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="layuilist">
+					<legend>layui+list集合数据格式</legend>
+					<div class="layui-field-box">
+						<p>考虑到一部分用户在使用组件之前，已经使用了其他树组件，而其他组件提供的数据格式并没有这么复杂，因此，组件开放适用于list集合形式的数据格式模式。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 400px;overflow: auto;"><ul id="dataTree3" class="dtree" data-id="null"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="html" lay-encode="true">
+									<div style="height: 400px;overflow: auto;">
+									  <ul id="dataTree3" class="dtree" data-id="0"></ul>
+									</div>
+								</pre>
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									dtree.render({
+									  elem: "#dataTree3",
 									  url: "../json/case/dataTree2.json",
 									  dataStyle: "layuiStyle",  //使用layui风格的数据格式
 									  dataFormat: "list",  //配置data的风格为list
@@ -170,20 +182,22 @@
 									"code":0,
 									"msg":"操作成功",
 									"data": [
-									  {"id":"001","title": "湖南省","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "0"},
-									  {"id":"002","title": "湖北省","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "0"},
-									  {"id":"003","title": "广东省","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "0"},
-									  {"id":"004","title": "浙江省","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "0"},
-									  {"id":"005","title": "福建省","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "0"},
-									  {"id":"001001","title": "长沙市","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "001"},
-									  {"id":"001002","title": "株洲市","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "001"},
-									  {"id":"001003","title": "湘潭市","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "001"},
-									  {"id":"001004","title": "衡阳市","checkArr": [{"type": "0", "isChecked": "0"}],"parentId": "001"},
-									  {"id":"001005","title": "郴州市","checkArr": [{"type": "0", "isChecked": "0"}],"iconClass": "dtree-icon-caidan_xunzhang","parentId": "001"}
+									  {"id":"001","title": "湖南省","checkArr": "0","parentId": "0"},
+									  {"id":"002","title": "湖北省","checkArr": "0","parentId": "0"},
+									  {"id":"003","title": "广东省","checkArr": "0","parentId": "0"},
+									  {"id":"004","title": "浙江省","checkArr": "0","parentId": "0"},
+									  {"id":"005","title": "福建省","checkArr": "0","parentId": "0"},
+									  {"id":"001001","title": "长沙市","checkArr": "0","parentId": "001"},
+									  {"id":"001002","title": "株洲市","checkArr": "0","parentId": "001"},
+									  {"id":"001003","title": "湘潭市","checkArr": "0","parentId": "001"},
+									  {"id":"001004","title": "衡阳市","checkArr": "0","parentId": "001"},
+									  {"id":"001005","title": "郴州市","checkArr": "0","iconClass": "dtree-icon-caidan_xunzhang","parentId": "001"}
 									]
 									}
 								</pre>
-								<p>layui风格+list集合数据格式中，code和msg是独立的。data中的数据是无子集关系的。</p>
+								<p>layui风格+list集合数据格式中，code和msg是独立的，code的默认值是0。data中的数据是无子集关系的，只需提供一个具有上下级关系映射的list形式的数据即可。</p>
+								<p>list集合数据格式中，顶级节点的parentId是ul标签上的data-id中的值。</p>
+								<p>例如该数据中顶级标签是湖南省，它的parentId为0，则ul标签的data-id="0"。</p>
 							</div>
 						</div>
 					</div>
@@ -191,7 +205,37 @@
 			</div>
 			
 			<div class="layui-fluid">
-				<blockquote class="layui-elem-quote">为了适应各种各样的使用场景，dtree正在不断的努力，希望大家使用方便，使用愉快!。</blockquote>
+				<fieldset class="layui-elem-field layui-field-title" id="formatter">
+					<legend>数据过滤<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>在数据显示层面上，添加自定义想显示的内容。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="dataTree4" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#dataTree4",
+									  initLevel: 1,
+									  url: "../json/case/dataTree1.json",
+									  formatter: {
+									    title: function(data) {  // 示例给有子集的节点返回节点统计
+									      var s = data.title;
+									      if (data.children){
+									        s += ' &lt;span style=\'color:blue\'&gt;(' + data.children.length + ')&lt;/span&gt;';
+									      }
+									      return s;
+									    }
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">为了适应各种各样的数据应用场景，dtree正在不断的努力，希望大家使用方便，使用愉快!。</blockquote>
 			</div>
 		</div>
 	</div>
@@ -231,7 +275,19 @@
 					data: menuTree,
 					type: "all",
 					icon: "-1",
-					initLevel: "3"
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = ["数据过滤"];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
 				});
 				
 				dtree.on("node('menuTree')", function(obj){
@@ -257,12 +313,35 @@
 		
 		dtree.render({
 			elem: "#dataTree2",
-			url: "../json/case/dataTree2.json",
-			dataStyle: "layuiStyle",
+			url: "../json/case/dataTree3.json",
 			dataFormat: "list",
+			initLevel:"1",
+			checkbar:true
+		});
+		
+		dtree.render({
+			elem: "#dataTree3",
+			url: "../json/case/dataTree2.json",
+			dataFormat: "list",
+			dataStyle: "layuiStyle",
 			initLevel:"1",
 			response:{message:"msg",statusCode:0},
 			checkbar:true
+		});
+		
+		dtree.render({
+		  elem: "#dataTree4",
+		  initLevel: 1,
+		  url: "../json/case/asyncTree1.json",
+		  formatter: {
+		    title: function(data) {  // 示例标准数据格式下给有子集的节点返回节点统计
+		      var s = data.title;
+		      if (data.children){
+		        s += ' <span style=\'color:blue\'>(' + data.children.length + ')</span>';
+		      }
+		      return s;
+		    }
+		  }
 		});
 		
 		dtree.on("node('dataTree2')", function(obj){
