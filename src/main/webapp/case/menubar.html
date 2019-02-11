@@ -177,6 +177,46 @@
 			</div>
 			
 			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="addRoot">
+					<legend>自定义添加根节点示例<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>当你想添加节点时，dtree只提供了绑定在节点上的添加节点，但是实际上你可以在菜单栏中指定自定义的添加根节点的方法。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 600px;overflow: auto;"><ul id="menubarTree5" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" dtree-id="menubarTree5" dtree-menu="addRoot">添加根节点</button>
+								<pre class="layui-code" lay-title="JavaScript">
+								var jsonData = [{"id":"001","title": "湖南省","parentId": "0","children":[{"id":"001001","title": "长沙市","parentId": "001"}]}];
+									
+									dtree.render({
+									  elem: "#menubarTree5",
+									  data: jsonData,
+									  initLevel: 1,
+									  type: "all",
+									  menubar:true,
+									  menubarTips:{
+									    group:[],  // 你也可以在这里指定这个方法
+									    freedom:[{menubarId:"addRoot",handler:function(node, $div){
+									      var id = parseInt(Math.random() * 1000000000);  // 构建ID
+									      var tt = parseInt(Math.random() * 100) + "xx省"; // 构建名称
+									      var json = {"id":id,"title": tt,"parentId": "0","isLast":false};
+									      jsonData.push(json);  // 添加数据
+									      dtree.reload("menubarTree5", {data: jsonData});  // 重载树
+									    }}]
+									  }
+									});
+								</pre>
+								<pre class="layui-code" lay-title="HTML按钮示例" lay-encode="true">
+									<button class="layui-btn layui-btn-normal" dtree-id="menubarTree5" dtree-menu="addRoot">添加根节点</button>
+								</pre>
+							</div>
+							<p>其实很多情况下不是树没有功能，而是需要各位使用者，学以致用。</p>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
 				<blockquote class="layui-elem-quote">菜单栏的设计满足了绝大部分用户的切身需求，本人会不断努力，争取越做越强大。</blockquote>
 			</div>
 		</div>
@@ -222,7 +262,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = [];
+							var tts = ["自定义添加根节点"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -305,6 +345,42 @@
 					}
 					
 				});
+			}
+		});
+		
+		// 4.menubarTree5
+		
+		var jsonData = [{
+			"id":"001",
+			"title": "湖南省",
+			"parentId": "0",
+			"children":[{
+				"id":"001001",
+				"title": "长沙市",
+				"parentId": "001"
+			}]
+		}];
+					
+		dtree.render({
+			elem: "#menubarTree5",
+			data: jsonData,
+			initLevel: 1,
+			type: "all",
+			menubar:true,
+			menubarTips:{
+				group:[],
+				freedom:[{menubarId:"addRoot",handler:function(node, $div){
+					var id = parseInt(Math.random() * 1000000000);
+					var tt = parseInt(Math.random() * 100) + "xx省";
+					var json = {
+							"id":id,
+							"title": tt,
+							"parentId": "0",
+							"isLast":false
+						};
+					jsonData.push(json);
+					dtree.reload("menubarTree5", {data: jsonData});
+				}}]
 			}
 		});
 		

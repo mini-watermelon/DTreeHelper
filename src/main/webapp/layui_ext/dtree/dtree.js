@@ -3142,7 +3142,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? _this.obj : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).next("ul");
 	};
 
-	// 获取当前选中节点 或根节点。
+	// 获取当前选中节点 或第一个根节点。
 	DTree.prototype.getNowNode =  function() {
 		var _this = this;
 		return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? _this.obj.children("li").eq(0).children("div").eq(0) : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS);

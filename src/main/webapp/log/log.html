@@ -32,7 +32,59 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="012">v2.4.5_finally(2018/12/22)【修复】<a href="../version/dtree_v2.4.5_finally_201812221902.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
+							<h3 class="layui-timeline-title" id="012">v2.5.0(2019/？/？)【大版本】【修复：2，优化：3，新增：39】<a href="#" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
+							<ul>
+								<li>【修复】toolbar模块修复：自定义的toolbar的回调函数的第二个$div参数修复，现在可以取到值</li>
+								<li>【修复】toolbar模块修复：内置函数：changeTreeNodeEdit中的title未定义的问题。</li>
+								<li>【优化】toolbar模块优化：内置的三个按钮中的label均加上title提示</li>
+								<li>【优化】基础方法优化：render方法和reload方法中，如果树在当前页面中被加载过一次了，再次加载会从缓存中取出树，并将树上次点击的节点作为参数记录下载，现在优化为还是从缓存中取，但是会重置上次记录的参数。</li>
+								<li>【优化】内置函数优化：getLiItemDom 当parentId为0时组件自动判定为false从而使用内置parentId的问题。</li>
+								<li>【新增】基础属性新增：iconfont属性，用于定义使用图标数组或string</li>
+								<li>【新增】基础属性新增：iconfontStyle属性，用于自定义树的每个关键部位使用的图标</li>
+								<li>【新增】基础属性新增：accordion属性，用于开启手风琴模式</li>
+								<li>【新增】基础属性新增：response属性中新增disabled，标识节点禁用。</li>
+								<li>【新增】基础属性新增：response属性中新增isHide，标识节点隐藏。</li>
+								<li>【新增】基础方法新增：getParam： 获取指定节点选中值</li>
+								<li>【新增】基础方法新增：initNoAllCheck： 复选框半选状态初始化设置</li>
+								<li>【新增】基础方法新增：initAllCheck： 复选框选中状态初始化设置</li>
+								<li>【新增】基础方法新增：click：模拟单击事件</li>
+								<li>【新增】checkbar模块新增：checkbarData新增属性："halfChoose"，用于记录选中和半选中的数据</li>
+								<li>【新增】menubar模块新增：menubar内置新增三个默认方法：checkAll：全选，unCheckAll：全不选，invertAll：反选</li>
+								<li>【新增】toolbar模块新增：toolbar内置新增两个默认方法：pulldown：展开当前节点下的全部节点，pullup：收缩当前节点下的全部节点</li>
+								<li>【新增】toolbar模块新增：toolbar新增属性：toolbarWay，工具栏显示方式，contextmenu:右键，follow:跟随节点，fixed:固定在节点右侧</li>
+								<li>【新增】内置属性新增：usefontStyle属性，用于最终指定树的每个关键部位使用的图标</li>
+								<li>【新增】内置方法新增：ensureTheme：确认最终主题。</li>
+								<li>【新增】内置方法新增：useDefaultOrUserDefineFnodeStyle：赋值一级图标</li>
+								<li>【新增】内置方法新增：useDefaultOrUserDefineSnodeStyle：赋值二级图标</li>
+								<li>【新增】内置方法新增：useDefaultOrUserDefineCheckboxStyle：赋值复选框图标</li>
+								<li>【新增】内置方法新增：useDefaultOrUserDefineMenubarStyle：赋值菜单栏图标</li>
+								<li>【新增】内置方法新增：useDefaultOrUserDefineMenubarExtStyle：赋值扩展菜单栏图标</li>
+								<li>【新增】内置方法新增：useDefaultOrUserDefineToolbarStyle：赋值扩展菜单栏图标</li>
+								<li>【新增】内置方法新增：useDefaultOrUserDefineToolbarExtStyle：赋值扩展工具栏图标</li>
+								<li>【新增】内置方法新增：operateIcon： 设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理</li>
+								<li>【新增】内置方法新增：getParam： 获取指定节点选中值</li>
+								<li>【新增】内置方法新增：getNode： 获取指定节点Div</li>
+								<li>【新增】内置方法新增：accordionUL： 开启手风琴模式时对其他节点的处理</li>
+								<li>【新增】内置方法新增：setDisabledNodes： 设置节点为disabled</li>
+								<li>【新增】内置方法新增：cancelDisabledNodes：将节点的disabled取消</li>
+								<li>【新增】内置方法新增：getDisabledNodesParam： 获取指定disabled节点的值</li>
+								<li>【新增】内置方法新增：getAllDisabledNodesParam： 获取全部disabled节点的值</li>
+								<li>【新增】内置方法新增：setHideNodes： 设置节点为hide</li>
+								<li>【新增】内置方法新增：cancelHideNodes： 将节点的hide取消</li>
+								<li>【新增】内置方法新增：getHideNodesParam： 获取指定hide节点的值</li>
+								<li>【新增】内置方法新增：getAllHideNodesParam： 获取全部hide节点的值</li>
+								<li>【新增】内置方法新增：toolbarHide：隐藏toolbar</li>
+								<li>【新增】内置方法新增：toolbarMethod：toolbar内置方法</li>
+								<li>【新增】内置方法新增：toolbarListener：toolbar内置监听</li>
+								<li>【新增】内置方法新增：navThis：选中div</li>
+								<li>【新增】内置方法更新：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式</li>
+							</ul>
+						</div>
+					</li>
+					<li class="layui-timeline-item">
+						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title" id="012">v2.4.5_finally(2018/12/22)【修复：1，优化：2】<a href="../version/dtree_v2.4.5_finally_201812221902.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
 							<ul>
 								<li>【修复】单页应用中，未开始toolbar导致body上的所有事件失效。</li>
 								<li>【优化】更新dist文件夹中的dtree压缩</li>
@@ -43,7 +95,7 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="011">v2.4.5_finally(2018/12/21)【优化】<a href="../version/dtree_v2.4.5_finally_201812211200.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
+							<h3 class="layui-timeline-title" id="011">v2.4.5_finally(2018/12/21)【优化：6，新增：6】<a href="../version/dtree_v2.4.5_finally_201812211200.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
 							<ul>
 								<li>【优化】menubar模块优化:点击收缩时，当前页的所有树都收缩的问题。</li>
 								<li>【优化】menubar模块优化:点击删除复选框时，展开和收缩节点会报错，现在改为删除的节点如果有子集的话，子集会一并删除，但是回调函数中只会提供你勾中的数据。</li>
@@ -63,9 +115,8 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="010">v2.4.5_finally_beta(2018/12/07)【大改】<a href="../version/dtree_v2.4.5_finally_beta_201812071033.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
+							<h3 class="layui-timeline-title" id="010">v2.4.5_finally_beta(2018/12/07)【大改：7，修复：3，优化：4，新增：16，移除：7】<a href="../version/dtree_v2.4.5_finally_beta_201812071033.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
 							<ul>
-								<li>【新增】提供的内容中新增dist/dtree.js压缩js文件。</li>
 								<li>【大改】css：css样式均加上dtree前缀。</li>
 								<li>【大改】图标：iconfont更改为dtreefont。</li>
 								<li>【大改】事件监听：图标点击事件返回的参数改为一个JSON对象，具体查看基础文档的事件监听。</li>
@@ -73,6 +124,14 @@
 								<li>【大改】事件监听：节点双击事件返回的参数改为一个JSON对象，具体查看基础文档的事件监听。</li>
 								<li>【大改】事件监听：复选框点击事件返回的参数改为一个JSON对象，具体查看基础文档的事件监听。</li>
 								<li>【大改】事件监听：iframe加载完毕事件返回的参数改为一个JSON对象，具体查看基础文档的事件监听。</li>
+								<li>【修复】数据格式:在开启了list风格参数时，修复必须指定isLast返回的问题和设置initLevel无效的问题。</li>
+								<li>【修复】toolbar模块:新增节点返回json格式后显示数据未定义的问题。</li>
+								<li>【修复】单页应用中toolbar、menubar显示的bug。</li>
+								<li>【优化】优化了图标显示。</li>
+								<li>【优化】toolbar模块:单页应用中，右键菜单的显示位置问题。</li>
+								<li>【优化】menubar模块:在开启了toolbar模块时按钮点击失效的问题。</li>
+								<li>【优化】iframe模块:iframeuUrl指定了"?"时，实际发送的url会出现两个"?"的问题。</li>
+								<li>【新增】提供的内容中新增dist/dtree.js压缩js文件。</li>
 								<li>【新增】基础方法新增：getChildParam,获取全部下级节点</li>
 								<li>【新增】menubar模块新增：menubarTips属性,用于指定menubar的依附方式。</li>
 								<li>【新增】toolbar模块新增：toolbarFun新增loadToolbarBefore函数，用于呈现右键菜单之前调用的函数。</li>
@@ -87,13 +146,6 @@
 								<li>【新增】内置函数新增：setToolbarDom 用于设置工具栏按钮。</li>
 								<li>【新增】内置函数新增：unbindBrowserEvent 用于解绑浏览器事件。</li>
 								<li>【新增】内置属性新增：response属性中新增spread。</li>
-								<li>【优化】优化了图标显示。</li>
-								<li>【优化】toolbar模块:单页应用中，右键菜单的显示位置问题。</li>
-								<li>【优化】menubar模块:在开启了toolbar模块时按钮点击失效的问题。</li>
-								<li>【优化】iframe模块:iframeuUrl指定了"?"时，实际发送的url会出现两个"?"的问题。</li>
-								<li>【修复】数据格式:在开启了list风格参数时，修复必须指定isLast返回的问题和设置initLevel无效的问题。</li>
-								<li>【修复】toolbar模块:新增节点返回json格式后显示数据未定义的问题。</li>
-								<li>【修复】单页应用中toolbar、menubar显示的bug。</li>
 								<li>【移除】内置函数移除：refreshTree，现放置在menubarMethod方法中。</li>
 								<li>【移除】内置函数移除：openAllNode，现放置在menubarMethod方法中。</li>
 								<li>【移除】内置函数移除：closeAllNode，现放置在menubarMethod方法中。</li>
@@ -107,21 +159,21 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="009">v2.4.5(2018/11/30)【修复】<!-- <a href="../version/dtree_v2.4.5_201811300034.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
+							<h3 class="layui-timeline-title" id="009">v2.4.5(2018/11/30)【修复：3，优化：1，新增：2】<!-- <a href="../version/dtree_v2.4.5_201811300034.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
 							<ul>
 								<li>【修复】基础方法修复：dataInit方法的返回数据异常。</li>
 								<li>【修复】基础方法修复：render函数自动识别是否重载树，代码再次修复(针对单页应用)。</li>
 								<li>【修复】toolbar模块:拼接新增节点内容的代码异常 。</li>
+								<li>【优化】checkbar模块：checkArr属性支持传递字符串。 </li>
 								<li>【新增】内置函数新增：refreshTree,用于刷新树。</li>
 								<li>【新增】内置函数新增：parseData 用于解析数据。</li>
-								<li>【优化】checkbar模块：checkArr属性支持传递字符串。 </li>
 							</ul>
 						</div>
 					</li>
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="008">v2.4.5(2018/11/25)【修复】<!-- <a href="../version/dtree_v2.4.5_201811251822.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
+							<h3 class="layui-timeline-title" id="008">v2.4.5(2018/11/25)【修复：2，优化：1】<!-- <a href="../version/dtree_v2.4.5_201811251822.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
 							<ul>
 								<li>【修复】基础方法修复：render函数自动识别是否重载树，代码修复。</li>
 								<li>【修复】内部修复：内部代码bug。</li>
@@ -132,7 +184,7 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="007">v2.4.5(2018/11/25)【优化】<!-- <a href="../version/dtree_v2.4.5_201811251111.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
+							<h3 class="layui-timeline-title" id="007">v2.4.5(2018/11/25)【优化：3，新增：7】<!-- <a href="../version/dtree_v2.4.5_201811251111.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
 							<ul>
 								<li>【优化】css：优化了图标显示。</li>
 								<li>【优化】基础方法优化：render函数自动识别是否重载树。</li>
@@ -144,43 +196,41 @@
 								<li>【新增】toolbar模块新增：toolbarExt属性，用于自定义扩展工具栏右键菜单按钮</li>
 								<li>【新增】checkbar模块新增：checkbarFun中的回调方法：chooseBefore，用于复选框点击前回调</li>
 								<li>【新增】内置函数新增：changeCheck,用于改变复选框状态。</li>
-								<li>【更新】更新了帮助文档</li>
 							</ul>
 						</div>
 					</li>
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="006">v2.4.5(2018/11/23)【修复】<!-- <a href="../version/dtree_v2.4.5_201811231654.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
+							<h3 class="layui-timeline-title" id="006">v2.4.5(2018/11/23)【修复：3，优化：5，新增：6】<!-- <a href="../version/dtree_v2.4.5_201811231654.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
 							<ul>
 								<li>【修复】toolbar模块修复：点击删除按钮时，控制台报错。</li>
 								<li>【修复】toolbar模块修复：配置了dot:false时，新增节点后一级图标不显示的问题。</li>
 								<li>【修复】内置函数优化：initNoAllCheck，修复了显示bug</li>
-								<li>【新增】内置函数新增：initAllCheck，复选框选中状态初始化设置</li>
-								<li>【新增】内置函数新增：checkStatus，设置复选框选中/未选中/半选</li>
 								<li>【优化】toolbar模块优化：点击删除时，当删除了某个节点下的最后一个子节点，那该节点也会改变样式变成叶子节点。</li>
 								<li>【优化】toolbar模块优化:addTreeNode方法优化，ajax请求不限于同步，方法无需返回</li>
-								<li>【新增】内置函数新增：changeTreeNodeAdd，新增节点后改变节点内容</li>
 								<li>【优化】toolbar模块优化:editTreeNode方法优化，ajax请求不限于同步，方法无需返回</li>
-								<li>【新增】内置函数新增：changeTreeNodeEdit，编辑节点后改变节点内容</li>
 								<li>【优化】toolbar模块优化:delTreeNode方法优化，ajax请求不限于同步，方法无需返回</li>
-								<li>【新增】内置函数新增：changeTreeNodeDel，删除节点后改变节点内容</li>
 								<li>【优化】toolbar模块优化:editTreeLoad方法优化，ajax请求不限于同步，方法无需返回</li>
+								<li>【新增】内置函数新增：initAllCheck，复选框选中状态初始化设置</li>
+								<li>【新增】内置函数新增：checkStatus，设置复选框选中/未选中/半选</li>
+								<li>【新增】内置函数新增：changeTreeNodeAdd，新增节点后改变节点内容</li>
+								<li>【新增】内置函数新增：changeTreeNodeEdit，编辑节点后改变节点内容</li>
+								<li>【新增】内置函数新增：changeTreeNodeDel，删除节点后改变节点内容</li>
 								<li>【新增】内置函数新增：changeTreeNodeDone，编辑页打开后显示编辑页内容</li>
-								<li>【更新】更新了帮助文档</li>
 							</ul>
 						</div>
 					</li>
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="005">v2.4.5(2018/11/22)【修复】<!-- <a href="../version/dtree_v2.4.5_201811221809.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
+							<h3 class="layui-timeline-title" id="005">v2.4.5(2018/11/22)【修复：2，新增：2，移除：1】<!-- <a href="../version/dtree_v2.4.5_201811221809.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
 							<ul>
-								<li>【移除】基础属性移除：addIndex属性。</li>
 								<li>【修复】基础方法修复：reload时，使用data属性会造成数据重复加载问题。</li>
 								<li>【修复】异步模块修复：reponse字段中，spared修改为spread（之前单词拼错了。。。。）。</li>
 								<li>【新增】toolbar模块新增：toolbarStyle属性，用于自定义toolbar的显示文字，弹框大小。</li>
 								<li>【新增】样式属性新增：skin,用于用户自定义主题。</li>
+								<li>【移除】基础属性移除：addIndex属性。</li>
 							</ul>
 						</div>
 					</li>
@@ -188,7 +238,7 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="004">v2.4.5(2018/11/21)【修复】<!-- <a href="../version/dtree_v2.4.5_201811212240.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
+							<h3 class="layui-timeline-title" id="004">v2.4.5(2018/11/21)【修复：2，优化：1，新增：1】<!-- <a href="../version/dtree_v2.4.5_201811212240.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a> --></h3>
 							<ul>
 								<li>【修复】数据属性修复：使用dataFormat属性时，直接使用data属性配置节点内容失效的问题。</li>
 								<li>【修复】数据属性修复：parentId为null导致节点数据加载失效的问题。</li>
@@ -270,9 +320,9 @@
 		layer.open({
 			type: 1,
 			title: "目录",
-			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:189px;"></ul>',
-			area:["200px", "500px"],
-			offset:["50px","84%"],
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:210px;"></ul>',
+			area:["220px", "500px"],
+			offset:["50px","83%"],
 			resize: false,
 			shade: 0,
 			success: function(layero, index){
@@ -285,7 +335,7 @@
 					formatter: {
 						title: function(data) {
 							var tt = data.title;
-							var tts = ["v2.4.5_finally(2018/12/22)【修复】"];
+							var tts = ["v2.5.0(2019/？/？)【大版本】"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

@@ -22,4 +22,10 @@ var menuTree = [{
 	"isLast": true,
 	"level": "1",
 	"children":[]
+},{
+	"id":"addRoot",
+	"title": "自定义添加根节点",
+	"isLast": true,
+	"level": "1",
+	"children":[]
 }];

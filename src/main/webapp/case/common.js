@@ -18,7 +18,7 @@ var menuTree = [{
 	"children":[]
 },{
 	"id":"zdyjdzk",
-	"title": "自定节点展开",
+	"title": "初始自定节点展开",
 	"isLast": true,
 	"level": "1",
 	"children":[]
