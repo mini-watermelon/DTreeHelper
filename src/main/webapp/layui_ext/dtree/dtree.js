@@ -407,6 +407,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		};
 		this.toolbarMenu = {};	// 工具栏右键菜单绑定的所有元素
 		this.checkbarNode = [];	// 复选框标记的全部节点数据
+		this.errData = [];		// 记录在渲染节点时有问题的数据
 		this.checkArrLen = 0;	//添加节点的时判断复选框个数
 		this.temp = [];	// 临时变量
 
@@ -468,6 +469,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.data = this.options.data || null;		//初始化指定该参数，则不会访问异步接口
 		this.dataFormat = this.options.dataFormat || "levelRelationship";  //用于用户配置的data数据格式，list：列表，  levelRelationship：层级关系，默认
 		this.dataStyle = this.options.dataStyle || "defaultStyle";  //用于用户配置layui通用的json数据风格,layuiStyle:layui风格，defaultStyle：默认风格
+		this.errDataShow = (typeof (this.options.errDataShow) === "boolean") ? this.options.errDataShow : false;		//是否在递归数据出现错误后，显示错误信息
 		this.success = this.options.success || function(data, obj){};		//树加载完毕后执行解析树之前的回调（仅限异步加载）
 		this.done = this.options.done || function(data, obj){};		//树加载完毕后的回调（仅限异步加载）
 		this.formatter = $.extend(this.formatter, this.options.formatter)|| this.formatter ;	// 数据过滤
@@ -566,6 +568,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.data = this.options.data || this.data;		//初始化指定该参数，则不会访问异步接口
 		this.dataFormat = this.options.dataFormat || this.dataFormat;  //用于用户配置的data数据格式，list：列表，  levelRelationship：层级关系，默认
 		this.dataStyle = this.options.dataStyle || this.dataStyle;  //用于用户配置layui通用的json数据风格,layuiStyle:layui风格，defaultStyle：默认风格
+		this.errDataShow = (typeof (this.options.errDataShow) === "boolean") ? this.options.errDataShow : this.errDataShow;		//是否在使用list模式递归数据出现错误时，显示错误信息
 		this.success = this.options.success || this.success;		//树加载完毕后执行解析树之前的回调（仅限异步加载）
 		this.done = this.options.done || this.done;		//树加载完毕后的回调（仅限异步加载）
 		this.formatter = $.extend(this.formatter, this.options.formatter)|| this.formatter ;	// 数据过滤
@@ -1095,6 +1098,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 				_this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
 			}
 			
+			// 判断是否存在错误数据，并是否打印错误数据
+			_this.msgErrData();
+			
 			// 加载完毕后的回调
 			_this.done(_this.data, _this.obj);
 
@@ -1146,6 +1152,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 						if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
 							_this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
 						}
+						
+						// 判断是否存在错误数据，并是否打印错误数据
+						_this.msgErrData();
 
 						// 加载完毕后的回调
 						_this.done(result, _this.obj);
@@ -1194,6 +1203,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 			if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
 				_this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
 			}
+			
+			// 判断是否存在错误数据，并是否打印错误数据
+			_this.msgErrData();
 
 		} else {
 			if (!_this.url) {
@@ -1236,6 +1248,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 						if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
 							_this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
 						}
+						
+						// 判断是否存在错误数据，并是否打印错误数据
+						_this.msgErrData();
 
 						$ul.addClass(NAV_SHOW);
 					} else {
@@ -1283,12 +1298,14 @@ layui.define(['jquery','layer','form'], function(exports) {
 				var data = listData[i];
 				if(typeof data !== "object") continue;
 				if(pid == "null" || pid == null){
-					if(data[_this.response.parentId] == null) {
-						rootListData.push(data);
-					}
+					if(data[_this.response.parentId] == null) { rootListData.push(data); }
 				} else {
 					if (data[_this.response.parentId] == pid){
-						rootListData.push(data);
+						if (data[_this.response.treeId] == pid){
+							_this.errData.push(data);
+						} else {
+							rootListData.push(data);
+						}
 					}
 				}
 			}
@@ -1304,6 +1321,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			for (var i = 0; i < root.length; i++) {	// 遍历跟节点或追加的跟节点
 				var data = root[i];
 				if(typeof data !== "object") continue;
+				if(data[_this.response.treeId] == data[_this.response.parentId]) { _this.errData.push(data); }
 				var parseData = _this.parseData(data);
 				var children = parseData.children();
 				$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.isLast(children.length), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(level), parseData.disabled(), parseData.isHide(), parseData.basicData(), parseData.recordData(), ($ul.hasClass(UL_ROOT) ? "root" : "item")));
@@ -1315,6 +1333,21 @@ layui.define(['jquery','layer','form'], function(exports) {
 		}
 	};
 
+	// 判断在数据加载时是否存在错误数据，并是否打印错误数据
+	DTree.prototype.msgErrData = function() {
+		var _this = this;
+		if(_this.errData.length > 0 && _this.errDataShow) {
+			var title = "";
+			for(var i=0; i<_this.errData.length; i++) {
+				var edata = _this.errData[i];
+				title += "数据：【"+edata[_this.response.title]+"】中节点id和上级id值一致！ \n";
+			}
+			layer.msg(title, {icon:2,time:5000});
+		}
+		// 显示之后，将错误数据制空
+		_this.errData = [];
+	};
+	
 	// 解析data数据
 	DTree.prototype.parseData = function(data) {
 		var _this = this;

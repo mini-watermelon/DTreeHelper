@@ -294,6 +294,14 @@
 									<td>-</td>
 								</tr>
 								<tr>
+									<td><span style="color:#c2c2c2;">errData</span></td>
+									<td>Array</td>
+									<td>记录在渲染节点时有问题的数据集</td>
+									<td><a href="javascript:void(0);" data-id="errData" class="position-a">详见参数释义</a></td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
 									<td><span style="color:#c2c2c2;">usefontStyle</span></td>
 									<td>Object</td>
 									<td>内置具体某个元素使用的字体样式的JSON集。</td>
@@ -545,7 +553,7 @@
 						<div class="layui-card card" id="node">
 							<div class="layui-card-header">node</div>
 							<div class="layui-card-body">
-								<p>模块内置属性，当选中树节点时，会将树的当前选中节点的的结果放到该参数中，包含当前节点的全部信息</p>
+								<p>组件内置属性，当选中树节点时，会将树的当前选中节点的的结果放到该参数中，包含当前节点的全部信息</p>
 								<pre class="layui-code" lay-title="内置node">
 									var node = {
 									  nodeId: "", //节点ID
@@ -561,6 +569,14 @@
 									  recordData: "", //当前data数据
 									};
 								</pre>
+							</div>
+						</div>
+						<div class="layui-card card" id="errData">
+							<div class="layui-card-header">errData</div>
+							<div class="layui-card-body">
+								<p>组件内置属性，树在递归用户数据发生问题时，记录出现问题的数据。</p>
+								<p>为什么会有这个属性？因为考虑到数据的不可控性，往往有的使用者在提供数据时，会提供一些<span style="color:#FF5722;">id与parentId相同</span>的数据，而树在处理这种数据的上下级关系时，有可能会出现无限递归的现象，导致浏览器直接崩溃。因此我们考虑到了这一点，在过滤掉这层错误数据的同时记录这条数据，方便给用户提供数据错误的依据，但也只是暂时存储，如果你不想显示错误信息的话，该属性记录的数据也会被很快的抹除。</p>
+								<p>在数据格式为list的数据中，如果数据发生错误，则错误的数据不会出现在页面上。而在levelRelationship的数据中，如果数据发生错误，错误的数据会被记录，<span style="color:#FF5722;">但数据也能被正常显示</span>。关于数据格式的问题请继续往下看~</p>
 							</div>
 						</div>
 					</div>
@@ -680,6 +696,14 @@
 									<td>levelRelationship</td>
 									<td>list</td>
 									<td>list</td>
+								</tr>
+								<tr>
+									<td>errDataShow<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>Boolean</td>
+									<td>用于是否在递归数据出现错误后，显示错误信息</td>
+									<td>false</td>
+									<td>true / false</td>
+									<td>true</td>
 								</tr>
 								<tr>
 									<td>formatter<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
@@ -1711,6 +1735,12 @@
 									<td>-</td>
 								</tr>
 								<tr>
+									<td>DTree.prototype.msgErrData<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>-</td>
+									<td>判断在数据加载时是否存在错误数据，并是否打印错误数据</td>
+									<td>-</td>
+								</tr>
+								<tr>
 									<td>DTree.prototype.parseData</td>
 									<td>Object</td>
 									<td>解析data数据</td>
@@ -2364,7 +2394,7 @@
 							var tt = data.title;
 							var tts = ["基础参数一览表","iconfontStyle","response","formatter","复选框配置","获取指定节点值","复选框半选状态设置","复选框选中状态设置",
 							           "setDisabledNodes","cancelDisabledNodes","getDisabledNodesParam","getAllDisabledNodesParam","setHideNodes",
-							           "cancelHideNodes","getHideNodesParam","模拟单击","getAllHideNodesParam","getNode","menubarTips","toolbarShow"];
+							           "cancelHideNodes","getHideNodesParam","模拟单击","getAllHideNodesParam","getNode","menubarTips","toolbarShow","errData"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

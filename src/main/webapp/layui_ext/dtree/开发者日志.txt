@@ -12,6 +12,7 @@
 【新增】基础属性新增：accordion属性，用于开启手风琴模式
 【新增】基础属性新增：response属性中新增disabled，标识节点禁用。
 【新增】基础属性新增：response属性中新增isHide，标识节点隐藏。
+【新增】基础属性新增：errDataShow属性，标识是否在递归数据出现错误后，显示错误信息。
 【新增】基础方法新增：getParam： 获取指定节点选中值
 【新增】基础方法新增：initNoAllCheck： 复选框半选状态初始化设置
 【新增】基础方法新增：initAllCheck： 复选框选中状态初始化设置
@@ -20,6 +21,7 @@
 【新增】menubar模块新增：menubar内置新增三个默认方法：checkAll：全选，unCheckAll：全不选，invertAll：反选
 【新增】toolbar模块新增：toolbar内置新增两个默认方法：pulldown：展开当前节点下的全部节点，pullup：收缩当前节点下的全部节点
 【新增】toolbar模块新增：toolbar新增属性：toolbarWay，工具栏显示方式，contextmenu:右键，follow:跟随节点，fixed:固定在节点右侧
+【新增】内置属性新增：errNode属性，记录在渲染节点时有问题的数据。
 【新增】内置属性新增：usefontStyle属性，用于最终指定树的每个关键部位使用的图标
 【新增】内置方法新增：ensureTheme：确认最终主题。
 【新增】内置方法新增：useDefaultOrUserDefineFnodeStyle：赋值一级图标
@@ -30,6 +32,7 @@
 【新增】内置方法新增：useDefaultOrUserDefineToolbarStyle：赋值扩展菜单栏图标
 【新增】内置方法新增：useDefaultOrUserDefineToolbarExtStyle：赋值扩展工具栏图标
 【新增】内置方法新增：operateIcon： 设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理
+【新增】内置方法新增：msgErrNode： 判断在数据加载时是否存在错误数据，并是否打印错误数据
 【新增】内置方法新增：getParam： 获取指定节点选中值
 【新增】内置方法新增：getNode： 获取指定节点Div
 【新增】内置方法新增：accordionUL： 开启手风琴模式时对其他节点的处理

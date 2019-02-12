@@ -5,9 +5,7 @@
 		"title": "湖南省",
 		"isLast": false,
 		"level": "1",
-		"isHide":true,
-		"parentId": "0",
-		"disabled": true,
+		"parentId": "001",
 		"checkArr": [{"type": "0", "isChecked": "0"}],
 		"children":[{
 			"id":"001001",

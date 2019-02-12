@@ -47,6 +47,11 @@ var menuTree = [{
 	 	"title": "node",
 	 	"isLast": true,
 	 	"children":[]
+ 	},{
+ 		"id":"errData",
+	 	"title": "errData",
+	 	"isLast": true,
+	 	"children":[]
  	}]
  },{
 	"id":"ybsjjkgf",
