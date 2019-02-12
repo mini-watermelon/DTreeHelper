@@ -96,9 +96,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 	var defaultTool = {
 		pulldown: "pulldown",							//点击展开当前节点下的全部节点
 		pullup: "pullup",								//点击收缩当前节点下的全部节点
-		addTool: "addTool",						//点击toolbar新增
-		editTool: "editTool",						//点击toolbar编辑
-		delTool: "delTool"						//点击toolbar删除
+		addTool: "addToolbar",						//点击toolbar新增
+		editTool: "editToolbar",						//点击toolbar编辑
+		delTool: "delToolbar"						//点击toolbar删除
 	};
 
 	// 树默认menubar提供的功能集合	绑定dtree-menu的事件
@@ -1092,7 +1092,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			
 			// 这种情况下需要一开始就将toolbar显示在页面上
 			if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
-				_this.setToolbarDom().setToolbarPlace(_this.toolbarFun.loadToolbarBefore(event.cloneObj(_this.toolbarMenu), _this.data, _this.obj));
+				_this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
 			}
 			
 			// 加载完毕后的回调
@@ -1144,7 +1144,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 						
 						// 这种情况下需要一开始就将toolbar显示在页面上
 						if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
-							_this.setToolbarDom().setToolbarPlace(_this.toolbarFun.loadToolbarBefore(event.cloneObj(_this.toolbarMenu), result, _this.obj));
+							_this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
 						}
 
 						// 加载完毕后的回调
@@ -1192,7 +1192,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 			// 这种情况下需要一开始就将toolbar显示在页面上
 			if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
-				_this.setToolbarDom().setToolbarPlace(_this.toolbarFun.loadToolbarBefore(event.cloneObj(_this.toolbarMenu), _this.data, _this.obj));
+				_this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
 			}
 
 		} else {
@@ -1234,7 +1234,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 						
 						// 这种情况下需要一开始就将toolbar显示在页面上
 						if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
-							_this.setToolbarDom().setToolbarPlace(_this.toolbarFun.loadToolbarBefore(event.cloneObj(_this.toolbarMenu), result, _this.obj));
+							_this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
 						}
 
 						$ul.addClass(NAV_SHOW);
@@ -2450,7 +2450,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 	// menubar监听方法
 	DTree.prototype.menubarListener = function(menuId, flag){
 		var _this = this;
-		var $div = _this.getNowNode();
+		var $div = _this.getNowNodeOrNull();
 		switch (menuId) {
 			case defaultMenu.moveDown:	// 展开全部节点
 				_this.menubarMethod().openAllNode();
@@ -2595,17 +2595,20 @@ layui.define(['jquery','layer','form'], function(exports) {
 						}
 					}
 				} else if(toolbarWay == "fixed" || toolbarWay == "follow") {
-					var hideCls = (toolbarWay == "follow") ? NAV_HIDE : "";
-					var em = ["<em class='"+TOOLBAR_TOOL_EM+" "+hideCls+"'>"];
-					if(toolbarMenu){
-						for(var key in toolbarMenu){
-							em.push(toolbarMenu[key]);
-						}
-					}
-					em.push("</em>");
 					_this.obj.find("cite[data-leaf][dtree-disabled='false']").each(function(){
 						var $cite = $(this);
 						if($cite.next("em."+TOOLBAR_TOOL_EM).length == 0) {
+							var $div = $cite.parent("div");
+							var param = _this.getRequestParam(_this.getTempNodeParam($div));
+							var toolbarMenus = _this.toolbarFun.loadToolbarBefore(event.cloneObj(toolbarMenu), param, $div);
+							var hideCls = (toolbarWay == "follow") ? NAV_HIDE : "";
+							var em = ["<em class='"+TOOLBAR_TOOL_EM+" "+hideCls+"'>"];
+							if(toolbarMenus){
+								for(var key in toolbarMenus){
+									em.push(toolbarMenus[key]);
+								}
+							}
+							em.push("</em>");
 							$cite.after(em.join(''));
 						}
 					});
@@ -2758,7 +2761,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 					area: _this.toolbarStyle.area,
 					content: content,
 					success: function(layero, index){
-						_this.toolbarFun.editTreeLoad(_this.getRequestParam(node));
+						_this.toolbarFun.editTreeLoad(_this.getRequestParam(_this.getNodeParam($div)));
 						form.render();
 						form.on("submit(dtree_editNode_form)",function(data){
 							var data = data.field;
@@ -2778,17 +2781,16 @@ layui.define(['jquery','layer','form'], function(exports) {
 				layer.confirm('确定要删除该'+_this.toolbarStyle.title+'？', {icon: 3, title:'删除'+_this.toolbarStyle.title}, function(index){
 					var node = _this.getNodeParam($div);
 					_this.temp = [$p_li, $p_div];
-					_this.toolbarFun.delTreeNode(_this.getRequestParam(node), $div);
+					_this.toolbarFun.delTreeNode(_this.getRequestParam(_this.getNodeParam($div)), $div);
 	
 					layer.close(index);
 				});
 				break;
 			default:
-				var toolbarId = $(this).attr("dtree-tool");
 				if(_this.toolbarExt.length > 0){
 					for(var i=0; i<_this.toolbarExt.length; i++){
 						var ext = _this.toolbarExt[i];
-						if (toolbarId == ext.toolbarId){
+						if (tool == ext.toolbarId){
 							ext.handler(_this.getRequestParam(_this.getNodeParam($div)), $div);
 							break;
 						}
@@ -3136,7 +3138,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 	};
 
 	/******************** 数据回调区域 ********************/
-		// 获取当前选中节点下一个UL 或根节点。为了将新节点放入ul下
+	// 获取当前选中节点下一个UL 或根节点。为了将新节点放入ul下
 	DTree.prototype.getNowNodeUl =  function() {
 		var _this = this;
 		return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? _this.obj : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).next("ul");
@@ -3146,6 +3148,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 	DTree.prototype.getNowNode =  function() {
 		var _this = this;
 		return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? _this.obj.children("li").eq(0).children("div").eq(0) : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS);
+	};
+	
+	// 获取当前选中节点 无则返回null。
+	DTree.prototype.getNowNodeOrNull =  function() {
+		var _this = this;
+		return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS);
 	};
 	
 	// 获取指定节点。

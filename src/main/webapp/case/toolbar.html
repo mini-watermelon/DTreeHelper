@@ -266,10 +266,21 @@
 									  elem: "#toolbarTree7",
 									  url: "../json/case/toolbarTree1.json",
 									  toolbar:true,
-									  toolbarWay:"fixed" // "contextmenu"：右键菜单（默认），"fixed"："固定在节点后","follow"："跟随节点动态呈现"
+									  toolbarWay:"fixed", // "contextmenu"：右键菜单（默认），"fixed"："固定在节点后","follow"："跟随节点动态呈现"
+									  toolbarFun:{
+									    loadToolbarBefore: function(buttons, param, $div){
+									      console.log(buttons);
+									      console.log(param);
+									      console.log($div);
+									      if(param.isLeaf){ // 如果是叶子节点
+									        buttons.addToolbar = "";  // 取消新增功能
+									      }
+									      return buttons; // 将按钮对象返回
+									    }
+									  }
 									});
 								</pre>
-								<p>当你使用这种方式加载菜单时，就不需要配置toolbarScroll了。且toolbar是一次性加载出来的，使用loadToolbarBefore函数时也需要与原来的写法做些区分，其他所有功能与上面示例的功能一致。</p>
+								<p>当你使用这种方式加载菜单时，就不需要配置toolbarScroll了。且toolbar是一次性加载出来的，使用loadToolbarBefore函数时,函数也是一开始就会针对每个节点执行一次。其他所有功能与上面示例的功能一致。</p>
 								<p>可以试试配置follow，看看效果哦。</p>
 							</div>
 						</div>
@@ -475,7 +486,19 @@
 		  elem: "#toolbarTree7",
 		  url: "../json/case/toolbarTree1.json",
 		  toolbar:true,
-		  toolbarWay:"fixed"
+		  toolbarWay:"fixed",
+		  toolbarFun:{
+			loadToolbarBefore: function(buttons, param, $div){
+				console.log(buttons);
+				console.log(param);
+				console.log($div);
+				if(param.isLeaf){ // 如果是叶子节点
+					buttons.addToolbar = "";  // 取消新增功能
+				}
+				
+				return buttons;
+			}
+		}
 		});
 		
 		dtree.render({

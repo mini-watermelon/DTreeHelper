@@ -23,7 +23,7 @@
 			</div>
 			
 			<div class="layui-fluid">
-				<blockquote class="layui-elem-quote">layui应用日益广泛的情况下，人们对"树"这种特殊数据结构的需求日益增多，而layui开发到2.4.0版本以来，在树的这方面还是比较薄弱，因此本数据树应运而生。本树是由一个java程序员通过日常空余时间完成，涵盖的功能点基本全面，包括了：选中树、复选树、逐级加载、树的菜单选择、图标更换、快捷增删改等等。尽管如此，本人仍将对其进行完善，在控制代码量和性能的前提下，不定期增加更多人性化功能。</blockquote>
+				<blockquote class="layui-elem-quote">layui应用日益广泛的情况下，人们对"树"这种特殊数据结构的需求日益增多，而layui-dtree（谐音：layui的树）的出现，极大程度的满足了各类人群对于树的不同追求。dtree发展到现在，可以总结为6大块核心功能：异步加载、复选框、菜单栏、工具栏、iframe加载、定制化换肤等，然后的话你所见到市面上开源树的功能，dtree几乎全部囊括在内（除了拖拽），只待你一一发掘，让她在你的项目中发光。</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
 			</div>
 			
@@ -36,7 +36,7 @@
 							<div class="layui-col-lg4"><div style="height: 540px;overflow: auto;"><ul id="demoTree" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<p>你已经看到了一个简单树的基本样子，你一定迫不及待地想知道它的使用方式。下面就是它对应的代码：</p>
-								<pre class="layui-code" lay-title="导入指定的两个css" lay-encode="true">
+								<pre class="layui-code" lay-title="导入指定的两个css，默认需要导入layui的css和js" lay-encode="true">
 								  &lt;link rel="stylesheet" href="layui_ext/dtree/dtree.css"&gt;
 								  &lt;link rel="stylesheet" href="layui_ext/dtree/font/dtreefont.css"&gt;
 								</pre>
@@ -1292,6 +1292,21 @@
 									  }
 									};
 								</pre>
+								<pre class="layui-code" lay-title="iframe配置示例">
+									var DemoTree = dtree.render({
+									  useIframe: true,
+									  iframe: {
+									    iframeElem: "#iframeId",
+									    iframeUrl: "/demo/iframeurl"
+									  },
+									  iframeFun: {
+									    iframeDone: function(iframeParam){ //iframe加载完毕后，用于用户自定义事件
+									      console.log(iframeParam);
+									      return ;
+									    }
+									  }
+									});
+								</pre>
 							</div>
 						</div>
 					</div>
@@ -2191,7 +2206,7 @@
 									</td>
 								</tr>
 								<tr id="getNode">
-									<td><span style="color:#FF5722;">DTree.prototype.getNode</span></td>
+									<td><span style="color:#FF5722;">DTree.prototype.getNode</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String</td>
 									<td>获取指定Id的节点</td>
 									<td>
@@ -2200,6 +2215,12 @@
 											console.log($div);
 										</pre>
 									</td>
+								</tr>
+								<tr id="getNode">
+									<td>DTree.prototype.getNowNodeOrNull<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>-</td>
+									<td>获取当前选中节点，没有选中则为null</td>
+									<td>-</td>
 								</tr>
 								<tr>
 									<td>DTree.prototype.setNodeParam</td>

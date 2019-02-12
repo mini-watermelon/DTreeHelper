@@ -44,6 +44,7 @@
 【新增】内置方法新增：toolbarHide：隐藏toolbar
 【新增】内置方法新增：toolbarMethod：toolbar内置方法
 【新增】内置方法新增：toolbarListener：toolbar内置监听
+【新增】内置方法新增：getNowNodeOrNull：获取当前选中div，没有选中则为null
 【新增】内置方法新增：navThis：选中div
 【新增】内置方法更新：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式
 
