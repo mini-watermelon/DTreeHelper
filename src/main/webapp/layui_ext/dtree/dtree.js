@@ -3,7 +3,7 @@
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/
  *@License https://www.layui.com/
- *@LASTTIME 2019/1/23 
+ *@LASTTIME 2019/2/14 
  *@VERSION v2.5.0
  */
 layui.define(['jquery','layer','form'], function(exports) {
@@ -198,7 +198,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 					if (typeof (config.error) === "function") {
 						config.error();
 					} else {
-						layer.msg('系统异常导致操作失败！',{icon:5, shift:6});
+						layer.msg("异步加载失败： " + textStatus,{icon:5, shift:6});
 					}
 				},
 				statusCode : {
@@ -1079,31 +1079,32 @@ layui.define(['jquery','layer','form'], function(exports) {
 			//先将ul中的元素清空
 			_this.obj.html("");
 
-			// 加载完毕后执行树解析前的回调
-			_this.success(_this.data, _this.obj);
-			
-			// 第一次解析树
-			if (_this.dataFormat == 'list'){
-				//1.识别根节点ul中的data-id标签，判断顶级父节点
-				var pid = _this.obj.attr("data-id");
-				//2.构建一个存放节点的树组
-				var rootListData = _this.queryListTreeByPid(pid, _this.data);
-				_this.loadListTree(rootListData, _this.data, 1);
-			} else {
-				_this.loadTree(_this.data, 1);
-			}
-			
-			// 这种情况下需要一开始就将toolbar显示在页面上
-			if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
-				_this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
-			}
-			
-			// 判断是否存在错误数据，并是否打印错误数据
-			_this.msgErrData();
-			
-			// 加载完毕后的回调
-			_this.done(_this.data, _this.obj);
-
+			setTimeout(function () {
+				// 加载完毕后执行树解析前的回调
+				_this.success(_this.data, _this.obj);
+				
+				// 第一次解析树
+				if (_this.dataFormat == 'list'){
+					//1.识别根节点ul中的data-id标签，判断顶级父节点
+					var pid = _this.obj.attr("data-id");
+					//2.构建一个存放节点的树组
+					var rootListData = _this.queryListTreeByPid(pid, _this.data);
+					_this.loadListTree(rootListData, _this.data, 1);
+				} else {
+					_this.loadTree(_this.data, 1);
+				}
+				
+				// 这种情况下需要一开始就将toolbar显示在页面上
+				if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
+					_this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
+				}
+				
+				// 判断是否存在错误数据，并是否打印错误数据
+				_this.msgErrData();
+				
+				// 加载完毕后的回调
+				_this.done(_this.data, _this.obj);
+			}, 100);
 		} else {
 			if (!_this.url) {
 				layer.msg("数据请求异常，url参数未指定", {icon:5});
