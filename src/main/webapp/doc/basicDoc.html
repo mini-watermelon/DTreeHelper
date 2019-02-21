@@ -634,6 +634,14 @@
 									<td>"string"</td>
 								</tr>
 								<tr>
+									<td>contentType<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>String</td>
+									<td>发送信息至服务器时内容编码类型</td>
+									<td>"application/x-www-form-urlencoded"</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
 									<td>defaultRequest</td>
 									<td>Object</td>
 									<td>默认请求参数。</td>
@@ -1227,15 +1235,15 @@
 								<p>treeNode参数，包含toolbarBtn中指定的name和它的值，还有默认元素，如果没有指定toolbarBtn的情况下，treeNode参数如下：</p>
 								<pre class="layui-code" lay-title="treeNode默认参数">
 									{
-									  leaf: true,
+									  isLeaf: true,
 									  level: "当前添加参数的level",
 									  nodeId: "当前添加参数的动态ID",
 									  nodeTitle: "当前添加参数的上级节点名称",
 									  parentId: "当前添加参数的上级节点ID",
 									  addNodeName: "当前添加参数的节点名称",
 									  editNodeName: "当前编辑参数的节点名称，与addNodeName只出现一个"
-									  basicData: "",
-									  recordData: ""
+									  basicData: "", //节点的basicData，如果没有则无
+									  recordData: "" // 节点的recordData，如果没有配置record则无
 									}
 								</pre>
 								<pre class="layui-code" lay-title="toolbarFun配置示例">

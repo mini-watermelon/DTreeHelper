@@ -386,9 +386,18 @@
 			type: "all",
 			dot:false,
 			toolbar:true,
+			record:true,
 			toolbarScroll:"#toolbarDiv",
 			toolbarFun: {
 				addTreeNode: function(treeNode){
+					console.log(treeNode);
+					/* var param = {
+							"id":"0010011",
+							"title": "长沙市1",
+							"isLast":true,
+							"parentId": "001",
+							"level": "2"
+						} */
 			      DTree1.changeTreeNodeAdd(treeNode.nodeId);
 			    },
 			    editTreeNode: function(treeNode){

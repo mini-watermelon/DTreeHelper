@@ -193,6 +193,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				dataType : config.dataType ? config.dataType : "json",
 				data : data,
 				async : async,
+				contentType : config.contentType ? config.contentType : "application/x-www-form-urlencoded",
 				success : config.success,
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
 					if (typeof (config.error) === "function") {
@@ -462,6 +463,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.headers = this.options.headers || {};		// ajax header属性
 		this.method = this.options.method || "post";	//请求类型
 		this.dataType = this.options.dataType || "json";	//参数类型
+		this.contentType = this.options.contentType || "application/x-www-form-urlencoded";	//发送信息至服务器时内容编码类型
 		this.defaultRequest = $.extend(this.defaultRequest, this.options.defaultRequest) || this.defaultRequest;	//默认请求参数
 		this.filterRequest = this.options.filterRequest || [];	//过滤请求参数
 		this.request = this.options.request || {};		//用户自定义请求参数
@@ -561,6 +563,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.headers = this.options.headers || this.headers;		// ajax header属性
 		this.method = this.options.method || this.method;	//请求类型
 		this.dataType = this.options.dataType || this.dataType;	//参数类型
+		this.contentType = this.options.contentType || this.contentType;	//发送信息至服务器时内容编码类型
 		this.defaultRequest = $.extend(this.defaultRequest, this.options.defaultRequest) || this.defaultRequest;	//默认请求参数
 		this.filterRequest = this.options.filterRequest || this.filterRequest;	//过滤请求参数
 		this.request = this.options.request || this.request;		//用户自定义请求参数
