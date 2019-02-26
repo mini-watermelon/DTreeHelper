@@ -1,0 +1,26 @@
+@media screen and (min-width: 1200px) {
+	.container {width: 1060px!important;margin: 0px 0px 0px 20px;}
+}
+
+.div_h3title {width: 100%;border-bottom: 1px solid #EEEEEE;}
+.div_h3title i{font-size: 24px;}
+.div_h3title span{font-size: 24px;display: inline-block;padding: 20px 0px 20px 10px;}
+
+.position-a{color:#01AAED;}
+.position-a:hover{color:#01AAED;}
+
+.card{margin: 10px;}
+
+.icon-div{display: inline-block; margin-right: 10px;width: 40px;height: 40px;line-height: 40px;border: 1px solid;border-radius:10px;text-align: center;}
+.icon-div:hover{color:orange!important;}
+
+
+
+
+
+
+
+
+
+
+
