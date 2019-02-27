@@ -237,7 +237,12 @@
 									  elem: "#checkbarTreea",
 									  url: "../json/case/checkbarTree1.json",
 									  checkbar: true,
-									  checkbarData: "choose" // 记录选中（默认）， "change"：记录变更， "all"：记录全部， "halfChoose"："记录选中和半选"
+									  checkbarData: "choose" // 记录选中（默认）， "change"：记录变更， "all"：记录全部， "halfChoose"："记录选中和半选（V2.5.0新增）"
+									});
+									
+									$("#checkbarTreea_btna").click(function(){
+									  var params = dtree.getCheckbarNodesParam("checkbarTreea");
+									  layer.msg(JSON.stringify(params));
 									});
 								</pre>
 							</div>
