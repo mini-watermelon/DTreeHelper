@@ -32,7 +32,7 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="012">v2.5.0(2019/？/？)【大版本】【修复：3，优化：3，新增：44】<a href="#" class="layui-btn layui-btn-sm layui-btn-normal">尚未发布，敬请期待！</a></h3>
+							<h3 class="layui-timeline-title" id="012">v2.5.0(2019/？/？)【大版本】【修复：3，优化：3，新增：45，更新：4】<a href="#" class="layui-btn layui-btn-sm layui-btn-normal">尚未发布，敬请期待！</a></h3>
 							<ul>
 								<li>【修复】toolbar模块修复：自定义的toolbar的回调函数的第二个$div参数修复，现在可以取到值</li>
 								<li>【修复】toolbar模块修复：内置函数：changeTreeNodeEdit中的title未定义的问题。</li>
@@ -55,6 +55,7 @@
 								<li>【新增】menubar模块新增：menubar内置新增三个默认方法：checkAll：全选，unCheckAll：全不选，invertAll：反选</li>
 								<li>【新增】toolbar模块新增：toolbar内置新增两个默认方法：pulldown：展开当前节点下的全部节点，pullup：收缩当前节点下的全部节点</li>
 								<li>【新增】toolbar模块新增：toolbar新增属性：toolbarWay，工具栏显示方式，contextmenu:右键，follow:跟随节点，fixed:固定在节点右侧</li>
+								<li>【新增】toolbar模块新增：toolbarBtn中新增一系列的属性（id、placeholder、verify、defElem、readonly、disabled、filter）</li>
 								<li>【新增】内置属性新增：errData属性，记录在渲染节点时有问题的数据。</li>
 								<li>【新增】内置属性新增：usefontStyle属性，用于最终指定树的每个关键部位使用的图标</li>
 								<li>【新增】内置方法新增：ensureTheme：确认最终主题。</li>
@@ -83,7 +84,10 @@
 								<li>【新增】内置方法新增：toolbarListener：toolbar内置监听</li>
 								<li>【新增】内置方法新增：getNowNodeOrNull：获取当前选中div，没有选中则为null</li>
 								<li>【新增】内置方法新增：navThis：选中div</li>
-								<li>【新增】内置方法更新：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式</li>
+								<li>【更新】内置方法更新：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式</li>
+								<li>【更新】内置方法更新：changeTreeNodeAdd新增一个回传参数：refresh，用于新增完成后，局部刷新</li>
+								<li>【更新】内置方法更新：changeTreeNodeEdit新增一个回传参数：refresh，用于修改完成后，局部刷新</li>
+								<li>【更新】内置方法更新：changeTreeNodeDel新增一个回传参数：refresh，用于删除完成后，局部刷新</li>
 							</ul>
 						</div>
 					</li>

@@ -3,7 +3,7 @@
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/
  *@License https://www.layui.com/
- *@LASTTIME 2019/2/14 
+ *@LASTTIME 2019/4/3 
  *@VERSION v2.5.0
  */
 layui.define(['jquery','layer','form'], function(exports) {
@@ -492,7 +492,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.toolbar = this.options.toolbar || false;	//是否开启可编辑模式
 		this.toolbarWay = this.options.toolbarWay || "contextmenu";	//工具栏显示方式，contextmenu:右键，follow:跟随节点，fixed:固定在节点右侧
 		this.toolbarStyle = $.extend(this.toolbarStyle, this.options.toolbarStyle) || this.toolbarStyle;	//toolbar的自定义风格，标题，弹框大小
-		this.toolbarScroll = this.options.toolbarScroll || this.elem;	//树的上级div容器，让树可以显示滚动条的div容器
+		this.toolbarScroll = this.options.toolbarScroll || this.elem;	//树的上级div容器，让树可以显示滚动条的div容器的ID
 		this.toolbarLoad = this.options.toolbarLoad || "node";	//toolbar作用范围：node:所有节点，noleaf:非最后一级节点，leaf:最后一级
 		this.toolbarShow = this.options.toolbarShow || ["add","edit","delete"];		// toolbar三个按钮自定义加载
 		this.toolbarBtn = this.options.toolbarBtn || null;		// toolbar增删改中内容的自定义加载
@@ -2806,7 +2806,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 							node = _this.getNodeParam($div);
 							var requestNode = _this.getRequestParam(node);
 							requestNode = $.extend(requestNode, data);
-							_this.temp = [$cite, $div, title];
+							_this.temp = [$cite, $div, title, $p_div];
 							_this.toolbarFun.editTreeNode(requestNode, $div);
 	
 							layer.close(index);
@@ -2843,115 +2843,148 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		var toolbarShow = _this.toolbarShow;
 		var nodeBarContents = _this.toolbarBtn;
+		
 		var html = "";
 		switch (name) {
 			case defaultTool.addTool:
-
-				//1. 必须加载的节点内容
-				var nowNode = ['<div class="layui-form-item">',
-					'<label class="layui-form-label">当前选中：</label>',
-					'<div class="layui-input-block f-input-par">',
-					'<input type="text" name="nodeTitle" class="layui-input f-input" value="'+title+'" readonly/>',
-					'</div>',
-					'</div>'].join('');
-
-				var addNodeName = ['<div class="layui-form-item">',
-					'<label class="layui-form-label" title="新增'+_this.toolbarStyle.title+'">新增'+_this.toolbarStyle.title+'：</label>',
-					'<div class="layui-input-block f-input-par">',
-					'<input type="text" name="addNodeName" class="layui-input f-input" value="" lay-verify="required"/>',
-					'</div>',
-					'</div>'].join('');
-
-				var addNodeBtn = ['<div class="layui-form-item">',
-					'<div class="layui-input-block" style="margin-left:0px;text-align:center;">',
-					'<button type="button" class="layui-btn layui-btn-normal btn-w100" lay-submit lay-filter="dtree_addNode_form">确认添加</button>',
-					'</div>',
-					'</div>'].join('');
+				var addNodeBarDef = [{"label": "当前选中", "name": "nodeTitle", "type": "text", "value": title, "defElem": "nowChoose", "readonly": true}, 
+				                  {"label": "新增"+_this.toolbarStyle.title, "name": "addNodeName", "type": "text", "value": "", "defElem": "nowChange", "verify": "required"}, 
+				                  {"type": "submit", "value": "确认添加", "defElem": "btn", "filter": "dtree_addNode_form"}];
+				
 				//2. 用户自定义的节点内容
-				var addNodeBar = ['<div class="'+TOOLBAR_TOOL+'"><form class="layui-form layui-form-pane" lay-filter="dtree_addNode_form">', nowNode, addNodeName];
+				var addNodeBar = ['<div class="'+TOOLBAR_TOOL+'"><form class="layui-form layui-form-pane" lay-filter="dtree_addNode_form">'];
+				
 				if(nodeBarContents != null && nodeBarContents.length > 0){
 					if(nodeBarContents[0] != null && nodeBarContents[0] != undefined && nodeBarContents[0].length > 0){
 						var addNodeBarContents = nodeBarContents[0];
-
-						for(var j=0; j<addNodeBarContents.length; j++){
-							var type = addNodeBarContents[j].type;
-							if(!type){type = "text";}
-							switch (type) {
-								case "text":
-									addNodeBar.push(_this.loadToolBarDetail().text(addNodeBarContents[j]));
-									break;
-								case "textarea":
-									addNodeBar.push(_this.loadToolBarDetail().textarea(addNodeBarContents[j]));
-									break;
-								case "select":
-									addNodeBar.push(_this.loadToolBarDetail().select(addNodeBarContents[j]));
-									break;
-								case "hidden":
-									addNodeBar.push(_this.loadToolBarDetail().hidden(addNodeBarContents[j]));
-									break;
-
+						// 1. 检查是否包含了now、newly、btn这三个默认项,将其他元素依次排列，将特殊元素至于栈顶
+						for(var i=0; i<addNodeBarContents.length; i++){
+							var defElem = addNodeBarContents[i].defElem;
+							if(defElem == "nowChoose") {
+								$.extend(addNodeBarDef[0], addNodeBarContents[i]);
+							} else if(defElem == "nowChange") {
+								$.extend(addNodeBarDef[1], addNodeBarContents[i]);
+							} else if(defElem == "btn") {
+								$.extend(addNodeBarDef[2], addNodeBarContents[i]);
+							} else {
+								addNodeBarDef.push(addNodeBarContents[i]);
 							}
 						}
 					}
 				}
-				addNodeBar.push(addNodeBtn);
+				
+				// 2. 遍历生成全部表单标签
+				for(var j=0; j<addNodeBarDef.length; j++){
+					var type = addNodeBarDef[j].type;
+					if(!type){type = "text";}
+					switch (type) {
+						case "text":
+							addNodeBar.push(_this.loadToolBarDetail(addNodeBarDef[j]).text());
+							break;
+						case "textarea":
+							addNodeBar.push(_this.loadToolBarDetail(addNodeBarDef[j]).textarea());
+							break;
+						case "select":
+							addNodeBar.push(_this.loadToolBarDetail(addNodeBarDef[j]).select());
+							break;
+						case "hidden":
+							addNodeBar.push(_this.loadToolBarDetail(addNodeBarDef[j]).hidden());
+							break;
+
+					}
+				}
+				
+				var addBtn = ['<div class="layui-form-item">', '<div class="layui-input-block" style="margin-left:0px;text-align:center;">'];
+				// 3.遍历生成按钮
+				for(var j=0; j<addNodeBarDef.length; j++){
+					var type = addNodeBarDef[j].type;
+					if(!type){type = "text";}
+					switch (type) {
+						case "submit":
+							addBtn.push(_this.loadToolBarDetail(addNodeBarDef[j]).submit());
+							break;
+						case "button":
+							addBtn.push(_this.loadToolBarDetail(addNodeBarDef[j]).button());
+							break;
+						case "reset":
+							addBtn.push(_this.loadToolBarDetail(addNodeBarDef[j]).reset());
+							break;
+
+					}
+				}
+				addBtn.push('</div></div>');
+				addNodeBar.push(addBtn.join(''));
 				addNodeBar.push('</form></div>');
 				html = addNodeBar.join('');
 				break;
 
 			case defaultTool.editTool:
+				var editNodeBarDef = [{"label": "当前选中", "name": "nodeTitle", "type": "text", "value": title, "defElem": "nowChoose", "readonly": true}, 
+					                  {"label": "编辑"+_this.toolbarStyle.title, "name": "editNodeName", "type": "text", "value": "", "defElem": "nowChange", "verify": "required"}, 
+					                  {"type": "submit", "value": "确认编辑", "defElem": "btn", "filter": "dtree_editNode_form"}];
 
-				//1. 必须加载的节点内容
-				var nowNode = ['<div class="layui-form-item">',
-					'<label class="layui-form-label">当前选中：</label>',
-					'<div class="layui-input-block f-input-par">',
-					'<input type="text" name="nodeTitle" class="layui-input f-input" value="'+title+'" readonly/>',
-					'</div>',
-					'</div>'].join('');
-
-				var editNodeName = ['<div class="layui-form-item">',
-					'<label class="layui-form-label" title="编辑'+_this.toolbarStyle.title+'">编辑'+_this.toolbarStyle.title+'：</label>',
-					'<div class="layui-input-block f-input-par">',
-					'<input type="text" name="editNodeName" class="layui-input f-input" value="'+title+'" lay-verify="required"/>',
-					'</div>',
-					'</div>'].join('');
-
-
-				var editNodeBtn = ['<div class="layui-form-item">',
-					'<div class="layui-input-block" style="margin-left:0px;text-align:center;">',
-					'<button type="button" class="layui-btn layui-btn-normal btn-w100" lay-submit lay-filter="dtree_editNode_form">确认编辑</button>',
-					'</div>',
-					'</div>'].join('');
-
-				var editNodeBar = ['<div class="'+TOOLBAR_TOOL+'"><form class="layui-form layui-form-pane" lay-filter="dtree_editNode_form">', nowNode, editNodeName];
+				var editNodeBar = ['<div class="'+TOOLBAR_TOOL+'"><form class="layui-form layui-form-pane" lay-filter="dtree_editNode_form">'];
 				//2. 用户自定义的节点内容
 				if(nodeBarContents != null && nodeBarContents.length > 0){
 
 					if(nodeBarContents[1] != null && nodeBarContents[1] != undefined && nodeBarContents[1].length > 0){
 						var editNodeBarContents = nodeBarContents[1];
-
-						for(var j=0; j<editNodeBarContents.length; j++){
-							var type = editNodeBarContents[j].type;
-							if(!type){type = "text";}
-							switch (type) {
-								case "text":
-									editNodeBar.push(_this.loadToolBarDetail().text(editNodeBarContents[j]));
-									break;
-								case "textarea":
-									editNodeBar.push(_this.loadToolBarDetail().textarea(editNodeBarContents[j]));
-									break;
-								case "select":
-									editNodeBar.push(_this.loadToolBarDetail().select(editNodeBarContents[j]));
-									break;
-								case "hidden":
-									editNodeBar.push(_this.loadToolBarDetail().hidden(editNodeBarContents[j]));
-									break;
+						// 1. 检查是否包含了now、newly、btn这三个默认项,将其他元素依次排列，将特殊元素至于栈顶
+						for(var i=0; i<editNodeBarContents.length; i++){
+							var defElem = editNodeBarContents[i].defElem;
+							if(defElem == "nowChoose") {
+								$.extend(editNodeBarDef[0], editNodeBarContents[i]);
+							} else if(defElem == "nowChange") {
+								$.extend(editNodeBarDef[1], editNodeBarContents[i]);
+							} else if(defElem == "btn") {
+								$.extend(editNodeBarDef[2], editNodeBarContents[i]);
+							} else {
+								editNodeBarDef.push(editNodeBarContents[i]);
 							}
 						}
+						
 					}
 				}
+				// 2. 遍历生成全部表单标签
+				for(var j=0; j<editNodeBarDef.length; j++){
+					var type = editNodeBarDef[j].type;
+					if(!type){type = "text";}
+					switch (type) {
+						case "text":
+							editNodeBar.push(_this.loadToolBarDetail(editNodeBarDef[j]).text());
+							break;
+						case "textarea":
+							editNodeBar.push(_this.loadToolBarDetail(editNodeBarDef[j]).textarea());
+							break;
+						case "select":
+							editNodeBar.push(_this.loadToolBarDetail(editNodeBarDef[j]).select());
+							break;
+						case "hidden":
+							editNodeBar.push(_this.loadToolBarDetail(editNodeBarDef[j]).hidden());
+							break;
+					}
+				}
+				
+				var editBtn = ['<div class="layui-form-item">', '<div class="layui-input-block" style="margin-left:0px;text-align:center;">'];
+				// 3.遍历生成按钮
+				for(var j=0; j<editNodeBarDef.length; j++){
+					var type = editNodeBarDef[j].type;
+					if(!type){type = "text";}
+					switch (type) {
+						case "submit":
+							editBtn.push(_this.loadToolBarDetail(editNodeBarDef[j]).submit());
+							break;
+						case "button":
+							editBtn.push(_this.loadToolBarDetail(editNodeBarDef[j]).button());
+							break;
+						case "reset":
+							editBtn.push(_this.loadToolBarDetail(editNodeBarDef[j]).reset());
+							break;
 
-				editNodeBar.push(editNodeBtn);
+					}
+				}
+				editBtn.push('</div></div>');
+				editNodeBar.push(editBtn.join(''));
 				editNodeBar.push('</form></div>');
 				html = editNodeBar.join('');
 				break;
@@ -2960,34 +2993,55 @@ layui.define(['jquery','layer','form'], function(exports) {
 	};
 
 	// 获取toolbar详细的标签信息
-	DTree.prototype.loadToolBarDetail = function(){
+	DTree.prototype.loadToolBarDetail = function(nodeBarContents){
 		var _this = this;
+		var readonly = (typeof (nodeBarContents.readonly) === "boolean") ? nodeBarContents.readonly : false;
+		var disabled = (typeof (nodeBarContents.disabled) === "boolean") ? nodeBarContents.disabled : false;
+		var id = nodeBarContents.id ? nodeBarContents.id : "";
+		var name = nodeBarContents.name ? nodeBarContents.name : "";
+		var val = nodeBarContents.value ? nodeBarContents.value : "";
+		var verify = nodeBarContents.verify ? nodeBarContents.verify : "";
+		var placeholder = nodeBarContents.placeholder ? nodeBarContents.placeholder : val;
 		return{
-			text: function(nodeBarContents){
+			text: function(){
 				return ['<div class="layui-form-item">',
 					'<label class="layui-form-label" title="'+nodeBarContents.label+'">'+nodeBarContents.label+'：</label>',
 					'<div class="layui-input-block f-input-par">',
-					'<input type="text" name="'+nodeBarContents.name+'" class="layui-input f-input" value="'+(nodeBarContents.value ? nodeBarContents.value : "")+'"/>',
+					'<input type="text" class="layui-input f-input" value="'+val+'" placeholder="'+placeholder+'" lay-verify="'+verify+'" ',
+					(id != "" ? 'id="'+id+'" ' : ''),
+					(name != "" ? 'name="'+name+'" ' : ''),
+					(readonly ? 'readonly ' : ''),
+					(disabled ? 'disabled ' : ''),
+					'/>',
 					'</div>',
 					'</div>'].join('');
 			},
-			textarea: function(nodeBarContents){
+			textarea: function(){
 				return ['<div class="layui-form-item layui-form-text">',
 					'<label class="layui-form-label" title="'+nodeBarContents.label+'">'+nodeBarContents.label+'：</label>',
 					'<div class="layui-input-block f-input-par">',
-					'<textarea name="'+nodeBarContents.name+'" class="layui-textarea f-input">'+(nodeBarContents.value ? nodeBarContents.value : "")+'</textarea>',
+					'<textarea class="layui-textarea f-input" value="'+val+'" placeholder="'+placeholder+'" lay-verify="'+verify+'" ',
+					(id != "" ? 'id="'+id+'" ' : ''),
+					(name != "" ? 'name="'+name+'" ' : ''),
+					(readonly ? 'readonly ' : ''),
+					(disabled ? 'disabled ' : ''),
+					'>'+val+'</textarea>',
 					'</div>',
 					'</div>'].join('');
 			},
-			hidden: function(nodeBarContents){
-				return ['<input type="hidden" name="'+nodeBarContents.name+'" class="layui-input f-input" value="'+(nodeBarContents.value ? nodeBarContents.value : "")+'"/>'].join('');
+			hidden: function(){
+				return ['<input type="hidden" class="layui-input f-input" value="'+val+'" lay-verify="'+verify+'" ',
+				        (id != "" ? 'id="'+id+'" ' : ''),
+						(name != "" ? 'name="'+name+'" ' : ''),
+				        (readonly ? 'readonly ' : ''),
+				        (disabled ? 'disabled ' : ''),
+				        '/>'].join('');
 			},
-			select: function(nodeBarContents){
+			select: function(){
 				var optionsData = nodeBarContents.optionsData;
 				var options = "";
-				var defaultValue = nodeBarContents.value ? nodeBarContents.value : "";
 				for(var key in optionsData){
-					if(defaultValue == optionsData[key]){
+					if(val == optionsData[key]){
 						options += "<option value='"+key+"' selected>"+optionsData[key]+"</option>";
 					} else {
 						options += "<option value='"+key+"'>"+optionsData[key]+"</option>";
@@ -2996,9 +3050,33 @@ layui.define(['jquery','layer','form'], function(exports) {
 				return ['<div class="layui-form-item">',
 				        '<label class="layui-form-label" title="'+nodeBarContents.label+'">'+nodeBarContents.label+'：</label>',
 				        '<div class="layui-input-block f-input-par">',
-				        '<select name="'+nodeBarContents.name+'">',
+				        '<select lay-verify="'+verify+'" ',
+				        (id != "" ? 'id="'+id+'" ' : ''),
+						(name != "" ? 'name="'+name+'" ' : ''),
+				        (readonly ? 'readonly ' : ''),
+				        (disabled ? 'disabled ' : ''),
+				        '>',
 				        options,
 				        '</select>', '</div>', '</div>'].join('');
+			},
+			submit: function(){
+				var filter = nodeBarContents.filter;
+				return ['<button type="button" class="layui-btn layui-btn-normal btn-w100" lay-submit lay-filter="'+filter+'" ',
+				        (id != "" ? 'id="'+id+'" ' : ''),
+						(name != "" ? 'name="'+name+'" ' : ''),
+				        '>'+val+'</button>'];
+			},
+			button: function(){
+				return ['<button type="button" class="layui-btn layui-btn-normal btn-w100" ',
+				        (id != "" ? 'id="'+id+'" ' : ''),
+						(name != "" ? 'name="'+name+'" ' : ''),
+				        ' >'+val+'</button>'];
+			},
+			reset: function(){
+				return ['<button type="reset" class="layui-btn layui-btn-primary btn-w100" ', 
+				        (id != "" ? 'id="'+id+'" ' : ''),
+						(name != "" ? 'name="'+name+'" ' : ''),
+				        '>'+val+'</button>'];
 			}
 		}
 	};
@@ -3008,6 +3086,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		var temp = _this.temp;
 		var id = temp[0], $ul = temp[1], $div = temp[2], level = temp[3];
+		var flag = false;
 		if(returnID){
 			var $thisDiv = _this.obj.find("[data-id='"+id+"']");
 			if(typeof returnID === "object"){
@@ -3031,7 +3110,10 @@ layui.define(['jquery','layer','form'], function(exports) {
 					_this.temp = [];
 					return ;
 				}
-			}else if(typeof returnID === "string" || typeof this.icon === 'number'){
+			}else if(returnID == 'refresh'){
+				// 如果是设置为refresh参数，则向后台发送请求，获取新增节点下的真实参数，局部刷新树。
+				flag = true;
+			} else if(typeof returnID === "string" || typeof returnID === 'number' || returnID == true){
 				$thisDiv.attr("data-id", returnID);
 				// 将li节点展示
 				$ul.find("li[data-id='"+returnID+"']").show();
@@ -3048,6 +3130,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			}
 			$ul.addClass(NAV_SHOW);	//展开UL
 			_this.accordionUL($ul);
+			if(flag) {_this.getChild($div);}
 			
 		} else {
 			// 将li节点删除
@@ -3059,28 +3142,37 @@ layui.define(['jquery','layer','form'], function(exports) {
 		_this.temp = []; // 临时变量制空
 
 	};
-
-	// 修改节点后改变节点内容
-	DTree.prototype.changeTreeNodeEdit = function(flag){
-		var _this = this;
-		var temp = _this.temp;
-		var $cite = temp[0],
-			$div = temp[1],
-			title = temp[2];
-
-		if(!flag){
-			$cite.html(title);
-			node = _this.getNodeParam($div);
-		}
-
-		_this.temp = []; // 临时变量制空
-	};
-
+	
 	// 编辑页打开后显示编辑页内容
 	DTree.prototype.changeTreeNodeDone = function(param){
 		var _this = this;
 		form.val('dtree_editNode_form', param);
 		form.render();
+	};
+
+	// 修改节点后改变节点内容
+	DTree.prototype.changeTreeNodeEdit = function(returnID){
+		var _this = this;
+		var temp = _this.temp;
+		var $cite = temp[0], $div = temp[1], title = temp[2], $p_div = temp[3];
+		var flag = false;
+		if(returnID){
+			if(typeof returnID === "object"){
+				title = parseData.title();
+				$cite.html(title);
+				_this.getNodeParam($div);
+			}else if(returnID == 'refresh'){
+				// 如果是设置为refresh参数，则向后台发送请求，获取最新的编辑节点上方节点的真实参数，局部刷新树。
+				flag = true;
+			}
+
+			if(flag) {_this.getChild($p_div);}
+		} else {
+			$cite.html(title);
+			_this.getNodeParam($div);
+		}
+
+		_this.temp = []; // 临时变量制空
 	};
 
 	// 删除节点后改变节点内容

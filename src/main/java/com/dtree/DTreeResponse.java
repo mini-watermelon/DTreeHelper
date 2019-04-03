@@ -4,13 +4,13 @@ package com.dtree;
 public class DTreeResponse {
 
 	/** 状态码*/
-	private int code;
+	private int code = 0;
 	
 	/** 信息标识*/
-	private String msg;
+	private String msg = "success";
 	
 	/** 状态类*/
-	private Status status;
+	private Status status = new Status();
 	
 	/** 数据*/
 	private Object data;

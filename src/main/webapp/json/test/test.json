@@ -6,7 +6,7 @@
 		"isLast": false,
 		"level": "1",
 		"parentId": "001",
-		"checkArr": [{"type": "0", "isChecked": "0"}],
+		"checkArr": "",
 		"children":[{
 			"id":"001001",
 			"title": "长沙市",

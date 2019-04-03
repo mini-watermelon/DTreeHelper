@@ -807,7 +807,7 @@
 									};
 								</pre>
 								<p>disabled：如果配置了该属性为true，则<span style="color:#FF5722;">节点复选框不可点击，节点不可点击，节点不可双击，右键菜单不可点击，不可点击加载iframe，无法获取复选框数据</span>，但可进行节点展开/关闭，并通过内置函数获取该节点的数据。</p>
-								<p>isHode：如果配置了该属性为true，则<span style="color:#FF5722;">节点不可选中，节点复选框不可点击，节点不可点击，节点不可双击，右键菜单不可点击，不可点击加载iframe</span>，但可进行节点展开/关闭，可以获取复选框数据，并可以通过内置函数获取该节点的数据。</p>
+								<p>isHide：如果配置了该属性为true，则<span style="color:#FF5722;">节点不可选中，节点复选框不可点击，节点不可点击，节点不可双击，右键菜单不可点击，不可点击加载iframe</span>，但可进行节点展开/关闭，可以获取复选框数据，并可以通过内置函数获取该节点的数据。</p>
 								<p>以下标准数据格式，即response中的值在标准数据格式中为各参数的键（列出必填项）。</p>
 								<pre class="layui-code" lay-title="默认标准返回数据格式" >
 									{
@@ -918,9 +918,9 @@
 								<tr>
 									<td>checkbarData</td>
 									<td>String</td>
-									<td>复选框记录数据类型形式，  change: 记录变更数据，choose: 记录选中数据，all: 记录全部数据<span style="color:#FF5722;">halfChoose：记录选中和半选中的数据</span></td>
+									<td>复选框记录数据类型形式，  change: 记录变更数据，choose: 记录选中数据，all: 记录全部数据，<span style="color:#FF5722;">halfChoose：记录选中和半选中的数据</span></td>
 									<td>"choose"</td>
-									<td>"choose" / "change" / "all"</td>
+									<td>"choose" / "change" / "all" / "halfChoose"</td>
 									<td>"change"</td>
 								</tr>
 								<tr>
@@ -1189,17 +1189,24 @@
 								<p>该参数是一个二维数组，可以指定toolbar页面中展示的内容：[[{}],[{}]]    其中，第一个[{}]表示addToolbar中的内容，第二个表示editToolbar中的内容,{}中的全部内容如下：</p>
 								<pre class="layui-code" lay-title="toolbarBtn配置参数一览">
 									{
-									  "label": "你的label名称",
-									  "name": "你的input标签指定的name",
-									  "type": "类型，可选值有（text、textarea、select、hidden），可不填，默认为text",
-									  "value": "input标签的默认值，可不填",
-									  "optionsData": "当类型为select时需要填写，表示一个json串，输出select的选项",
+									  "label": "你的label名称，除type为submit或reset外，必填",
+									  "name": "你的input标签指定的name，除type为submit或reset外，必填",
+									  "type": "类型，可选值有（text、textarea、select、hidden、submit（提交按钮，内部使用，设置无效）、reset（重置按钮）），可不填，默认为text",
+									  "value": "input标签的默认值，可不填，默认为'' ",
+									  "optionsData": "当类型为select时需要填写，表示一个json串，输出select的选项，type为select时必填，其他不填",
+									  "id": "你的input标签指定的id，可不填"（v2.5.0版本新增）,
+									  "placeholder": "你的input标签的placeholder属性，如不填，则为value值"（v2.5.0版本新增）,
+									  "verify": "layui表单校验的属性（lay-verify），可不填"（v2.5.0版本新增）,
+									  "defElem": "新增或编辑框中默认的表单和按钮，值为：nowChoose（当前选中）, nowChange（当前变更）, btn（提交按钮），如非默认请勿设置该属性"（v2.5.0版本新增）,
+									  "readonly": "你的input标签是否只读，可不填，默认为false"（v2.5.0版本新增）,
+									  "disabled": "你的input标签是否禁用，可不填，默认为false"（v2.5.0版本新增）,
+									  "filter": "提交按钮需要使用的lay-filter的值，内部使用，请勿设置"（v2.5.0版本新增）
 									};
 								</pre>
-								<pre class="layui-code" lay-title="toolbarBtn配置示例">
+								<pre class="layui-code" lay-title="toolbarBtn配置示例（更多配置参考开启工具栏）">
 									dtree.render({
 									  toolbar: true,
-									  toolbarBtn: [[{"label":"text1","name":"name1"},{label":"text2","name":"name2","type":"textarea"}],[{"label":"text1","name":"name1"},{label":"text4","name":"name4","type":"textarea"}]]
+									  toolbarBtn: [[{"label":"text1","name":"name1","verify":"required"},{label":"text2","name":"name2","type":"textarea"}],[{"label":"text1","name":"name1","verify":"required|number"},{label":"text4","name":"name4","type":"textarea"}]]
 									});
 								</pre>
 							</div>
@@ -1212,11 +1219,11 @@
 									var toolbarFun = {
 									  addTreeNode: function(treeNode, $div) { //添加树节点后调用的函数，用于用户自定义，如未指定则树不会发生变化
 									    console.log(treeNode);
-									    DemoTree.changeTreeNodeAdd(treeNode.nodeId); // 调用内置函数，新增节点后改变节点内容。传入null或false，则树不会发生变化
+									    DemoTree.changeTreeNodeAdd(treeNode.nodeId/param/true/false/"refresh"); // 调用内置函数，新增节点后改变节点内容。传入null或false，则树不会发生变化
 									  },
 									  editTreeNode: function(treeNode, $div) { //编辑树节点后调用的函数，用于用户自定义，如未指定则树不会发生变化
 									    console.log(treeNode);
-									     DemoTree.changeTreeNodeEdit(true); // 调用内置函数，修改节点后改变节点内容。传入false，则树不会发生变化
+									     DemoTree.changeTreeNodeEdit(param/true/false/"refresh"); // 调用内置函数，修改节点后改变节点内容。传入false，则树不会发生变化
 									  },
 									  editTreeLoad: function(treeNode) { //编辑树的数据回显，用于打开编辑时，回填数据，用于用户自定义。
 									    console.log(treeNode);
@@ -1224,7 +1231,7 @@
 									  },
 									  delTreeNode: function(treeNode, $div){ //删除树后调用的函数，用于用户自定义，如未指定则树不会发生变化
 									    console.log(treeNode);
-									    DemoTree.changeTreeNodeDel(true); // 调用内置函数，删除节点后改变节点内容。传入false，则树不会发生变化
+									    DemoTree.changeTreeNodeDel(true/false/"refresh"); // 调用内置函数，删除节点后改变节点内容。传入false，则树不会发生变化
 									  },
 									  loadToolbarBefore: function(buttons, treeNode, $div){ // 右键菜单加载前的函数
 									    console.log(buttons);
@@ -1247,14 +1254,41 @@
 									  recordData: "" // 节点的recordData，如果没有配置record则无
 									}
 								</pre>
+								<p>treeNode.nodeId/param/true/false/"refresh"表示的含义如下：</p>
+								<table class="layui-table" lay-size="sm">
+									<thead><tr><th>参数</th><th>类型</th><th>含义</th></tr> </thead>
+									<tbody>
+										<tr>
+											<td>treeNode.nodeId</td>
+											<td>String</td>
+											<td>表示给方法回传一个id值，并且这个id值是通过toolbar模块自动生成的</td>
+										</tr>
+										<tr>
+											<td>param</td>
+											<td>JSON</td>
+											<td>表示给方法回传一个JSON对象，该对象里面的格式就是你渲染树时的单个节点的那一条json的格式</td>
+										</tr>
+										<tr>
+											<td>true/false</td>
+											<td>Boolean</td>
+											<td>true，表示成功，则方法内部自动处理节点；false，表示失败，方法内部会将该新增节点清除</td>
+										</tr>
+										<tr>
+											<td>refresh</td>
+											<td>String</td>
+											<td>表示新增完成后，局部刷新。</td>
+										</tr>
+									</tbody>
+								</table>
 								<pre class="layui-code" lay-title="toolbarFun配置示例">
 									var DemoTree = dtree.render({
 									  toolbar: true,
 									  toolbarFun: {
 									    addTreeNode: function(treeNode) { 
 									      // 此处执行ajax，新增节点
-									      var id = $.ajax({ ...}) // 内容省略
-									      DemoTree.changeTreeNodeAdd(id); // 返回ID值
+									      $.ajax({ ..., success: function(){
+									        DemoTree.changeTreeNodeAdd(true); }
+									      }) // 内容省略
 									    }
 									  },
 									});

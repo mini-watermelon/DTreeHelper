@@ -4,7 +4,6 @@
 		"id":"001",
 		"title": "湖南省",
 		"isLast": false,
-		"level": "1",
 		"parentId": "0",
 		"children":[{
 			"id":"001001",

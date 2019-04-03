@@ -33,7 +33,7 @@
 					<div class="layui-field-box">
 						<p>当你配置了toolbar参数时，在你鼠标移动至树的某一个节点时，点击鼠标右键，即可出现toolbar的菜单了。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
-							<div class="layui-col-lg4"><div style="height: 780px;overflow: auto;" id="toolbarDiv"><ul id="toolbarTree1" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg4"><div style="height: 980px;overflow: auto;" id="toolbarDiv"><ul id="toolbarTree1" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
 									<div style="height: 550px;overflow: auto;" id="toolbarDiv">
@@ -42,35 +42,62 @@
 									
 									var DTree1 = dtree.render({
 									  elem: "#toolbarTree1",
-									  url: "../json/case/toolbarTree1.json",
+									  url: "/DTreeHelper/toolbar/query",
+									  initLevel: "1",
 									  dot:false,
 									  toolbar:true,
-									  toolbarScroll:"#toolbarDiv", //划重点，默认加载必须配置，属性含义请参考文档
-									  toolbarLoad: "node",  // 表示工具栏加载的节点，  可选的值还有：noleaf（非最后一级）,leaf（最后一级节点）
+									  record:true,
+									  dataFormat: "list",
+									  toolbarScroll:"#toolbarDiv",
 									  toolbarFun: {
-									    addTreeNode: function(treeNode, $div){
-									      // 这里可以发送ajax请求，来获取参数值，最后将参数值必须符合树response中定义的参数规范
+									    addTreeNode: function(treeNode){
 									      $.ajax({
-									         ... // ajax基本参数
-									         success: function(result){
-									           var param = result.data;
-									           DTree1.changeTreeNodeAdd(param); // 配套使用,添加成功后使用
-									         },
-									         error: function(){
-									           DTree1.changeTreeNodeAdd(false); // 配套使用,失败使用
-									         }
-									      }) //示例发送ajax请求获取参数
+									        type: "post",
+									        data: treeNode,
+									        url: "/DTreeHelper/toolbar/insert",
+									        success: function(result){
+									          //DTree1.changeTreeNodeAdd(treeNode.nodeId); // 添加成功，返回ID
+									          //DTree1.changeTreeNodeAdd(true); // 添加成功
+									          //DTree1.changeTreeNodeAdd(result.data); // 添加成功，返回一个JSON对象
+									          //DTree1.changeTreeNodeAdd("refresh"); // 添加成功，局部刷新树
+									        },
+									        error: function(){
+									          //DTree1.changeTreeNodeAdd(false); // 添加失败
+									        }
+									      });
 									    },
-									    editTreeNode: function(treeNode, $div){
-									      DTree1.changeTreeNodeEdit(true/false); // 配套使用,同上
+									    editTreeNode: function(treeNode){
+									      $.ajax({
+									        type: "post",
+									        data: treeNode,
+									        url: "/DTreeHelper/toolbar/update",
+									        success: function(result){
+									          //DTree1.changeTreeNodeEdit(true);// 修改成功
+									          //DTree1.changeTreeNodeEdit(result.param); // 修改成功，返回一个JSON对象
+									          //DTree1.changeTreeNodeEdit("refresh"); // 修改成功，局部刷新树
+									        },
+									        error: function(){
+									          //DTree1.changeTreeNodeEdit(false);//修改失败
+									        }
+									      });
 									    },
-									    delTreeNode: function(treeNode, $div){
-									      DTree1.changeTreeNodeDel(true/false); // 配套使用,同上
+									    delTreeNode: function(treeNode){
+									      $.ajax({
+									        type: "post",
+									        data: treeNode,
+									        url: "/DTreeHelper/toolbar/delete",
+									        success: function(result){
+									          //DTree1.changeTreeNodeDel(true); // 删除成功
+									          //DTree1.changeTreeNodeDel("refresh"); // 删除成功，局部刷新树
+									        },
+									        error: function(){
+									          //DTree1.changeTreeNodeDel(false);// 删除失败
+									        }
+									      });
 									    }
 									  }
 									});
 								</pre>
-								<p>请注意：现在这样的写法，只能改变树的样式，而不能真正的将数据传递到后台（大多数时候，数据都是来自后台的），所以你需要真正的将toolbarFun中的三个方法实现了，才会真正的将数据保存到后台哦</p>
 							</div>
 						</div>
 					</div>
@@ -83,7 +110,7 @@
 					<div class="layui-field-box">
 						<p>toolbar加载时，每种操作都会自带一些必填属性，但是你可以自定义一些你需要添加的属性，比如备注，等等。当然你可能不需要用到这么多的功能，你还可以从增删改中选择几种。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
-							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;" id="toolbarDiv2"><ul id="toolbarTree2" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg4"><div style="height: 650px;overflow: auto;" id="toolbarDiv2"><ul id="toolbarTree2" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
 									<div style="height: 550px;overflow: auto;" id="toolbarDiv2">
@@ -97,11 +124,21 @@
 									  toolbarScroll:"#toolbarDiv2",
 									  toolbarShow:["add","delete"],  // 这样就只会出现两个了
 									  toolbarBtn:[
-									    [{"label":"备注","name":"remark","type":"textarea"}] // 这就是自定义新增中的内容
+									    [
+									     {"label":"文本框","name":"name1","type":"text"},
+									     {"label":"下拉框","name":"name3","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"}},
+									     {"label":"隐藏域","name":"name4","type":"hidden"},
+									     {"label":"文本域","name":"name2","type":"textarea"},
+									     {"value":"重置按钮","name":"name6","type":"reset"},
+									     {"label":"文本框+只读","name":"name1","type":"text","readonly":true,"value":"只读"},
+									     {"label":"下拉框+禁用","name":"name3","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"},"disabled":true},
+									     {"label":"隐藏域+校验","name":"name4","type":"hidden","verify":"required"},
+									     {"label":"文本域+默认表单（之前是新增节点文本框）","name":"name2","type":"textarea","defElem":"nowChange"},
+									     {"value":"提交+默认按钮","name":"name7","type":"submit","defElem":"btn"},
+									    ] // 这就是自定义新增中的内容
 									  ]
 									});
 								</pre>
-								<p>请注意：现在这样的写法，只能改变树的样式，而不能真正的将数据传递到后台（大多数时候，数据都是来自后台的），所以你需要真正的将toolbarFun中的三个方法实现了，才会真正的将数据保存到后台哦</p>
 							</div>
 						</div>
 					</div>
@@ -126,19 +163,24 @@
 									  url: "../json/case/toolbarTree1.json",
 									  toolbar:true,
 									  toolbarScroll:"#toolbarDiv3",
-									  toolbarShow:["edit"],  // 这样就只会出现一个了
+									  toolbarShow:["edit"],  // 这样就只会出现一个编辑页
 									  toolbarBtn:[
-									    [],
+									    [], //将新增页制空
 									    [{"label":"级别","name":"level","type":"text"},
 									     {"label":"下拉","name":"test","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"}}
-									    ] // 自定义编辑页的内容，第一个[]是新增页的，咱不用管它
+									    ] // 自定义编辑页的内容
 									  ],
 									  toolbarFun: {
 									    editTreeLoad: function(treeNode, $div){
 									      // 这里可以发送ajax请求，来获取参数值，最后将参数值以form能识别的键值对json的形式返回
-									      var param = $.ajax({async:false, ...}) //示例发送ajax请求获取参数
-									      // 这里的param格式为：  {level:treeNode.level, test:"3"};
-									     DTree3.changeTreeNodeDone(param); // 配套使用
+									      $.ajax({
+									         ... // ajax基本参数
+									         success: function(result){
+									           var param = result.data;
+									           // 这里的param格式为：  {level:treeNode.level, test:"3"};
+									           DTree3.changeTreeNodeDone(param); // 配套使用
+									         }
+									      }) 
 									    },
 									    editTreeNode: function(treeNode, $div){
 									      layer.msg(JSON.stringify(treeNode));
@@ -150,6 +192,7 @@
 								<p>这样你就可以看到数据回显了。其他的操作同上</p>
 							</div>
 						</div>
+						<p style="color:#FF5722">param格式说明：为JSON格式，其中key为你配置的toolbarBtn中的name，值则为name需要回显的值。</p>
 					</div>
 				</fieldset>
 			</div>
@@ -179,6 +222,7 @@
 									});
 								</pre>
 								<p>当你点击右键菜单，可以看到添加节点变成了添加地名，弹出框的标题，表单的输入项的labelName也一并发生了变化。</p>
+								<p>如果你在toolbarBtn中配置了某一个默认按钮的label，则会以你配置的label为准。</p>
 							</div>
 						</div>
 					</div>
@@ -189,9 +233,9 @@
 				<fieldset class="layui-elem-field layui-field-title" id="zdyext">
 					<legend>扩展toolbar按钮</legend>
 					<div class="layui-field-box">
-						<p>当toolbar内置的三个按钮都不能满足你的需求时，你可以自定义扩展toolbar按钮。</p>
+						<p>当toolbar内置的三个按钮都不能满足你的需求，又或者你想要禁用默认的按钮，自定义自己的按钮的情况下，你可以自定义扩展toolbar按钮。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
-							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;" id="toolbarDiv5"><ul id="toolbarTree5" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;" id="toolbarDiv5"><ul id="toolbarTree5" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
 									<div style="height: 350px;overflow: auto;" id="toolbarDiv5">
@@ -203,7 +247,12 @@
 									  url: "../json/case/toolbarTree1.json",
 									  toolbar:true,
 									  toolbarScroll:"#toolbarDiv5",
-									  toolbarExt:[{toolbarId: "test",icon:"dtree-icon-wefill",title:"我是自定义",handler: function(node,$div){layer.msg(JSON.stringify(node));}}]
+									  toolbarShow:[], // 默认按钮制空
+									  toolbarExt:[{toolbarId: "test",icon:"dtree-icon-wefill",title:"自定义新增",handler: function(node,$div){
+									      layer.msg(JSON.stringify(node));
+									      // 你可以在此添加一个layer.open，里面天上你需要添加的表单元素，就跟你写新增页面是一样的
+									    }
+									  }]
 									});
 								</pre>
 								<p>当你点击右键菜单，可以看到出现了你自定义的菜单，并且当你点击它时，会弹出回调信息的提示信息。</p>
@@ -382,29 +431,56 @@
 		// 1.toolbarTree1
 		var DTree1 = dtree.render({
 			elem: "#toolbarTree1",
-			url: "../json/case/toolbarTree1.json",
-			type: "all",
+			url: "/DTreeHelper/toolbar/query",
+			initLevel: "1",
 			dot:false,
 			toolbar:true,
 			record:true,
+			dataFormat: "list",
 			toolbarScroll:"#toolbarDiv",
 			toolbarFun: {
 				addTreeNode: function(treeNode){
-					console.log(treeNode);
-					/* var param = {
-							"id":"0010011",
-							"title": "长沙市1",
-							"isLast":true,
-							"parentId": "001",
-							"level": "2"
-						} */
-			      DTree1.changeTreeNodeAdd(treeNode.nodeId);
+					$.ajax({
+						type: "post",
+						data: treeNode,
+						url: "/DTreeHelper/toolbar/insert",
+						success: function(result){
+							DTree1.changeTreeNodeAdd("refresh");
+						},
+						error: function(){
+							 DTree1.changeTreeNodeAdd(false);
+						}
+							
+					});
 			    },
 			    editTreeNode: function(treeNode){
-			      DTree1.changeTreeNodeEdit(true);
+			    	$.ajax({
+						type: "post",
+						data: treeNode,
+						url: "/DTreeHelper/toolbar/update",
+						success: function(result){
+							 DTree1.changeTreeNodeEdit("refresh");
+						},
+						error: function(){
+							 DTree1.changeTreeNodeEdit(false);
+						}
+					});
+			    	console.log(treeNode);
+			     
 			    },
 			    delTreeNode: function(treeNode){
-			      DTree1.changeTreeNodeDel(true);
+			    	$.ajax({
+						type: "post",
+						data: treeNode,
+						url: "/DTreeHelper/toolbar/delete",
+						success: function(result){
+							DTree1.changeTreeNodeDel("refresh");
+						},
+						error: function(){
+							DTree1.changeTreeNodeDel(false);
+						}
+					});
+			      
 			    }
 			}
 		});
@@ -418,7 +494,18 @@
 			toolbarScroll:"#toolbarDiv2",
 			toolbarShow:["add","delete"],
 			toolbarBtn:[
-				[{"label":"备注","name":"remark","type":"textarea"}]
+				[
+				 {"label":"文本框","name":"name1","type":"text"},
+				 {"label":"下拉框","name":"name3","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"}},
+				 {"label":"隐藏域","name":"name4","type":"hidden"},
+				 {"label":"文本域","name":"name2","type":"textarea"},
+				 {"value":"重置按钮","name":"name6","type":"reset"},
+			     {"label":"文本框+只读","name":"name1","type":"text","readonly":true,"value":"只读"},
+			     {"label":"下拉框+禁用","name":"name3","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"},"disabled":true},
+			     {"label":"隐藏域+校验","name":"name4","type":"hidden","verify":"required"},
+			     {"label":"文本域+默认表单（之前是新增节点文本框）","name":"name2","type":"textarea","defElem":"nowChange"},
+			     {"value":"提交+默认按钮","name":"name7","type":"submit","defElem":"btn"},
+			    ] 
 			]
 		});
 		
@@ -467,7 +554,8 @@
 			type: "all",
 			toolbar:true,
 			toolbarScroll:"#toolbarDiv5",
-			toolbarExt:[{toolbarId: "test",icon:"dtree-icon-wefill",title:"我是自定义",handler: function(node,$div){layer.msg(JSON.stringify(node));}}]
+			toolbarShow:[], // 默认按钮制空
+			toolbarExt:[{toolbarId: "test",icon:"dtree-icon-wefill",title:"自定义新增",handler: function(node,$div){layer.msg(JSON.stringify(node));}}]
 		});
 		
 		// 1.toolbarTree5
@@ -479,9 +567,9 @@
 			toolbarScroll:"#toolbarDiv6",
 			toolbarFun:{
 				loadToolbarBefore: function(buttons, param, $div){
-					console.log(buttons);
+					/* console.log(buttons);
 					console.log(param);
-					console.log($div);
+					console.log($div); */
 					if(param.isLeaf){ // 如果是叶子节点
 						buttons.addToolbar = "";  // 取消新增功能
 					}
@@ -498,9 +586,9 @@
 		  toolbarWay:"fixed",
 		  toolbarFun:{
 			loadToolbarBefore: function(buttons, param, $div){
-				console.log(buttons);
+				/* console.log(buttons);
 				console.log(param);
-				console.log($div);
+				console.log($div); */
 				if(param.isLeaf){ // 如果是叶子节点
 					buttons.addToolbar = "";  // 取消新增功能
 				}

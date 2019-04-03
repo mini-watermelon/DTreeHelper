@@ -15,9 +15,6 @@ public class DTree {
 	/** 节点名称*/
 	private String title;
 	
-	/** 层级*/
-	private String level;
-	
 	/** 是否最后一级节点*/
 	private Boolean isLast;
 	
@@ -35,6 +32,14 @@ public class DTree {
 
 	public DTree() {}
 	
+	public DTree(String id, String parentId, String title, Boolean isLast) {
+		super();
+		this.id = id;
+		this.parentId = parentId;
+		this.title = title;
+		this.isLast = isLast;
+	}
+
 	public DTree(String id, String parentId, String title, String iconClass,
 			Object basicData, List<CheckArr> checkArr) {
 		this.id = id;
@@ -45,13 +50,12 @@ public class DTree {
 		this.checkArr = checkArr;
 	}
 
-	public DTree(String id, String parentId, String title, String level,
+	public DTree(String id, String parentId, String title,
 			Boolean isLast, String iconClass, Object basicData,
 			List<CheckArr> checkArr, List<DTree> children) {
 		this.id = id;
 		this.parentId = parentId;
 		this.title = title;
-		this.level = level;
 		this.isLast = isLast;
 		this.iconClass = iconClass;
 		this.basicData = basicData;
@@ -81,14 +85,6 @@ public class DTree {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getLevel() {
-		return level;
-	}
-
-	public void setLevel(String level) {
-		this.level = level;
 	}
 
 	public Boolean getIsLast() {
@@ -134,10 +130,9 @@ public class DTree {
 	@Override
 	public String toString() {
 		return "DTree [id=" + id + ", parentId=" + parentId + ", title="
-				+ title + ", level=" + level + ", isLast=" + isLast
-				+ ", iconClass=" + iconClass + ", basicData=" + basicData
-				+ ", checkArr=" + checkArr + ", children=" + children + "]";
+				+ title + ", isLast=" + isLast + ", iconClass=" + iconClass
+				+ ", basicData=" + basicData + ", checkArr=" + checkArr
+				+ ", children=" + children + "]";
 	}
-	
 	
 }
