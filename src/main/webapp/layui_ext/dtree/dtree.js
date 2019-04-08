@@ -2634,25 +2634,32 @@ layui.define(['jquery','layer','form'], function(exports) {
 				} else if(toolbarWay == "fixed" || toolbarWay == "follow") {
 					_this.obj.find("cite[data-leaf][dtree-disabled='false']").each(function(){
 						var $cite = $(this);
-						if($cite.next("em."+TOOLBAR_TOOL_EM).length == 0) {
-							var $div = $cite.parent("div");
-							var param = _this.getRequestParam(_this.getTempNodeParam($div));
-							var toolbarMenus = _this.toolbarFun.loadToolbarBefore(event.cloneObj(toolbarMenu), param, $div);
-							var hideCls = (toolbarWay == "follow") ? NAV_HIDE : "";
-							var em = ["<em class='"+TOOLBAR_TOOL_EM+" "+hideCls+"'>"];
-							if(toolbarMenus){
-								for(var key in toolbarMenus){
-									em.push(toolbarMenus[key]);
-								}
-							}
-							em.push("</em>");
-							$cite.after(em.join(''));
-						}
+						_this.dynamicToolbarDom($cite);
 					});
 				}
 			}
 		}
 	};
+	
+	// 在节点后动态绑定fixed和follow条件的工具栏
+	DTree.prototype.dynamicToolbarDom = function($cite){
+		var _this = this;
+		var toolbarWay = _this.toolbarWay;
+		if($cite.next("em."+TOOLBAR_TOOL_EM).length == 0) {
+			var $div = $cite.parent("div");
+			var param = _this.getRequestParam(_this.getTempNodeParam($div));
+			var toolbarMenus = _this.toolbarFun.loadToolbarBefore(event.cloneObj(_this.toolbarMenu), param, $div);
+			var hideCls = (toolbarWay == "follow") ? NAV_HIDE : "";
+			var em = ["<em class='"+TOOLBAR_TOOL_EM+" "+hideCls+"'>"];
+			if(toolbarMenus){
+				for(var key in toolbarMenus){
+					em.push(toolbarMenus[key]);
+				}
+			}
+			em.push("</em>");
+			$cite.after(em.join(''));
+		}
+	}
 	
 	// 隐藏toolbar
 	DTree.prototype.toolbarHide = function() {
@@ -3098,8 +3105,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.isLast(0), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.isHide(), parseData.basicData(), parseData.recordData(), "item"));
 
 					// 建造完毕后，选中该DIV
-					var $addDiv = $ul.find("div[data-id='"+returnID.id+"']");
-					_this.setNodeParam($addDiv)
+					$thisDiv = $ul.find("div[data-id='"+returnID.id+"']");
+					_this.setNodeParam($thisDiv)
 				} else {
 					layer.msg("添加失败,节点ID为undefined！",{icon:5});
 					// 将li节点删除
@@ -3117,8 +3124,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 				$thisDiv.attr("data-id", returnID);
 				// 将li节点展示
 				$ul.find("li[data-id='"+returnID+"']").show();
-				var $addDiv = $ul.find("div[data-id='"+returnID+"']");
-				_this.setNodeParam($addDiv)
+				//var $addDiv = $ul.find("div[data-id='"+returnID+"']");
+				_this.setNodeParam($thisDiv)
 			}
 
 			// 判断当前点击的节点是否是最后一级节点，如果是，则需要修改节点的样式
@@ -3130,6 +3137,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 			}
 			$ul.addClass(NAV_SHOW);	//展开UL
 			_this.accordionUL($ul);
+			
+			// 这种情况下需要在新增节点后对节点新增工具栏
+			if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
+				_this.dynamicToolbarDom($thisDiv.find("cite[data-leaf]"));
+			}
+			
 			if(flag) {_this.getChild($div);}
 			
 		} else {

@@ -42,7 +42,7 @@
 								  &lt;link rel="stylesheet" href="layui_ext/dtree/font/dtreefont.css"&gt;
 								</pre>
 								<pre class="layui-code" lay-title="JavaScript">
-								  layer.extend({
+								  layui.extend({
 								    dtree: '{/}layui_ext/dtree/dtree'   // {/}的意思即代表采用自有路径，即不跟随 base 路径
 								  }).use(['dtree','layer','jquery'], function(){
 								    var dtree = layui.dtree, layer = layui.layer, $ = layui.jquery;
@@ -2198,14 +2198,23 @@
 									<td>获取toolbar详细的标签信息</td>
 									<td>-</td>
 								</tr>
+								<tr>
+									<td>DTree.prototype.dynamicToolbarDom<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>Dom</td>
+									<td>在节点后动态绑定fixed和follow条件的工具栏</td>
+									<td>-</td>
+								</tr>
 								<tr id="changeTreeNodeAdd">
 									<td><span style="color:#FF5722;">DTree.prototype.changeTreeNodeAdd</span></td>
 									<td>String / Object</td>
 									<td>新增节点后改变节点内容</td>
 									<td>
 										<pre class="layui-code" lay-title="changeTreeNodeAdd方法示例">
-											//该方法适用于在toolbar的addTreeNode回调中，获取后台返回数据改变树的状态
-											DemoTree.changeTreeNodeAdd(param);
+											//该方法适用于在toolbar的addTreeNode回调中，获取后台返回数据改变树的状态，入参一共有四种
+											//DemoTree.changeTreeNodeAdd(param); // 添加成功，返回一个JSON对象
+											//DemoTree.changeTreeNodeAdd(treeNode.nodeId); // 添加成功，返回ID
+											//DemoTree.changeTreeNodeAdd(true/false); // 添加成功/失败
+											//DemoTree.changeTreeNodeAdd("refresh"); // 添加成功，局部刷新树
 										</pre>
 									</td>
 								</tr>
@@ -2215,8 +2224,10 @@
 									<td>编辑节点后改变节点内容</td>
 									<td>
 										<pre class="layui-code" lay-title="changeTreeNodeEdit方法示例">
-											//该方法适用于在toolbar的editTreeNode回调中，获取后台返回数据改变树的状态
-											DemoTree.changeTreeNodeEdit(flag);
+											//该方法适用于在toolbar的editTreeNode回调中，获取后台返回数据改变树的状态，入参一共有三种
+											//DemoTree.changeTreeNodeEdit(true/false);// 修改成功/失败
+											//DemoTree.changeTreeNodeEdit(result.param); // 修改成功，返回一个JSON对象
+											//DemoTree.changeTreeNodeEdit("refresh"); // 修改成功，局部刷新树
 										</pre>
 									</td>
 								</tr>
@@ -2226,8 +2237,9 @@
 									<td>删除节点后改变节点内容</td>
 									<td>
 										<pre class="layui-code" lay-title="changeTreeNodeDel方法示例">
-											//该方法适用于在toolbar的delTreeNode回调中，获取后台返回数据改变树的状态
-											DemoTree.changeTreeNodeDel(flag);
+											//该方法适用于在toolbar的delTreeNode回调中，获取后台返回数据改变树的状态，入参一共有两种
+											//DemoTree.changeTreeNodeDel(true/false); // 删除成功/失败
+											//DemoTree.changeTreeNodeDel("refresh"); // 删除成功，局部刷新树
 										</pre>
 									</td>
 								</tr>
@@ -2239,6 +2251,7 @@
 										<pre class="layui-code" lay-title="changeTreeNodeDone方法示例">
 											//该方法适用于在toolbar的editTreeLoad回调中，获取后台返回数据改变树的状态
 											DemoTree.changeTreeNodeDone(param);
+											//param格式说明：为JSON格式，其中key为你配置的toolbarBtn中的name，值则为name需要回显的值。
 										</pre>
 									</td>
 								</tr>

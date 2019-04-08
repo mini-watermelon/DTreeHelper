@@ -576,10 +576,11 @@
 					
 					return buttons;
 				}
+				
 			}
 		});
 		
-		dtree.render({
+		var DTree7 = dtree.render({
 		  elem: "#toolbarTree7",
 		  url: "../json/case/toolbarTree1.json",
 		  toolbar:true,
@@ -594,7 +595,10 @@
 				}
 				
 				return buttons;
-			}
+			},
+			addTreeNode: function(treeNode){
+				DTree7.changeTreeNodeAdd(true);
+		    }
 		}
 		});
 		
