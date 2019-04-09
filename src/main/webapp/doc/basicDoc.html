@@ -1699,7 +1699,7 @@
 				<fieldset class="layui-elem-field layui-field-title" id="nzhsyl">
 					<legend>内置函数一览</legend>
 					<div class="layui-field-box">
-						<p style="padding: 5px 0px;">内置函数大多是组件内部使用的函数，对于用户来说用不着，此处列出加深用户对于组件的印象;</p>
+						<p style="padding: 5px 0px;">内置函数大多是组件内部使用的函数，对于一般用户来说使用频率较低，但可重点查阅有示例以及红色标识的函数;</p>
 						<p style="padding: 5px 0px;">要使用内置函数，必须先使用组件将树对象定义出来，在用定义出来的对象进行操作,如：var DemoTree = dtree.render({...}); ，则操作DemoTree对象</p>
 						<p style="padding: 5px 0px;">函数名称：<span style="color:#FF5722;">红色</span>为可能使用的到的函数</p>
 						<table class="layui-table" lay-size="sm">
@@ -2269,8 +2269,31 @@
 									<td>-</td>
 								</tr>
 								<tr><td colspan="5"><span style="font-weight: bold;">数据回调函数</span></td></tr>
+								<tr id="getNodeDom">
+									<td><span style="color:#FF5722;">DTree.prototype.getNodeDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>String / Dom</td>
+									<td>根据具体的id获取基于当前id的div以及对应的其他dom元素。<br>
+										如果id就是一个$div，则就是这个div，如果不是则进行选取div，如果选不中则为null。<br>
+										该方法可以替代getNowNodeUl、getNowNode、getNode、getNowNodeOrNull的功能<br>
+									</td>
+									<td>
+										<pre class="layui-code" lay-title="getNodeDom方法示例">
+											var $div = DemoTree.getNodeDom("001").div(); //获取data-id是001的div
+											var $div1 = DemoTree.getNodeDom($div).div(); //Dom也可以当做入参传递，一下方法只演示一种。
+											var $cite = DemoTree.getNodeDom("001").cite(); //获取文本存储元素
+											var $fnode = DemoTree.getNodeDom("001").fnode(); //获取一级图标元素
+											var $snode = DemoTree.getNodeDom("001").snode(); //获取二级图标元素
+											var $checkbar = DemoTree.getNodeDom("001").checkbar(); //获取复选框元素集合
+											var $nextUl = DemoTree.getNodeDom("001").nextUl(); //获取相邻的ul元素
+											var $parentLi = DemoTree.getNodeDom("001").parentLi(); //获取父级li元素
+											var $nowDiv =  DemoTree.getNodeDom().nowDiv(); //获取当前选中$div，没有则返回null
+											var $nowOrRootDiv = DemoTree.getNodeDom().nowOrRootDiv(); //获取当前选中$div，没有则返回根节点下的第一个$div
+											var $nowOrRootUl = DemoTree.getNodeDom().nowOrRootUl(); //获取当前选中$div的nextUl， 或根节点ul。为了将新节点放入ul下
+										</pre>
+									</td>
+								</tr>
 								<tr id="getNowNodeUl">
-									<td><span style="color:#FF5722;">DTree.prototype.getNowNodeUl</span></td>
+									<td>DTree.prototype.getNowNodeUl</td>
 									<td>-</td>
 									<td>获取当前选中节点下一个UL 或根节点。为了将新节点放入ul下</td>
 									<td>
@@ -2281,7 +2304,7 @@
 									</td>
 								</tr>
 								<tr id="getNowNode">
-									<td><span style="color:#FF5722;">DTree.prototype.getNowNode</span></td>
+									<td>DTree.prototype.getNowNode</td>
 									<td>-</td>
 									<td>获取当前选中节点,或根节点</td>
 									<td>
@@ -2292,7 +2315,7 @@
 									</td>
 								</tr>
 								<tr id="getNode">
-									<td><span style="color:#FF5722;">DTree.prototype.getNode</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>DTree.prototype.getNode<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String</td>
 									<td>获取指定Id的节点</td>
 									<td>
@@ -2302,7 +2325,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="getNode">
+								<tr id="getNowNodeOrNull">
 									<td>DTree.prototype.getNowNodeOrNull<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>获取当前选中节点，没有选中则为null</td>
@@ -2450,7 +2473,7 @@
 							var tt = data.title;
 							var tts = ["基础参数一览表","iconfontStyle","response","formatter","复选框配置","获取指定节点值","复选框半选状态设置","复选框选中状态设置",
 							           "setDisabledNodes","cancelDisabledNodes","getDisabledNodesParam","getAllDisabledNodesParam","setHideNodes",
-							           "cancelHideNodes","getHideNodesParam","模拟单击","getAllHideNodesParam","getNode","menubarTips","toolbarShow","errData"];
+							           "cancelHideNodes","getHideNodesParam","模拟单击","getAllHideNodesParam","menubarTips","toolbarShow","errData","getNodeDom"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

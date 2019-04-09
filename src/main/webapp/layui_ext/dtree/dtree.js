@@ -3,7 +3,7 @@
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/
  *@License https://www.layui.com/
- *@LASTTIME 2019/4/3 
+ *@LASTTIME 2019/4/9 
  *@VERSION v2.5.0
  */
 layui.define(['jquery','layer','form'], function(exports) {
@@ -1125,6 +1125,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				type: _this.method,
 				url: _this.url,
 				dataType: _this.dataType,
+				contentType: _this.contentType,
 				data: _this.getFilterRequestParam(_this.getRequestParam()),
 				success: function(result) {
 					if (typeof result === 'string') {
@@ -1273,7 +1274,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 	// 初始化树或者拼接树
 	DTree.prototype.loadListTree = function(pListData, listData, level, $ul){
 		var _this = this;
-		$ul = $ul || _this.getNowNodeUl();	//当前选中的节点或根节点
+		$ul = $ul || _this.getNodeDom().nowOrRootUl();	//当前选中的节点或根节点
 		if (pListData.length > 0){
 			for (var i = 0; i < pListData.length; i++) {
 				// 1.获取已知节点的全部数据
@@ -1321,7 +1322,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 	DTree.prototype.loadTree = function(root, level, $ul){
 		var _this = this;
 		if (root) {
-			$ul = $ul || _this.getNowNodeUl();	//当前选中的节点或根节点
+			$ul = $ul || _this.getNodeDom().nowOrRootUl();	//当前选中的节点或根节点
 			for (var i = 0; i < root.length; i++) {	// 遍历跟节点或追加的跟节点
 				var data = root[i];
 				if(typeof data !== "object") continue;
@@ -1586,8 +1587,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 	DTree.prototype.dataInit = function(chooseId){
 		var _this = this;
 		var $div = _this.obj.find("div[data-id='"+chooseId+"']");
-		$div.parent().find("."+NAV_THIS).removeClass(NAV_THIS);
-		$div.parent().find("."+_this.style.itemThis).removeClass(_this.style.itemThis);
+		_this.getNodeDom($div).parentLi().find("."+NAV_THIS).removeClass(NAV_THIS);
+		_this.getNodeDom($div).parentLi().find("."+_this.style.itemThis).removeClass(_this.style.itemThis);
 		$div.addClass(NAV_THIS);
 		$div.addClass(_this.style.itemThis);
 		_this.setNodeParam($div);
@@ -1631,8 +1632,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 			if($divs.length && $divs.length > 0) {
 				for (var i=0; i<$divs.length; i++) {
 					var $div = $($divs[i]);
-					var $i_spread = $div.find("i[data-spread]").eq(0),
-						$i_node = $div.find("i[data-spread]").eq(1);
+					var $i_spread = _this.getNodeDom($div).fnode(),
+						$i_node = _this.getNodeDom($div).snode();
 					if($i_spread.attr("data-spread") != 'last'){
 						_this.operateIcon($i_spread, $i_node).close();
 					}
@@ -1644,12 +1645,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 	
 	// 展开或隐藏节点  作用点： div
 	DTree.prototype.clickSpread = function($div) {
-		var $i_spread = $div.find("i[data-spread]").eq(0),
-			$i_node = $div.find("i[data-spread]").eq(1),
-			$cite = $div.find("cite[data-leaf]").eq(0),
+		var _this = this;
+		var $i_spread = _this.getNodeDom($div).fnode(),
+			$i_node = _this.getNodeDom($div).snode(),
+			$cite = _this.getNodeDom($div).cite(),
 			spread = $i_spread.attr("data-spread"),
 			$ul = $div.next("ul");
-		var _this = this;
 
 		if ($ul.length > 0) {
 			if (spread == "close") {
@@ -1684,7 +1685,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		var disabledId = disabledIds.split(",");
 		for (var i=0; i<disabledId.length; i++) {
-			var $div = _this.getNode(disabledId[i]);
+			var $div = _this.getNodeDom(disabledId[i]).div();
 			var $i = $div.children("div."+LI_DIV_CHECKBAR).children("i[data-par]");
 			var $cite = $div.children("cite[data-leaf]");
 			if($div != null && $div.attr("dtree-disabled") != "true") {
@@ -1702,7 +1703,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		var disabledId = disabledIds.split(",");
 		for (var i=0; i<disabledId.length; i++) {
-			var $div = _this.getNode(disabledId[i]);
+			var $div = _this.getNodeDom(disabledId[i]).div();
 			var $i = $div.children("div."+LI_DIV_CHECKBAR).children("i[data-par]");
 			var $cite = $div.children("cite[data-leaf]");
 			if($div != null && $div.attr("dtree-disabled") == "true") {
@@ -1721,7 +1722,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var disabledId = disabledIds.split(",");
 		var disabledNodes = [];
 		for (var i=0; i<disabledId.length; i++) {
-			var $div = _this.getNode(disabledId[i]);
+			var $div = _this.getNodeDom(disabledId[i]).div();
 			if($div != null && $div.attr("dtree-disabled") == "true") {
 				disabledNodes.push(_this.getRequestParam(_this.getTempNodeParam($div)));
 			}
@@ -1745,7 +1746,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		var hideId = hideIds.split(",");
 		for (var i=0; i<hideId.length; i++) {
-			var $div = _this.getNode(hideId[i]);
+			var $div = _this.getNodeDom(hideId[i]).div();
 			var $li = $div.parent("li[dtree-hide]");
 			if($div != null && $div.attr("dtree-hide") != "true") {
 				$div.attr("dtree-hide", "true");
@@ -1759,7 +1760,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		var hideId = hideIds.split(",");
 		for (var i=0; i<hideId.length; i++) {
-			var $div = _this.getNode(hideId[i]);
+			var $div = _this.getNodeDom(hideId[i]).div();
 			var $li = $div.parent("li[dtree-hide]");
 			if($div != null && $div.attr("dtree-hide") == "true") {
 				$div.attr("dtree-hide", "false");
@@ -1775,7 +1776,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var hideId = hideIds.split(",");
 		var hideNodes = [];
 		for (var i=0; i<hideId.length; i++) {
-			var $div = _this.getNode(hideId[i]);
+			var $div = _this.getNodeDom(hideId[i]).div();
 			if($div != null && $div.attr("dtree-hide") == "true") {
 				hideNodes.push(_this.getRequestParam(_this.getTempNodeParam($div)));
 			}
@@ -2145,11 +2146,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		var temp_node = {};
 		temp_node.nodeId = $div.attr("data-id");
-		temp_node.parentId = $div.parent().attr("data-pid");
-		temp_node.context = $div.find("cite[data-leaf]").eq(0).text();
-		temp_node.isLeaf = $div.find("cite[data-leaf]").eq(0).attr("data-leaf") == "leaf" ? true : false;
-		temp_node.level = $div.parent().attr("data-index");
-		temp_node.spread = $div.find("i[data-spread]").eq(0).attr("data-spread") == "open" ? true : false;
+		temp_node.parentId = _this.getNodeDom($div).parentLi().attr("data-pid");
+		temp_node.context = _this.getNodeDom($div).cite().text();
+		temp_node.isLeaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
+		temp_node.level = _this.getNodeDom($div).parentLi().attr("data-index");
+		temp_node.spread = _this.getNodeDom($div).fnode().attr("data-spread") == "open" ? true : false;
 		temp_node.basicData = $div.attr("data-basic");
 		temp_node.recordData = $div.attr("data-record");
 		temp_node.dataType = $i.attr("data-type");
@@ -2327,9 +2328,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 					// 获取当前节点的信息
 					var $ul = $($ulNode[i]),
 						$div = $ul.prev("div"),
-						$i_spread = $div.find("i[data-spread]").eq(0),
-						$i_node = $div.find("i[data-spread]").eq(1),
-						$cite = $div.find("cite[data-leaf]").eq(0),
+						$i_spread = _this.getNodeDom($div).fnode(),
+						$i_node = _this.getNodeDom($div).snode(),
+						$cite = _this.getNodeDom($div).cite(),
 						spread = $i_spread.attr("data-spread"),
 						leaf = $cite.attr("data-leaf");
 
@@ -2364,9 +2365,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 					// 获取当前节点的信息
 					var $ul = $(this),
 						$div = $ul.prev("div"),
-						$i_spread = $div.find("i[data-spread]").eq(0),
-						$i_node = $div.find("i[data-spread]").eq(1),
-						$cite = $div.find("cite[data-leaf]").eq(0),
+						$i_spread = _this.getNodeDom($div).fnode(),
+						$i_node = _this.getNodeDom($div).snode(),
+						$cite = _this.getNodeDom($div).cite(),
 						spread = $i_spread.attr("data-spread"),
 						leaf = $cite.attr("data-leaf");
 
@@ -2487,7 +2488,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 	// menubar监听方法
 	DTree.prototype.menubarListener = function(menuId, flag){
 		var _this = this;
-		var $div = _this.getNowNodeOrNull();
+		var $div = _this.getNodeDom().nowDiv();
 		switch (menuId) {
 			case defaultMenu.moveDown:	// 展开全部节点
 				_this.menubarMethod().openAllNode();
@@ -2682,9 +2683,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 					// 获取当前节点的信息
 					var $ul = $($ulNode[i]),
 						$div = $ul.prev("div"),
-						$i_spread = $div.find("i[data-spread]").eq(0),
-						$i_node = $div.find("i[data-spread]").eq(1),
-						$cite = $div.find("cite[data-leaf]").eq(0),
+						$i_spread = _this.getNodeDom($div).fnode(),
+						$i_node = _this.getNodeDom($div).snode(),
+						$cite = _this.getNodeDom($div).cite(),
 						spread = $i_spread.attr("data-spread"),
 						leaf = $cite.attr("data-leaf");
 
@@ -2719,9 +2720,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 					// 获取当前节点的信息
 					var $ul = $(this),
 						$div = $ul.prev("div"),
-						$i_spread = $div.find("i[data-spread]").eq(0),
-						$i_node = $div.find("i[data-spread]").eq(1),
-						$cite = $div.find("cite[data-leaf]").eq(0),
+						$i_spread = _this.getNodeDom($div).fnode(),
+						$i_node = _this.getNodeDom($div).snode(),
+						$cite = _this.getNodeDom($div).cite(),
 						spread = $i_spread.attr("data-spread"),
 						leaf = $cite.attr("data-leaf");
 
@@ -2730,8 +2731,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				});
 			}
 		}
-		
-	}
+	};
 	
 	// toolbar监听方法
 	DTree.prototype.toolbarListener = function(tool, $div) {
@@ -3213,7 +3213,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		// 加载iframe
 	DTree.prototype.loadIframe = function($div, iframeParam) {
 		var _this = this;
-		var $cite = $div.find("cite[data-leaf]").eq(0);
+		var $cite = _this.getNodeDom($div).cite();
 		if (!_this.useIframe) {		// 启用iframe
 			return false;
 		}
@@ -3280,44 +3280,83 @@ layui.define(['jquery','layer','form'], function(exports) {
 	};
 
 	/******************** 数据回调区域 ********************/
+	// 根据具体的id获取基于当前id的div以及对应的其他dom元素
+	DTree.prototype.getNodeDom = function(id){
+		var _this = this;
+		// 获取当前div，如果id就是一个dom，则就是这个，如果不是则进行选择。如果选不中则为null
+		var $div = (typeof id === 'object') ? id : (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']").length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']");
+		return {
+			div: function(){	// 获取当前div
+				return $div;
+			},
+			cite: function(){	// 获取cite元素
+				return ($div == null) ? null : $div.find("cite[data-leaf]");
+			},
+			fnode: function(){	// 获取一级图标元素
+				return ($div == null) ? null : $div.find("i[data-spread]").eq(0);
+			},
+			snode: function(){	// 获取二级图标元素
+				return ($div == null) ? null : $div.find("i[data-spread]").eq(1);
+			},
+			checkbox: function(){		// 获取复选框元素
+				return ($div == null) ? null : $div.find("i[data-par]");
+			},
+			nextUl: function(){	// 获取相邻的ul元素
+				return ($div == null) ? null : $div.next("ul");
+			},
+			parentLi: function(){	// 获取父级li元素
+				return ($div == null) ? null : $div.parent("li");
+			},
+			nowDiv: function(){		// 获取当前选中节点，没有则返回null
+				return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS);
+			},
+			nowOrRootDiv: function(){	// 获取当前选中节点，没有则返回根节点下的第一个div
+				return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? _this.obj.children("li").eq(0).children("div").eq(0) : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS);
+			},
+			nowOrRootUl: function(){	// 获取当前选中节点下一个UL 或根节点。为了将新节点放入ul下
+				return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? _this.obj : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).next("ul");
+			}
+		}
+	};
+	
 	// 获取当前选中节点下一个UL 或根节点。为了将新节点放入ul下
 	DTree.prototype.getNowNodeUl =  function() {
 		var _this = this;
-		return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? _this.obj : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).next("ul");
+		return _this.getNodeDom().nowOrRootUl();
 	};
 
 	// 获取当前选中节点 或第一个根节点。
 	DTree.prototype.getNowNode =  function() {
 		var _this = this;
-		return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? _this.obj.children("li").eq(0).children("div").eq(0) : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS);
+		return _this.getNodeDom().nowOrRootDiv();
 	};
 	
 	// 获取当前选中节点 无则返回null。
 	DTree.prototype.getNowNodeOrNull =  function() {
 		var _this = this;
-		return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS);
+		return _this.getNodeDom().nowDiv();
 	};
 	
 	// 获取指定节点。
 	DTree.prototype.getNode =  function(id) {
 		var _this = this;
-		return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']").length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']");
+		return _this.getNodeDom(id).div();
 	};
 
 	// 设置当前选中节点的全部参数
 	DTree.prototype.setNodeParam = function($div) {
 		var _this = this;
 		_this.node.nodeId = $div.attr("data-id");
-		_this.node.parentId = $div.parent().attr("data-pid");
-		_this.node.context = $div.find("cite[data-leaf]").eq(0).text();
-		_this.node.isLeaf = $div.find("cite[data-leaf]").eq(0).attr("data-leaf") == "leaf" ? true : false;
-		_this.node.level = $div.parent().attr("data-index");
-		_this.node.spread = $div.find("i[data-spread]").eq(0).attr("data-spread") == "open" ? true : false;
+		_this.node.parentId = _this.getNodeDom($div).parentLi().attr("data-pid");
+		_this.node.context = _this.getNodeDom($div).cite().text();
+		_this.node.isLeaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
+		_this.node.level = _this.getNodeDom($div).parentLi().attr("data-index");
+		_this.node.spread = _this.getNodeDom($div).fnode().attr("data-spread") == "open" ? true : false;
 		_this.node.basicData = $div.attr("data-basic");
 		_this.node.recordData = $div.attr("data-record");
-		if ($div.find("i[data-par]")) {
+		if (_this.getNodeDom($div).checkbox()) {
 			var dataTypes = "", ischeckeds = "", initcheckeds = "";
-			$div.find("i[data-par]").each(function(){
+			_this.getNodeDom($div).checkbox().each(function(){
 				dataTypes += $(this).attr("data-type") + ",";
 				ischeckeds += $(this).attr("data-checked") + ",";
 				initcheckeds += $(this).attr("data-initchecked") + ",";
@@ -3350,16 +3389,16 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		var temp_node = {};
 		temp_node.nodeId = $div.attr("data-id");
-		temp_node.parentId = $div.parent().attr("data-pid");
-		temp_node.context = $div.find("cite[data-leaf]").eq(0).text();
-		temp_node.isLeaf = $div.find("cite[data-leaf]").eq(0).attr("data-leaf") == "leaf" ? true : false;
-		temp_node.level = $div.parent().attr("data-index");
-		temp_node.spread = $div.find("i[data-spread]").eq(0).attr("data-spread") == "open" ? true : false;
+		temp_node.parentId = _this.getNodeDom($div).parentLi().attr("data-pid");
+		temp_node.context = _this.getNodeDom($div).cite().text();
+		temp_node.isLeaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
+		temp_node.level = _this.getNodeDom($div).parentLi().attr("data-index");
+		temp_node.spread = _this.getNodeDom($div).fnode().attr("data-spread") == "open" ? true : false;
 		temp_node.basicData = $div.attr("data-basic");
 		temp_node.recordData = $div.attr("data-record");
-		if ($div.find("i[data-par]")) {
+		if (_this.getNodeDom($div).checkbox()) {
 			var dataTypes = "", ischeckeds = "", initcheckeds = "";
-			$div.find("i[data-par]").each(function(){
+			_this.getNodeDom($div).checkbox().each(function(){
 				dataTypes += $(this).attr("data-type") + ",";
 				ischeckeds += $(this).attr("data-checked") + ",";
 				initcheckeds += $(this).attr("data-initchecked") + ",";
@@ -3474,7 +3513,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				return childNode;
 			},
 			parentNode: function($div){	// 获取上级节点值
-				var pId = $div.parent().attr("data-pid");
+				var pId = _this.getNodeDom($div).parentLi().attr("data-pid");
 				var $pdiv = _this.obj.find("div[data-id='"+pId+"']");
 				if($pdiv.length > 0) {return _this.getRequestParam(_this.getTempNodeParam($pdiv));} else {return {};}
 
@@ -3609,7 +3648,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				// 绑定toolbar的点击事件
 				_this.obj.prevAll('div#dtree_toolbar_'+_this.obj[0].id).on("click", "a[dtree-tool]", function(event) {
 					event.stopPropagation();
-					var $div = _this.getNowNode(),
+					var $div = _this.getNodeDom().nowOrRootDiv(),
 						node = _this.getNodeParam($div);
 					_this.toolbarHide();
 					var tool = $(this).attr("dtree-tool");

@@ -383,18 +383,8 @@ var menuTree = [{
 	 	"isLast": true,
 	 	"children":[]
  	},{
- 		"id":"getNowNodeUl",
-	 	"title": "getNowNodeUl",
-	 	"isLast": true,
-	 	"children":[]
- 	},{
- 		"id":"getNowNode",
-	 	"title": "getNowNode",
-	 	"isLast": true,
-	 	"children":[]
- 	},{
- 		"id":"getNode",
-	 	"title": "getNode",
+ 		"id":"getNodeDom",
+	 	"title": "getNodeDom",
 	 	"isLast": true,
 	 	"children":[]
  	}]

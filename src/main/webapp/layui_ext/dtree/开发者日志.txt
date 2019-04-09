@@ -37,6 +37,7 @@
 【新增】内置方法新增：operateIcon： 设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理
 【新增】内置方法新增：msgErrNode： 判断在数据加载时是否存在错误数据，并是否打印错误数据
 【新增】内置方法新增：getParam： 获取指定节点选中值
+【新增】内置方法新增：getNodeDom： 根据具体的id获取基于当前id的div以及对应的其他dom元素
 【新增】内置方法新增：getNode： 获取指定节点Div
 【新增】内置方法新增：accordionUL： 开启手风琴模式时对其他节点的处理
 【新增】内置方法新增：setDisabledNodes： 设置节点为disabled
