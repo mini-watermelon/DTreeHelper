@@ -3,7 +3,7 @@
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/
  *@License https://www.layui.com/
- *@LASTTIME 2019/4/9 
+ *@LASTTIME 2019/4/13 
  *@VERSION v2.5.0
  */
 layui.define(['jquery','layer','form'], function(exports) {
@@ -3307,6 +3307,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 			parentLi: function(){	// 获取父级li元素
 				return ($div == null) ? null : $div.parent("li");
 			},
+			parentDiv: function(){  // 获取基于当前$div的上级$div
+				return ($div == null) ? null : $div.parent("li").parent("ul").prev("div");
+			},
 			nowDiv: function(){		// 获取当前选中节点，没有则返回null
 				return (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS).length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id]").parent().find("."+NAV_THIS);
 			},
@@ -3427,6 +3430,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			_this.node.ischecked = "";
 			_this.node.initchecked = "";
 			_this.node.basicData = "";
+			_this.node.recordData = "";
 	};
 
 	// 获取传递出去的参数，根据defaultRequest、request和node拼出发出请求的参数
@@ -3473,22 +3477,42 @@ layui.define(['jquery','layer','form'], function(exports) {
 	// 获取指定节点选中值
 	DTree.prototype.getParam = function(id){
 		var _this = this;
-		var $div = _this.obj.find("div[data-id='"+id+"']");
-		if($div.length > 0){ return _this.callbackData().node(_this.getTempNodeParam($div)); } else { return {}; }
+		
+		// 获取当前div，如果id就是一个dom，则就是这个，如果不是则进行选择。如果选不中则为null
+		var $div = (typeof id === 'object') ? id : (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']").length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']");
+		if($div != null){ return _this.callbackData().node(_this.getTempNodeParam($div)); } else { return {}; }
 	};
 
 	// 获取参数的上级节点
 	DTree.prototype.getParentParam = function(id){
 		var _this = this;
-		var $div = _this.obj.find("div[data-id='"+id+"']");
-		if($div.length > 0){ return _this.callbackData().parentNode($div); } else { return {}; }
+		// 获取当前div，如果id就是一个dom，则就是这个，如果不是则进行选择。如果选不中则为null
+		var $div = (typeof id === 'object') ? id : (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']").length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']");
+		if($div != null){ return _this.callbackData().parentNode($div); } else { return {}; }
+	};
+	
+	// 获取参数的全部上级节点
+	DTree.prototype.getAllParentParam = function(id){
+		var _this = this;
+		// 获取当前div，如果id就是一个dom，则就是这个，如果不是则进行选择。如果选不中则为null
+		var $div = (typeof id === 'object') ? id : (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']").length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']");
+		var arr = [];
+		if($div != null){ 
+			var level = _this.getTempNodeParam($div).level;
+			for(var i=1; i<level; i++){  // 从1开始遍历，如果level等于1说明是根节点
+				arr.unshift(_this.callbackData().parentNode($div));
+				$div = _this.getNodeDom($div).parentDiv();
+			}
+		}
+		return arr;
 	};
 
 	// 获取参数的下级节点
 	DTree.prototype.getChildParam = function(id){
 		var _this = this;
-		var $div = _this.obj.find("div[data-id='"+id+"']");
-		if($div.length > 0){ return _this.callbackData().childNode($div); } else { return []; }
+		// 获取当前div，如果id就是一个dom，则就是这个，如果不是则进行选择。如果选不中则为null
+		var $div = (typeof id === 'object') ? id : (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']").length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']");
+		if($div != null){ return _this.callbackData().childNode($div); } else { return []; }
 	};
 
 	// 获取回调数据
@@ -3826,6 +3850,16 @@ layui.define(['jquery','layer','form'], function(exports) {
 				return ;
 			}
 			return dTree.getParentParam(id);
+		},
+		getAllParentParam: function(dTree, id){  // 获取参数的全部上级节点
+			if(typeof dTree === "string"){
+				dTree = DTrees[dTree];
+			}
+			if(typeof dTree === "undefined"){
+				layer.msg("方法获取失败，请检查ID或对象传递是否正确",{icon:2});
+				return ;
+			}
+			return dTree.getAllParentParam(id);
 		},
 		getChildParam: function(dTree, id){  // 获取参数的全部下级节点
 			if(typeof dTree === "string"){

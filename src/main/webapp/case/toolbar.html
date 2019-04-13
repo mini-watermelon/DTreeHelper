@@ -50,7 +50,7 @@
 									  dataFormat: "list",
 									  toolbarScroll:"#toolbarDiv",
 									  toolbarFun: {
-									    addTreeNode: function(treeNode){
+									    addTreeNode: function(treeNode, $div){
 									      $.ajax({
 									        type: "post",
 									        data: treeNode,
@@ -66,7 +66,7 @@
 									        }
 									      });
 									    },
-									    editTreeNode: function(treeNode){
+									    editTreeNode: function(treeNode, $div){
 									      $.ajax({
 									        type: "post",
 									        data: treeNode,
@@ -81,7 +81,7 @@
 									        }
 									      });
 									    },
-									    delTreeNode: function(treeNode){
+									    delTreeNode: function(treeNode, $div){
 									      $.ajax({
 									        type: "post",
 									        data: treeNode,
@@ -171,7 +171,7 @@
 									    ] // 自定义编辑页的内容
 									  ],
 									  toolbarFun: {
-									    editTreeLoad: function(treeNode, $div){
+									    editTreeLoad: function(treeNode){
 									      // 这里可以发送ajax请求，来获取参数值，最后将参数值以form能识别的键值对json的形式返回
 									      $.ajax({
 									         ... // ajax基本参数
@@ -439,7 +439,8 @@
 			dataFormat: "list",
 			toolbarScroll:"#toolbarDiv",
 			toolbarFun: {
-				addTreeNode: function(treeNode){
+				addTreeNode: function(treeNode, $div){
+				//	console.log($div.parent("li").parent("ul").prev("div").attr("data-record"));
 					$.ajax({
 						type: "post",
 						data: treeNode,
@@ -453,7 +454,7 @@
 							
 					});
 			    },
-			    editTreeNode: function(treeNode){
+			    editTreeNode: function(treeNode, $div){
 			    	$.ajax({
 						type: "post",
 						data: treeNode,
@@ -468,7 +469,7 @@
 			    	console.log(treeNode);
 			     
 			    },
-			    delTreeNode: function(treeNode){
+			    delTreeNode: function(treeNode, $div){
 			    	$.ajax({
 						type: "post",
 						data: treeNode,

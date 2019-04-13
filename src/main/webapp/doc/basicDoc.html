@@ -1288,7 +1288,7 @@
 									var DemoTree = dtree.render({
 									  toolbar: true,
 									  toolbarFun: {
-									    addTreeNode: function(treeNode) { 
+									    addTreeNode: function(treeNode, $div) { 
 									      // 此处执行ajax，新增节点
 									      $.ajax({ ..., success: function(){
 									        DemoTree.changeTreeNodeAdd(true); }
@@ -1463,8 +1463,19 @@
 									<td>获取上级节点值</td>
 									<td>
 										<pre class="layui-code" lay-title="getParentParam方法示例">
-											var param = dtree.getParentParam(DemoTree, "dataId");
+											var param = dtree.getParentParam(DemoTree, "001001");
 											console.log(param);
+										</pre>
+									</td>
+								</tr>
+								<tr id="getAllParentParam">
+									<td>getAllParentParam<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>String / Object, String</td>
+									<td>获取全部上级节点值</td>
+									<td>
+										<pre class="layui-code" lay-title="getAllParentParam方法示例">
+											var arr = dtree.getAllParentParam(DemoTree, "001001001");
+											console.log(arr);
 										</pre>
 									</td>
 								</tr>
@@ -2290,6 +2301,7 @@
 											var $checkbar = DemoTree.getNodeDom("001").checkbar(); //获取复选框元素集合
 											var $nextUl = DemoTree.getNodeDom("001").nextUl(); //获取相邻的ul元素
 											var $parentLi = DemoTree.getNodeDom("001").parentLi(); //获取父级li元素
+											var $parentDiv = DemoTree.getNodeDom("001").parentDiv(); //获取基于当前$div的上级$div
 											var $nowDiv =  DemoTree.getNodeDom().nowDiv(); //获取当前选中$div，没有则返回null
 											var $nowOrRootDiv = DemoTree.getNodeDom().nowOrRootDiv(); //获取当前选中$div，没有则返回根节点下的第一个$div
 											var $nowOrRootUl = DemoTree.getNodeDom().nowOrRootUl(); //获取当前选中$div的nextUl， 或根节点ul。为了将新节点放入ul下
@@ -2378,33 +2390,48 @@
 								</tr>
 								<tr>
 									<td>DTree.prototype.getParam<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
-									<td>String</td>
+									<td>String / Dom</td>
 									<td>获取指定节点选中值</td>
 									<td>
 										<pre class="layui-code" lay-title="getParam方法示例">
-											var param = DemoTree.getParam("001");
+											//var param = DemoTree.getParam("001");
+											//var param = DemoTree.getParam($div);  //指定的一个Dom对象
 											console.log(param);
 										</pre>
 									</td>
 								</tr>
 								<tr>
 									<td>DTree.prototype.getParentParam</td>
-									<td>String</td>
+									<td>String / Dom</td>
 									<td>获取参数的上级节点</td>
 									<td>
 										<pre class="layui-code" lay-title="getParentParam方法示例">
-											var param = DemoTree.getParentParam("001");
+											//var param = DemoTree.getParentParam("001");
+											//var param = DemoTree.getParentParam($div);  //指定的一个Dom对象
+											console.log(param);
+										</pre>
+									</td>
+								</tr>
+								<tr>
+									<td>DTree.prototype.getAllParentParam<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>String / Dom</td>
+									<td>获取参数的全部上级节点</td>
+									<td>
+										<pre class="layui-code" lay-title="getAllParentParam方法示例">
+											//var param = DemoTree.getAllParentParam("001");
+											//var param = DemoTree.getAllParentParam($div);  //指定的一个Dom对象
 											console.log(param);
 										</pre>
 									</td>
 								</tr>
 								<tr>
 									<td>DTree.prototype.getChildParam</td>
-									<td>String</td>
+									<td>String / Dom</td>
 									<td>获取下级节点的node参数集</td>
 									<td>
 										<pre class="layui-code" lay-title="getParentParam方法示例">
-											var param = DemoTree.getChildParam("001");
+											//var param = DemoTree.getChildParam("001");
+											//var param = DemoTree.getChildParam($div);  //指定的一个Dom对象
 											console.log(param);
 										</pre>
 									</td>
@@ -2477,7 +2504,8 @@
 							var tt = data.title;
 							var tts = ["基础参数一览表","iconfontStyle","response","formatter","复选框配置","获取指定节点值","复选框半选状态设置","复选框选中状态设置",
 							           "setDisabledNodes","cancelDisabledNodes","getDisabledNodesParam","getAllDisabledNodesParam","setHideNodes",
-							           "cancelHideNodes","getHideNodesParam","模拟单击","getAllHideNodesParam","menubarTips","toolbarShow","errData","getNodeDom"];
+							           "cancelHideNodes","getHideNodesParam","模拟单击","getAllHideNodesParam","menubarTips","toolbarShow","errData","getNodeDom",
+							           "获取上级节点值集"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -2511,6 +2539,9 @@
 		
 		dtree.on("node('demoTree')" ,function(obj){
 		  layer.msg(JSON.stringify(obj.param));
+		  /* var id = obj.param.nodeId;
+		  var arr = dtree.getAllParentParam("demoTree", id);
+		  layer.msg(JSON.stringify(arr)); */
 		});
 		
 	});

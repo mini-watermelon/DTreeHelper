@@ -208,6 +208,11 @@ var menuTree = [{
 	 	"isLast": true,
 	 	"children":[]
  	},{
+ 		"id":"getAllParentParam",
+	 	"title": "获取上级节点值集",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
  		"id":"getChildParam",
 	 	"title": "获取下级节点值集",
 	 	"isLast": true,
