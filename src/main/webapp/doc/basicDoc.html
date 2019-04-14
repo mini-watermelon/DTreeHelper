@@ -27,7 +27,8 @@
 				<blockquote class="layui-elem-quote">
 					文档更新了部分v2.5.0版本新增的内容，但v2.5.0版本尚未正式发布，敬请期待！<br>
 					如迫切需要新版开发者，可以去gitee上下载，以获取最新的内测版！（记得不要忘了Star哦~~~）<br>
-					gitee地址：<a href="https://gitee.com/miniwatermelon/DTreeHelper" target="_blank">https://gitee.com/miniwatermelon/DTreeHelper</a>
+					gitee地址：<a href="https://gitee.com/miniwatermelon/DTreeHelper" target="_blank">https://gitee.com/miniwatermelon/DTreeHelper</a><br>
+					github地址：<a href="https://github.com/mini-watermelon/DTreeHelper" target="_blank">https://github.com/mini-watermelon/DTreeHelper</a>
 				</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
 			</div>
@@ -721,7 +722,7 @@
 								<tr>
 									<td>formatter<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Object</td>
-									<td>用于数据过滤</td>
+									<td>用于数据过滤（该功能有缺陷，暂时不要配置。）</td>
 									<td><a href="javascript:void(0);" data-id="response" class="position-a">详见formatter</a></td>
 									<td>-</td>
 									<td>-</td>
@@ -1227,7 +1228,7 @@
 									  },
 									  editTreeNode: function(treeNode, $div) { //编辑树节点后调用的函数，用于用户自定义，如未指定则树不会发生变化
 									    console.log(treeNode);
-									     DemoTree.changeTreeNodeEdit(param/true/false/"refresh"); // 调用内置函数，修改节点后改变节点内容。传入false，则树不会发生变化
+									     DemoTree.changeTreeNodeEdit(param/true/false); // 调用内置函数，修改节点后改变节点内容。传入false，则树不会发生变化
 									  },
 									  editTreeLoad: function(treeNode) { //编辑树的数据回显，用于打开编辑时，回填数据，用于用户自定义。
 									    console.log(treeNode);
@@ -1235,7 +1236,7 @@
 									  },
 									  delTreeNode: function(treeNode, $div){ //删除树后调用的函数，用于用户自定义，如未指定则树不会发生变化
 									    console.log(treeNode);
-									    DemoTree.changeTreeNodeDel(true/false/"refresh"); // 调用内置函数，删除节点后改变节点内容。传入false，则树不会发生变化
+									    DemoTree.changeTreeNodeDel(true/false); // 调用内置函数，删除节点后改变节点内容。传入false，则树不会发生变化
 									  },
 									  loadToolbarBefore: function(buttons, treeNode, $div){ // 右键菜单加载前的函数
 									    console.log(buttons);
@@ -1275,7 +1276,7 @@
 										<tr>
 											<td>true/false</td>
 											<td>Boolean</td>
-											<td>true，表示成功，则方法内部自动处理节点；false，表示失败，方法内部会将该新增节点清除</td>
+											<td>true，表示成功，则方法内部自动处理节点；false，表示失败，方法内部会将该新增节点清除。编辑节点还原，删除节点恢复</td>
 										</tr>
 										<tr>
 											<td>refresh</td>
@@ -1431,7 +1432,7 @@
 									<td>模拟单击事件</td>
 									<td>
 										<pre class="layui-code" lay-title="click方法示例">
-											dtree.click(DemoTree, "001");
+											dtree.click(DemoTree, "001"); // 会自动帮你触发一次对应Id的节点的点击事件
 										</pre>
 									</td>
 								</tr>
@@ -1716,14 +1717,14 @@
 					<div class="layui-field-box">
 						<p style="padding: 5px 0px;">内置函数大多是组件内部使用的函数，对于一般用户来说使用频率较低，但可重点查阅有示例以及红色标识的函数;</p>
 						<p style="padding: 5px 0px;">要使用内置函数，必须先使用组件将树对象定义出来，在用定义出来的对象进行操作,如：var DemoTree = dtree.render({...}); ，则操作DemoTree对象</p>
-						<p style="padding: 5px 0px;">函数名称：<span style="color:#FF5722;">红色</span>为可能使用的到的函数</p>
+						<p style="padding: 5px 0px;">函数名称：<span style="color:#01AAED;">蓝色</span>为可以被<a href="javascript:void(0);" data-id="jcff" class="position-a">基础方法（点击查看）</a>替代使用的函数，<span style="color:#FF5722;">红色</span>为大概率会使用的到的函数，黑色：可以使用的函数，<span style="color:#c2c2c2;">灰色</span>：不建议使用的函数</p>
 						<table class="layui-table" lay-size="sm">
 							<colgroup><col width="30%"><col width="10%"><col width="20%"><col width="40%"></colgroup>
 							<thead><tr><th>函数名称</th><th>参数类型</th><th>说明</th><th>用法示例</th></tr></thead>
 							<tbody>
 								<tr><td colspan="5"><span style="font-weight: bold;">树初始化及基本事件函数</span></td></tr>
 								<tr id="escape1">
-									<td><span style="color:#FF5722;">DTree.prototype.escape</span></td>
+									<td><a href="javascript:void(0);" data-id="escape" class="position-a">DTree.prototype.escape</a></td>
 									<td>String</td>
 									<td>字符串格式化</td>
 									<td>
@@ -1734,7 +1735,7 @@
 									</td>
 								</tr>
 								<tr id="unescape1">
-									<td><span style="color:#FF5722;">DTree.prototype.unescape</span></td>
+									<td><a href="javascript:void(0);" data-id="unescape" class="position-a">DTree.prototype.unescape</a></td>
 									<td>String</td>
 									<td>字符串反格式化</td>
 									<td>
@@ -1745,114 +1746,119 @@
 									</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.setting</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.setting</span></td>
 									<td>Object</td>
 									<td>设置树的参数</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.reloadSetting</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.reloadSetting</span></td>
 									<td>Object</td>
 									<td>重新设置树的参数</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.reload</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.reload</span></td>
 									<td>Object</td>
 									<td>重新加载树</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.init</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.init</span></td>
 									<td>-</td>
 									<td>初始化树</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr id="getChild">
 									<td>DTree.prototype.getChild</td>
 									<td>Dom, Array</td>
 									<td>加载子节点</td>
-									<td>-</td>
+									<td>
+										<pre class="layui-code" lay-title="getChild方法示例">
+											//DemoTree.getChild($div);
+											//DemoTree.getChild($div, arrayJson);
+										</pre>
+									</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.loadListTree</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.loadListTree</span></td>
 									<td>Object, Object, String/Integer, Dom</td>
 									<td>初始化树或者拼接树（list数据格式初始化）</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.queryListTreeByPid</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.queryListTreeByPid</span></td>
 									<td>String, Object</td>
 									<td>根据父ID查找list数据中匹配的元素</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.loadTree</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.loadTree</span></td>
 									<td>Object, Dom</td>
 									<td>初始化树或者拼接树（默认数据格式初始化）</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.msgErrData<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.msgErrData</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>判断在数据加载时是否存在错误数据，并是否打印错误数据</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.parseData</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.parseData</span></td>
 									<td>Object</td>
 									<td>解析data数据</td>
-									<td>-
-										<!-- <pre class="layui-code" lay-title="parseData方法示例">
-											DemoTree.parseData(data).treeId(); // 当前数据的treeId
-											DemoTree.parseData(data).parentId(); // 当前数据的parentId
-											DemoTree.parseData(data).title(); // 当前数据的title
-											DemoTree.parseData(data).level(); // 当前数据的level
-											DemoTree.parseData(data).iconClass(); // 当前数据的iconClass
-											DemoTree.parseData(data).isLast(); // 当前数据的isLast，如未指定则为false
-											DemoTree.parseData(data).isLastT(); // 当前数据的isLastT，如未指定则为true
-											DemoTree.parseData(data).checkArr(); // 当前数据的checkArr
-											DemoTree.parseData(data).children(); // 当前数据的children
-											DemoTree.parseData(data).basicData(); // 当前数据的basicData
-											DemoTree.parseData(data).data(); // 当前数据的data
-										</pre> -->
-									</td>
+									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getDom</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getDom</span></td>
 									<td>String, String, String, Boolean, String, Array, String, String, Boolean, Boolean</td>
 									<td>新增节点的dom值</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getLiItemDom</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.replaceDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>Dom, String, String, Boolean, Boolean, Boolean</td>
+									<td>替换节点的dom值，或指定值</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getLiItemDom</span></td>
 									<td>String, String, String, Boolean, String, Array, String, String, Boolean, Boolean, String, String, Boolean</td>
 									<td>新增节点拼接好的li</td>
 									<td>-</td>
 								</tr>
-								<tr>
-									<td>DTree.prototype.dataInit</td>
+								<tr id="dataInit1">
+									<td><a href="javascript:void(0);" data-id="dataInit" class="position-a">DTree.prototype.dataInit</a></td>
 									<td>String</td>
 									<td>初始化节点，用于数据回显</td>
-									<td>-</td>
+									<td>
+										<pre class="layui-code" lay-title="dataInit方法示例">
+											DemoTree.dataInit("001");
+										</pre>
+									</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.clickSpread</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.clickSpread</span></td>
 									<td>Dom</td>
 									<td>展开或隐藏节点</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.accordionUL<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.accordionUL</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom</td>
 									<td>开启手风琴模式时对其他节点的处理</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr id="navThis">
 									<td>DTree.prototype.navThis<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
-									<td>String</td>
+									<td>Dom</td>
 									<td>选中指定div</td>
-									<td>-</td>
+									<td>
+										<pre class="layui-code" lay-title="navThis方法示例">
+											DemoTree.navThis($div);
+										</pre>
+									</td>
 								</tr>
 								<tr id="setDisabledNodes">
 									<td><span style="color:#FF5722;">DTree.prototype.setDisabledNodes</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
@@ -1938,94 +1944,141 @@
 										</pre>
 									</td>
 								</tr>
+								<tr id="refreshTree">
+									<td><span style="color:#FF5722;">DTree.prototype.refreshTree</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>-</td>
+									<td>刷新树</td>
+									<td>
+										<pre class="layui-code" lay-title="refreshTree方法示例">
+											DemoTree.refreshTree();
+										</pre>
+									</td>
+								</tr>
+								<tr id="partialRefreshAdd">
+									<td><span style="color:#FF5722;">DTree.prototype.partialRefreshAdd</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>Dom , Object</td>
+									<td>局部刷新树--新增子节点时</td>
+									<td>
+										<pre class="layui-code" lay-title="partialRefreshAdd方法示例">
+											//DemoTree.partialRefreshAdd($div);
+											//DemoTree.partialRefreshAdd($div, json);
+											//DemoTree.partialRefreshAdd($div, arr);
+										</pre>
+									</td>
+								</tr>
+								<tr id="partialRefreshEdit">
+									<td><span style="color:#FF5722;">DTree.prototype.partialRefreshEdit</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>Dom , Object</td>
+									<td>局部刷新树--编辑当前节点选中节点时</td>
+									<td>
+										<pre class="layui-code" lay-title="partialRefreshEdit方法示例">
+											//DemoTree.partialRefreshEdit($div);
+											//DemoTree.partialRefreshEdit($div, json);
+										</pre>
+									</td>
+								</tr>
+								<tr id="partialRefreshDel">
+									<td><span style="color:#FF5722;">DTree.prototype.partialRefreshDel</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>Dom</td>
+									<td>局部刷新树--当前节点选中被删除时</td>
+									<td>
+										<pre class="layui-code" lay-title="partialRefreshDel方法示例">
+											//DemoTree.partialRefreshDel($div);
+										</pre>
+									</td>
+								</tr>
 								<tr><td colspan="5"><span style="font-weight: bold;">字体及图标函数</span></td></tr>
 								<tr>
-									<td>DTree.prototype.ensureTheme<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.ensureTheme</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>确认最终树使用的样式主题及图标</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.useDefaultOrUserDefineFnodeStyle<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineFnodeStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值一级图标</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.useDefaultOrUserDefineSnodeStyle<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineSnodeStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值二级图标</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.useDefaultOrUserDefineCheckboxStyle<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineCheckboxStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值复选框图标</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.useDefaultOrUserDefineMenubarStyle<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineMenubarStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值菜单栏图标</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.useDefaultOrUserDefineMenubarExtStyle<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineMenubarExtStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值扩展菜单栏图标</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.useDefaultOrUserDefineToolbarStyle<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineToolbarStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值工具栏图标</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.useDefaultOrUserDefineToolbarExtStyle<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineToolbarExtStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值扩展工具栏图标</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.operateIcon<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.operateIcon</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom, Dom</td>
 									<td>设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理</td>
 									<td>-</td>
 								</tr>
 								<tr><td colspan="5"><span style="font-weight: bold;">复选框函数</span></td></tr>
-								<tr>
-									<td>DTree.prototype.chooseDataInit</td>
+								<tr id="chooseDataInit1">
+									<td><a href="javascript:void(0);" data-id="chooseDataInit" class="position-a">DTree.prototype.chooseDataInit</a></td>
 									<td>String</td>
 									<td>初始化复选框的值</td>
-									<td>-</td>
+									<td>
+										<pre class="layui-code" lay-title="chooseDataInit方法示例">
+											DemoTree.chooseDataInit("001,002,003");
+										</pre>
+									</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.checkAllOrNot</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.checkAllOrNot</span></td>
 									<td>Dom</td>
 									<td>复选框点击，子集选中父级也选中</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.checkAllOrNoallOrNot</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.checkAllOrNoallOrNot</span></td>
 									<td>Dom</td>
 									<td>复选框点击， no-all 子集选中父级半选中，子集全选父级选中</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.checkAllOrPcascOrNot</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.checkAllOrPcascOrNot</span></td>
 									<td>Dom</td>
 									<td>复选框点击，p-casc：父级选中子集全选，子集无法改变父级选中状态</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.checkOrNot</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.checkOrNot</span></td>
 									<td>Dom</td>
 									<td>复选框点击，self：各自选中互不影响</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.checkOnly<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.checkOnly</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></td>
 									<td>Dom</td>
 									<td>复选框点击，only：仅存一个</td>
 									<td>-</td>
@@ -2042,7 +2095,7 @@
 									</td>
 								</tr>
 								<tr id="initNoAllCheck1">
-									<td><span style="color:#FF5722;">DTree.prototype.initNoAllCheck</span></td>
+									<td><a href="javascript:void(0);" data-id="initNoAllCheck" class="position-a">DTree.prototype.initNoAllCheck</a></td>
 									<td>-</td>
 									<td>复选框半选状态初始化设置</td>
 									<td>
@@ -2053,7 +2106,7 @@
 									</td>
 								</tr>
 								<tr id="initAllCheck1">
-									<td><span style="color:#FF5722;">DTree.prototype.initAllCheck</span></td>
+									<td><a href="javascript:void(0);" data-id="initAllCheck" class="position-a">DTree.prototype.initAllCheck</a></td>
 									<td>-</td>
 									<td>复选框选中状态初始化设置</td>
 									<td>
@@ -2077,70 +2130,80 @@
 									</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.setAndGetCheckbarNodesParam</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.setAndGetCheckbarNodesParam</span></td>
 									<td>-</td>
 									<td>设置树的复选框操作值的全部参数,并获取</td>
 									<td>-</td>
 								</tr>
-								<tr>
-									<td>DTree.prototype.getCheckbarNodesParam</td>
+								<tr id="getCheckbarNodesParam1">
+									<td><a href="javascript:void(0);" data-id="getCheckbarNodesParam" class="position-a">DTree.prototype.getCheckbarNodesParam</a></td>
 									<td>-</td>
 									<td>获取树的复选框操作值的全部参数</td>
-									<td>-</td>
+									<td>
+										<pre class="layui-code" lay-title="getCheckbarNodesParam方法示例">
+											var param = DemoTree.getCheckbarNodesParam();
+											console.log(param);
+										</pre>
+									</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getCheckbarNodeParam</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getCheckbarNodeParam</span></td>
 									<td>Dom,Dom</td>
 									<td>获取树的一个复选框的参数</td>
 									<td>-</td>
 								</tr>
-								<tr>
-									<td>DTree.prototype.changeCheckbarNodes</td>
+								<tr id="changeCheckbarNodes1">
+									<td><a href="javascript:void(0);" data-id="changeCheckbarNodes" class="position-a">DTree.prototype.changeCheckbarNodes</a></td>
 									<td>-</td>
 									<td>判断复选框是否发生变更</td>
-									<td>-</td>
+									<td>
+										<pre class="layui-code" lay-title="changeCheckbarNodes方法示例">
+											var flag = DemoTree.changeCheckbarNodes();
+											console.log(flag);
+										</pre>
+									</td>
 								</tr>
 								<tr><td colspan="5"><span style="font-weight: bold;">工具栏及菜单栏函数</span></td></tr>
 								<tr>
-									<td>DTree.prototype.initTreePlus<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.initTreePlus</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
 									<td>-</td>
 									<td>初始化菜单栏和工具栏的div</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.openTreePlus<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.openTreePlus</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
 									<td>-</td>
 									<td>开启工具栏和菜单栏</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getMenubarDom</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getMenubarDom</span></td>
 									<td>-</td>
 									<td>获取菜单栏</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getExtMenubarDom<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getExtMenubarDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
 									<td>-</td>
 									<td>获取扩展菜单栏</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getMenubarToolDom<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getMenubarToolDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
 									<td>-</td>
 									<td>获取依附在工具栏的菜单栏</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getExtMenubarToolDom<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getExtMenubarToolDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
 									<td>-</td>
 									<td>获取依附在工具栏的扩展菜单栏</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr id="menubarMethod">
 									<td>DTree.prototype.menubarMethod<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
 									<td>-</td>
-									<td>menubar内置调用方法</td>
+									<td><span style="color:#c2c2c2;">menubar内置调用方法</span></td>
 									<td>
 										<pre class="layui-code" lay-title="menubarMethod方法示例">
 											DemoTree.menubarMethod().openAllNode($jquery); // 展开所有节点
@@ -2155,66 +2218,70 @@
 									</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.menubarListener<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.menubarListener</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
 									<td>-</td>
 									<td>menubar内置监听</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr id="searchNode">
 									<td>DTree.prototype.searchNode</td>
 									<td>-</td>
 									<td>模糊查询该值，展开该值节点（内置方法调用的真正查询方法）</td>
-									<td>-</td>
+									<td>
+										<pre class="layui-code" lay-title="searchNode方法示例">
+											DemoTree.searchNode(); // 模糊查询该值，展开该值节点
+										</pre>
+									</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getToolbarDom</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getToolbarDom</span></td>
 									<td>-</td>
 									<td>获取工具栏</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.setToolbarDom<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.setToolbarDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5新增）</span></td>
 									<td>Object</td>
 									<td>设置工具栏</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.loadToolBar</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.loadToolBar</span></td>
 									<td>String, String</td>
 									<td>加载toolBar中的内容</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.toolbarHide<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.toolbarHide</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>隐藏toolbar</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr id="toolbarMethod">
 									<td>DTree.prototype.toolbarMethod<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>toolbar内置调用方法</td>
 									<td>
-										<pre class="layui-code" lay-title="menubarMethod方法示例">
+										<pre class="layui-code" lay-title="toolbarMethod方法示例">
 											DemoTree.toolbarMethod().pulldown($jquery); // 展开当前节点下的所有节点
 											DemoTree.toolbarMethod().pullup($jquery); // 收缩当前节点下的所有节点
 										</pre>
 									</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.toolbarListener<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.toolbarListener</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Dom</td>
 									<td>toolbar内置监听</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.loadToolBarDetail<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.loadToolBarDetail</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
 									<td>-</td>
 									<td>获取toolbar详细的标签信息</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.dynamicToolbarDom<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.dynamicToolbarDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom</td>
 									<td>在节点后动态绑定fixed和follow条件的工具栏</td>
 									<td>-</td>
@@ -2242,7 +2309,6 @@
 											//该方法适用于在toolbar的editTreeNode回调中，获取后台返回数据改变树的状态，入参一共有三种
 											//DemoTree.changeTreeNodeEdit(true/false);// 修改成功/失败
 											//DemoTree.changeTreeNodeEdit(result.param); // 修改成功，返回一个JSON对象
-											//DemoTree.changeTreeNodeEdit("refresh"); // 修改成功，局部刷新树
 										</pre>
 									</td>
 								</tr>
@@ -2254,7 +2320,6 @@
 										<pre class="layui-code" lay-title="changeTreeNodeDel方法示例">
 											//该方法适用于在toolbar的delTreeNode回调中，获取后台返回数据改变树的状态，入参一共有两种
 											//DemoTree.changeTreeNodeDel(true/false); // 删除成功/失败
-											//DemoTree.changeTreeNodeDel("refresh"); // 删除成功，局部刷新树
 										</pre>
 									</td>
 								</tr>
@@ -2272,13 +2337,13 @@
 								</tr>
 								<tr><td colspan="5"><span style="font-weight: bold;">iframe函数</span></td></tr>
 								<tr>
-									<td>DTree.prototype.loadIframe</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.loadIframe</span></td>
 									<td>Dom, Object</td>
 									<td>加载iframe</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getIframeRequestParam</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getIframeRequestParam</span></td>
 									<td>Object</td>
 									<td>获取传递出去的参数，根据iframe.iframeDefaultRequest、iframe.iframeRequest和node拼出发出请求的参数</td>
 									<td>-</td>
@@ -2345,40 +2410,45 @@
 									<td>DTree.prototype.getNowNodeOrNull<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>获取当前选中节点，没有选中则为null</td>
-									<td>-</td>
+									<td>
+										<pre class="layui-code" lay-title="getNowNodeOrNull方法示例">
+											var $div = DemoTree.getNowNodeOrNull();
+											console.log($div);
+										</pre>
+									</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.setNodeParam</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.setNodeParam</span></td>
 									<td>Dom</td>
 									<td>设置当前选中节点的全部参数</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getNodeParam</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getNodeParam</span></td>
 									<td>Dom</td>
 									<td>获取当前选中节点的全部参数</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getTempNodeParam</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getTempNodeParam</span></td>
 									<td>Dom</td>
 									<td>获取一个临时的node参数</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.initNodeParam</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.initNodeParam</span></td>
 									<td>-</td>
 									<td>重置参数</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.getRequestParam</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.getRequestParam</span></td>
 									<td>Object</td>
 									<td>获取传递出去的参数，根据defaultRequest、request和node拼出发出请求的参数</td>
 									<td>-</td>
 								</tr>
-								<tr>
-									<td>DTree.prototype.getNowParam</td>
+								<tr id="getNowParam1">
+									<td><a href="javascript:void(0);" data-id="getNowParam" class="position-a">DTree.prototype.getNowParam</a></td>
 									<td>-</td>
 									<td>获取当前选中值</td>
 									<td>
@@ -2388,8 +2458,8 @@
 										</pre>
 									</td>
 								</tr>
-								<tr>
-									<td>DTree.prototype.getParam<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+								<tr id="getParam1">
+									<td><a href="javascript:void(0);" data-id="getParam" class="position-a">DTree.prototype.getParam</a><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Dom</td>
 									<td>获取指定节点选中值</td>
 									<td>
@@ -2400,8 +2470,8 @@
 										</pre>
 									</td>
 								</tr>
-								<tr>
-									<td>DTree.prototype.getParentParam</td>
+								<tr id="getParentParam1">
+									<td><a href="javascript:void(0);" data-id="getParentParam" class="position-a">DTree.prototype.getParentParam</a></td>
 									<td>String / Dom</td>
 									<td>获取参数的上级节点</td>
 									<td>
@@ -2412,8 +2482,8 @@
 										</pre>
 									</td>
 								</tr>
-								<tr>
-									<td>DTree.prototype.getAllParentParam<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+								<tr id="getAllParentParam1">
+									<td><a href="javascript:void(0);" data-id="getAllParentParam" class="position-a">DTree.prototype.getAllParentParam</a><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Dom</td>
 									<td>获取参数的全部上级节点</td>
 									<td>
@@ -2424,12 +2494,12 @@
 										</pre>
 									</td>
 								</tr>
-								<tr>
-									<td>DTree.prototype.getChildParam</td>
+								<tr id="getChildParam1">
+									<td><a href="javascript:void(0);" data-id="getChildParam" class="position-a">DTree.prototype.getChildParam</a></td>
 									<td>String / Dom</td>
 									<td>获取下级节点的node参数集</td>
 									<td>
-										<pre class="layui-code" lay-title="getParentParam方法示例">
+										<pre class="layui-code" lay-title="getChildParam方法示例">
 											//var param = DemoTree.getChildParam("001");
 											//var param = DemoTree.getChildParam($div);  //指定的一个Dom对象
 											console.log(param);
@@ -2437,20 +2507,20 @@
 									</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.callbackData</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.callbackData</span></td>
 									<td>Object</td>
 									<td>获取回调数据</td>
 									<td>-</td>
 								</tr>
 								<tr><td colspan="5"><span style="font-weight: bold;">事件绑定函数</span></td></tr>
 								<tr>
-									<td>DTree.prototype.bindBrowserEvent</td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.bindBrowserEvent</span></td>
 									<td>-</td>
 									<td>绑定浏览器事件</td>
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>DTree.prototype.unbindBrowserEvent<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
+									<td><span style="color:#c2c2c2;">DTree.prototype.unbindBrowserEvent</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></td>
 									<td>-</td>
 									<td>解绑浏览器事件</td>
 									<td>-</td>
@@ -2505,7 +2575,7 @@
 							var tts = ["基础参数一览表","iconfontStyle","response","formatter","复选框配置","获取指定节点值","复选框半选状态设置","复选框选中状态设置",
 							           "setDisabledNodes","cancelDisabledNodes","getDisabledNodesParam","getAllDisabledNodesParam","setHideNodes",
 							           "cancelHideNodes","getHideNodesParam","模拟单击","getAllHideNodesParam","menubarTips","toolbarShow","errData","getNodeDom",
-							           "获取上级节点值集"];
+							           "获取上级节点值集","refreshTree","partialRefreshAdd","partialRefreshEdit","partialRefreshDel"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

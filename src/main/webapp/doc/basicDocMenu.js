@@ -308,6 +308,21 @@ var menuTree = [{
 	 	"isLast": true,
 	 	"children":[]
  	},{
+ 		"id":"getChild",
+	 	"title": "getChild",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"dataInit1",
+	 	"title": "dataInit",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"navThis",
+	 	"title": "navThis",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
  		"id":"setDisabledNodes",
 	 	"title": "setDisabledNodes",
 	 	"isLast": true,
@@ -348,6 +363,31 @@ var menuTree = [{
 	 	"isLast": true,
 	 	"children":[]
  	},{
+ 		"id":"refreshTree",
+	 	"title": "refreshTree",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"partialRefreshAdd",
+	 	"title": "partialRefreshAdd",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"partialRefreshEdit",
+	 	"title": "partialRefreshEdit",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"partialRefreshDel",
+	 	"title": "partialRefreshDel",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"chooseDataInit1",
+	 	"title": "chooseDataInit",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
  		"id":"changeCheck",
 	 	"title": "changeCheck",
 	 	"isLast": true,
@@ -365,6 +405,31 @@ var menuTree = [{
  	},{
  		"id":"checkStatus",
 	 	"title": "checkStatus",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"getCheckbarNodesParam1",
+	 	"title": "getCheckbarNodesParam",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"changeCheckbarNodes1",
+	 	"title": "changeCheckbarNodes",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"menubarMethod",
+	 	"title": "menubarMethod",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"searchNode",
+	 	"title": "searchNode",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"toolbarMethod",
+	 	"title": "toolbarMethod",
 	 	"isLast": true,
 	 	"children":[]
  	},{
@@ -390,6 +455,51 @@ var menuTree = [{
  	},{
  		"id":"getNodeDom",
 	 	"title": "getNodeDom",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"getNowNodeUl",
+	 	"title": "getNowNodeUl",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"getNowNode",
+	 	"title": "getNowNode",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"getNode",
+	 	"title": "getNode",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"getNowNodeOrNull",
+	 	"title": "getNowNodeOrNull",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"getNowParam1",
+	 	"title": "getNowParam",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"getParam1",
+	 	"title": "getParam",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"getParentParam1",
+	 	"title": "getParentParam",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"getAllParentParam1",
+	 	"title": "getAllParentParam",
+	 	"isLast": true,
+	 	"children":[]
+ 	},{
+ 		"id":"getChildParam1",
+	 	"title": "getChildParam",
 	 	"isLast": true,
 	 	"children":[]
  	}]

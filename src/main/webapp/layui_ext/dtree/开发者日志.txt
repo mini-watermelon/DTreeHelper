@@ -27,6 +27,10 @@
 【新增】toolbar模块新增：toolbarBtn中新增一系列的属性（id、placeholder、verify、defElem、readonly、disabled、filter）
 【新增】内置属性新增：errNode属性，记录在渲染节点时有问题的数据。
 【新增】内置属性新增：usefontStyle属性，用于最终指定树的每个关键部位使用的图标
+【新增】内置方法新增：replaceDom：替换节点的dom值，或指定值。
+【新增】内置方法新增：partialRefreshAdd：局部刷新树--当前节点新增子节点时
+【新增】内置方法新增：partialRefreshEdit：局部刷新树--当前节点选中时
+【新增】内置方法新增：partialRefreshDel：局部刷新树--当前节点选中被删除时
 【新增】内置方法新增：ensureTheme：确认最终主题。
 【新增】内置方法新增：useDefaultOrUserDefineFnodeStyle：赋值一级图标
 【新增】内置方法新增：useDefaultOrUserDefineSnodeStyle：赋值二级图标
@@ -58,8 +62,6 @@
 【新增】内置方法新增：dynamicToolbarDom：在节点后动态绑定fixed和follow条件的工具栏
 【新增】内置方法更新：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式
 【新增】内置方法更新：changeTreeNodeAdd新增一个回传参数：refresh，用于新增完成后，局部刷新
-【新增】内置方法更新：changeTreeNodeEdit新增一个回传参数：refresh，用于修改完成后，局部刷新
-【新增】内置方法更新：changeTreeNodeDel新增一个回传参数：refresh，用于删除完成后，局部刷新
 
 
 

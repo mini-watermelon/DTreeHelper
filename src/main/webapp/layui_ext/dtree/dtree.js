@@ -1178,11 +1178,10 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 	// 加载子节点
 	DTree.prototype.getChild = function($div, data) {
-		var _this = this,
-			$ul = $div.next("ul");
+		var _this = this, $ul = $div.next("ul");
 		
 		_this.setNodeParam($div);
-
+		
 		if(typeof data !== 'undefined') {
 			if(typeof data.length === 'undefined'){
 				layer.msg("数据解析异常，data数据格式不正确", {icon:5});
@@ -1202,7 +1201,6 @@ layui.define(['jquery','layer','form'], function(exports) {
 			} else {
 				_this.loadTree(data, level);
 			}
-			
 
 			// 这种情况下需要一开始就将toolbar显示在页面上
 			if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
@@ -1551,7 +1549,109 @@ layui.define(['jquery','layer','form'], function(exports) {
 					(spread ? "<ul class='"+LI_NAV_CHILD+" "+NAV_SHOW+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>" : "<ul class='"+LI_NAV_CHILD+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>");
 			}
 		};
-
+	};
+	
+	//替换节点的dom值，或指定值
+	DTree.prototype.replaceDom = function($div, treeId, isLast, spread, disabled, isHide) {
+		var _this = this,
+			rootId = _this.obj[0].id,
+			toolbar = _this.toolbar,
+			checkbar = _this.checkbar;
+		
+		return {
+			fnode: function() {	// + - 图标
+				_this.getNodeDom($div).fnode().attr("data-id", treeId);
+			},
+			node: function(iconClass) {	// 二级图标样式
+				var snode = "";
+				
+				// 获取图标的变量
+				var nodeIcon = _this.nodeIcon,
+					leafIcon = _this.leafIcon;
+				
+				var sleafIconLast = _this.usefontStyle.snode.leaf,
+					snodeIconOpen =  _this.usefontStyle.snode.node.open,
+					snodeIconClose =  _this.usefontStyle.snode.node.close;
+				if(iconClass){
+					var iconfont = _this.iconfont;
+					if(typeof iconfont === 'string') {
+						sleafIconLast = iconfont + " " + iconClass;
+						snodeIconOpen = iconfont + " " + iconClass;
+						snodeIconClose = iconfont + " " + iconClass;
+					} else {
+						sleafIconLast = iconfont[0] + " " + iconClass;
+						snodeIconOpen = iconfont[0] + " " + iconClass;
+						snodeIconClose = iconfont[0] + " " + iconClass;
+					}
+				}
+				
+				if(nodeIcon != "-1" && leafIcon != "-1"){	// 都加载
+					snode = isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
+				}else if(nodeIcon != "-1" && leafIcon == "-1"){	// 加载node 隐藏leaf
+					snode = isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
+				}else if(nodeIcon == "-1" && leafIcon != "-1"){	// 隐藏node 加载leaf
+					snode = isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
+				}else if(nodeIcon == "-1" && leafIcon == "-1"){	// 都隐藏
+					snode = isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
+				}
+				if(snode != ""){_this.getNodeDom($div).snode().replaceWith($(snode));}
+			},
+			checkbox: function(checkArr) {	// 复选框
+				var flag = false;
+				if(_this.checkbarLoad == "node"){if (checkbar) {flag = true;}} else {if (isLast) {if (checkbar) {flag = true;}}}
+				
+				if(flag){
+					var result = "<div class='"+LI_DIV_CHECKBAR+"' data-id='"+treeId+"' dtree-id='"+rootId+"'>";
+					if(checkArr && checkArr.length > 0){
+						
+						for (var i = 0; i < checkArr.length; i++) {
+							var checkData = checkArr[i];
+							var isChecked = checkData.isChecked;
+							var CHOOSE_CLASS = _this.usefontStyle.checkbox.out;
+							if (isChecked == "2") {	//半选择
+								CHOOSE_CLASS = _this.usefontStyle.checkbox.noall + " " + _this.style.chs;
+							} else if (isChecked == "1") {	//选择
+								CHOOSE_CLASS = _this.usefontStyle.checkbox.on + " " + _this.style.chs;
+							} else {	//未选择或者无值
+								CHOOSE_CLASS = _this.usefontStyle.checkbox.out;
+							}
+							var disClass = "";
+							if(disabled){disClass = NAV_DIS;}
+							result += "<i class='"+CHOOSE_CLASS+" "+_this.style.dfont+" "+_this.style.cbox+" "+disClass+"' data-id='"+treeId+"' dtree-id='"+rootId+"' data-checked='"+checkData.isChecked+"' data-initchecked='"+checkData.isChecked+"' data-type='"+checkData.type+"' dtree-click='"+eventName.checkNodeClick+"' data-par='."+LI_CLICK_CHECKBAR+"' dtree-disabled='"+disabled+"'></i>";
+						}
+					}
+					result += "</div>";
+					_this.getNodeDom($div).snode().next("div").replaceWith($(result));
+				}
+			},
+			text: function(title) {	// 文字显示
+				var disClass = "";
+				if(disabled){disClass = NAV_DIS;}
+				var cite = "<cite class='"+LI_DIV_TEXT_CLASS+" "+disClass+"' data-id='"+treeId+"' data-leaf='"+(isLast ? "leaf" : "node")+"' dtree-disabled='"+disabled+"' >"+title+"</cite>"
+				_this.getNodeDom($div).cite().replaceWith($(cite));
+			},
+			ul: function() {	//子节点ul
+				var ul = isLast ? "<ul class='"+LI_NAV_CHILD+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>" :
+					(spread ? "<ul class='"+LI_NAV_CHILD+" "+NAV_SHOW+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>" : "<ul class='"+LI_NAV_CHILD+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>");
+				_this.getNodeDom($div).nextUl().replaceWith($(ul));
+			},
+			basicData: function(basicData){
+				basicData = (basicData == "{}") ? "" : basicData;
+				$div.attr("data-basic", basicData);
+			},
+			recordData: function(recordData){
+				recordData = (recordData == "{}") ? "" : recordData;
+				$div.attr("data-record", recordData);
+			},
+			p_li: function(){
+				$div.parent("li").attr("data-id", treeId);
+			}
+		};
+		
 	};
 
 	// 获取拼接好的li
@@ -1613,14 +1713,16 @@ layui.define(['jquery','layer','form'], function(exports) {
 		return event.unescape(str);
 	};
 	
-
 	// 选中div
-	DTree.prototype.navThis = function($div){
+	DTree.prototype.navThis = function(id){
 		var _this = this;
-		_this.obj.find("div[data-id]").parent().find("."+NAV_THIS).removeClass(NAV_THIS);
-		_this.obj.find("div[data-id]").parent().find("."+_this.style.itemThis).removeClass(_this.style.itemThis);
-		$div.addClass(NAV_THIS);
-		$div.addClass(_this.style.itemThis);
+		var $div = (typeof id === 'object') ? id : (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']").length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']");
+		if($div != null) {
+			_this.obj.find("div[data-id]").parent().find("."+NAV_THIS).removeClass(NAV_THIS);
+			_this.obj.find("div[data-id]").parent().find("."+_this.style.itemThis).removeClass(_this.style.itemThis);
+			$div.addClass(NAV_THIS);
+			$div.addClass(_this.style.itemThis);
+		}
 	}
 	
 	// 手风琴模式操作其他节点
@@ -1794,6 +1896,97 @@ layui.define(['jquery','layer','form'], function(exports) {
 		});
 		return hideNodes;
 	};
+	
+	// 刷新树
+	DTree.prototype.refreshTree = function(){
+		_this.obj.html("");	// 清空树结构
+		_this.initNodeParam(); // 清空参数
+		_this.init(); //执行初始化方法
+	}
+	
+	// 局部刷新树--新增子节点时
+	DTree.prototype.partialRefreshAdd = function($div, data){
+		var _this = this;
+			$ul = $div.next("ul");
+		
+		// 判断当前点击的节点是否是最后一级节点，如果是，则需要修改节点的样式
+		var $icon_i = $div.find("i[data-spread]");
+		if ($icon_i.eq(0).attr("data-spread") == "last") {
+			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).openWithDot();
+		} else {	//如果不是，也要修改节点样式
+			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).open();
+		}
+		$ul.addClass(NAV_SHOW);	//展开UL
+		_this.accordionUL($ul);
+		
+		if(data) {
+			if(data.length && data.length > 0) {
+				_this.getChild($div, data);
+			} else {
+				var parseData = _this.parseData(data);
+
+				if(parseData.treeId()){
+					var level = parseInt($div.parent("li").attr("data-index"))+1;
+					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.isLast(0), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.isHide(), parseData.basicData(), parseData.recordData(), "item"));
+
+					// 建造完毕后，选中该DIV
+					$thisDiv = $ul.find("div[data-id='"+parseData.treeId()+"']");
+					_this.setNodeParam($thisDiv);
+				} else {
+					layer.msg("添加失败,节点ID为undefined！",{icon:5});
+					// 重新赋值
+					_this.setNodeParam($div);
+				}
+			}
+		} else {
+			_this.getChild($div);
+		}
+	}
+	
+	// 局部刷新树--编辑当前节点选中节点时
+	DTree.prototype.partialRefreshEdit = function($div, data){
+		var _this = this;
+		$ul = $div.next("ul");
+		
+		if(data) {
+			if(typeof data === 'object') {
+				var parseData = _this.parseData(data);
+				
+				if(parseData.treeId()){
+					var replaceDom = _this.replaceDom($div, parseData.treeId(), parseData.isLast(0), parseData.spread(), parseData.disabled(), parseData.isHide());
+					replaceDom.node(parseData.iconClass());
+					replaceDom.checkbox(parseData.checkArr());
+					replaceDom.text(parseData.title());
+					replaceDom.ul();
+					replaceDom.basicData(parseData.basicData());
+					replaceDom.recordData(parseData.recordData());
+					_this.setNodeParam($div);
+				} else {
+					layer.msg("编辑失败,节点ID为undefined！",{icon:5});
+					// 重新赋值
+					_this.setNodeParam($div);
+				}
+			} else {
+				_this.getNodeDom($div).cite().html(data);
+			}
+		}
+	}
+	
+	// 局部刷新树--当前节点选中被删除时
+	DTree.prototype.partialRefreshDel = function($div){
+		var _this = this;
+			$p_li = $div.parent("li");
+			$p_ul = _this.getNodeDom($div).parentUl();
+			$p_div = _this.getNodeDom($div).parentDiv();
+		
+		$p_li.remove();
+		// 判断父级ul中是否还存在li,如果不存在，则需要修改节点的样式
+		if($p_ul.children("li").length == 0){
+			var $icon_i = $p_div.find("i[data-spread]");
+			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).closeWithDot();
+		}
+		_this.initNodeParam();
+	}
 	
 	/******************** 复选框区域 ********************/
 	// 初始化复选框的值
@@ -2376,9 +2569,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				});
 			},
 			refreshTree: function(){// 刷新树
-				_this.obj.html("");	// 清空树结构
-				_this.initNodeParam(); // 清空参数
-				_this.init(); //执行初始化方法
+				_this.refreshTree();
 			},
 			checkAll: function(){ // 全选节点
 				var $i = _this.obj.find("i[data-par][data-checked!='1']");
@@ -3071,19 +3262,19 @@ layui.define(['jquery','layer','form'], function(exports) {
 				return ['<button type="button" class="layui-btn layui-btn-normal btn-w100" lay-submit lay-filter="'+filter+'" ',
 				        (id != "" ? 'id="'+id+'" ' : ''),
 						(name != "" ? 'name="'+name+'" ' : ''),
-				        '>'+val+'</button>'];
+				        '>'+val+'</button>'].join('');
 			},
 			button: function(){
 				return ['<button type="button" class="layui-btn layui-btn-normal btn-w100" ',
 				        (id != "" ? 'id="'+id+'" ' : ''),
 						(name != "" ? 'name="'+name+'" ' : ''),
-				        ' >'+val+'</button>'];
+				        ' >'+val+'</button>'].join('');
 			},
 			reset: function(){
 				return ['<button type="reset" class="layui-btn layui-btn-primary btn-w100" ', 
 				        (id != "" ? 'id="'+id+'" ' : ''),
 						(name != "" ? 'name="'+name+'" ' : ''),
-				        '>'+val+'</button>'];
+				        '>'+val+'</button>'].join('');
 			}
 		}
 	};
@@ -3105,7 +3296,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.isLast(0), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.isHide(), parseData.basicData(), parseData.recordData(), "item"));
 
 					// 建造完毕后，选中该DIV
-					$thisDiv = $ul.find("div[data-id='"+returnID.id+"']");
+					$thisDiv = $ul.find("div[data-id='"+parseData.treeId()+"']");
 					_this.setNodeParam($thisDiv)
 				} else {
 					layer.msg("添加失败,节点ID为undefined！",{icon:5});
@@ -3124,7 +3315,6 @@ layui.define(['jquery','layer','form'], function(exports) {
 				$thisDiv.attr("data-id", returnID);
 				// 将li节点展示
 				$ul.find("li[data-id='"+returnID+"']").show();
-				//var $addDiv = $ul.find("div[data-id='"+returnID+"']");
 				_this.setNodeParam($thisDiv)
 			}
 
@@ -3138,12 +3328,14 @@ layui.define(['jquery','layer','form'], function(exports) {
 			$ul.addClass(NAV_SHOW);	//展开UL
 			_this.accordionUL($ul);
 			
-			// 这种情况下需要在新增节点后对节点新增工具栏
-			if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
-				_this.dynamicToolbarDom($thisDiv.find("cite[data-leaf]"));
+			if(flag) {
+				_this.getChild($div);
+			} else {
+				// 这种情况下需要在新增节点后对节点新增工具栏
+				if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
+					_this.dynamicToolbarDom($thisDiv.find("cite[data-leaf]"));
+				}
 			}
-			
-			if(flag) {_this.getChild($div);}
 			
 		} else {
 			// 将li节点删除
@@ -3171,15 +3363,23 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var flag = false;
 		if(returnID){
 			if(typeof returnID === "object"){
-				title = parseData.title();
-				$cite.html(title);
-				_this.getNodeParam($div);
-			}else if(returnID == 'refresh'){
-				// 如果是设置为refresh参数，则向后台发送请求，获取最新的编辑节点上方节点的真实参数，局部刷新树。
-				flag = true;
+				var parseData = _this.parseData(data);
+				
+				if(parseData.treeId()){
+					var replaceDom = _this.replaceDom($div, parseData.treeId(), parseData.isLast(0), parseData.spread(), parseData.disabled(), parseData.isHide());
+					replaceDom.node(parseData.iconClass());
+					replaceDom.checkbox(parseData.checkArr());
+					replaceDom.text(parseData.title());
+					replaceDom.ul();
+					replaceDom.basicData(parseData.basicData());
+					replaceDom.recordData(parseData.recordData());
+					_this.setNodeParam($div);
+				} else {
+					layer.msg("编辑失败,节点ID为undefined！",{icon:5});
+					// 重新赋值
+					_this.setNodeParam($div);
+				}
 			}
-
-			if(flag) {_this.getChild($p_div);}
 		} else {
 			$cite.html(title);
 			_this.getNodeParam($div);
@@ -3208,7 +3408,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 		_this.temp = []; // 临时变量制空
 	};
-
+	
 	/******************** iframe区域 ********************/
 		// 加载iframe
 	DTree.prototype.loadIframe = function($div, iframeParam) {
@@ -3289,9 +3489,6 @@ layui.define(['jquery','layer','form'], function(exports) {
 			div: function(){	// 获取当前div
 				return $div;
 			},
-			cite: function(){	// 获取cite元素
-				return ($div == null) ? null : $div.find("cite[data-leaf]");
-			},
 			fnode: function(){	// 获取一级图标元素
 				return ($div == null) ? null : $div.find("i[data-spread]").eq(0);
 			},
@@ -3301,11 +3498,17 @@ layui.define(['jquery','layer','form'], function(exports) {
 			checkbox: function(){		// 获取复选框元素
 				return ($div == null) ? null : $div.find("i[data-par]");
 			},
+			cite: function(){	// 获取cite元素
+				return ($div == null) ? null : $div.find("cite[data-leaf]");
+			},
 			nextUl: function(){	// 获取相邻的ul元素
 				return ($div == null) ? null : $div.next("ul");
 			},
 			parentLi: function(){	// 获取父级li元素
 				return ($div == null) ? null : $div.parent("li");
+			},
+			parentUl: function(){	// 获取基于当前$div的上级$ul
+				return ($div == null) ? null : $div.parent("li").parent("ul");
 			},
 			parentDiv: function(){  // 获取基于当前$div的上级$div
 				return ($div == null) ? null : $div.parent("li").parent("ul").prev("div");

@@ -74,7 +74,6 @@
 									        success: function(result){
 									          //DTree1.changeTreeNodeEdit(true);// 修改成功
 									          //DTree1.changeTreeNodeEdit(result.param); // 修改成功，返回一个JSON对象
-									          //DTree1.changeTreeNodeEdit("refresh"); // 修改成功，局部刷新树
 									        },
 									        error: function(){
 									          //DTree1.changeTreeNodeEdit(false);//修改失败
@@ -88,7 +87,6 @@
 									        url: "/DTreeHelper/toolbar/delete",
 									        success: function(result){
 									          //DTree1.changeTreeNodeDel(true); // 删除成功
-									          //DTree1.changeTreeNodeDel("refresh"); // 删除成功，局部刷新树
 									        },
 									        error: function(){
 									          //DTree1.changeTreeNodeDel(false);// 删除失败
@@ -235,22 +233,66 @@
 					<div class="layui-field-box">
 						<p>当toolbar内置的三个按钮都不能满足你的需求，又或者你想要禁用默认的按钮，自定义自己的按钮的情况下，你可以自定义扩展toolbar按钮。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
-							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;" id="toolbarDiv5"><ul id="toolbarTree5" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg4"><div style="height: 1050px;overflow: auto;" id="toolbarDiv5"><ul id="toolbarTree5" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
 									<div style="height: 350px;overflow: auto;" id="toolbarDiv5">
 									  <ul id="toolbarTree5" class="dtree" data-id="0"></ul>
 									</div>
 									
-									dtree.render({
+									var DTree5 = dtree.render({
 									  elem: "#toolbarTree5",
 									  url: "../json/case/toolbarTree1.json",
 									  toolbar:true,
 									  toolbarScroll:"#toolbarDiv5",
 									  toolbarShow:[], // 默认按钮制空
-									  toolbarExt:[{toolbarId: "test",icon:"dtree-icon-wefill",title:"自定义新增",handler: function(node,$div){
+									  toolbarExt:[{toolbarId: "testAdd",icon:"dtree-icon-wefill",title:"自定义新增",handler: function(node,$div){
 									      layer.msg(JSON.stringify(node));
 									      // 你可以在此添加一个layer.open，里面天上你需要添加的表单元素，就跟你写新增页面是一样的
+									      layer.open({
+									        ...,
+									        success: function(layero, index){
+									          form.render();
+									          form.on("submit(addNode_form)",function(data){// 假设form的filter为addNode_form
+									            console.log(data.field);// 从form中取值，数据来源由你自己定
+									            
+									            var json = {"id":data.field.addId,"title": data.field.addNodeName,"parentId": node.nodeId};
+									            var arr = [{"id":data.field.addId,"title": data.field.addNodeName,"parentId": node.nodeId}];
+									            //DTree5.partialRefreshAdd($div); // 省略第二个参数，则会加载url
+									            //DTree5.partialRefreshAdd($div, json); // 如果是json对象，则会追加元素
+									            //DTree5.partialRefreshAdd($div, arr); //如果是json数组，则会重载节点中的全部子节点
+									            
+									            layer.close(index);
+									            return false;
+									          });
+									        }
+									      })
+									    }
+									  },
+									  {toolbarId: "testEdit",icon:"dtree-icon-bianji",title:"自定义编辑",handler: function(node,$div){
+									      layer.msg(JSON.stringify(node));
+									      // 你可以在此添加一个layer.open，里面天上你需要添加的表单元素，就跟你写编辑页面是一样的
+									      layer.open({
+									        ...,
+									        success: function(layero, index){
+									          form.render();
+									          form.on("submit(editNode_form)",function(data){// 假设form的filter为editNode_form
+									            console.log(data.field);// 从form中取值，数据来源由你自己定
+									            
+									            var json = {"id":data.field.addId,"title": data.field.addNodeName,"parentId": node.nodeId};
+									            //DTree5.partialRefreshEdit($div, data.field.addNodeName); // 如果是字符串，则会更新文本内容
+									            //DTree5.partialRefreshEdit($div, json); // 如果是json对象，则会更新节点的其他属性
+									            
+									            layer.close(index);
+									            return false;
+									          });
+									        }
+									      })
+									    }
+									  },
+									  {toolbarId: "testDel",icon:"dtree-icon-roundclose",title:"自定义删除",handler: function(node,$div){
+									      layer.msg(JSON.stringify(node));
+									      DTree5.partialRefreshDel($div); // 这样即可删除节点
 									    }
 									  }]
 									});
@@ -375,12 +417,13 @@
 <script type="text/javascript">
 	layui.extend({
 		dtree: '{/}../layui_ext/dtree/dtree'
-	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree', 'form'], function(){
 		var element = layui.element,
 			layer = layui.layer,
 			table = layui.table,
 			util = layui.util,
 			dtree = layui.dtree,
+			form = layui.form,
 			$ = layui.$;
 		
 		layui.code();	// 代码修饰器
@@ -440,7 +483,6 @@
 			toolbarScroll:"#toolbarDiv",
 			toolbarFun: {
 				addTreeNode: function(treeNode, $div){
-				//	console.log($div.parent("li").parent("ul").prev("div").attr("data-record"));
 					$.ajax({
 						type: "post",
 						data: treeNode,
@@ -460,7 +502,7 @@
 						data: treeNode,
 						url: "/DTreeHelper/toolbar/update",
 						success: function(result){
-							 DTree1.changeTreeNodeEdit("refresh");
+							 DTree1.changeTreeNodeEdit(true);
 						},
 						error: function(){
 							 DTree1.changeTreeNodeEdit(false);
@@ -475,7 +517,7 @@
 						data: treeNode,
 						url: "/DTreeHelper/toolbar/delete",
 						success: function(result){
-							DTree1.changeTreeNodeDel("refresh");
+							DTree1.changeTreeNodeDel(true);
 						},
 						error: function(){
 							DTree1.changeTreeNodeDel(false);
@@ -549,14 +591,113 @@
 		});
 		
 		// 1.toolbarTree5
-		dtree.render({
+		var DTree5 = dtree.render({
 			elem: "#toolbarTree5",
 			url: "../json/case/toolbarTree1.json",
 			type: "all",
 			toolbar:true,
 			toolbarScroll:"#toolbarDiv5",
 			toolbarShow:[], // 默认按钮制空
-			toolbarExt:[{toolbarId: "test",icon:"dtree-icon-wefill",title:"自定义新增",handler: function(node,$div){layer.msg(JSON.stringify(node));}}]
+			toolbarExt:[
+			             {toolbarId: "test",
+			              icon:"dtree-icon-wefill",
+			              title:"自定义新增",
+			              handler: function(node,$div){
+			            	// layer.msg(JSON.stringify(node));
+			            	 layer.open({
+			            		 type:"1",
+			            		 content:'<div class="dtree-toolbar-tool">' +
+						            		'<form class="layui-form layui-form-pane" lay-filter="dtree_addNode_form">' +
+						            	        '<div class="layui-form-item">' +
+						            	            '<label class="layui-form-label" title="当前选中">当前选中：</label>' +
+						            	            '<div class="layui-input-block f-input-par">' +
+						            	               '<input type="text" class="layui-input f-input" value="'+node.context+'" placeholder="'+node.context+'" lay-verify="" name="nodeTitle" readonly="">' +
+						            	            '</div>' +
+						            	        '</div>' +
+						            	        '<div class="layui-form-item">' +
+						            	            '<label class="layui-form-label" title="新增节点">新增节点：</label>' +
+						            	            '<div class="layui-input-block f-input-par">' +
+						            	               ' <input type="text" class="layui-input f-input" value="" placeholder="" lay-verify="required" name="addNodeName">' +
+						            	           ' </div>' +
+						            	        '</div>' +
+						            	        '<div class="layui-form-item">' +
+						            	            '<label class="layui-form-label" title="新增ID">新增ID：</label>' +
+						            	            '<div class="layui-input-block f-input-par">' +
+						            	               ' <input type="text" class="layui-input f-input" value="" placeholder="" lay-verify="required" name="addId">' +
+						            	           ' </div>' +
+						            	        '</div>' +
+						            	        '<div class="layui-form-item">' +
+						            	            '<div class="layui-input-block" style="margin-left:0px;text-align:center;">' +
+						            	                '<button type="button" class="layui-btn layui-btn-normal btn-w100" lay-submit="" lay-filter="dtree_addNode_form">确认添加</button>' +
+						            	            '</div>' +
+						            	        '</div>' +
+						            	    '</form>' +
+						            	'</div>',
+						           success: function(layero, index){
+						        	   form.render();
+						        	   form.on("submit(dtree_addNode_form)",function(data){
+						        		   console.log(data.field);
+						        		   
+						        		   var arr = [{"id":data.field.addId,"title": data.field.addNodeName,"parentId": node.nodeId}];
+						        		   console.log(arr);
+						        		   var json = {"id":data.field.addId,"title": data.field.addNodeName,"parentId": node.nodeId};
+						        		   DTree5.partialRefreshAdd($div, json);
+						        		   
+						        		   
+						        		   layer.close(index);
+										   return false;
+						        	   });
+						           }
+			            	 })
+			              }
+			             },
+			             {toolbarId: "test2",
+				              icon:"dtree-icon-bianji",
+				              title:"自定义编辑",
+				              handler: function(node, $div){
+				            	 layer.open({
+				            		 type:"1",
+				            		 content:'<div class="dtree-toolbar-tool">' +
+							            		'<form class="layui-form layui-form-pane" lay-filter="dtree_addNode_form">' +
+							            	        '<div class="layui-form-item">' +
+							            	            '<label class="layui-form-label" title="编辑节点">编辑节点：</label>' +
+							            	            '<div class="layui-input-block f-input-par">' +
+							            	               ' <input type="text" class="layui-input f-input" value="'+node.context+'" placeholder="" lay-verify="required" name="editNodeName">' +
+							            	           ' </div>' +
+							            	        '</div>' +
+							            	        '<div class="layui-form-item">' +
+							            	            '<div class="layui-input-block" style="margin-left:0px;text-align:center;">' +
+							            	                '<button type="button" class="layui-btn layui-btn-normal btn-w100" lay-submit="" lay-filter="dtree_editNode_form">确认编辑</button>' +
+							            	            '</div>' +
+							            	        '</div>' +
+							            	    '</form>' +
+							            	'</div>',
+							           success: function(layero, index){
+							        	   form.render();
+							        	   form.on("submit(dtree_editNode_form)",function(data){
+							        		   console.log(data.field);
+							        		   
+							        		   var json = {"id":"123123123123","title": data.field.editNodeName,"parentId": node.parentId};
+							        		   
+							        		   var str = data.field.editNodeName;
+							        		   DTree5.partialRefreshEdit($div, json);
+							        		   
+							        		   layer.close(index);
+											   return false;
+							        	   });
+							           }
+				            	 })
+				              }
+				             }
+			             ,
+			             {toolbarId: "test3",
+				              icon:"dtree-icon-roundclose",
+				              title:"自定义删除",
+				              handler: function(node, $div){
+				            	  DTree5.partialRefreshDel($div);
+				              }
+				             }
+			           ]
 		});
 		
 		// 1.toolbarTree5
