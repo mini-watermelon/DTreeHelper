@@ -3,7 +3,7 @@
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/
  *@License https://www.layui.com/
- *@LASTTIME 2019/4/13 
+ *@LASTTIME 2019/5/5
  *@VERSION v2.5.0
  */
 layui.define(['jquery','layer','form'], function(exports) {
@@ -1899,6 +1899,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 	
 	// 刷新树
 	DTree.prototype.refreshTree = function(){
+		var _this = this;
 		_this.obj.html("");	// 清空树结构
 		_this.initNodeParam(); // 清空参数
 		_this.init(); //执行初始化方法
