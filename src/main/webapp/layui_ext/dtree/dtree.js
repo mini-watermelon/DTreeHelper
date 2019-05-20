@@ -2012,7 +2012,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				var parseData = _this.parseData(data);
 
 				if(parseData.treeId()){
-					var level = parseInt($div.parent("li").data("index"))+1;
+					var level = parseInt($div.parent("li").attr("data-index"))+1;
 					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(0), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), "item"));
 
 					// 建造完毕后，选中该DIV
@@ -2101,12 +2101,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		//$i 当前点击的checkbox
 		var dataPar = $i.attr("data-par"),
-			dataType = $i.data("type"),
+			dataType = $i.attr("data-type"),
 			$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 			$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 			$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
 
-		if ($i.data("checked") == "1") {
+		if ($i.attr("data-checked") == "1") {
 			// 处理当前节点的选中状态
 			_this.checkStatus($i).noCheck();
 
@@ -2146,12 +2146,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 		//$i 当前点击的checkbox
 		var $div = $i.closest("."+LI_DIV_ITEM),
 			dataPar = $i.attr("data-par"),
-			dataType = $i.data("type"),
+			dataType = $i.attr("data-type"),
 			$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 			$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 			$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
 
-		if ($i.data("checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
+		if ($i.attr("data-checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
 			// 处理当前节点的选中状态
 			_this.checkStatus($i).noCheck();
 
@@ -2201,12 +2201,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 		//$i 当前点击的checkbox
 		var $div = $i.closest("."+LI_DIV_ITEM),
 			dataPar = $i.attr("data-par"),
-			dataType = $i.data("type"),
+			dataType = $i.attr("data-type"),
 			$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 			$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 			$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
 
-		if ($i.data("checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
+		if ($i.attr("data-checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
 			// 处理当前节点的选中状态
 			_this.checkStatus($i).noCheck();
 
@@ -2230,12 +2230,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 		//$i 当前点击的checkbox
 		var $div = $i.closest("."+LI_DIV_ITEM),
 			dataPar = $i.attr("data-par"),
-			dataType = $i.data("type"),
+			dataType = $i.attr("data-type"),
 			$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 			$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 			$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
 		
-		if ($i.data("checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
+		if ($i.attr("data-checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
 			// 处理当前节点的选中状态
 			_this.checkStatus($i).noCheck();
 		} else {		//当前复选框为未选中状态，点击后变为选中状态
@@ -2250,12 +2250,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 		//$i 当前点击的checkbox
 		var $div = $i.closest("."+LI_DIV_ITEM),
 			dataPar = $i.attr("data-par"),
-			dataType = $i.data("type"),
+			dataType = $i.attr("data-type"),
 			$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 			$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 			$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
 	
-		var checked = $i.data("checked");
+		var checked = $i.attr("data-checked");
 		// 将全部节点全部设为未选中状态
 		var $all_i = _this.obj.find("i[data-checked]");
 		_this.checkStatus($all_i).noCheck();
@@ -2304,7 +2304,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			for ( var key = 0; key < $is.length; key++) {
 				var $i = $($is[key]),
 					dataPar = $i.attr("data-par"),
-					dataType = $i.data("type"),
+					dataType = $i.attr("data-type"),
 					$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 					$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 					$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
@@ -2335,7 +2335,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			for ( var key = 0; key < $is.length; key++) {
 				var $i = $($is[key]),
 					dataPar = $i.attr("data-par"),
-					dataType = $i.data("type"),
+					dataType = $i.attr("data-type"),
 					$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 					$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 					$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
@@ -2387,7 +2387,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		if (_this.checkbarData == "change"){	//记录变更数据
 			_this.obj.find("i[data-par][dtree-disabled='false']").each(function(){
 				var $i = $(this), $div = $i.closest("."+LI_DIV_ITEM);
-				if ($i.data("checked") != $i.data("initchecked")) {
+				if ($i.attr("data-checked") != $i.attr("data-initchecked")) {
 					_this.checkbarNode.push(_this.getRequestParam(_this.getCheckbarNodeParam($div, $i)));
 				}
 			});
@@ -2424,17 +2424,17 @@ layui.define(['jquery','layer','form'], function(exports) {
 	DTree.prototype.getCheckbarNodeParam = function($div, $i){
 		var _this = this;
 		var temp_node = {};
-		temp_node.nodeId = $div.data("id");
-		temp_node.parentId = _this.getNodeDom($div).parentLi().data("pid");
-		temp_node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().data("title") : _this.getNodeDom($div).cite().text();
-		temp_node.leaf = _this.getNodeDom($div).cite().data("leaf") == "leaf" ? true : false;
-		temp_node.level = _this.getNodeDom($div).parentLi().data("index");
+		temp_node.nodeId = $div.attr("data-id");
+		temp_node.parentId = _this.getNodeDom($div).parentLi().attr("data-pid");
+		temp_node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().attr("data-title") : _this.getNodeDom($div).cite().text();
+		temp_node.leaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
+		temp_node.level = _this.getNodeDom($div).parentLi().attr("data-index");
 		temp_node.spread = _this.getNodeDom($div).fnode().data("spread") == "open" ? true : false;
 		temp_node.basicData = $div.attr("data-basic")
 		temp_node.recordData = $div.attr("data-record");
-		temp_node.dataType = $i.data("type");
-		temp_node.checked = $i.data("checked");
-		temp_node.initchecked = $i.data("initchecked");
+		temp_node.dataType = $i.attr("data-type");
+		temp_node.checked = $i.attr("data-checked");
+		temp_node.initchecked = $i.attr("data-initchecked");
 		return temp_node;
 	};
 
@@ -2446,7 +2446,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			var $i = $(this);
 			$div = $i.closest("."+LI_DIV_ITEM);
 
-			if ($i.data("checked") != $i.data("initchecked")) {
+			if ($i.attr("data-checked") != $i.attr("data-initchecked")) {
 				flag = true;
 				return true;
 			}
@@ -2611,7 +2611,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
 						spread = $i_spread.data("spread"),
-						leaf = $cite.data("leaf");
+						leaf = $cite.attr("data-leaf");
 
 					if (leaf == "leaf") { continue;	}	// 说明是叶子了，则继续循环下一个
 
@@ -2648,7 +2648,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
 						spread = $i_spread.data("spread"),
-						leaf = $cite.data("leaf");
+						leaf = $cite.attr("data-leaf");
 
 					$ul.removeClass(NAV_SHOW);
 					_this.operateIcon($i_spread, $i_node).close();
@@ -2670,11 +2670,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 					var b = false;
 					_this.obj.find("i[data-par]").each(function(){
 						var $i = $(this);
-						if($i.data("checked") == '2'){
+						if($i.attr("data-checked") == '2'){
 							b = true;
-						}else if($i.data("checked") == '0') {
+						}else if($i.attr("data-checked") == '0') {
 							_this.checkStatus($i).check();
-						}else if($i.data("checked") == '1') {
+						}else if($i.attr("data-checked") == '1') {
 							_this.checkStatus($i).noCheck();
 						}
 					});
@@ -2806,7 +2806,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			var $nthis = $(this);
 			var html = $nthis.html();
 			if(html.indexOf(value) > -1){
-				if($nthis.data("leaf") == "leaf") {
+				if($nthis.attr("data-leaf") == "leaf") {
 					// 叶子节点提供包含父节点的所有信息
 					var title = "";
 					$nthis.parents("li").each(function(){
@@ -2964,7 +2964,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
 						spread = $i_spread.data("spread"),
-						leaf = $cite.data("leaf");
+						leaf = $cite.attr("data-leaf");
 
 					if (leaf == "leaf") { continue;	}	// 说明是叶子了，则继续循环下一个
 
@@ -3001,7 +3001,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
 						spread = $i_spread.data("spread"),
-						leaf = $cite.data("leaf");
+						leaf = $cite.attr("data-leaf");
 
 					$ul.removeClass(NAV_SHOW);
 					_this.operateIcon($i_spread, $i_node).close();
@@ -3038,11 +3038,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 						form.render();
 						form.on("submit(dtree_addNode_form)",function(data){
 							var data = data.field;
-							var parentId = $div.data("id"),
-								id = $div.data("id")+"_node_"+$ul[0].childNodes.length,
+							var parentId = $div.attr("data-id"),
+								id = $div.attr("data-id")+"_node_"+$ul[0].childNodes.length,
 								leaf = true,
 								checked = "0",
-								level = parseInt($p_li.data("index"))+1;
+								level = parseInt($p_li.attr("data-index"))+1;
 	
 							// 创建子节点的DOM，添加子节点
 							var checkArr = [];
@@ -3507,7 +3507,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			iframeUrl = _this.iframe.iframeUrl,
 			iframeLoad = _this.iframe.iframeLoad;
 
-		var flag = iframeLoad == "leaf" ? (($cite.data("leaf") == "leaf") ? true : false) : true;
+		var flag = iframeLoad == "leaf" ? (($cite.attr("data-leaf") == "leaf") ? true : false) : true;
 
 		if (flag) {
 			if ($(iframeElem).length > 0) {		//iframe存在
@@ -3638,21 +3638,20 @@ layui.define(['jquery','layer','form'], function(exports) {
 	// 设置当前选中节点的全部参数
 	DTree.prototype.setNodeParam = function($div) {
 		var _this = this;
-		_this.node.nodeId = $div.data("id");
-		_this.node.parentId = _this.getNodeDom($div).parentLi().data("pid");
-		_this.node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().data("title") : _this.getNodeDom($div).cite().text();
-		_this.node.leaf = _this.getNodeDom($div).cite().data("leaf") == "leaf" ? true : false;
-		_this.node.level = _this.getNodeDom($div).parentLi().data("index");
+		_this.node.nodeId = $div.attr("data-id");
+		_this.node.parentId = _this.getNodeDom($div).parentLi().attr("data-pid");
+		_this.node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().attr("data-title") : _this.getNodeDom($div).cite().text();
+		_this.node.leaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
+		_this.node.level = _this.getNodeDom($div).parentLi().attr("data-index");
 		_this.node.spread = _this.getNodeDom($div).fnode().data("spread") == "open" ? true : false;
-		// basic和record不能用data函数取，因为用data取出来之后会自动转换成JSON
 		_this.node.basicData = $div.attr("data-basic")
 		_this.node.recordData = $div.attr("data-record");
 		if (_this.getNodeDom($div).checkbox()) {
 			var dataTypes = "", checkeds = "", initcheckeds = "";
 			_this.getNodeDom($div).checkbox().each(function(){
-				dataTypes += $(this).data("type") + ",";
-				checkeds += $(this).data("checked") + ",";
-				initcheckeds += $(this).data("initchecked") + ",";
+				dataTypes += $(this).attr("data-type") + ",";
+				checkeds += $(this).attr("data-checked") + ",";
+				initcheckeds += $(this).attr("data-initchecked") + ",";
 			});
 			dataTypes = dataTypes.substring(0, dataTypes.length-1);
 			checkeds = checkeds.substring(0, checkeds.length-1);
@@ -3681,20 +3680,20 @@ layui.define(['jquery','layer','form'], function(exports) {
 	DTree.prototype.getTempNodeParam = function($div) {
 		var _this = this;
 		var temp_node = {};
-		temp_node.nodeId = $div.data("id");
-		temp_node.parentId = _this.getNodeDom($div).parentLi().data("pid");
-		temp_node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().data("title") : _this.getNodeDom($div).cite().text();
-		temp_node.leaf = _this.getNodeDom($div).cite().data("leaf") == "leaf" ? true : false;
-		temp_node.level = _this.getNodeDom($div).parentLi().data("index");
+		temp_node.nodeId = $div.attr("data-id");
+		temp_node.parentId = _this.getNodeDom($div).parentLi().attr("data-pid");
+		temp_node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().attr("data-title") : _this.getNodeDom($div).cite().text();
+		temp_node.leaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
+		temp_node.level = _this.getNodeDom($div).parentLi().attr("data-index");
 		temp_node.spread = _this.getNodeDom($div).fnode().data("spread") == "open" ? true : false;
 		temp_node.basicData = $div.attr("data-basic")
 		temp_node.recordData = $div.attr("data-record");
 		if (_this.getNodeDom($div).checkbox()) {
 			var dataTypes = "", checkeds = "", initcheckeds = "";
 			_this.getNodeDom($div).checkbox().each(function(){
-				dataTypes += $(this).data("type") + ",";
-				checkeds += $(this).data("checked") + ",";
-				initcheckeds += $(this).data("initchecked") + ",";
+				dataTypes += $(this).attr("data-type") + ",";
+				checkeds += $(this).attr("data-checked") + ",";
+				initcheckeds += $(this).attr("data-initchecked") + ",";
 			});
 			dataTypes = dataTypes.substring(0, dataTypes.length-1);
 			checkeds = checkeds.substring(0, checkeds.length-1);
@@ -3827,7 +3826,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				return childNode;
 			},
 			parentNode: function($div){	// 获取上级节点值
-				var pId = _this.getNodeDom($div).parentLi().data("pid");
+				var pId = _this.getNodeDom($div).parentLi().attr("data-pid");
 				var $pdiv = _this.obj.find("div[data-id='"+pId+"']");
 				if($pdiv.length > 0) {return _this.getRequestParam(_this.getTempNodeParam($pdiv));} else {return {};}
 

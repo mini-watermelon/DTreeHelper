@@ -5,7 +5,7 @@
 		"title": "湖南省",
 		"last": false,
 		"level": "1",
-		"parentId": "0",
+		"parentId": "-1",
 		"checkArr": [{"type": "0", "checked": "0"}],
 		"children":[{
 			"id":"001001",
@@ -47,7 +47,7 @@
 		"id":"002",
 		"title": "湖北省",
 		"last": false,
-		"parentId": "0",
+		"parentId": "-1",
 		"level": "1",
 		"checkArr": [{"type": "0", "checked": "0"}],
 		"children":[{
@@ -89,7 +89,7 @@
 		"id":"003",
 		"title": "广东省",
 		"last": false,
-		"parentId": "0",
+		"parentId": "-1",
 		"level": "1",
 		"checkArr": [{"type": "0", "checked": "0"}],
 		"children":[{
@@ -155,7 +155,7 @@
 		"title": "浙江省",
 		"last": false,
 		"level": "1",
-		"parentId": "0",
+		"parentId": "-1",
 		"checkArr": [{"type": "0", "checked": "0"}],
 		"children":[{
 			"id":"004001",
@@ -197,7 +197,7 @@
 		"id":"005",
 		"title": "福建省",
 		"last": false,
-		"parentId": "0",
+		"parentId": "-1",
 		"level": "1",
 		"checkArr": [{"type": "0", "checked": "0"}],
 		"children":[{
