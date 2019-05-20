@@ -25,26 +25,99 @@
 			<div class="layui-fluid">
 				<blockquote class="layui-elem-quote">以下介绍了在实际开发中树的基本使用方法，也是比较常见的使用。</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul>
+										<li>【优化】基础方法优化：render方法和reload方法中，如果树在当前页面中被加载过一次了，再次加载会从缓存中取出树，并将树上次点击的节点作为参数记录下来，现在优化为还是从缓存中取，但是会重置上次记录的参数。</li>
+										<li>【优化】内置函数优化：getLiItemDom 当parentId为0时组件自动判定为false从而使用内置parentId的问题。</li>
+										<li>【新增】基础属性新增：accordion属性，用于开启手风琴模式</li>
+										<li>【新增】基础属性新增：none，用于定于树初始化未加载节点时的提示文字。</li>
+										<li>【新增】基础方法新增：getParam： 获取指定节点选中值</li>
+										<li>【新增】基础方法新增：getAllParentParam： 获取指定节点的全部上级节点</li>
+										<li>【新增】基础方法新增：click：模拟单击事件</li>
+										<li>【新增】内置方法新增：replaceDom：替换节点的dom值，或指定值。</li>
+										<li>【新增】内置方法新增：operateIcon： 设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理</li>
+										<li>【新增】内置方法新增：getParam： 获取指定节点选中值</li>
+										<li>【新增】内置方法新增：getAllParentParam： 获取指定节点的全部上级节点</li>
+										<li>【新增】内置方法新增：getNodeDom： 根据具体的id获取基于当前id的div以及对应的其他dom元素</li>
+										<li>【新增】内置方法新增：getNode： 获取指定节点Div</li>
+										<li>【新增】内置方法新增：accordionUL： 开启手风琴模式时对其他节点的处理</li>
+										<li>【新增】内置方法新增：setDisabledNodes： 设置节点为disabled</li>
+										<li>【新增】内置方法新增：cancelDisabledNodes：将节点的disabled取消</li>
+										<li>【新增】内置方法新增：getDisabledNodesParam： 获取指定disabled节点的值</li>
+										<li>【新增】内置方法新增：getAllDisabledNodesParam： 获取全部disabled节点的值</li>
+										<li>【新增】内置方法新增：setHideNodes： 设置节点为hide</li>
+										<li>【新增】内置方法新增：cancelHideNodes： 将节点的hide取消</li>
+										<li>【新增】内置方法新增：getHideNodesParam： 获取指定hide节点的值</li>
+										<li>【新增】内置方法新增：getAllHideNodesParam： 获取全部hide节点的值</li>
+										<li>【新增】内置方法新增：getNowNodeOrNull：获取当前选中div，没有选中则为null</li>
+										<li>【新增】内置方法新增：navThis：选中div</li>
+										<li>【新增】内置方法新增：getNoneDom：当无节点数据时显示dom信息</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="rryf">
+					<legend>初始化（render） / 重新渲染（reload）</legend>
+					<div class="layui-field-box">
+						<p>两个十分重要的方法，前者也是你即将使用的最多的方法</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="commonTree0" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" id="commonTree0_btn">点击按钮重新渲染左侧树</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									// 渲染，使用data渲染
+									dtree.render({
+									  elem: "#commonTree0",
+									  data: commonTree0
+									});
+									
+									// 点击按钮，重新渲染，使用url渲染
+									$("#commonTree0_btn").click(function(){
+									  dtree.reload("commonTree0",{
+									    url: "../json/case/commonTree2.json",
+									    method: "get", //默认为post
+									    initLevel: "1" //默认为2
+									  });
+									});
+								</pre>
+							</div>
+						</div>
+						<p>其中使用到的data，或者是url返回的数据，可以参考<span style="font-weight: bold;">数据格式</span>中的<span style="font-weight: bold;">标准数据格式</span></p>
+					</div>
+				</fieldset>
 			</div>
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="djryjdhdsj">
-					<legend>点击任意节点回调节点数据</legend>
+					<legend>节点点击事件（dtree.on("node(treeId)", function(obj){})）</legend>
 					<div class="layui-field-box">
-						<p>使用树时，你肯定需要用到这个树中所带的数据，那么只需要按照这种方式写，数据自然会出现在你的眼前。</p>
+						<p>使用树时，一般情况下你是需要点击节点获取节点的数据的，那么你可以如此这般的写。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
 							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="commonTree1" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<pre class="layui-code" lay-title="JavaScript">
-									// 渲染，使用data渲染
+									// 渲染，使用data渲染，url渲染亦可
 									dtree.render({
 									  elem: "#commonTree1",
 									  data: commonTree1
 									});
 									
-									// 点击节点触发回调
+									// 点击节点触发回调，其中obj内包含丰富的数据，打开浏览器F12查看！
 									dtree.on("node('commonTree1')" ,function(obj){
 									  layer.msg(JSON.stringify(obj.param));
+									  console.log(obj.param); // 点击当前节点传递的参数
+									  console.log(obj.dom); // 当前节点的jquery对象
+									  console.log(obj.childParams); // 当前节点的所有子节点参数
+									  console.log(obj.parentParam); // 当前节点的父节点参数
 									});
 								</pre>
 							</div>
@@ -55,25 +128,19 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="jdybjz">
-					<legend>简单异步加载</legend>
+					<legend>异步加载（url）</legend>
 					<div class="layui-field-box">
 						<p>树的使用肯定需要异步加载，毕竟数据都来源于后端，此处按钮只是演示用，你可以在页面初始化时就加载这棵树。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
-							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;"><ul id="commonTree2" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg4"><div style="height: 360px;overflow: auto;"><ul id="commonTree2" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<button class="layui-btn layui-btn-normal" id="commonTree2_btn">点击按钮加载左侧树</button>
 								<pre class="layui-code" lay-title="JavaScript">
 									$("#commonTree2_btn").click(function(){
-									  if(document.location.protocol != "http:" && document.location.protocol != "https:") {
-									    layer.msg("异步加载功能需要将项目发布到服务器上",{icon:5});
-									    return;
-									  }
-									  
-									  // 使用url异步加载，这里是模拟接口，所以是发起的get请求，默认是post请求
+									  // 使用url异步加载
 									  dtree.render({
 									    elem: "#commonTree2",
-									    url: "../json/case/commonTree2.json",
-									    method: "get"
+									    url: "../json/case/commonTree2.json"
 									  });
 									});
 									
@@ -84,18 +151,19 @@
 								</pre>
 							</div>
 						</div>
+						<p>关于异步加载的其他参数，可以参考<span style="font-weight: bold;">异步加载</span>菜单或者是<span style="font-weight: bold;">基础文档中的异步数据接口规范</span></p>
 					</div>
 				</fieldset>
 			</div>
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="yjfxk">
-					<legend>一级复选框</legend>
+					<legend>一级复选框（checkbar）</legend>
 					<div class="layui-field-box">
 						<p>基本需求，默认是强级联关系，即子节点选中了，父节点一定会选中，当然你可以自由指定他们的级联关系，配置参数请查看基础文档。</p>
-						<p>当你选择开启复选框时，除了必须指定checkbar:true之外，数据中必须存在checkArr字段，复选框才能正常显示。</p>
+						<p style="color:#FF5722;">当你选择开启复选框时，除了必须指定checkbar:true之外，数据中必须存在checkArr字段，复选框才能正常显示。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
-							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;"><ul id="commonTree3" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg4"><div style="height: 400px;overflow: auto;"><ul id="commonTree3" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<button class="layui-btn layui-btn-normal" id="commonTree3_btn">点击按钮获取所有选中节点值</button>
 								<pre class="layui-code" lay-title="JavaScript">
@@ -120,7 +188,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="zdyjdzk">
-					<legend>初始自定节点展开<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
+					<legend>初始自定节点展开（spread）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
 					<div class="layui-field-box">
 						<p>当你不想通过initLevel属性来统一指定节点的展开情况，而想通过后台的标识数据spread来指定时，以下示例可以作为参考。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -165,7 +233,7 @@
 					<div class="layui-field-box">
 						<p>默认情况下，你点击树前面的图标时，如果是非最后一级节点，会自动的寻找你配置的url并自动的再次发送请求以获取节点数据，但现在，你可以取消这一默认操作。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
-							<div class="layui-col-lg4"><div style="height: 670px;overflow: auto;"><ul id="commonTree5" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg4"><div style="overflow: auto;"><ul id="commonTree5" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<pre class="layui-code" lay-title="JavaScript">
 									var CommonTree5 = dtree.render({
@@ -189,9 +257,9 @@
 				</fieldset>
 			</div>
 			
-			<div class="layui-fluid">
+			<div class="layui-fluid" data-vs="vs250">
 				<fieldset class="layui-elem-field layui-field-title" id="jdjy">
-					<legend>节点禁用<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<legend>节点禁用（disabled）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
 					<div class="layui-field-box">
 						<p>当你的数据中设置了disabled:true参数时，则那个节点就会被禁用</p>
 						<p>被禁用的节点：节点复选框不可点击，节点不可点击，节点不可双击，右键菜单不可点击，不可点击加载iframe，无法获取复选框数据，但可进行节点展开/关闭，并通过内置函数获取该节点的数据。</p>
@@ -223,11 +291,11 @@
 				</fieldset>
 			</div>
 			
-			<div class="layui-fluid">
+			<div class="layui-fluid" data-vs="vs250">
 				<fieldset class="layui-elem-field layui-field-title" id="jdyc">
-					<legend>节点隐藏<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<legend>节点隐藏（hide）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
 					<div class="layui-field-box">
-						<p>当你的数据中设置了isHide:true参数时，则那个节点就会被隐藏</p>
+						<p>当你的数据中设置了hide:true参数时，则那个节点就会被隐藏</p>
 						<p>被隐藏的节点：节点不可选中，节点复选框不可点击，节点不可点击，节点不可双击，右键菜单不可点击，不可点击加载iframe，但可进行节点展开/关闭，可以获取复选框数据，并可以通过内置函数获取该节点的数据。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
 							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;"><ul id="commonTree7" class="dtree" data-id="0"></ul></div></div>
@@ -249,6 +317,48 @@
 									$("#commonTree7_btn").click(function(){
 									  var param = CommonTree6.getAllHideNodesParam(); // 获取全部隐藏节点的信息
 									  layer.msg(JSON.stringify(param));
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs250">
+				<fieldset class="layui-elem-field layui-field-title" id="accordion">
+					<legend>手风琴（accordion）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>一次只会展开一层节点</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="overflow: auto;"><ul id="commonTree8" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#commonTree8",
+									  url: "../json/case/commonTree8.json",
+									  accordion: true  // 开启手风琴
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs250">
+				<fieldset class="layui-elem-field layui-field-title" id="nonetext">
+					<legend>无数据提示（none）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>树初始化未加载节点时的提示文字</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="overflow: auto;"><ul id="commonTree9" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#commonTree9",
+									  url: "../json/case/commonTree9.json",
+									  none: "提示说我没有数据？"
 									});
 								</pre>
 							</div>
@@ -315,7 +425,11 @@
 									  /** 是否展开节点*/
 									  private Boolean spread;
 									  /** 是否最后一级节点*/
-									  private Boolean isLast;
+									  private Boolean last;
+									  /** 是否隐藏*/
+									  private Boolean hide;
+									  /** 是否禁用*/
+									  private Boolean disabled;
 									  /** 自定义图标class*/
 									  private String iconClass;
 									  /** 表示用户自定义需要存储在树节点中的数据*/
@@ -338,7 +452,7 @@
 									  /** 复选框标记*/
 									  private String type;
 									  /** 复选框是否选中*/
-									  private String isChecked;
+									  private String checked;
 									  
 									  //省略了get、set、toString方法
 									}
@@ -387,6 +501,7 @@
 
 </body>
 <script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
 <script type="text/javascript">
 	layui.extend({
 		dtree: '{/}../layui_ext/dtree/dtree'
@@ -405,7 +520,6 @@
 		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
 		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
 		}
-		
 		
 		// 右侧弹出层
 		layer.open({
@@ -426,7 +540,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["节点禁用","节点隐藏"];
+							var tts = ["节点禁用","节点隐藏","手风琴","无数据提示用法"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -444,6 +558,26 @@
 			}
 		});
 		
+		// 1.commonTree0
+		dtree.render({
+			elem: "#commonTree0",
+			data: commonTree1
+		});
+		
+		// 1.commonTree0
+		$("#commonTree0_btn").click(function(){
+			if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+				layer.msg("异步加载功能需要将项目发布到服务器上",{icon:5});
+				return;
+			}
+			
+			dtree.reload("commonTree0",{
+				url: "../json/case/commonTree2.json",
+				method: "get",
+				initLevel: "1"
+			});
+		});
+		
 		// 1.commonTree1
 		dtree.render({
 			elem: "#commonTree1",
@@ -453,8 +587,6 @@
 		dtree.on("node('commonTree1')" ,function(obj){
 		  layer.msg(JSON.stringify(obj.param));
 		});
-		
-		
 		// 2.commonTree2
 		$("#commonTree2_btn").click(function(){
 			if(document.location.protocol != "http:" && document.location.protocol != "https:") {
@@ -525,13 +657,28 @@
 		// 2.commonTree7
 		var CommonTree7 = dtree.render({
 		  elem: "#commonTree7",
-		  url: "../json/case/commonTree7.json"
+		  url: "../json/case/commonTree7.json",
+		  record: true
 		});
 		
 		// 2.commonTree2
 		$("#commonTree7_btn").click(function(){
 			var param = CommonTree7.getAllHideNodesParam(); // 获取全部隐藏节点的信息
 			layer.msg(JSON.stringify(param));
+			console.log(JSON.stringify(param));
+		});
+		
+		dtree.render({
+			elem: "#commonTree8",
+			url: "../json/case/commonTree3.json",
+			accordion: true
+		});
+		
+		
+		dtree.render({
+		  elem: "#commonTree9",
+		  data: [],
+		  none: "提示说我没有数据？"
 		});
 	
 	});

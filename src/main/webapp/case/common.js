@@ -1,50 +1,57 @@
 var menuTree = [{
+	"id":"rryf",
+	"title": "render/reload用法",
+	"last": true,
+	"children":[]
+},{
 	"id":"djryjdhdsj",
-	"title": "点击任意节点回调数据",
-	"isLast": true,
-	"level": "1",
+	"title": "节点点击事件用法",
+	"last": true,
 	"children":[]
 },{
 	"id":"jdybjz",
-	"title": "简单异步加载",
-	"isLast": true,
-	"level": "1",
+	"title": "异步加载简单用法",
+	"last": true,
 	"children":[]
 },{
 	"id":"yjfxk",
-	"title": "一级复选框",
-	"isLast": true,
-	"level": "1",
+	"title": "一级复选框简单用法",
+	"last": true,
 	"children":[]
 },{
 	"id":"zdyjdzk",
-	"title": "初始自定节点展开",
-	"isLast": true,
-	"level": "1",
+	"title": "初始自定节点展开用法",
+	"last": true,
 	"children":[]
 },{
 	"id":"qxzdjz",
-	"title": "取消自动加载子节点",
-	"isLast": true,
-	"level": "1",
+	"title": "取消自动加载子节点用法",
+	"last": true,
 	"children":[]
 },{
 	"id":"jdjy",
-	"title": "节点禁用",
-	"isLast": true,
-	"level": "1",
+	"title": "节点禁用用法",
+	"last": true,
 	"children":[]
 },{
 	"id":"jdyc",
-	"title": "节点隐藏",
-	"isLast": true,
-	"level": "1",
+	"title": "节点隐藏用法",
+	"last": true,
+	"children":[]
+},{
+	"id":"accordion",
+	"title": "手风琴用法",
+	"last": true,
+	"children":[]
+},{
+	"id":"nonetext",
+	"title": "无数据提示用法",
+	"last": true,
 	"children":[]
 },{
 	"id":"java",
 	"title": "java数据定义方式",
-	"isLast": true,
-	"level": "1",
+	"last": true,
 	"children":[]
 }];
 

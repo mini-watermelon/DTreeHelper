@@ -49,6 +49,7 @@
 .dtree{width:260px;}
 .dtree-nav-item{line-height:33px;padding-left:16px;}
 .dtree-nav-ul-sid{display: none;}
+.dtree-none-text{font-size: 12px;text-align: center;color: gray;}
 
 /* 图标及复选框*/
 .dtreefont{cursor: pointer;}

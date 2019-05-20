@@ -3,7 +3,7 @@
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/
  *@License https://www.layui.com/
- *@LASTTIME 2019/5/5
+ *@LASTTIME 2019/5/20
  *@VERSION v2.5.0
  */
 layui.define(['jquery','layer','form'], function(exports) {
@@ -13,7 +13,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 	// 树的公共定义样式汇总
 	var LI_NAV_CHILD = "dtree-nav-ul-sid", LI_NAV_ITEM = "dtree-nav-item",
-		LI_DIV_ITEM = "dtree-nav-div",  DTREEFONTSPECIAL="dtreefont-special",
+		LI_DIV_ITEM = "dtree-nav-div",  DTREEFONTSPECIAL="dtreefont-special", NONETITLE="dtree-none-text",
 		LI_DIV_MENUBAR = "dtree-menubar",
 		LI_DIV_TOOLBAR = "dtree-toolbar", TOOLBAR_TOOL = "dtree-toolbar-tool",  TOOLBAR_TOOL_EM = "dtree-toolbar-fixed",
 		LI_DIV_CHECKBAR = "dtree-nav-checkbox-div", 
@@ -197,7 +197,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				success : config.success,
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
 					if (typeof (config.error) === "function") {
-						config.error();
+						config.error(XMLHttpRequest, textStatus, errorThrown);
 					} else {
 						layer.msg("异步加载失败： " + textStatus,{icon:5, shift:6});
 					}
@@ -232,9 +232,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		/** 默认赋值**/
 		this.formatter = {	// 数据过滤
-			title: function(data){	// 文字
-				return "";
-			}	
+			title: false    // 文字，默认不开启	
 		};
 		this.response = {  // 树返回的json格式
 			statusName: "code",		//返回标识
@@ -246,13 +244,13 @@ layui.define(['jquery','layer','form'], function(exports) {
 			title: "title",			//节点名称
 			iconClass: "iconClass",		//自定义图标
 			childName: "children",	//子节点名称
-			isLast: "isLast",		//是否最后一级节点
+			last: "last",		//是否最后一级节点
 //			level: "level",			//层级
 			spread: "spread",		//展开
 			disabled: "disabled",	//禁用
-			isHide: "isHide",		//隐藏
+			hide: "hide",		//隐藏
 			checkArr: "checkArr",	//复选框列表
-			isChecked: "isChecked", //是否选中
+			checked: "checked", //是否选中
 			type: "type",			//复选框标记
 			basicData: "basicData"	//表示用户自定义需要存储在树节点中的数据
 		};
@@ -260,11 +258,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 			nodeId: "nodeId",		//节点ID
 			parentId: "parentId",	//父节点ID
 			context: "context",	//节点内容
-			isLeaf: "isLeaf",		//是否叶子节点
+			leaf: "leaf",		//是否叶子节点
 			level: "level",		//层级
 			spread: "spread",		//节点展开状态
 			dataType: "dataType",	//节点标记
-			ischecked: "ischecked",	//节点复选框选中状态
+			checked: "checked",	//节点复选框选中状态
 			initchecked: "initchecked",	//节点复选框初始状态
 			basicData: "basicData",		//用户自定义的记录节点数据
 			recordData: "recordData",		//当前data数据（排除basicData和children字段）
@@ -316,11 +314,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 				nodeId: "nodeId",		//节点ID
 				parentId: "parentId",	//父节点ID
 				context: "context",	//节点内容
-				isLeaf: "isLeaf",		//是否叶子节点
+				leaf: "leaf",		//是否叶子节点
 				level: "level",		//层级
 				spread: "spread",		//节点展开状态
 				dataType: "dataType",	//节点标记
-				ischecked: "ischecked",	//节点复选框选中状态
+				checked: "checked",	//节点复选框选中状态
 				initchecked: "initchecked",	//节点复选框初始状态
 				basicData: "basicData",		//用户自定义的记录节点数据
 				recordData: "recordData",		//当前data数据（排除basicData和children字段）
@@ -397,11 +395,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 			nodeId: "",		//节点ID
 			parentId: "",	//父节点ID
 			context: "",	//节点内容
-			isLeaf: "",		//是否叶子节点
+			leaf: "",		//是否叶子节点
 			level: "",		//层级
 			spread: "",		//节点展开状态
 			dataType: "",	//节点标记
-			ischecked: "",	//节点复选框选中状态
+			checked: "",	//节点复选框选中状态
 			initchecked: "",	//节点复选框初始状态
 			basicData: "",		//用户自定义的记录节点数据
 			recordData: "",		//当前data数据（排除basicData和children字段）
@@ -435,6 +433,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.cache = (typeof (this.options.cache) === "boolean") ? this.options.cache : true;		//开启数据缓存
 		this.record = (typeof (this.options.record) === "boolean") ? this.options.record : false;		//开启数据记录模式
 		this.load = (typeof (this.options.load) === "boolean") ? this.options.load : true;		//开启加载动画
+		this.none = this.options.none || "无数据";		// 初始加载无记录时显示文字
 
 		/** 样式相关参数**/
 		this.iconfont = this.options.iconfont || DTREEFONT; // 默认图标字体 dtreefont
@@ -475,6 +474,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.success = this.options.success || function(data, obj){};		//树加载完毕后执行解析树之前的回调（仅限异步加载）
 		this.done = this.options.done || function(data, obj){};		//树加载完毕后的回调（仅限异步加载）
 		this.formatter = $.extend(this.formatter, this.options.formatter)|| this.formatter ;	// 数据过滤
+		this.error = this.options.error || function(XMLHttpRequest, textStatus, errorThrown){};		// 异步加载异常回调
+		this.complete = this.options.complete || function(XMLHttpRequest, textStatus){};	// 异步加载完成回调
 		
 		/** 复选框参数**/
 		this.checkbar = this.options.checkbar || false;	//是否开启复选框模式
@@ -501,8 +502,17 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 		/** iframe模式参数**/
 		this.useIframe = this.options.useIframe || false;	// 是否加载iframe 默认false，
-		this.iframe = $.extend(this.iframe, this.options.iframe) || this.iframe;	//iframe配置
+		if(this.options.iframe) {
+			this.iframe.iframeElem = this.options.iframe.iframeElem || this.iframe.iframeElem; //iframe配置
+			this.iframe.iframeUrl = this.options.iframe.iframeUrl || this.iframe.iframeUrl; //iframe配置
+			this.iframe.iframeLoad = this.options.iframe.iframeLoad || this.iframe.iframeLoad; //iframe配置
+			this.iframe.iframeDefaultRequest = $.extend(this.iframe.iframeDefaultRequest, this.options.iframe.iframeDefaultRequest) || this.iframe.iframeDefaultRequest; //iframe配置
+			this.iframe.iframeRequest = $.extend(this.iframe.iframeRequest, this.options.iframe.iframeRequest) || this.iframe.iframeRequest; //iframe配置
+		}
 		this.iframeFun = $.extend(this.iframeFun, this.options.iframeFun) || this.iframeFun;	//iframe事件加载
+		
+		/** 拖拽模式参数*/
+		this.drawable = (typeof (this.options.drawable) === "boolean") ? this.options.drawable : false; // 是否开启拖拽模式，默认false
 
 		/** 调用确认最终主题方法*/
 		this.ensureTheme();
@@ -535,7 +545,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.cache = (typeof (this.options.cache) === "boolean") ? this.options.cache : this.cache;		//开启数据缓存
 		this.record = (typeof (this.options.record) === "boolean") ? this.options.record : this.record;		//开启数据记录模式
 		this.load = (typeof (this.options.load) === "boolean") ? this.options.load : this.load;		//开启加载动画
-
+		this.none = this.options.none || this.none;  // 初始节点加载无数据时显示文字
+		
 		/** 样式相关参数**/
 		this.iconfont = this.options.iconfont || this.iconfont; // 默认图标字体 dtreefont
 		this.iconfontStyle = this.options.iconfontStyle || this.iconfontStyle; // 用于自定义树的每个关键部位使用的图标
@@ -575,6 +586,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.success = this.options.success || this.success;		//树加载完毕后执行解析树之前的回调（仅限异步加载）
 		this.done = this.options.done || this.done;		//树加载完毕后的回调（仅限异步加载）
 		this.formatter = $.extend(this.formatter, this.options.formatter)|| this.formatter ;	// 数据过滤
+		this.error = this.options.error || this.error;		// 异步加载异常回调
+		this.complete = this.options.complete || this.complete;	// 异步加载完成回调
 		
 		/** 复选框参数**/
 		this.checkbar = this.options.checkbar || this.checkbar;	//是否开启复选框模式
@@ -601,8 +614,17 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 		/** iframe模式参数**/
 		this.useIframe = this.options.useIframe || this.useIframe;	// 是否加载iframe 默认false，
-		this.iframe = $.extend(this.iframe, this.options.iframe) || this.iframe;	//iframe配置
+		if(this.options.iframe) {
+			this.iframe.iframeElem = this.options.iframe.iframeElem || this.iframe.iframeElem; //iframe配置
+			this.iframe.iframeUrl = this.options.iframe.iframeUrl || this.iframe.iframeUrl; //iframe配置
+			this.iframe.iframeLoad = this.options.iframe.iframeLoad || this.iframe.iframeLoad; //iframe配置
+			this.iframe.iframeDefaultRequest = $.extend(this.iframe.iframeDefaultRequest, this.options.iframe.iframeDefaultRequest) || this.iframe.iframeDefaultRequest; //iframe配置
+			this.iframe.iframeRequest = $.extend(this.iframe.iframeRequest, this.options.iframe.iframeRequest) || this.iframe.iframeRequest; //iframe配置
+		}
 		this.iframeFun = $.extend(this.iframeFun, this.options.iframeFun) || this.iframeFun;	//iframe事件加载
+
+        /** 拖拽模式参数*/
+        this.drawable = (typeof (this.options.drawable) === "boolean") ? this.options.drawable : this.drawable; // 是否开启拖拽模式，默认false
 
 		/** 调用确认最终主题方法*/
 		this.ensureTheme();
@@ -1003,11 +1025,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 	// 设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理
 	DTree.prototype.operateIcon = function($i_spread, $i_node){
 		var _this = this;
-		var iconClass = $i_node.attr("data-iconClass");
+		var iconClass = $i_node.data("iconClass");
 		return{
 			open: function(){
-				$i_spread.attr("data-spread","open");
-				$i_node.attr("data-spread","open");
+				$i_spread.data("spread","open");
+				$i_node.data("spread","open");
 				
 				$i_spread.removeClass(_this.usefontStyle.fnode.node.close);
 				$i_spread.addClass(_this.usefontStyle.fnode.node.open);
@@ -1017,8 +1039,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 				}
 			},
 			close: function(){
-				$i_spread.attr("data-spread","close");
-				$i_node.attr("data-spread","close");
+				$i_spread.data("spread","close");
+				$i_node.data("spread","close");
 				
 				$i_spread.removeClass(_this.usefontStyle.fnode.node.open);
 				$i_spread.addClass(_this.usefontStyle.fnode.node.close);
@@ -1028,8 +1050,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 				}
 			},
 			openWithDot: function(){
-				$i_spread.attr("data-spread","open");
-				$i_node.attr("data-spread","open");
+				$i_spread.data("spread","open");
+				$i_node.data("spread","open");
 				
 				$i_spread.removeClass(ICON_HIDE);
 				$i_spread.removeClass(_this.usefontStyle.fnode.dot);
@@ -1040,8 +1062,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 				}
 			},
 			closeWithDot: function(){
-				$i_spread.attr("data-spread","last");
-				$i_node.attr("data-spread","last");
+				$i_spread.data("spread","last");
+				$i_node.data("spread","last");
 				
 				$i_spread.removeClass(_this.usefontStyle.fnode.node.open);
 				$i_spread.removeClass(_this.usefontStyle.fnode.node.close);
@@ -1076,6 +1098,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 		if(_this.data) {
 			if(typeof _this.data.length === 'undefined'){
 				layer.msg("数据解析异常，data数据格式不正确", {icon:5});
+				return ;
+			}
+			
+			if(_this.data.length == 0) {
+				_this.obj.html(_this.getNoneDom().text());
 				return ;
 			}
 			
@@ -1139,6 +1166,19 @@ layui.define(['jquery','layer','form'], function(exports) {
 					}
 
 					if (code == _this.response.statusCode) {
+						var d = result[_this.response.rootName];
+						
+						if(typeof d.length === 'undefined'){
+							layer.msg("数据解析异常，url回调后的数据格式不正确", {icon:5});
+							return ;
+						}
+						
+						if(d.length == 0) {
+							_this.obj.html(_this.getNoneDom().text());
+							return ;
+						}
+						
+						
 						// 加载完毕后执行树解析前的回调
 						_this.success(result, _this.obj);
 						
@@ -1147,10 +1187,10 @@ layui.define(['jquery','layer','form'], function(exports) {
 							//1.识别根节点ul中的data-id标签，判断顶级父节点
 							var pid = _this.obj.attr("data-id");
 							//2.构建一个存放节点的树组
-							var rootListData = _this.queryListTreeByPid(pid, result[_this.response.rootName]);
-							_this.loadListTree(rootListData, result[_this.response.rootName], 1);
+							var rootListData = _this.queryListTreeByPid(pid, d);
+							_this.loadListTree(rootListData, d, 1);
 						} else {
-							_this.loadTree(result[_this.response.rootName], 1);
+							_this.loadTree(d, 1);
 						}
 						
 						// 这种情况下需要一开始就将toolbar显示在页面上
@@ -1171,7 +1211,13 @@ layui.define(['jquery','layer','form'], function(exports) {
 						}
 					}
 				},
-				complete: function(){if(_this.load){layer.close(index);}}
+				error: function(XMLHttpRequest, textStatus, errorThrown){// 异步加载异常回调
+					_this.error();
+				},
+				complete: function(XMLHttpRequest, textStatus){// 异步加载完成回调
+					if(_this.load){layer.close(index);}
+					_this.complete();
+				}
 			});
 		}
 	};
@@ -1264,7 +1310,13 @@ layui.define(['jquery','layer','form'], function(exports) {
 						}
 					}
 				},
-				complete: function(){if(_this.load){layer.close(index);}}
+				error: function(XMLHttpRequest, textStatus, errorThrown){// 异步加载异常回调
+					_this.error();
+				},
+				complete: function(XMLHttpRequest, textStatus){// 异步加载完成回调
+					if(_this.load){layer.close(index);}
+					_this.complete();
+				}
 			});
 		}
 	};
@@ -1282,7 +1334,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				var childListData = _this.queryListTreeByPid(parseData.treeId(), listData); // 根据已知数据的id判断该条数据是否还有子数据
 
 				// 3. 页面元素加载数据
-				$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.isLast(childListData.length), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(level), parseData.disabled(), parseData.isHide(), parseData.basicData(), parseData.recordData(), ($ul.hasClass(UL_ROOT) ? "root" : "item")));
+				$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(childListData.length), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(level), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), ($ul.hasClass(UL_ROOT) ? "root" : "item")));
 				// 4.有子数据的元素加载子节点
 				if(childListData.length > 0){
 					var cLevel = parseInt(level)+1;
@@ -1327,7 +1379,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				if(data[_this.response.treeId] == data[_this.response.parentId]) { _this.errData.push(data); }
 				var parseData = _this.parseData(data);
 				var children = parseData.children();
-				$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.isLast(children.length), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(level), parseData.disabled(), parseData.isHide(), parseData.basicData(), parseData.recordData(), ($ul.hasClass(UL_ROOT) ? "root" : "item")));
+				$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(children.length), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(level), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), ($ul.hasClass(UL_ROOT) ? "root" : "item")));
 				if (children.length != 0) {
 					var cLevel = parseInt(level)+1;
 					_this.loadTree(children, cLevel, _this.obj.find("ul[data-id='"+parseData.treeId()+"']"));
@@ -1362,11 +1414,17 @@ layui.define(['jquery','layer','form'], function(exports) {
 			parentId: function(){
 				return data[_this.response.parentId];
 			},
+			fmtTitle: function(){
+				if(typeof _this.formatter.title === 'function'){
+					var ftitle = _this.formatter.title(data);
+					var tt = data[_this.response.title];
+					tt = (ftitle == "" || ftitle == undefined || ftitle == null) ? tt : ftitle; 
+					return tt || "";
+				}
+				return data[_this.response.title];
+			},
 			title: function(){
-				var ftitle = _this.formatter.title(data);
-				var tt = data[_this.response.title];
-				tt = (ftitle == "" || ftitle == undefined || ftitle == null) ? tt : ftitle; 
-				return tt || "";
+				return data[_this.response.title];
 			},
 			level: function(){
 				return data[_this.response.level] || "";
@@ -1374,10 +1432,10 @@ layui.define(['jquery','layer','form'], function(exports) {
 			iconClass: function(){
 				return data[_this.response.iconClass] || "";
 			},
-			isLast: function(len){
+			last: function(len){
 				return ((len == 0) ? 
-						((typeof (data[_this.response.isLast]) === "boolean") ? data[_this.response.isLast] : true) : 
-							((typeof (data[_this.response.isLast]) === "boolean") ? data[_this.response.isLast] : false));
+						((typeof (data[_this.response.last]) === "boolean") ? data[_this.response.last] : true) : 
+							((typeof (data[_this.response.last]) === "boolean") ? data[_this.response.last] : false));
 			},
 			spread: function(level){
 				return ((level < _this.initLevel) ? 
@@ -1387,8 +1445,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 			disabled: function(){
 				return (typeof (data[_this.response.disabled]) === "boolean") ? data[_this.response.disabled] : false;
 			},
-			isHide: function(){
-				return (typeof (data[_this.response.isHide]) === "boolean") ? data[_this.response.isHide] : false;
+			hide: function(){
+				return (typeof (data[_this.response.hide]) === "boolean") ? data[_this.response.hide] : false;
 			},
 			checkArr: function(){
 				var checkArr = [];
@@ -1397,7 +1455,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 					if(checkArrData.indexOf("{") > -1 && checkArrData.indexOf("}") > -1){
 						checkArrData = JSON.parse(checkArrData);
 					} else {
-						checkArrData = {"type":"0","isChecked":checkArrData};
+						checkArrData = {"type":"0","checked":checkArrData};
 					}
 				}
 				if(typeof checkArrData === 'object'){
@@ -1421,7 +1479,21 @@ layui.define(['jquery','layer','form'], function(exports) {
 				return event.escape(JSON.stringify(data[_this.response.basicData])) || JSON.stringify({});
 			},
 			recordData: function(){
-				var recordData = _this.record ? event.cloneObj(data, [_this.response.basicData, _this.response.childName]) : {};
+				//var recordData = _this.record ? event.cloneObj(data, [_this.response.basicData, _this.response.childName]) : {};
+				var recordData = _this.record ? event.cloneObj(data, [_this.response.treeId,
+				                                                      _this.response.parentId,
+				                                                      _this.response.title,
+				                                                      _this.response.iconClass,
+				                                                      _this.response.childName,
+				                                                      _this.response.last,
+				                                                      _this.response.spread,
+				                                                      _this.response.disabled,
+				                                                      _this.response.hide,
+				                                                      _this.response.checkArr,
+				                                                      _this.response.checked,
+				                                                      _this.response.type,
+				                                                      _this.response.basicData]) : {};
+				
 				return event.escape(JSON.stringify(recordData));
 			},
 			data: function(){
@@ -1430,9 +1502,22 @@ layui.define(['jquery','layer','form'], function(exports) {
 		}
 
 	};
+	
+	//当无节点数据时显示dom
+	DTree.prototype.getNoneDom = function(){
+		var _this = this,
+			rootId = _this.obj[0].id,
+			noneTitle = _this.none;
+		
+		return {
+			text: function(){
+				return "<div class='"+NONETITLE+"' dtree-id='"+rootId+"'>"+noneTitle+"</div>";
+			}
+		}
+	};
 
 	//新增节点的dom值
-	DTree.prototype.getDom = function(treeId, parentId, title, isLast, iconClass, checkArr, level, spread, disabled, isHide) {
+	DTree.prototype.getDom = function(treeId, parentId, title, fmtTitle, last, iconClass, checkArr, level, spread, disabled, hide) {
 		var _this = this,
 			rootId = _this.obj[0].id,
 			toolbar = _this.toolbar,
@@ -1449,22 +1534,22 @@ layui.define(['jquery','layer','form'], function(exports) {
 					fnodeIconClose =  _this.usefontStyle.fnode.node.close;
 
 				if(ficon != "-1" && dot){	// 都加载
-					return isLast ? "<i class='"+fleafIconLast+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
+					return last ? "<i class='"+fleafIconLast+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
 						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
 				}
 
 				if(ficon != "-1" && !dot){	// 加载node 隐藏leaf
-					return isLast ? "<i class='"+fleafIconLast+" "+ICON_HIDE+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
+					return last ? "<i class='"+fleafIconLast+" "+ICON_HIDE+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
 						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
 				}
 
 				if(ficon == "-1" && dot){	// 隐藏node 加载leaf
-					return isLast ? "<i class='"+fleafIconLast+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
+					return last ? "<i class='"+fleafIconLast+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
 						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
 				}
 
 				if(ficon == "-1" && !dot){	// 都隐藏
-					return isLast ? "<i class='"+fleafIconLast+" "+ICON_HIDE+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' style='display:none;'></i>" :
+					return last ? "<i class='"+fleafIconLast+" "+ICON_HIDE+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' style='display:none;'></i>" :
 						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
 				}
 			},
@@ -1490,28 +1575,28 @@ layui.define(['jquery','layer','form'], function(exports) {
 				}
 
 				if(nodeIcon != "-1" && leafIcon != "-1"){	// 都加载
-					return isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					return last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}
 
 				if(nodeIcon != "-1" && leafIcon == "-1"){	// 加载node 隐藏leaf
-					return isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					return last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}
 
 				if(nodeIcon == "-1" && leafIcon != "-1"){	// 隐藏node 加载leaf
-					return isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					return last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}
 
 				if(nodeIcon == "-1" && leafIcon == "-1"){	// 都隐藏
-					return isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					return last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}
 			},
 			checkbox: function() {	// 复选框
 				var flag = false;
-				if(_this.checkbarLoad == "node"){if (checkbar) {flag = true;}} else {if (isLast) {if (checkbar) {flag = true;}}}
+				if(_this.checkbarLoad == "node"){if (checkbar) {flag = true;}} else {if (last) {if (checkbar) {flag = true;}}}
 
 				if(flag){
 					var result = "<div class='"+LI_DIV_CHECKBAR+"' data-id='"+treeId+"' dtree-id='"+rootId+"'>";
@@ -1519,18 +1604,18 @@ layui.define(['jquery','layer','form'], function(exports) {
 						
 						for (var i = 0; i < checkArr.length; i++) {
 							var checkData = checkArr[i];
-							var isChecked = checkData.isChecked;
+							var checked = checkData.checked;
 							var CHOOSE_CLASS = _this.usefontStyle.checkbox.out;
-							if (isChecked == "2") {	//半选择
+							if (checked == "2") {	//半选择
 								CHOOSE_CLASS = _this.usefontStyle.checkbox.noall + " " + _this.style.chs;
-							} else if (isChecked == "1") {	//选择
+							} else if (checked == "1") {	//选择
 								CHOOSE_CLASS = _this.usefontStyle.checkbox.on + " " + _this.style.chs;
 							} else {	//未选择或者无值
 								CHOOSE_CLASS = _this.usefontStyle.checkbox.out;
 							}
 							var disClass = "";
 							if(disabled){disClass = NAV_DIS;}
-							result += "<i class='"+CHOOSE_CLASS+" "+_this.style.dfont+" "+_this.style.cbox+" "+disClass+"' data-id='"+treeId+"' dtree-id='"+rootId+"' data-checked='"+checkData.isChecked+"' data-initchecked='"+checkData.isChecked+"' data-type='"+checkData.type+"' dtree-click='"+eventName.checkNodeClick+"' data-par='."+LI_CLICK_CHECKBAR+"' dtree-disabled='"+disabled+"'></i>";
+							result += "<i class='"+CHOOSE_CLASS+" "+_this.style.dfont+" "+_this.style.cbox+" "+disClass+"' data-id='"+treeId+"' dtree-id='"+rootId+"' data-checked='"+checkData.checked+"' data-initchecked='"+checkData.checked+"' data-type='"+checkData.type+"' dtree-click='"+eventName.checkNodeClick+"' data-par='."+LI_CLICK_CHECKBAR+"' dtree-disabled='"+disabled+"'></i>";
 						}
 					}
 					result += "</div>";
@@ -1542,17 +1627,17 @@ layui.define(['jquery','layer','form'], function(exports) {
 			text: function() {	// 文字显示
 				var disClass = "";
 				if(disabled){disClass = NAV_DIS;}
-				return "<cite class='"+LI_DIV_TEXT_CLASS+" "+disClass+"' data-id='"+treeId+"' data-leaf='"+(isLast ? "leaf" : "node")+"' dtree-disabled='"+disabled+"' >"+title+"</cite>";
+				return "<cite class='"+LI_DIV_TEXT_CLASS+" "+disClass+"' data-id='"+treeId+"' data-leaf='"+(last ? "leaf" : "node")+"' dtree-disabled='"+disabled+"' data-title='"+title+"' >"+fmtTitle+"</cite>";
 			},
 			ul: function() {	//子节点ul
-				return isLast ? "<ul class='"+LI_NAV_CHILD+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>" :
+				return last ? "<ul class='"+LI_NAV_CHILD+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>" :
 					(spread ? "<ul class='"+LI_NAV_CHILD+" "+NAV_SHOW+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>" : "<ul class='"+LI_NAV_CHILD+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>");
 			}
 		};
 	};
 	
 	//替换节点的dom值，或指定值
-	DTree.prototype.replaceDom = function($div, treeId, isLast, spread, disabled, isHide) {
+	DTree.prototype.replaceDom = function($div, treeId, last, spread, disabled, hide) {
 		var _this = this,
 			rootId = _this.obj[0].id,
 			toolbar = _this.toolbar,
@@ -1586,23 +1671,23 @@ layui.define(['jquery','layer','form'], function(exports) {
 				}
 				
 				if(nodeIcon != "-1" && leafIcon != "-1"){	// 都加载
-					snode = isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					snode = last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}else if(nodeIcon != "-1" && leafIcon == "-1"){	// 加载node 隐藏leaf
-					snode = isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					snode = last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}else if(nodeIcon == "-1" && leafIcon != "-1"){	// 隐藏node 加载leaf
-					snode = isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					snode = last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}else if(nodeIcon == "-1" && leafIcon == "-1"){	// 都隐藏
-					snode = isLast ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					snode = last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}
 				if(snode != ""){_this.getNodeDom($div).snode().replaceWith($(snode));}
 			},
 			checkbox: function(checkArr) {	// 复选框
 				var flag = false;
-				if(_this.checkbarLoad == "node"){if (checkbar) {flag = true;}} else {if (isLast) {if (checkbar) {flag = true;}}}
+				if(_this.checkbarLoad == "node"){if (checkbar) {flag = true;}} else {if (last) {if (checkbar) {flag = true;}}}
 				
 				if(flag){
 					var result = "<div class='"+LI_DIV_CHECKBAR+"' data-id='"+treeId+"' dtree-id='"+rootId+"'>";
@@ -1610,18 +1695,18 @@ layui.define(['jquery','layer','form'], function(exports) {
 						
 						for (var i = 0; i < checkArr.length; i++) {
 							var checkData = checkArr[i];
-							var isChecked = checkData.isChecked;
+							var checked = checkData.checked;
 							var CHOOSE_CLASS = _this.usefontStyle.checkbox.out;
-							if (isChecked == "2") {	//半选择
+							if (checked == "2") {	//半选择
 								CHOOSE_CLASS = _this.usefontStyle.checkbox.noall + " " + _this.style.chs;
-							} else if (isChecked == "1") {	//选择
+							} else if (checked == "1") {	//选择
 								CHOOSE_CLASS = _this.usefontStyle.checkbox.on + " " + _this.style.chs;
 							} else {	//未选择或者无值
 								CHOOSE_CLASS = _this.usefontStyle.checkbox.out;
 							}
 							var disClass = "";
 							if(disabled){disClass = NAV_DIS;}
-							result += "<i class='"+CHOOSE_CLASS+" "+_this.style.dfont+" "+_this.style.cbox+" "+disClass+"' data-id='"+treeId+"' dtree-id='"+rootId+"' data-checked='"+checkData.isChecked+"' data-initchecked='"+checkData.isChecked+"' data-type='"+checkData.type+"' dtree-click='"+eventName.checkNodeClick+"' data-par='."+LI_CLICK_CHECKBAR+"' dtree-disabled='"+disabled+"'></i>";
+							result += "<i class='"+CHOOSE_CLASS+" "+_this.style.dfont+" "+_this.style.cbox+" "+disClass+"' data-id='"+treeId+"' dtree-id='"+rootId+"' data-checked='"+checkData.checked+"' data-initchecked='"+checkData.checked+"' data-type='"+checkData.type+"' dtree-click='"+eventName.checkNodeClick+"' data-par='."+LI_CLICK_CHECKBAR+"' dtree-disabled='"+disabled+"'></i>";
 						}
 					}
 					result += "</div>";
@@ -1631,11 +1716,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 			text: function(title) {	// 文字显示
 				var disClass = "";
 				if(disabled){disClass = NAV_DIS;}
-				var cite = "<cite class='"+LI_DIV_TEXT_CLASS+" "+disClass+"' data-id='"+treeId+"' data-leaf='"+(isLast ? "leaf" : "node")+"' dtree-disabled='"+disabled+"' >"+title+"</cite>"
+				var cite = "<cite class='"+LI_DIV_TEXT_CLASS+" "+disClass+"' data-id='"+treeId+"' data-leaf='"+(last ? "leaf" : "node")+"' dtree-disabled='"+disabled+"' >"+title+"</cite>"
 				_this.getNodeDom($div).cite().replaceWith($(cite));
 			},
 			ul: function() {	//子节点ul
-				var ul = isLast ? "<ul class='"+LI_NAV_CHILD+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>" :
+				var ul = last ? "<ul class='"+LI_NAV_CHILD+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>" :
 					(spread ? "<ul class='"+LI_NAV_CHILD+" "+NAV_SHOW+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>" : "<ul class='"+LI_NAV_CHILD+"' data-id='"+treeId+"' dtree-id='"+rootId+"'></ul>");
 				_this.getNodeDom($div).nextUl().replaceWith($(ul));
 			},
@@ -1655,25 +1740,25 @@ layui.define(['jquery','layer','form'], function(exports) {
 	};
 
 	// 获取拼接好的li
-	DTree.prototype.getLiItemDom =  function(treeId, parentId, title, isLast, iconClass, checkArr, level, spread, disabled, isHide, basicData, recordData, flag) {
+	DTree.prototype.getLiItemDom =  function(treeId, parentId, title, fmtTitle, last, iconClass, checkArr, level, spread, disabled, hide, basicData, recordData, flag) {
 		var _this = this,
 			rootId = _this.obj[0].id;
 
-		var dom = _this.getDom(treeId, parentId, title, isLast, iconClass, checkArr, level, spread, disabled, isHide);
+		var dom = _this.getDom(treeId, parentId, title, fmtTitle, last, iconClass, checkArr, level, spread, disabled, hide);
 		basicData = (basicData == "{}") ? "" : basicData;
 		recordData = (recordData == "{}") ? "" : recordData;
-		var div = "<div class='"+LI_DIV_ITEM+" "+_this.style.item+"' data-id='"+treeId+"' dtree-id='"+rootId+"' dtree-click='"+eventName.itemNodeClick+"' data-basic='"+basicData+"' data-record='"+recordData+"' dtree-disabled='"+disabled+"' dtree-hide='"+isHide+"' ";
+		var div = "<div class='"+LI_DIV_ITEM+" "+_this.style.item+"' data-id='"+treeId+"' dtree-id='"+rootId+"' dtree-click='"+eventName.itemNodeClick+"' data-basic='"+basicData+"' data-record='"+recordData+"' dtree-disabled='"+disabled+"' dtree-hide='"+hide+"' ";
 		if(_this.toolbar){
 			if(_this.toolbarWay == "contextmenu") {
 				if(_this.toolbarLoad == "node") { div += " d-contextmenu='true'>"; }
-				if(_this.toolbarLoad == "noleaf") { if(!isLast){ div += " d-contextmenu='true'>"; } else { div += " d-contextmenu='false'>";} }
-				if(_this.toolbarLoad == "leaf") { if(isLast){ div += " d-contextmenu='true'>"; } else { div += " d-contextmenu='false'>";} }
+				if(_this.toolbarLoad == "noleaf") { if(!last){ div += " d-contextmenu='true'>"; } else { div += " d-contextmenu='false'>";} }
+				if(_this.toolbarLoad == "leaf") { if(last){ div += " d-contextmenu='true'>"; } else { div += " d-contextmenu='false'>";} }
 			} else { div += " d-contextmenu='false'>"; }
 		} else { div += " d-contextmenu='false'>"; }
 
 		var hideClass = "";
-		if(isHide){hideClass = NAV_HIDE;}
-		var li = ["<li " + "class='"+LI_CLICK_CHECKBAR+" "+LI_NAV_ITEM+" "+hideClass+"'" + "data-id='"+treeId+"'" + "data-pid='"+(flag == "root" ? ((typeof parentId !== undefined && parentId != "") ? parentId : "-1") : parentId)+"'" + "dtree-id='"+rootId+"'" + "data-index='"+level+"'" + "dtree-hide='"+isHide+"'" +">" +
+		if(hide){hideClass = NAV_HIDE;}
+		var li = ["<li " + "class='"+LI_CLICK_CHECKBAR+" "+LI_NAV_ITEM+" "+hideClass+"'" + "data-id='"+treeId+"'" + "data-pid='"+(flag == "root" ? ((typeof parentId !== undefined && parentId != "") ? parentId : "-1") : parentId)+"'" + "dtree-id='"+rootId+"'" + "data-index='"+level+"'" + "dtree-hide='"+hide+"'" +">" +
 		          	div ,
 					dom.fnode(),
 					dom.node(),
@@ -1736,7 +1821,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 					var $div = $($divs[i]);
 					var $i_spread = _this.getNodeDom($div).fnode(),
 						$i_node = _this.getNodeDom($div).snode();
-					if($i_spread.attr("data-spread") != 'last'){
+					if($i_spread.data("spread") != 'last'){
 						_this.operateIcon($i_spread, $i_node).close();
 					}
 				}
@@ -1751,7 +1836,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var $i_spread = _this.getNodeDom($div).fnode(),
 			$i_node = _this.getNodeDom($div).snode(),
 			$cite = _this.getNodeDom($div).cite(),
-			spread = $i_spread.attr("data-spread"),
+			spread = $i_spread.data("spread"),
 			$ul = $div.next("ul");
 
 		if ($ul.length > 0) {
@@ -1912,7 +1997,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		
 		// 判断当前点击的节点是否是最后一级节点，如果是，则需要修改节点的样式
 		var $icon_i = $div.find("i[data-spread]");
-		if ($icon_i.eq(0).attr("data-spread") == "last") {
+		if ($icon_i.eq(0).data("spread") == "last") {
 			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).openWithDot();
 		} else {	//如果不是，也要修改节点样式
 			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).open();
@@ -1927,8 +2012,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 				var parseData = _this.parseData(data);
 
 				if(parseData.treeId()){
-					var level = parseInt($div.parent("li").attr("data-index"))+1;
-					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.isLast(0), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.isHide(), parseData.basicData(), parseData.recordData(), "item"));
+					var level = parseInt($div.parent("li").data("index"))+1;
+					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(0), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), "item"));
 
 					// 建造完毕后，选中该DIV
 					$thisDiv = $ul.find("div[data-id='"+parseData.treeId()+"']");
@@ -1954,7 +2039,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				var parseData = _this.parseData(data);
 				
 				if(parseData.treeId()){
-					var replaceDom = _this.replaceDom($div, parseData.treeId(), parseData.isLast(0), parseData.spread(), parseData.disabled(), parseData.isHide());
+					var replaceDom = _this.replaceDom($div, parseData.treeId(), parseData.last(0), parseData.spread(), parseData.disabled(), parseData.hide());
 					replaceDom.node(parseData.iconClass());
 					replaceDom.checkbox(parseData.checkArr());
 					replaceDom.text(parseData.title());
@@ -2016,12 +2101,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		//$i 当前点击的checkbox
 		var dataPar = $i.attr("data-par"),
-			dataType = $i.attr("data-type"),
+			dataType = $i.data("type"),
 			$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 			$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 			$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
 
-		if ($i.attr("data-checked") == "1") {
+		if ($i.data("checked") == "1") {
 			// 处理当前节点的选中状态
 			_this.checkStatus($i).noCheck();
 
@@ -2061,12 +2146,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 		//$i 当前点击的checkbox
 		var $div = $i.closest("."+LI_DIV_ITEM),
 			dataPar = $i.attr("data-par"),
-			dataType = $i.attr("data-type"),
+			dataType = $i.data("type"),
 			$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 			$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 			$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
 
-		if ($i.attr("data-checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
+		if ($i.data("checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
 			// 处理当前节点的选中状态
 			_this.checkStatus($i).noCheck();
 
@@ -2116,12 +2201,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 		//$i 当前点击的checkbox
 		var $div = $i.closest("."+LI_DIV_ITEM),
 			dataPar = $i.attr("data-par"),
-			dataType = $i.attr("data-type"),
+			dataType = $i.data("type"),
 			$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 			$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 			$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
 
-		if ($i.attr("data-checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
+		if ($i.data("checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
 			// 处理当前节点的选中状态
 			_this.checkStatus($i).noCheck();
 
@@ -2145,12 +2230,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 		//$i 当前点击的checkbox
 		var $div = $i.closest("."+LI_DIV_ITEM),
 			dataPar = $i.attr("data-par"),
-			dataType = $i.attr("data-type"),
+			dataType = $i.data("type"),
 			$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 			$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 			$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
 		
-		if ($i.attr("data-checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
+		if ($i.data("checked") == "1") {	//当前复选框为选中状态，点击后变为未选中状态
 			// 处理当前节点的选中状态
 			_this.checkStatus($i).noCheck();
 		} else {		//当前复选框为未选中状态，点击后变为选中状态
@@ -2165,12 +2250,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 		//$i 当前点击的checkbox
 		var $div = $i.closest("."+LI_DIV_ITEM),
 			dataPar = $i.attr("data-par"),
-			dataType = $i.attr("data-type"),
+			dataType = $i.data("type"),
 			$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 			$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 			$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
 	
-		var checked = $i.attr("data-checked");
+		var checked = $i.data("checked");
 		// 将全部节点全部设为未选中状态
 		var $all_i = _this.obj.find("i[data-checked]");
 		_this.checkStatus($all_i).noCheck();
@@ -2219,7 +2304,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			for ( var key = 0; key < $is.length; key++) {
 				var $i = $($is[key]),
 					dataPar = $i.attr("data-par"),
-					dataType = $i.attr("data-type"),
+					dataType = $i.data("type"),
 					$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 					$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 					$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
@@ -2250,7 +2335,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			for ( var key = 0; key < $is.length; key++) {
 				var $i = $($is[key]),
 					dataPar = $i.attr("data-par"),
-					dataType = $i.attr("data-type"),
+					dataType = $i.data("type"),
 					$li = $i.closest(dataPar),		//当前checkbox的上级li节点
 					$parent_li = $i.parents(dataPar),		//当前checkbox的所有父级li节点
 					$child_li = $li.find(dataPar);	//当前checkbox的上级li节点下的所有子级li节点
@@ -2302,7 +2387,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		if (_this.checkbarData == "change"){	//记录变更数据
 			_this.obj.find("i[data-par][dtree-disabled='false']").each(function(){
 				var $i = $(this), $div = $i.closest("."+LI_DIV_ITEM);
-				if ($i.attr("data-checked") != $i.attr("data-initchecked")) {
+				if ($i.data("checked") != $i.data("initchecked")) {
 					_this.checkbarNode.push(_this.getRequestParam(_this.getCheckbarNodeParam($div, $i)));
 				}
 			});
@@ -2339,17 +2424,17 @@ layui.define(['jquery','layer','form'], function(exports) {
 	DTree.prototype.getCheckbarNodeParam = function($div, $i){
 		var _this = this;
 		var temp_node = {};
-		temp_node.nodeId = $div.attr("data-id");
-		temp_node.parentId = _this.getNodeDom($div).parentLi().attr("data-pid");
-		temp_node.context = _this.getNodeDom($div).cite().text();
-		temp_node.isLeaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
-		temp_node.level = _this.getNodeDom($div).parentLi().attr("data-index");
-		temp_node.spread = _this.getNodeDom($div).fnode().attr("data-spread") == "open" ? true : false;
-		temp_node.basicData = $div.attr("data-basic");
+		temp_node.nodeId = $div.data("id");
+		temp_node.parentId = _this.getNodeDom($div).parentLi().data("pid");
+		temp_node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().data("title") : _this.getNodeDom($div).cite().text();
+		temp_node.leaf = _this.getNodeDom($div).cite().data("leaf") == "leaf" ? true : false;
+		temp_node.level = _this.getNodeDom($div).parentLi().data("index");
+		temp_node.spread = _this.getNodeDom($div).fnode().data("spread") == "open" ? true : false;
+		temp_node.basicData = $div.attr("data-basic")
 		temp_node.recordData = $div.attr("data-record");
-		temp_node.dataType = $i.attr("data-type");
-		temp_node.ischecked = $i.attr("data-checked");
-		temp_node.initchecked = $i.attr("data-initchecked");
+		temp_node.dataType = $i.data("type");
+		temp_node.checked = $i.data("checked");
+		temp_node.initchecked = $i.data("initchecked");
 		return temp_node;
 	};
 
@@ -2361,7 +2446,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			var $i = $(this);
 			$div = $i.closest("."+LI_DIV_ITEM);
 
-			if ($i.attr("data-checked") != $i.attr("data-initchecked")) {
+			if ($i.data("checked") != $i.data("initchecked")) {
 				flag = true;
 				return true;
 			}
@@ -2525,8 +2610,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_spread = _this.getNodeDom($div).fnode(),
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
-						spread = $i_spread.attr("data-spread"),
-						leaf = $cite.attr("data-leaf");
+						spread = $i_spread.data("spread"),
+						leaf = $cite.data("leaf");
 
 					if (leaf == "leaf") { continue;	}	// 说明是叶子了，则继续循环下一个
 
@@ -2562,8 +2647,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_spread = _this.getNodeDom($div).fnode(),
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
-						spread = $i_spread.attr("data-spread"),
-						leaf = $cite.attr("data-leaf");
+						spread = $i_spread.data("spread"),
+						leaf = $cite.data("leaf");
 
 					$ul.removeClass(NAV_SHOW);
 					_this.operateIcon($i_spread, $i_node).close();
@@ -2585,11 +2670,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 					var b = false;
 					_this.obj.find("i[data-par]").each(function(){
 						var $i = $(this);
-						if($i.attr("data-checked") == '2'){
+						if($i.data("checked") == '2'){
 							b = true;
-						}else if($i.attr("data-checked") == '0') {
+						}else if($i.data("checked") == '0') {
 							_this.checkStatus($i).check();
-						}else if($i.attr("data-checked") == '1') {
+						}else if($i.data("checked") == '1') {
 							_this.checkStatus($i).noCheck();
 						}
 					});
@@ -2721,7 +2806,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			var $nthis = $(this);
 			var html = $nthis.html();
 			if(html.indexOf(value) > -1){
-				if($nthis.attr("data-leaf") == "leaf") {
+				if($nthis.data("leaf") == "leaf") {
 					// 叶子节点提供包含父节点的所有信息
 					var title = "";
 					$nthis.parents("li").each(function(){
@@ -2878,8 +2963,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_spread = _this.getNodeDom($div).fnode(),
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
-						spread = $i_spread.attr("data-spread"),
-						leaf = $cite.attr("data-leaf");
+						spread = $i_spread.data("spread"),
+						leaf = $cite.data("leaf");
 
 					if (leaf == "leaf") { continue;	}	// 说明是叶子了，则继续循环下一个
 
@@ -2915,8 +3000,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_spread = _this.getNodeDom($div).fnode(),
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
-						spread = $i_spread.attr("data-spread"),
-						leaf = $cite.attr("data-leaf");
+						spread = $i_spread.data("spread"),
+						leaf = $cite.data("leaf");
 
 					$ul.removeClass(NAV_SHOW);
 					_this.operateIcon($i_spread, $i_node).close();
@@ -2953,21 +3038,21 @@ layui.define(['jquery','layer','form'], function(exports) {
 						form.render();
 						form.on("submit(dtree_addNode_form)",function(data){
 							var data = data.field;
-							var parentId = $div.attr("data-id"),
-								id = $div.attr("data-id")+"_node_"+$ul[0].childNodes.length,
-								isLeaf = true,
-								isChecked = "0",
-								level = parseInt($p_li.attr("data-index"))+1;
+							var parentId = $div.data("id"),
+								id = $div.data("id")+"_node_"+$ul[0].childNodes.length,
+								leaf = true,
+								checked = "0",
+								level = parseInt($p_li.data("index"))+1;
 	
 							// 创建子节点的DOM，添加子节点
 							var checkArr = [];
 							if (_this.checkArrLen > 0) {
 								for (var i = 0; i < _this.checkArrLen; i++) {
-									checkArr.push({"type":i,"isChecked":"0"});
+									checkArr.push({"type":i,"checked":"0"});
 								}
 							}
 							
-							$ul.append(_this.getLiItemDom(id, parentId, data.addNodeName, true, "", checkArr, level, false, false, false, "", "", "item"));
+							$ul.append(_this.getLiItemDom(id, parentId, data.addNodeName, data.addNodeName, true, "", checkArr, level, false, false, false, "", "", "item"));
 							// 先将li节点隐藏
 							$ul.find("li[data-id='"+id+"']").hide();
 							// 重新赋值
@@ -3237,7 +3322,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				        '/>'].join('');
 			},
 			select: function(){
-				var optionsData = nodeBarContents.optionsData;
+				var optionsData = (typeof nodeBarContents.optionsData === 'object') ? nodeBarContents.optionsData : nodeBarContents.optionsData();
 				var options = "";
 				for(var key in optionsData){
 					if(val == optionsData[key]){
@@ -3294,7 +3379,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				var parseData = _this.parseData(returnID);
 
 				if(parseData.treeId()){
-					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.isLast(0), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.isHide(), parseData.basicData(), parseData.recordData(), "item"));
+					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(0), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), "item"));
 
 					// 建造完毕后，选中该DIV
 					$thisDiv = $ul.find("div[data-id='"+parseData.treeId()+"']");
@@ -3321,7 +3406,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 			// 判断当前点击的节点是否是最后一级节点，如果是，则需要修改节点的样式
 			var $icon_i = $div.find("i[data-spread]");
-			if ($icon_i.eq(0).attr("data-spread") == "last") {
+			if ($icon_i.eq(0).data("spread") == "last") {
 				_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).openWithDot();
 			} else {	//如果不是，也要修改节点样式
 				_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).open();
@@ -3367,7 +3452,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				var parseData = _this.parseData(data);
 				
 				if(parseData.treeId()){
-					var replaceDom = _this.replaceDom($div, parseData.treeId(), parseData.isLast(0), parseData.spread(), parseData.disabled(), parseData.isHide());
+					var replaceDom = _this.replaceDom($div, parseData.treeId(), parseData.last(0), parseData.spread(), parseData.disabled(), parseData.hide());
 					replaceDom.node(parseData.iconClass());
 					replaceDom.checkbox(parseData.checkArr());
 					replaceDom.text(parseData.title());
@@ -3422,7 +3507,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			iframeUrl = _this.iframe.iframeUrl,
 			iframeLoad = _this.iframe.iframeLoad;
 
-		var flag = iframeLoad == "leaf" ? (($cite.attr("data-leaf") == "leaf") ? true : false) : true;
+		var flag = iframeLoad == "leaf" ? (($cite.data("leaf") == "leaf") ? true : false) : true;
 
 		if (flag) {
 			if ($(iframeElem).length > 0) {		//iframe存在
@@ -3553,27 +3638,28 @@ layui.define(['jquery','layer','form'], function(exports) {
 	// 设置当前选中节点的全部参数
 	DTree.prototype.setNodeParam = function($div) {
 		var _this = this;
-		_this.node.nodeId = $div.attr("data-id");
-		_this.node.parentId = _this.getNodeDom($div).parentLi().attr("data-pid");
-		_this.node.context = _this.getNodeDom($div).cite().text();
-		_this.node.isLeaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
-		_this.node.level = _this.getNodeDom($div).parentLi().attr("data-index");
-		_this.node.spread = _this.getNodeDom($div).fnode().attr("data-spread") == "open" ? true : false;
-		_this.node.basicData = $div.attr("data-basic");
+		_this.node.nodeId = $div.data("id");
+		_this.node.parentId = _this.getNodeDom($div).parentLi().data("pid");
+		_this.node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().data("title") : _this.getNodeDom($div).cite().text();
+		_this.node.leaf = _this.getNodeDom($div).cite().data("leaf") == "leaf" ? true : false;
+		_this.node.level = _this.getNodeDom($div).parentLi().data("index");
+		_this.node.spread = _this.getNodeDom($div).fnode().data("spread") == "open" ? true : false;
+		// basic和record不能用data函数取，因为用data取出来之后会自动转换成JSON
+		_this.node.basicData = $div.attr("data-basic")
 		_this.node.recordData = $div.attr("data-record");
 		if (_this.getNodeDom($div).checkbox()) {
-			var dataTypes = "", ischeckeds = "", initcheckeds = "";
+			var dataTypes = "", checkeds = "", initcheckeds = "";
 			_this.getNodeDom($div).checkbox().each(function(){
-				dataTypes += $(this).attr("data-type") + ",";
-				ischeckeds += $(this).attr("data-checked") + ",";
-				initcheckeds += $(this).attr("data-initchecked") + ",";
+				dataTypes += $(this).data("type") + ",";
+				checkeds += $(this).data("checked") + ",";
+				initcheckeds += $(this).data("initchecked") + ",";
 			});
 			dataTypes = dataTypes.substring(0, dataTypes.length-1);
-			ischeckeds = ischeckeds.substring(0, ischeckeds.length-1);
+			checkeds = checkeds.substring(0, checkeds.length-1);
 			initcheckeds = initcheckeds.substring(0, initcheckeds.length-1);
 
 			_this.node.dataType = dataTypes;
-			_this.node.ischecked = ischeckeds;
+			_this.node.checked = checkeds;
 			_this.node.initchecked = initcheckeds;
 		}
 	};
@@ -3595,27 +3681,27 @@ layui.define(['jquery','layer','form'], function(exports) {
 	DTree.prototype.getTempNodeParam = function($div) {
 		var _this = this;
 		var temp_node = {};
-		temp_node.nodeId = $div.attr("data-id");
-		temp_node.parentId = _this.getNodeDom($div).parentLi().attr("data-pid");
-		temp_node.context = _this.getNodeDom($div).cite().text();
-		temp_node.isLeaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
-		temp_node.level = _this.getNodeDom($div).parentLi().attr("data-index");
-		temp_node.spread = _this.getNodeDom($div).fnode().attr("data-spread") == "open" ? true : false;
-		temp_node.basicData = $div.attr("data-basic");
+		temp_node.nodeId = $div.data("id");
+		temp_node.parentId = _this.getNodeDom($div).parentLi().data("pid");
+		temp_node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().data("title") : _this.getNodeDom($div).cite().text();
+		temp_node.leaf = _this.getNodeDom($div).cite().data("leaf") == "leaf" ? true : false;
+		temp_node.level = _this.getNodeDom($div).parentLi().data("index");
+		temp_node.spread = _this.getNodeDom($div).fnode().data("spread") == "open" ? true : false;
+		temp_node.basicData = $div.attr("data-basic")
 		temp_node.recordData = $div.attr("data-record");
 		if (_this.getNodeDom($div).checkbox()) {
-			var dataTypes = "", ischeckeds = "", initcheckeds = "";
+			var dataTypes = "", checkeds = "", initcheckeds = "";
 			_this.getNodeDom($div).checkbox().each(function(){
-				dataTypes += $(this).attr("data-type") + ",";
-				ischeckeds += $(this).attr("data-checked") + ",";
-				initcheckeds += $(this).attr("data-initchecked") + ",";
+				dataTypes += $(this).data("type") + ",";
+				checkeds += $(this).data("checked") + ",";
+				initcheckeds += $(this).data("initchecked") + ",";
 			});
 			dataTypes = dataTypes.substring(0, dataTypes.length-1);
-			ischeckeds = ischeckeds.substring(0, ischeckeds.length-1);
+			checkeds = checkeds.substring(0, checkeds.length-1);
 			initcheckeds = initcheckeds.substring(0, initcheckeds.length-1);
 
 			temp_node.dataType = dataTypes;
-			temp_node.ischecked = ischeckeds;
+			temp_node.checked = checkeds;
 			temp_node.initchecked = initcheckeds;
 		}
 		return temp_node;
@@ -3627,11 +3713,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 			_this.node.nodeId = "";
 			_this.node.parentId = "";
 			_this.node.context = "";
-			_this.node.isLeaf = "";
+			_this.node.leaf = "";
 			_this.node.level = "";
 			_this.node.spread = "";
 			_this.node.dataType = "";
-			_this.node.ischecked = "";
+			_this.node.checked = "";
 			_this.node.initchecked = "";
 			_this.node.basicData = "";
 			_this.node.recordData = "";
@@ -3741,7 +3827,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				return childNode;
 			},
 			parentNode: function($div){	// 获取上级节点值
-				var pId = _this.getNodeDom($div).parentLi().attr("data-pid");
+				var pId = _this.getNodeDom($div).parentLi().data("pid");
 				var $pdiv = _this.obj.find("div[data-id='"+pId+"']");
 				if($pdiv.length > 0) {return _this.getRequestParam(_this.getTempNodeParam($pdiv));} else {return {};}
 
@@ -3766,7 +3852,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 			_this.clickSpread($div);	// 展开或隐藏节点
 
 			// 树状态改变后，用户自定义想做的事情
-			layui.event.call(this, MOD_NAME, "changeTree("+$(_this.obj)[0].id+")",  {param: _this.callbackData().node(node), dom: _this.callbackData().dom($i), show: _this.callbackData().dom($i).attr("data-spread") == "open" ? true : false});
+			layui.event.call(this, MOD_NAME, "changeTree("+$(_this.obj)[0].id+")",  {
+                dom: _this.callbackData().dom($i),
+				param: _this.callbackData().node(node),
+				show: _this.callbackData().dom($i).data("spread") == "open" ? true : false
+			});
 		});
 
 		// 绑定所有子节点div的单击事件，点击时触发加载iframe或用户自定义想做的事情
@@ -3785,11 +3875,19 @@ layui.define(['jquery','layer','form'], function(exports) {
 					// iframe加载完毕后，用户自定义想做的事情
 					_this.iframeFun.iframeDone(iframeParam);
 
-					layui.event.call(this, MOD_NAME, "iframeDone("+$(_this.obj)[0].id+")",  {"iframeParam": iframeParam, dom: _this.callbackData().dom($div)});
+					layui.event.call(this, MOD_NAME, "iframeDone("+$(_this.obj)[0].id+")",  {
+						"iframeParam": iframeParam,
+						dom: _this.callbackData().dom($div)
+					});
 				}
 			} else {
 				// 单击事件执行完毕后，用户自定义想做的事情
-				layui.event.call(this, MOD_NAME, "node("+$(_this.obj)[0].id+")", {param: _this.callbackData().node(node), childParams: _this.callbackData().childNode($div), parentParam: _this.callbackData().parentNode($div), dom: _this.callbackData().dom($div)});
+				layui.event.call(this, MOD_NAME, "node("+$(_this.obj)[0].id+")", {
+					param: _this.callbackData().node(node),
+					childParams: _this.callbackData().childNode($div),
+					parentParam: _this.callbackData().parentNode($div),
+					dom: _this.callbackData().dom($div)
+				});
 			}
 		});
 
@@ -3803,7 +3901,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 			_this.toolbarHide();
 			_this.navThis($div);			
 			// 双击事件执行完毕后，用户自定义想做的事情
-			layui.event.call(this, MOD_NAME, "nodedblclick("+$(_this.obj)[0].id+")",  {param: _this.callbackData().node(node), childParams: _this.callbackData().childNode($div), parentParam: _this.callbackData().parentNode($div), dom: _this.callbackData().dom($div)});
+			layui.event.call(this, MOD_NAME, "nodedblclick("+$(_this.obj)[0].id+")",  {
+				param: _this.callbackData().node(node),
+				childParams: _this.callbackData().childNode($div),
+				parentParam: _this.callbackData().parentNode($div),
+				dom: _this.callbackData().dom($div)
+			});
 		});
 		
 		if(_this.checkbar) {
@@ -3925,7 +4028,62 @@ layui.define(['jquery','layer','form'], function(exports) {
 				});
 			}
 		}
-		
+
+		// 开启拖拽
+		/*if(_this.drawable) {
+            //绑定所有子节点div的拖拽事件
+            _this.obj.on("mousedown", "div[dtree-click='" + eventName.itemNodeClick + "'][dtree-disabled='false']", function (e) {
+                var moveCount = 0;
+                var $div = $(this);
+
+                // 克隆点击节点
+                var $tempDiv = $div.clone();
+                
+                // 获取当前被点击节点的坐标
+                var e = e || window.event;
+                var x = $div.offset().left;
+                var y = $div.offset().top;
+                var left = e.pageX - x;
+                var top = e.pageY - y;
+                
+                
+                _this.obj.append($tempDiv);
+                // 克隆节点标记
+                $tempDiv.css({
+                    "position": "absolute",
+                    "background-color": "#FF8C69",
+                    'left' : x,
+                    'top' : top,
+                });
+                // 添加临时节点
+                $div.css('cursor', 'move');
+
+                $(document).on("mousemove", function (e1) {
+                    // moveCount为了区别click事件
+                    moveCount++;
+                    if (moveCount > 2) {
+                    	// 计算坐标
+                        var e1 = e1 || window.event;
+                        var x1 = e1.pageX - left;
+                        var y1 = e1.pageY - top;
+                        var maxL = $(document).width() - $div.outerWidth();
+                        var maxT = $(document).height() - $div.outerHeight();
+                        //不允许超出浏览器范围
+                        x1 = x1 < 0 ? 0: x1;
+                        x1 = x1 > maxL ? maxL: x1;
+                        y1 = y1 < 0 ? 0: y;
+                        y1 = y1 > maxT ? maxT: y1;
+                        //3.修改克隆节点的坐标
+                        $tempDiv.css({
+                            'left' : x1,
+                            'top' : y1,
+                        });
+                    }
+                }).on("mouseup", function (e2) {
+                    $(document).off("mousemove").off("mouseup");
+                });
+            });
+        }*/
 	};
 
 	// 绑定body的单击，让本页面所有的toolbar隐藏

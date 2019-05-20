@@ -23,12 +23,18 @@
 			</div>
 			
 			<div class="layui-fluid">
-				<blockquote class="layui-elem-quote">layui应用日益广泛的情况下，人们对"树"这种特殊数据结构的需求日益增多，而layui-dtree（谐音：layui的树）的出现，极大程度的满足了各类人群对于树的不同追求。dtree发展到现在，可以总结为6大块核心功能：异步加载、复选框、菜单栏、工具栏、iframe加载、定制化换肤等，然后的话你所见到市面上开源树的功能，dtree几乎全部囊括在内（除了拖拽），只待你一一发掘，让她在你的项目中发光。</blockquote>
+				<blockquote class="layui-elem-quote">layui应用日益广泛的情况下，人们对"树"这种特殊数据结构的需求日益增多，而layui-dtree（谐音：layui的树）的出现，极大程度的满足了各类人群对于树的不同追求。dtree发展到现在，可以总结为6大块核心功能：异步加载、复选框、菜单栏、工具栏、iframe加载、定制化换肤等，然后的话你所见到市面上开源树的功能，dtree几乎全部囊括在内，只待你一一发掘，让她在你的项目中发光。</blockquote>
 				<blockquote class="layui-elem-quote">
-					文档更新了部分v2.5.0版本新增的内容，但v2.5.0版本尚未正式发布，敬请期待！<br>
-					如迫切需要新版开发者，可以去gitee上下载，以获取最新的内测版！（记得不要忘了Star哦~~~）<br>
-					gitee地址：<a href="https://gitee.com/miniwatermelon/DTreeHelper" target="_blank">https://gitee.com/miniwatermelon/DTreeHelper</a><br>
-					github地址：<a href="https://github.com/mini-watermelon/DTreeHelper" target="_blank">https://github.com/mini-watermelon/DTreeHelper</a>
+					<span style="color:#FF5722;font-weight: bold;">如何选择版本：</span>dtree发展到现在，已经更新了许多的版本，但是dtree不会安于现状，将会持续更新。<br>
+					如果你是喜欢最新的版本，或具有敏锐的发现bug的嗅觉，或是希望加入到dtree的测试队伍，或是最新版中有一个内容是你正好需要的，你可以在下方或者右上角选择（git最新版）去gitee进行下载。<br>
+					如果你是喜欢稳定的版本，并且具有较强的耐心，你可以下载发布的最新的（正式版本）。
+				</blockquote>
+				<blockquote class="layui-elem-quote">
+					去gitee上下载，获取最新的内测版！（记得不要忘了Star哦~~~）（下载时请仔细阅读<span style="font-weight: bold;">readme</span>文件）<br>
+					<span style="color:#FF5722;font-weight: bold;">gitee地址：</span><a href="https://gitee.com/miniwatermelon/DTreeHelper" target="_blank">https://gitee.com/miniwatermelon/DTreeHelper</a><br>
+					<span style="color:#FF5722;font-weight: bold;">github地址：</span><a href="https://github.com/mini-watermelon/DTreeHelper" target="_blank">https://github.com/mini-watermelon/DTreeHelper</a><br>
+					<span style="color:#FF5722;font-weight: bold;">组件官方地址：</span><a href="https://fly.layui.com/extend/dtree/" target="_blank">https://fly.layui.com/extend/dtree/</a><br>
+					<span style="color:#FF5722;font-weight: bold;">组件讨论地址：</span><a href="https://fly.layui.com/jie/43868/" target="_blank">https://fly.layui.com/jie/43868/</a>
 				</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
 			</div>
@@ -39,12 +45,15 @@
 					<div class="layui-field-box">
 						<p>创建一个dtree实例最简单的方式是，在页面放置一个元素 <em>&lt;ul id="demoTree" class="dtree" data-id="0"&gt;&lt;/ul&gt;</em>，然后通过 <em>dtree.render()</em> 方法指定该容器，如下所示：</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
-							<div class="layui-col-lg4"><div style="height: 540px;overflow: auto;"><ul id="demoTree" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg4"><div style="height: 650px;overflow: auto;"><ul id="demoTree" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<p>你已经看到了一个简单树的基本样子，你一定迫不及待地想知道它的使用方式。下面就是它对应的代码：</p>
 								<pre class="layui-code" lay-title="导入指定的两个css，默认需要导入layui的css和js" lay-encode="true">
+								  &lt;link rel="stylesheet" href="layui/css/layui.css"&gt;
 								  &lt;link rel="stylesheet" href="layui_ext/dtree/dtree.css"&gt;
 								  &lt;link rel="stylesheet" href="layui_ext/dtree/font/dtreefont.css"&gt;
+								  
+								  &lt;script type="text/javascript" src="layui/layui.js""&gt;&lt;/script"&gt;
 								</pre>
 								<pre class="layui-code" lay-title="JavaScript">
 								  layui.extend({
@@ -52,13 +61,14 @@
 								  }).use(['dtree','layer','jquery'], function(){
 								    var dtree = layui.dtree, layer = layui.layer, $ = layui.jquery;
 								    
+								    // 初始化树
 								    var DemoTree = dtree.render({
 								      elem: "#demoTree",
-								      data: demoTree,
-								      type: "all",
-								      initLevel: "1"
+								      data: demoTree, // 使用data加载
+								      url: "../json/case/demoJson.json" // 使用url加载（可与data加载同时存在）
 								    });
 								    
+								    // 绑定节点点击
 								    dtree.on("node('demoTree')" ,function(obj){
 								      layer.msg(JSON.stringify(obj.param));
 								    });
@@ -103,7 +113,7 @@
 									<td>自定义Dom</td>
 									<td>$("#demoTree")</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td>accordion<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Boolean</td>
 									<td>开启手风琴模式。开启之后，initLevel参数设置无效（默认为1，不开启该参数的话默认为2且可以设置）</td>
@@ -150,6 +160,14 @@
 									<td>true</td>
 									<td>true / false</td>
 									<td>false</td>
+								</tr>
+								<tr data-vs="vs250">
+									<td>none<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>String</td>
+									<td>用于定于树初始化未加载节点时的提示文字。</td>
+									<td>无数据</td>
+									<td>-</td>
+									<td>无数据</td>
 								</tr>
 								<tr>
 									<td colspan="6"><span style="font-weight: bold;">数据参数</span></td>
@@ -229,7 +247,7 @@
 									<td>-</td>
 									<td>{"8" : "demo-class"}</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td>iconfont<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Array</td>
 									<td>使用字体集。</td>
@@ -237,7 +255,7 @@
 									<td>"dtreefont" / ["dtreefont", "layui-icon"]</td>
 									<td>["dtreefont", "layui-icon", "iconfont"]</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td>iconfontStyle<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Object / Array</td>
 									<td>具体某个元素使用的字体样式集。</td>
@@ -565,11 +583,11 @@
 									  nodeId: "", //节点ID
 									  parentId: "", //父节点ID
 									  context: "", //节点内容
-									  isLeaf: "", //是否叶子节点
+									  leaf: "", //是否叶子节点
 									  level: "", //层级
 									  spread: "", //节点展开状态
 									  dataType: "", //节点标记
-									  ischecked: "", //节点复选框选中状态
+									  checked: "", //节点复选框选中状态
 									  initchecked: "", //节点复选框初始状态
 									  basicData: "", //用户自定义的记录节点数据
 									  recordData: "", //当前data数据
@@ -595,6 +613,7 @@
 					<div class="layui-field-box" id="ybsjcsyl">
 						<p style="padding: 5px 0px;">数据的异步请求由以下几个参数组成：</p>
 						<p style="padding: 5px 0px;">参数名称：<span style="color:#FF5722;">红色</span>为重要参数，黑色为可选参数</p>
+						<p style="padding: 5px 0px;">类型释义：<span style="color:#FF5722;">String</span>：字符串，<span style="color:#FF5722;">Dom</span>：jquery选择器选中的元素，<span style="color:#FF5722;">Boolean</span>：布尔类型值，<span style="color:#FF5722;">Object</span>：JSON对象，<span style="color:#FF5722;">Array</span>：字符串数组 / JSON数组，<span style="color:#FF5722;">Function</span>：回调函数</p>
 						<table class="layui-table" lay-size="sm">
 							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
 							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
@@ -639,7 +658,7 @@
 									<td>"string" / "json"</td>
 									<td>"string"</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td>contentType<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String</td>
 									<td>发送信息至服务器时内容编码类型</td>
@@ -711,7 +730,7 @@
 									<td>list</td>
 									<td>list</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td>errDataShow<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Boolean</td>
 									<td>用于是否在递归数据出现错误后，显示错误信息</td>
@@ -719,13 +738,29 @@
 									<td>true / false</td>
 									<td>true</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td>formatter<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Object</td>
-									<td>用于数据过滤（该功能有缺陷，暂时不要配置。）</td>
+									<td>用于数据过滤</td>
 									<td><a href="javascript:void(0);" data-id="response" class="position-a">详见formatter</a></td>
 									<td>-</td>
 									<td>-</td>
+								</tr>
+								<tr data-vs="vs250">
+									<td>error<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0y新增）</span></td>
+									<td>Function</td>
+									<td>用于异步加载中出现异常时的用户自定义函数，携带三个参数，参数含义请参考JQuery帮助文档</td>
+									<td>-</td>
+									<td>-</td>
+									<td>function(XMLHttpRequest, textStatus, errorThrown){}</td>
+								</tr>
+								<tr data-vs="vs250">
+									<td>complete<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0y新增）</span></td>
+									<td>Function</td>
+									<td>用于异步加载全部完成后用户的自定义函数，携带两个参数，参数含义请参考JQuery帮助文档</td>
+									<td>-</td>
+									<td>-</td>
+									<td>function(XMLHttpRequest, textStatus){}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -749,11 +784,11 @@
 									  nodeId: "nodeId", //节点ID
 									  parentId: "parentId", //父节点ID
 									  context: "context", //节点内容
-									  isLeaf: "isLeaf", //是否叶子节点
+									  leaf: "leaf", //是否叶子节点
 									  level: "level", //层级
 									  spread: "spread", //节点展开状态
 									  dataType: "dataType", //节点标记
-									  ischecked: "ischecked", //节点复选框选中状态
+									  checked: "checked", //节点复选框选中状态
 									  initchecked: "initchecked", //节点复选框初始状态
 									  basicData: "basicData", //用户自定义的记录节点数据
 									  recordData: "recordData", //当前data数据（排除basicData和children字段）（v2.4.5_finally版本新增）
@@ -800,19 +835,19 @@
 									  title: "title", //节点名称（必填）
 									  iconClass: "iconClass", //自定义图标class（非必填）
 									  childName: "children", //子节点名称（默认数据格式必填）
-									  isLast: "isLast", //是否最后一级节点（true：是，false：否，布尔值，非必填）
+									  last: "last", //是否最后一级节点（true：是，false：否，布尔值，非必填）
 									  level: "level", //层级（v2.4.5_finally_beta版本之后，该属性移除）
 									  spread: "spread", //节点展开状态（v2.4.5_finally_beta版本新增。true：展开，false：不展开，布尔值，非必填）
 									  disabled: "disabled", //节点禁用状态（v2.5.0版本新增。true：禁用，false：不禁用，布尔值，非必填）
-									  isHide: "isHide", //节点隐藏状态（v2.5.0版本新增。true：隐藏，false：不隐藏，布尔值，非必填）
+									  hide: "hide", //节点隐藏状态（v2.5.0版本新增。true：隐藏，false：不隐藏，布尔值，非必填）
 									  checkArr: "checkArr", //复选框列表（开启复选框必填，默认是json数组。）
-									  isChecked: "isChecked", //是否选中（开启复选框，0-未选中，1-选中，2-半选。非必填）
+									  checked: "checked", //是否选中（开启复选框，0-未选中，1-选中，2-半选。非必填）
 									  type: "type", //复选框标记（开启复选框，从0开始。非必填）
 									  basicData: "basicData" //表示用户自定义需要存储在树节点中的数据（非必填）
 									};
 								</pre>
 								<p>disabled：如果配置了该属性为true，则<span style="color:#FF5722;">节点复选框不可点击，节点不可点击，节点不可双击，右键菜单不可点击，不可点击加载iframe，无法获取复选框数据</span>，但可进行节点展开/关闭，并通过内置函数获取该节点的数据。</p>
-								<p>isHide：如果配置了该属性为true，则<span style="color:#FF5722;">节点不可选中，节点复选框不可点击，节点不可点击，节点不可双击，右键菜单不可点击，不可点击加载iframe</span>，但可进行节点展开/关闭，可以获取复选框数据，并可以通过内置函数获取该节点的数据。</p>
+								<p>hide：如果配置了该属性为true，则<span style="color:#FF5722;">节点不可选中，节点复选框不可点击，节点不可点击，节点不可双击，右键菜单不可点击，不可点击加载iframe</span>，但可进行节点展开/关闭，可以获取复选框数据，并可以通过内置函数获取该节点的数据。</p>
 								<p>以下标准数据格式，即response中的值在标准数据格式中为各参数的键（列出必填项）。</p>
 								<pre class="layui-code" lay-title="默认标准返回数据格式" >
 									{
@@ -821,17 +856,17 @@
 									  "id":"001",
 									  "title": "湖南省",
 									  "parentId": "-1",
-									  "checkArr": [{"type": "0", "isChecked": "0"}],  // 加载复选框必填
+									  "checkArr": [{"type": "0", "checked": "0"}],  // 加载复选框必填
 									  "children":[{  // 默认标准数据格式必填
 									    "id":"001001",
 									    "title": "长沙市",
 									    "parentId": "001",
-									    "checkArr": [{"type": "0", "isChecked": "0"}],
+									    "checkArr": [{"type": "0", "checked": "0"}],
 									    "children":[{
 									      "id":"001001001",
 									      "title": "雨花区",
 									      "parentId": "001001",
-									      "checkArr": [{"type": "0", "isChecked": "0"}]
+									      "checkArr": [{"type": "0", "checked": "0"}]
 									    }]
 									  }]
 									}]
@@ -848,7 +883,7 @@
 									// 规范1: 页面ul元素必须指定data-id，且data-id为第一级节点的父id。
 									<ul id="dataTree" class="dtree" data-id="0"></ul>
 									
-									// 规范2：加载的数据务必是全量的。如果是非全量数据，务必保证当前数据的被渲染出来的最后一级节点的isLast属性是false，否则数据也不能在被加载出来了。
+									// 规范2：加载的数据务必是全量的。如果是非全量数据，务必保证当前数据的被渲染出来的最后一级节点的last属性是false，否则数据也不能在被加载出来了。
 									// 规范3：当使用dataFormat属性时，不需要配置cache属性，否则会引起不必要的数据加载缓慢问题。
 								</pre>
 								<pre class="layui-code" lay-title="使用dataFormat的标准数据格式示例" lay-encode="true">
@@ -892,6 +927,7 @@
 					<legend>扩展参数一览</legend>
 					<div class="layui-field-box" id="checkbar">
 						<p style="padding: 5px 0px;">复选框栏的配置由以下几个参数组成：</p>
+						<p style="padding: 5px 0px;">类型释义：<span style="color:#FF5722;">String</span>：字符串，<span style="color:#FF5722;">Boolean</span>：布尔类型值，<span style="color:#FF5722;">Object</span>：JSON对象</p>
 						<table class="layui-table" lay-size="sm">
 							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
 							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
@@ -961,6 +997,7 @@
 					
 					<div class="layui-field-box" id="menubar">
 						<p style="padding: 5px 0px;">菜单栏的配置由以下几个参数组成：</p>
+						<p style="padding: 5px 0px;">类型释义：<span style="color:#FF5722;">Boolean</span>：布尔类型值，<span style="color:#FF5722;">Object</span>：JSON对象，<span style="color:#FF5722;">Array</span>：字符串数组 / JSON数组</p>
 						<table class="layui-table" lay-size="sm">
 							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
 							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
@@ -1010,9 +1047,9 @@
 									"moveDown": "展开全部节点",
 									"moveUp": "收缩全部节点",
 									"refresh": "刷新树",
-									"checkAll": "全选节点",  // 开启复选框时设置
-									"unCheckAll": "全不选节点",  // 开启复选框时设置
-									"invertAll": "反选节点",  // 开启复选框时设置
+									"checkAll": "全选节点",  // 开启复选框时设置（v2.5.0版本新增）
+									"unCheckAll": "全不选节点",  // 开启复选框时设置（v2.5.0版本新增）
+									"invertAll": "反选节点",  // 开启复选框时设置（v2.5.0版本新增）
 									"remove": "删除选中节点",  // 开启复选框时设置
 									"searchNode": "模糊查询节点"
 								</pre>
@@ -1048,6 +1085,7 @@
 					
 					<div class="layui-field-box" id="toolbar">
 						<p style="padding: 5px 0px;">工具栏的配置由以下几个参数组成：</p>
+						<p style="padding: 5px 0px;">类型释义：<span style="color:#FF5722;">String</span>：字符串，<span style="color:#FF5722;">Boolean</span>：布尔类型值，<span style="color:#FF5722;">Object</span>：JSON对象，<span style="color:#FF5722;">Array</span>：字符串数组 / JSON数组</p>
 						<table class="layui-table" lay-size="sm">
 							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
 							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
@@ -1060,7 +1098,7 @@
 									<td>true / false</td>
 									<td>true</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td>toolbarWay<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String</td>
 									<td>工具栏显示方式。"contextmenu"：右键菜单，"fixed"：固定在节点右侧，"follow"：跟随节点</td>
@@ -1180,8 +1218,8 @@
 								<p>toolbarShow默认情况下是提供三个按钮供用户使用，实际上内置的还有2个按钮，用户可以自由的配置想使用的按钮。</p>
 								<p>上面的默认指定可以看出，菜单栏默认是绑定在上方按钮组的，其中的内容即是菜单栏提供的默认功能，以下是对默认功能的解释。</p>
 								<pre class="layui-code" lay-title="可配置在toolbarShow中的全部功能">
-									"pulldown": "展开当前节点下的全部节点",
-									"pullup": "收缩当前节点下全部节点",
+									"pulldown": "展开当前节点下的全部节点（v2.5.0版本新增）",
+									"pullup": "收缩当前节点下全部节点（v2.5.0版本新增）",
 									"add": "新增节点",
 									"edit": "编辑节点",
 									"delete": "删除节点"
@@ -1198,7 +1236,7 @@
 									  "name": "你的input标签指定的name，除type为submit或reset外，必填",
 									  "type": "类型，可选值有（text、textarea、select、hidden、submit（提交按钮，内部使用，设置无效）、reset（重置按钮）），可不填，默认为text",
 									  "value": "input标签的默认值，可不填，默认为'' ",
-									  "optionsData": "当类型为select时需要填写，表示一个json串，输出select的选项，type为select时必填，其他不填",
+									  "optionsData": "当类型为select时需要填写，表示一个json串，输出select的选项；或为一个function，在return中输出json串。type为select时必填，其他不填",
 									  "id": "你的input标签指定的id，可不填"（v2.5.0版本新增）,
 									  "placeholder": "你的input标签的placeholder属性，如不填，则为value值"（v2.5.0版本新增）,
 									  "verify": "layui表单校验的属性（lay-verify），可不填"（v2.5.0版本新增）,
@@ -1248,7 +1286,7 @@
 								<p>treeNode参数，包含toolbarBtn中指定的name和它的值，还有默认元素，如果没有指定toolbarBtn的情况下，treeNode参数如下：</p>
 								<pre class="layui-code" lay-title="treeNode默认参数">
 									{
-									  isLeaf: true,
+									  leaf: true,
 									  level: "当前添加参数的level",
 									  nodeId: "当前添加参数的动态ID",
 									  nodeTitle: "当前添加参数的上级节点名称",
@@ -1304,6 +1342,7 @@
 					
 					<div class="layui-field-box" id="useIframe">
 						<p style="padding: 5px 0px;">iframe模式配置由以下几个参数组成：</p>
+						<p style="padding: 5px 0px;">类型释义：<span style="color:#FF5722;">Boolean</span>：布尔类型值，<span style="color:#FF5722;">Object</span>：JSON对象</p>
 						<table class="layui-table" lay-size="sm">
 							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
 							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
@@ -1393,6 +1432,7 @@
 						<p style="padding: 5px 0px;">基础方法均以dtree.开头，后面接上方法名。</p>
 						<p style="padding: 5px 0px;">下面是目前 dtree 模块所支持的全部基础方法一览表</p>
 						<p style="padding: 5px 0px;">方法名称：<span style="color:#FF5722;">红色</span>为重要方法</p>
+						<p style="padding: 5px 0px;">类型释义：<span style="color:#FF5722;">String</span>：字符串，<span style="color:#FF5722;">Object</span>：JSON对象</p>
 						<table class="layui-table" lay-size="sm">
 							<colgroup><col width="20%"><col width="10%"><col width="20%"><col width="50%"></colgroup>
 							<thead><tr><th>方法名称</th><th>参数类型</th><th>说明</th><th>用法示例</th></tr></thead>
@@ -1426,7 +1466,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="click1">
+								<tr id="click1" data-vs="vs250">
 									<td>click<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Object, String</td>
 									<td>模拟单击事件</td>
@@ -1447,7 +1487,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="getParam">
+								<tr id="getParam" data-vs="vs250">
 									<td>getParam<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Object, String</td>
 									<td>获取指定节点选中值</td>
@@ -1469,7 +1509,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="getAllParentParam">
+								<tr id="getAllParentParam" data-vs="vs250">
 									<td>getAllParentParam<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Object, String</td>
 									<td>获取全部上级节点值</td>
@@ -1533,7 +1573,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="initNoAllCheck">
+								<tr id="initNoAllCheck" data-vs="vs250">
 									<td>initNoAllCheck<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Object</td>
 									<td>复选框半选状态初始化设置，用于给初始选中的复选框反选级联关系</td>
@@ -1543,7 +1583,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="initAllCheck">
+								<tr id="initAllCheck" data-vs="vs250">
 									<td>initAllCheck<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Object</td>
 									<td>复选框选中状态初始化设置，用于给初始选中的复选框反选级联关系</td>
@@ -1718,6 +1758,7 @@
 						<p style="padding: 5px 0px;">内置函数大多是组件内部使用的函数，对于一般用户来说使用频率较低，但可重点查阅有示例以及红色标识的函数;</p>
 						<p style="padding: 5px 0px;">要使用内置函数，必须先使用组件将树对象定义出来，在用定义出来的对象进行操作,如：var DemoTree = dtree.render({...}); ，则操作DemoTree对象</p>
 						<p style="padding: 5px 0px;">函数名称：<span style="color:#01AAED;">蓝色</span>为可以被<a href="javascript:void(0);" data-id="jcff" class="position-a">基础方法（点击查看）</a>替代使用的函数，<span style="color:#FF5722;">红色</span>为大概率会使用的到的函数，黑色：可以使用的函数，<span style="color:#c2c2c2;">灰色</span>：不建议使用的函数</p>
+						<p style="padding: 5px 0px;">类型释义：<span style="color:#FF5722;">String</span>：字符串，<span style="color:#FF5722;">Number</span>：数字，<span style="color:#FF5722;">Dom</span>：jquery选择器选中的元素，<span style="color:#FF5722;">Boolean</span>：布尔类型值，<span style="color:#FF5722;">Object</span>：JSON对象，<span style="color:#FF5722;">Array</span>：字符串数组 / JSON数组</p>
 						<table class="layui-table" lay-size="sm">
 							<colgroup><col width="30%"><col width="10%"><col width="20%"><col width="40%"></colgroup>
 							<thead><tr><th>函数名称</th><th>参数类型</th><th>说明</th><th>用法示例</th></tr></thead>
@@ -1782,7 +1823,7 @@
 								</tr>
 								<tr>
 									<td><span style="color:#c2c2c2;">DTree.prototype.loadListTree</span></td>
-									<td>Object, Object, String/Integer, Dom</td>
+									<td>Object, Object, String/Number, Dom</td>
 									<td>初始化树或者拼接树（list数据格式初始化）</td>
 									<td>-</td>
 								</tr>
@@ -1798,7 +1839,7 @@
 									<td>初始化树或者拼接树（默认数据格式初始化）</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.msgErrData</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>判断在数据加载时是否存在错误数据，并是否打印错误数据</td>
@@ -1816,7 +1857,7 @@
 									<td>新增节点的dom值</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.replaceDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom, String, String, Boolean, Boolean, Boolean</td>
 									<td>替换节点的dom值，或指定值</td>
@@ -1844,13 +1885,13 @@
 									<td>展开或隐藏节点</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.accordionUL</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom</td>
 									<td>开启手风琴模式时对其他节点的处理</td>
 									<td>-</td>
 								</tr>
-								<tr id="navThis">
+								<tr id="navThis" data-vs="vs250">
 									<td>DTree.prototype.navThis<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom</td>
 									<td>选中指定div</td>
@@ -1860,7 +1901,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="setDisabledNodes">
+								<tr id="setDisabledNodes" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.setDisabledNodes</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String</td>
 									<td>设置节点为disabled</td>
@@ -1870,7 +1911,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="cancelDisabledNodes">
+								<tr id="cancelDisabledNodes" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.cancelDisabledNodes</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String</td>
 									<td>将节点的disabled取消</td>
@@ -1880,7 +1921,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="getDisabledNodesParam">
+								<tr id="getDisabledNodesParam" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.getDisabledNodesParam</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String</td>
 									<td>获取指定disabled节点的值</td>
@@ -1891,7 +1932,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="getAllDisabledNodesParam">
+								<tr id="getAllDisabledNodesParam" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.getAllDisabledNodesParam</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>获取全部disabled节点的值</td>
@@ -1902,7 +1943,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="setHideNodes">
+								<tr id="setHideNodes" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.setHideNodes</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String</td>
 									<td>设置节点为hide</td>
@@ -1912,7 +1953,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="cancelHideNodes">
+								<tr id="cancelHideNodes" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.cancelHideNodes</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String</td>
 									<td>将节点的hide取消</td>
@@ -1922,7 +1963,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="getHideNodesParam">
+								<tr id="getHideNodesParam" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.getHideNodesParam</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String</td>
 									<td>获取指定hide节点的值</td>
@@ -1933,7 +1974,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="getAllHideNodesParam">
+								<tr id="getAllHideNodesParam" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.getAllHideNodesParam</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>获取全部hide节点的值</td>
@@ -1944,7 +1985,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="refreshTree">
+								<tr id="refreshTree" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.refreshTree</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>刷新树</td>
@@ -1954,7 +1995,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="partialRefreshAdd">
+								<tr id="partialRefreshAdd" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.partialRefreshAdd</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom , Object</td>
 									<td>局部刷新树--新增子节点时</td>
@@ -1966,7 +2007,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="partialRefreshEdit">
+								<tr id="partialRefreshEdit" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.partialRefreshEdit</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom , Object</td>
 									<td>局部刷新树--编辑当前节点选中节点时</td>
@@ -1977,7 +2018,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="partialRefreshDel">
+								<tr id="partialRefreshDel" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.partialRefreshDel</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom</td>
 									<td>局部刷新树--当前节点选中被删除时</td>
@@ -1987,56 +2028,56 @@
 										</pre>
 									</td>
 								</tr>
-								<tr><td colspan="5"><span style="font-weight: bold;">字体及图标函数</span></td></tr>
-								<tr>
+								<tr data-vs="vs250"><td colspan="5"><span style="font-weight: bold;">字体及图标函数</span></td></tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.ensureTheme</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>确认最终树使用的样式主题及图标</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineFnodeStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值一级图标</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineSnodeStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值二级图标</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineCheckboxStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值复选框图标</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineMenubarStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值菜单栏图标</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineMenubarExtStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值扩展菜单栏图标</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineToolbarStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值工具栏图标</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.useDefaultOrUserDefineToolbarExtStyle</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Object</td>
 									<td>赋值扩展工具栏图标</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.operateIcon</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom, Dom</td>
 									<td>设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理</td>
@@ -2251,13 +2292,13 @@
 									<td>加载toolBar中的内容</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.toolbarHide</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>隐藏toolbar</td>
 									<td>-</td>
 								</tr>
-								<tr id="toolbarMethod">
+								<tr id="toolbarMethod" data-vs="vs250">
 									<td>DTree.prototype.toolbarMethod<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>toolbar内置调用方法</td>
@@ -2268,7 +2309,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.toolbarListener</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String, Dom</td>
 									<td>toolbar内置监听</td>
@@ -2280,7 +2321,7 @@
 									<td>获取toolbar详细的标签信息</td>
 									<td>-</td>
 								</tr>
-								<tr>
+								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.dynamicToolbarDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom</td>
 									<td>在节点后动态绑定fixed和follow条件的工具栏</td>
@@ -2349,7 +2390,7 @@
 									<td>-</td>
 								</tr>
 								<tr><td colspan="5"><span style="font-weight: bold;">数据回调函数</span></td></tr>
-								<tr id="getNodeDom">
+								<tr id="getNodeDom" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.getNodeDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Dom</td>
 									<td>根据具体的id获取基于当前id的div以及对应的其他dom元素。<br>
@@ -2395,7 +2436,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="getNode">
+								<tr id="getNode" data-vs="vs250">
 									<td>DTree.prototype.getNode<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String</td>
 									<td>获取指定Id的节点</td>
@@ -2406,7 +2447,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="getNowNodeOrNull">
+								<tr id="getNowNodeOrNull" data-vs="vs250">
 									<td>DTree.prototype.getNowNodeOrNull<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
 									<td>获取当前选中节点，没有选中则为null</td>
@@ -2458,7 +2499,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="getParam1">
+								<tr id="getParam1" data-vs="vs250">
 									<td><a href="javascript:void(0);" data-id="getParam" class="position-a">DTree.prototype.getParam</a><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Dom</td>
 									<td>获取指定节点选中值</td>
@@ -2482,7 +2523,7 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="getAllParentParam1">
+								<tr id="getAllParentParam1" data-vs="vs250">
 									<td><a href="javascript:void(0);" data-id="getAllParentParam" class="position-a">DTree.prototype.getAllParentParam</a><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Dom</td>
 									<td>获取参数的全部上级节点</td>
@@ -2539,6 +2580,7 @@
 
 </body>
 <script type="text/javascript" src="basicDocMenu.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
 <script type="text/javascript">
 	layui.extend({
 		dtree: '{/}../layui_ext/dtree/dtree'  //实际情况下将该路径指定为自己的路径

@@ -5,14 +5,14 @@
 	    "parentId": "-1",
 	    "title": "最高级",
 	    "level": "1",
-	    "isLast": false,
+	    "last": false,
 	    "iconClass": null,
 	    "spread": false,
 	    "basicData": null,
 	    "checkArr": [
 	        {
 	            "type": "0",
-	            "isChecked": "0"
+	            "checked": "0"
 	        }
 	    ],
 	    "children": [
@@ -21,14 +21,14 @@
 	            "parentId": "0",
 	            "title": "媒体管理",
 	            "level": null,
-	            "isLast": false,
+	            "last": false,
 	            "iconClass": null,
 	            "spread": false,
 	            "basicData": null,
 	            "checkArr": [
 	                {
 	                    "type": "0",
-	                    "isChecked": "0"
+	                    "checked": "0"
 	                }
 	            ],
 	            "children": [
@@ -37,14 +37,14 @@
 	                    "parentId": "36",
 	                    "title": "视频",
 	                    "level": null,
-	                    "isLast": true,
+	                    "last": true,
 	                    "iconClass": null,
 	                    "spread": false,
 	                    "basicData": null,
 	                    "checkArr": [
 	                        {
 	                            "type": "0",
-	                            "isChecked": "0"
+	                            "checked": "0"
 	                        }
 	                    ],
 	                    "children": []
@@ -54,14 +54,14 @@
 	                    "parentId": "36",
 	                    "title": "音频",
 	                    "level": null,
-	                    "isLast": true,
+	                    "last": true,
 	                    "iconClass": null,
 	                    "spread": false,
 	                    "basicData": null,
 	                    "checkArr": [
 	                        {
 	                            "type": "0",
-	                            "isChecked": "0"
+	                            "checked": "0"
 	                        }
 	                    ],
 	                    "children": []
@@ -71,14 +71,14 @@
 	                    "parentId": "36",
 	                    "title": "图片",
 	                    "level": null,
-	                    "isLast": true,
+	                    "last": true,
 	                    "iconClass": null,
 	                    "spread": false,
 	                    "basicData": null,
 	                    "checkArr": [
 	                        {
 	                            "type": "0",
-	                            "isChecked": "0"
+	                            "checked": "0"
 	                        }
 	                    ],
 	                    "children": []
@@ -90,14 +90,14 @@
 	            "parentId": "0",
 	            "title": "审核管理",
 	            "level": null,
-	            "isLast": false,
+	            "last": false,
 	            "iconClass": null,
 	            "spread": false,
 	            "basicData": null,
 	            "checkArr": [
 	                {
 	                    "type": "0",
-	                    "isChecked": "0"
+	                    "checked": "0"
 	                }
 	            ],
 	            "children": [
@@ -106,14 +106,14 @@
 	                    "parentId": "40",
 	                    "title": "审核列表",
 	                    "level": null,
-	                    "isLast": true,
+	                    "last": true,
 	                    "iconClass": null,
 	                    "spread": false,
 	                    "basicData": null,
 	                    "checkArr": [
 	                        {
 	                            "type": "0",
-	                            "isChecked": "0"
+	                            "checked": "0"
 	                        }
 	                    ],
 	                    "children": []
@@ -125,14 +125,14 @@
 	            "parentId": "0",
 	            "title": "监控统计",
 	            "level": null,
-	            "isLast": false,
+	            "last": false,
 	            "iconClass": null,
 	            "spread": false,
 	            "basicData": null,
 	            "checkArr": [
 	                {
 	                    "type": "0",
-	                    "isChecked": "0"
+	                    "checked": "0"
 	                }
 	            ],
 	            "children": [
@@ -141,14 +141,14 @@
 	                    "parentId": "42",
 	                    "title": "统计分析",
 	                    "level": null,
-	                    "isLast": true,
+	                    "last": true,
 	                    "iconClass": null,
 	                    "spread": false,
 	                    "basicData": null,
 	                    "checkArr": [
 	                        {
 	                            "type": "0",
-	                            "isChecked": "0"
+	                            "checked": "0"
 	                        }
 	                    ],
 	                    "children": []
@@ -160,14 +160,14 @@
 	            "parentId": "0",
 	            "title": "全局设置",
 	            "level": null,
-	            "isLast": false,
+	            "last": false,
 	            "iconClass": null,
 	            "spread": false,
 	            "basicData": null,
 	            "checkArr": [
 	                {
 	                    "type": "0",
-	                    "isChecked": "0"
+	                    "checked": "0"
 	                }
 	            ],
 	            "children": [
@@ -176,14 +176,14 @@
 	                    "parentId": "44",
 	                    "title": "目录管理",
 	                    "level": null,
-	                    "isLast": true,
+	                    "last": true,
 	                    "iconClass": null,
 	                    "spread": false,
 	                    "basicData": null,
 	                    "checkArr": [
 	                        {
 	                            "type": "0",
-	                            "isChecked": "0"
+	                            "checked": "0"
 	                        }
 	                    ],
 	                    "children": []
@@ -195,14 +195,14 @@
 	            "parentId": "0",
 	            "title": "系统管理",
 	            "level": null,
-	            "isLast": false,
+	            "last": false,
 	            "iconClass": null,
 	            "spread": false,
 	            "basicData": null,
 	            "checkArr": [
 	                {
 	                    "type": "0",
-	                    "isChecked": "0"
+	                    "checked": "0"
 	                }
 	            ],
 	            "children": [
@@ -211,14 +211,14 @@
 	                    "parentId": "46",
 	                    "title": "用户管理",
 	                    "level": null,
-	                    "isLast": true,
+	                    "last": true,
 	                    "iconClass": null,
 	                    "spread": false,
 	                    "basicData": null,
 	                    "checkArr": [
 	                        {
 	                            "type": "0",
-	                            "isChecked": "0"
+	                            "checked": "0"
 	                        }
 	                    ],
 	                    "children": []
@@ -228,14 +228,14 @@
 	                    "parentId": "46",
 	                    "title": "角色管理",
 	                    "level": null,
-	                    "isLast": true,
+	                    "last": true,
 	                    "iconClass": null,
 	                    "spread": false,
 	                    "basicData": null,
 	                    "checkArr": [
 	                        {
 	                            "type": "0",
-	                            "isChecked": "0"
+	                            "checked": "0"
 	                        }
 	                    ],
 	                    "children": []
@@ -245,14 +245,14 @@
 	                    "parentId": "46",
 	                    "title": "菜单管理",
 	                    "level": null,
-	                    "isLast": true,
+	                    "last": true,
 	                    "iconClass": null,
 	                    "spread": false,
 	                    "basicData": null,
 	                    "checkArr": [
 	                        {
 	                            "type": "0",
-	                            "isChecked": "0"
+	                            "checked": "0"
 	                        }
 	                    ],
 	                    "children": []
@@ -262,14 +262,14 @@
 	                    "parentId": "46",
 	                    "title": "系统参数",
 	                    "level": null,
-	                    "isLast": true,
+	                    "last": true,
 	                    "iconClass": null,
 	                    "spread": false,
 	                    "basicData": null,
 	                    "checkArr": [
 	                        {
 	                            "type": "0",
-	                            "isChecked": "0"
+	                            "checked": "0"
 	                        }
 	                    ],
 	                    "children": []
@@ -279,14 +279,14 @@
 	                    "parentId": "46",
 	                    "title": "日志追踪",
 	                    "level": null,
-	                    "isLast": true,
+	                    "last": true,
 	                    "iconClass": null,
 	                    "spread": false,
 	                    "basicData": null,
 	                    "checkArr": [
 	                        {
 	                            "type": "0",
-	                            "isChecked": "0"
+	                            "checked": "0"
 	                        }
 	                    ],
 	                    "children": []
@@ -298,14 +298,14 @@
 	            "parentId": "0",
 	            "title": "阿里云",
 	            "level": null,
-	            "isLast": true,
+	            "last": true,
 	            "iconClass": null,
 	            "spread": false,
 	            "basicData": null,
 	            "checkArr": [
 	                {
 	                    "type": "0",
-	                    "isChecked": "0"
+	                    "checked": "0"
 	                }
 	            ],
 	            "children": []

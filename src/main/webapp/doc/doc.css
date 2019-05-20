@@ -5,6 +5,8 @@
 	.container {width: 1300px!important;margin: 0px 0px 0px 20px;}
 }
 
+*[data-vs^="vs"]{display: none;}
+
 .div_h3title {width: 100%;border-bottom: 1px solid #EEEEEE;}
 .div_h3title i{font-size: 24px;}
 .div_h3title span{font-size: 24px;display: inline-block;padding: 20px 0px 20px 10px;}

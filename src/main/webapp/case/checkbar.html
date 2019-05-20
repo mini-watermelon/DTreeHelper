@@ -26,11 +26,26 @@
 				<blockquote class="layui-elem-quote">checkbar模块应该是整个组件里最亮眼的模块之一了，它囊括了非常丰富的功能，支持多级复选框，支持复选框的多重选中形式等，可以应对多种极其恶心的业务需求，想想就感到开心。</blockquote>
 				<blockquote class="layui-elem-quote">当你选择开启复选框时，除了必须指定checkbar:true之外，数据中必须存在checkArr字段，复选框才能正常显示。</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul>
+										<li>【新增】基础方法新增：initNoAllCheck： 复选框半选状态初始化设置</li>
+										<li>【新增】基础方法新增：initAllCheck： 复选框选中状态初始化设置</li>
+										<li>【新增】checkbar模块新增：checkbarData新增属性："halfChoose"，用于记录选中和半选中的数据</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
 			</div>
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="jdsy">
-					<legend>checkbar的5中选中方式</legend>
+					<legend>checkbar的5中选中方式（checkbarType）</legend>
 					<div class="layui-field-box">
 						<p>一般来说，简单的复选框选中形式只有一种，就是上下级联关系，而组件除了满足这一种之外，还满足了另外的四种选中形式：半选、单向级联、独立、仅存一个。以下分别做展示</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -62,7 +77,7 @@
 						<p>为了适配多种复选框的配置方式，checkArr字段现提供4种配置的写法。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
 							<div class="layui-col-lg12"><div style="height: 175px;overflow: auto;"><ul id="checkarrTree1" class="dtree" data-id="0"></ul></div></div>
-							<p>checkbar的配置方式已不再多说，下面介绍checkArr的4种形态的数据，注意重点关注checkArr字段的不同之处。如果数据中指定了type属性，则type必须从0开始。如果指定了isChecked属性，则isChecked属性的值范围为：0-未选中，1-选中，2-半选。</p>
+							<p>checkbar的配置方式已不再多说，下面介绍checkArr的4种形态的数据，注意重点关注checkArr字段的不同之处。如果数据中指定了type属性，则type必须从0开始。如果指定了checked属性，则checked属性的值范围为：0-未选中，1-选中，2-半选。</p>
 							<div class="layui-col-lg6">
 								<pre class="layui-code" lay-title="标准写法，JSON数组格式，支持多级复选框">
 									{
@@ -71,31 +86,31 @@
 									  "id":"001",
 									  "title": "湖南省",
 									  "parentId": "0",
-									  "checkArr": [{"type": "0", "isChecked": "0"}],
+									  "checkArr": [{"type": "0", "checked": "0"}],
 									  "children":[]
 									},{
 									  "id":"002",
 									  "title": "湖北省",
 									  "parentId": "0",
-									  "checkArr": [{"type": "0", "isChecked": "0"}],
+									  "checkArr": [{"type": "0", "checked": "0"}],
 									  "children":[]
 									},{
 									  "id":"003",
 									  "title": "广东省",
 									  "parentId": "0",
-									  "checkArr": [{"type": "0", "isChecked": "0"}],
+									  "checkArr": [{"type": "0", "checked": "0"}],
 									  "children":[]
 									},{
 									  "id":"004",
 									  "title": "浙江省",
 									  "parentId": "0",
-									  "checkArr": [{"type": "0", "isChecked": "0"}],
+									  "checkArr": [{"type": "0", "checked": "0"}],
 									  "children":[]
 									},{
 									  "id":"005",
 									  "title": "福建省",
 									  "parentId": "0",
-									  "checkArr": [{"type": "0", "isChecked": "0"}],
+									  "checkArr": [{"type": "0", "checked": "0"}],
 									  "children":[]
 									}]
 									}
@@ -109,31 +124,31 @@
 									  "id":"001",
 									  "title": "湖南省",
 									  "parentId": "0",
-									  "checkArr": {"type": "0", "isChecked": "0"},
+									  "checkArr": {"type": "0", "checked": "0"},
 									  "children":[]
 									},{
 									  "id":"002",
 									  "title": "湖北省",
 									  "parentId": "0",
-									  "checkArr": {"type": "0", "isChecked": "0"},
+									  "checkArr": {"type": "0", "checked": "0"},
 									  "children":[]
 									},{
 									  "id":"003",
 									  "title": "广东省",
 									  "parentId": "0",
-									  "checkArr": {"type": "0", "isChecked": "0"},
+									  "checkArr": {"type": "0", "checked": "0"},
 									  "children":[]
 									},{
 									  "id":"004",
 									  "title": "浙江省",
 									  "parentId": "0",
-									  "checkArr": {"type": "0", "isChecked": "0"},
+									  "checkArr": {"type": "0", "checked": "0"},
 									  "children":[]
 									},{
 									  "id":"005",
 									  "title": "福建省",
 									  "parentId": "0",
-									  "checkArr": {"type": "0", "isChecked": "0"},
+									  "checkArr": {"type": "0", "checked": "0"},
 									  "children":[]
 									}]
 									}
@@ -147,38 +162,38 @@
 									  "id":"001",
 									  "title": "湖南省",
 									  "parentId": "0",
-									  "checkArr": "{\"type\": \"0\", \"isChecked\": \"0\"}",
+									  "checkArr": "{\"type\": \"0\", \"checked\": \"0\"}",
 									  "children":[]
 									},{
 									  "id":"002",
 									  "title": "湖北省",
 									  "parentId": "0",
-									  "checkArr": "{\"type\": \"0\", \"isChecked\": \"0\"}",
+									  "checkArr": "{\"type\": \"0\", \"checked\": \"0\"}",
 									  "children":[]
 									},{
 									  "id":"003",
 									  "title": "广东省",
 									  "parentId": "0",
-									  "checkArr": "{\"type\": \"0\", \"isChecked\": \"0\"}",
+									  "checkArr": "{\"type\": \"0\", \"checked\": \"0\"}",
 									  "children":[]
 									},{
 									  "id":"004",
 									  "title": "浙江省",
 									  "parentId": "0",
-									  "checkArr": "{\"type\": \"0\", \"isChecked\": \"0\"}",
+									  "checkArr": "{\"type\": \"0\", \"checked\": \"0\"}",
 									  "children":[]
 									},{
 									  "id":"005",
 									  "title": "福建省",
 									  "parentId": "0",
-									  "checkArr": "{\"type\": \"0\", \"isChecked\": \"0\"}",
+									  "checkArr": "{\"type\": \"0\", \"checked\": \"0\"}",
 									  "children":[]
 									}]
 									}
 								</pre>
 							</div>
 							<div class="layui-col-lg6">
-								<pre class="layui-code" lay-title="字符串格式，简洁写法，仅支持一级复选框，isChecked属性直接由checkArr表示">
+								<pre class="layui-code" lay-title="字符串格式，简洁写法，仅支持一级复选框，checked属性直接由checkArr表示">
 									{
 									"status":{"code":200,"message":"操作成功"},
 									"data": [{
@@ -222,7 +237,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="all">
-					<legend>checkbar的4种数据记录</legend>
+					<legend>checkbar的4种数据记录（checkbarData）</legend>
 					<div class="layui-field-box">
 						<p>复选框数据回调时，记录数据的4中方式。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -253,7 +268,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="more">
-					<legend>多级checkbar</legend>
+					<legend>多级checkbar（checkArr中体现多级）</legend>
 					<div class="layui-field-box">
 						<p>以下展示了2级复选框，实际上复选框支持N级</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -276,7 +291,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="before">
-					<legend>checkbar选中前回调</legend>
+					<legend>checkbar选中前回调（checkbarFun）</legend>
 					<div class="layui-field-box">
 						<p>当你需要在复选框选中前做一些事情时，你可以实现这个方法</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -291,9 +306,9 @@
 									    chooseBefore: function($i, node){
 									      console.log(node);
 									      var flag = true;
-									      if(node.isLeaf == false){ // 非最后一级节点
+									      if(node.leaf == false){ // 非最后一级节点
 									        flag = false;
-									        if(node.ischecked == "0"){
+									        if(node.checked == "0"){
 									          DTree.checkStatus($i).check();  // 先将当前节点选中
 									          layer.confirm("确认？",{icon:3},function(index){
 									            layer.msg("success");
@@ -305,7 +320,7 @@
 									            DTree.checkStatus($i).noCheck();
 									            layer.close(index);
 									          });
-									        } else if(node.ischecked == "1") {
+									        } else if(node.checked == "1") {
 									          DTree.checkStatus($i).noCheck();
 									          layer.confirm("确认？",{icon:3},function(index){
 									            layer.msg("success");
@@ -339,6 +354,7 @@
 
 </body>
 <script type="text/javascript" src="checkbar.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
 <script type="text/javascript">
 	layui.extend({
 		dtree: '{/}../layui_ext/dtree/dtree'
@@ -356,7 +372,6 @@
 		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
 		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
 		}
-		
 		
 		// 右侧弹出层
 		layer.open({
@@ -531,9 +546,9 @@
 				chooseBefore: function($i, node){
 					console.log(node);
 					var flag = true;
-					if(node.isLeaf == false){	// 非最后一级节点.
+					if(node.leaf == false){	// 非最后一级节点.
 						flag = false;
-						if(node.ischecked == "0"){
+						if(node.checked == "0"){
 							DTree.checkStatus($i).check();
 							layer.confirm("确认？",{icon:3},function(index){
 								layer.msg("success");
@@ -545,7 +560,7 @@
 								DTree.checkStatus($i).noCheck();
 								layer.close(index);
 							})
-						} else if(node.ischecked == "1") {
+						} else if(node.checked == "1") {
 							DTree.checkStatus($i).noCheck();
 							layer.confirm("确认？",{icon:3},function(index){
 								layer.msg("success");

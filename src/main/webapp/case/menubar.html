@@ -25,6 +25,20 @@
 			<div class="layui-fluid">
 				<blockquote class="layui-elem-quote">menubar模块往往会跟checkbar、toolbar组合使用，以达到最强的功能，menubar的三种指定方式并不是互斥的，也就是说，默认的功能可以在三种不同的指定方式中同时出现。</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul>
+										<li class="bug">【修复】menubar模块修复：将dtree放在form中，menubar的默认按钮单击之后会提交表单的问题。</li>
+										<li>【新增】menubar模块新增：menubar内置新增三个默认方法：checkAll：全选，unCheckAll：全不选，invertAll：反选</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
 			</div>
 			
 			<div class="layui-fluid">
@@ -61,7 +75,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="toolbar">
-					<legend>menubar依附工具栏<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
+					<legend>menubar依附工具栏（menubarTips）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
 					<div class="layui-field-box">
 						<p>当你按照如下配置时，点击鼠标右键，可以看到你与上个示例不同的效果。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -90,7 +104,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="freedom">
-					<legend>menubar自由指定<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
+					<legend>menubar自由指定（menubarTips）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
 					<div class="layui-field-box">
 						<p>当你觉得默认的图标样式不尽如人意，且你又不想绑定右键菜单时，你当然可以自由指定menubar了！。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -176,7 +190,7 @@
 				</fieldset>
 			</div>
 			
-			<div class="layui-fluid">
+			<div class="layui-fluid" data-vs="vs250">
 				<fieldset class="layui-elem-field layui-field-title" id="addRoot">
 					<legend>自定义添加根节点示例<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
 					<div class="layui-field-box">
@@ -199,7 +213,7 @@
 									    freedom:[{menubarId:"addRoot",handler:function(node, $div){
 									      var id = parseInt(Math.random() * 1000000000);  // 构建ID
 									      var tt = parseInt(Math.random() * 100) + "xx省"; // 构建名称
-									      var json = {"id":id,"title": tt,"parentId": "0","isLast":false};
+									      var json = {"id":id,"title": tt,"parentId": "0","last":false};
 									      jsonData.push(json);  // 添加数据
 									      dtree.reload("menubarTree5", {data: jsonData});  // 重载树
 									    }}]
@@ -224,6 +238,7 @@
 
 </body>
 <script type="text/javascript" src="menubar.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
 <script type="text/javascript">
 	layui.extend({
 		dtree: '{/}../layui_ext/dtree/dtree'
@@ -241,7 +256,6 @@
 		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
 		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
 		}
-		
 		
 		// 右侧弹出层
 		layer.open({
@@ -376,7 +390,7 @@
 							"id":id,
 							"title": tt,
 							"parentId": "0",
-							"isLast":false
+							"last":false
 						};
 					jsonData.push(json);
 					dtree.reload("menubarTree5", {data: jsonData});

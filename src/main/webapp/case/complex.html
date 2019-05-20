@@ -24,6 +24,20 @@
 			<div class="layui-fluid">
 				<blockquote class="layui-elem-quote">以下介绍了一些数据格式的用法，每种数据格式都有其对应的参数，如果你想使用除默认格式外的其他格式，请仔细阅读该篇。</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul>
+										<li>【新增】基础属性新增：formatter属性，用于对树展示节点的文字信息格式化处理。</li>
+										<li>【更新】内置方法更新：parseData新增一个回传参数：fmtTitle，用于获取formatter标记过的内容，原来的title函数只获取原始title信息</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
 			</div>
 			
 			<div class="layui-fluid">
@@ -64,7 +78,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="layui">
-					<legend>layui风格数据格式</legend>
+					<legend>layui风格数据格式（dataStyle）</legend>
 					<div class="layui-field-box">
 						<p>考虑到一部分用户在使用组件的时候，已经使用了一套layui的数据格式，并且所有的数据返回都遵循这一套数据格式的情况，因此，组件开放适用于layui的数据格式模式。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -103,7 +117,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="list">
-					<legend>list集合数据格式</legend>
+					<legend>list集合数据格式（dataFormat）</legend>
 					<div class="layui-field-box">
 						<p>考虑到一部分用户在使用组件之前，已经使用了其他树组件，而其他组件提供的数据格式并没有这么复杂，因此，组件开放适用于list集合形式的数据格式模式。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -153,7 +167,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="layuilist">
-					<legend>layui+list集合数据格式</legend>
+					<legend>layui+list集合数据格式（dataStyle + dataFormat）</legend>
 					<div class="layui-field-box">
 						<p>考虑到一部分用户在使用组件之前，已经使用了其他树组件，而其他组件提供的数据格式并没有这么复杂，因此，组件开放适用于list集合形式的数据格式模式。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -204,11 +218,11 @@
 				</fieldset>
 			</div>
 			
-			<div class="layui-fluid">
+			<div class="layui-fluid" data-vs="vs250">
 				<fieldset class="layui-elem-field layui-field-title" id="formatter">
-					<legend>数据过滤<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<legend>数据过滤（formatter）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
 					<div class="layui-field-box">
-						<p>在数据显示层面上，添加自定义想显示的内容。</p>
+						<p>在数据显示层面上，添加自定义想显示的内容。只是作为展示层用，在获取数据时并不会获取到。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
 							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="dataTree4" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
@@ -227,6 +241,10 @@
 									    }
 									  }
 									});
+									
+									dtree.on("node('dataTree4')", function(obj){
+									  layer.msg(JSON.stringify(obj.param));
+									});
 								</pre>
 							</div>
 						</div>
@@ -241,6 +259,7 @@
 	</div>
 </body>
 <script type="text/javascript" src="complex.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
 <script type="text/javascript">
 	layui.extend({
 		dtree: '{/}../layui_ext/dtree/dtree'
@@ -258,7 +277,6 @@
 		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
 		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
 		}
-		
 		
 		// 右侧弹出层
 		layer.open({
@@ -344,7 +362,7 @@
 		  }
 		});
 		
-		dtree.on("node('dataTree2')", function(obj){
+		dtree.on("node('dataTree4')", function(obj){
 			layer.msg(JSON.stringify(obj.param));
 		});
 		

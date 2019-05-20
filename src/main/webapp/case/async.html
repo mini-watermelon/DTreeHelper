@@ -25,11 +25,36 @@
 			<div class="layui-fluid">
 				<blockquote class="layui-elem-quote">以下介绍了异步加载的多种情况，包括数据格式转换，初始参数指定等。</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul>
+										<li class="big">【大改】数据格式:reponse中isLast属性更换为last属性。</li>
+										<li class="big">【大改】数据格式:reponse中isChecked属性更换为checked属性。</li>
+										<li class="big">【大改】数据格式:defaultRequest中isLeaf属性更换为leaf属性。</li>
+										<li class="big">【大改】数据格式:defaultRequest中isChecked属性更换为checked属性。</li>
+										<li class="big">【大改】内置属性:record开启后，原来记录节点的全部数据（排除children和basicData）改为只记录用户自定义的数据（同样排除children和basicData）</li>
+										<li>【新增】基础属性新增：contentType属性，用于可以显示配置发送信息至服务器时内容编码类型</li>
+										<li>【新增】基础属性新增：response属性中新增disabled，标识节点禁用。</li>
+										<li>【新增】基础属性新增：response属性中新增hide，标识节点隐藏。</li>
+										<li>【新增】基础属性新增：errDataShow属性，标识是否在递归数据出现错误后，显示错误信息。</li>
+										<li>【新增】基础属性新增：error：用于异步加载中出现异常时的用户自定义函数</li>
+										<li>【新增】基础属性新增：complete：用于异步加载全部完成后用户的自定义函数</li>
+										<li>【新增】内置属性新增：errData属性，记录在渲染节点时有问题的数据。</li>
+										<li>【新增】内置方法新增：msgErrData： 判断在数据加载时是否存在错误数据，并是否打印错误数据</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
 			</div>
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="ybjzzhwtb">
-					<legend>异步加载转换为同步</legend>
+					<legend>异步加载转换为同步（async）</legend>
 					<div class="layui-field-box">
 						<p>有时，树的加载是需要在某个同步操作完成后在加载的，比如需要拿到一个变量的值，才加载树，那么树的加载也可以改变成为同步加载，这样，就不会出现变量还没提供，树就发送请求的尴尬情况了。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -55,7 +80,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="jdybjz">
-					<legend>转换返回数据格式</legend>
+					<legend>转换返回数据格式（response）</legend>
 					<div class="layui-field-box">
 						<p>树的默认数据格式是有一定的规范的，你只需要按照这个格式来，至于键值，你怎么配，组件就怎么读，方便易用。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -96,7 +121,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="zdgdcz">
-					<legend>指定固定传值</legend>
+					<legend>指定固定传值（request）</legend>
 					<div class="layui-field-box">
 						<p>使用时，有些筛选条件不是组件自带的，比如用户名，登录账号，权限判断等，那么你可以自由指定这些参数，并带上值，那么组件在发送请求的时候，就会将你配置的参数一并带上。</p>
 						<p>初始情况下，第一次请求时，默认的参数都不会发送给后端，但是如果你需要将父级节点一开始就传递给后端的话，也可以在这里配置，比如request:{"parentId":"0"}，那么在第一次加载时，这个参数就会被带上，以后每次加载，树都会去读最新的这个数据。</p>
@@ -128,9 +153,9 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="dtjzzjd">
-					<legend>动态加载子节点</legend>
+					<legend>重新加载子节点（cache）</legend>
 					<div class="layui-field-box">
-						<p>很多情况下，你的树并不是一次就加载完成的，那么很简单，树会判断当前你点击的节点是否是最后一级了(根据数据中的isLast字段进行判定，如不提供则树内部自动判定)，如果不是，则还会根据你配置的url往后台发送请求，并且会带上一轮参数提供给后端进行数据筛选。</p>
+						<p>很多情况下，你的树并不是一次就加载完成的，那么很简单，树会判断当前你点击的节点是否是最后一级了(根据数据中的last字段进行判定，如不提供则树内部自动判定)，如果不是，则还会根据你配置的url往后台发送请求，并且会带上一轮参数提供给后端进行数据筛选。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
 							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTree4" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
@@ -153,7 +178,7 @@
 									Form Data  view source  view URL encoded
 									nodeId: 001
 									parentId: 0
-									isLeaf: false
+									leaf: false
 									context: 湖南省
 									level: 1
 									spread: false
@@ -166,7 +191,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="xjmrcsdj">
-					<legend>修改默认参数的键</legend>
+					<legend>修改默认参数的键（defaultRequest）</legend>
 					<div class="layui-field-box">
 						<p>使用时，默认参数的键有的时候不能满足你的需求，即如果你是以一个对象的形式传递参数的话，肯定是需要修改这个键名称的，组件当然支持你修改你想要的名称，但是如果你这么改：defaultRequest:{nodeId:"parentId"}，组件虽然不会报错，但是使用时，就会出现问题哦，即：可以自由配置键，但是键名称不能与默认的键名称一致。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -178,7 +203,6 @@
 									  elem: "#asyncTree4",
 									  url: "../json/case/asyncTree4.json",
 									  initLevel: 1,  // 指定初始展开节点级别
-									  cache: false,  // 当取消节点缓存时，则每次加载子节点都会往服务器发送请求
 									  defaultRequest:{nodeId:"tree.id",parentId:"tree.pId"} // 自定义默认参数的键配置在此
 									});
 									
@@ -192,7 +216,7 @@
 									Form Data  view source  view URL encoded
 									tree.id: 001
 									tree.pId: 0
-									isLeaf: false
+									leaf: false
 									context: 湖南省
 									level: 1
 									spread: false
@@ -342,7 +366,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="ybjzsuccess">
-					<legend>异步加载成功回调<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></legend>
+					<legend>异步加载成功回调（success）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></legend>
 					<div class="layui-field-box">
 						<p>树异步加载成功后，判定数据有效时的回调函数，在解析数据和done回调之前执行。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -383,7 +407,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="ybjzhd">
-					<legend>异步加载完毕后回调</legend>
+					<legend>异步加载完毕后回调（done）</legend>
 					<div class="layui-field-box">
 						<p>有时，你需要在树异步加载完毕后在，success回调和解析之后，在执行一些自定义的方法，就好像table组件中有done回调一样，dtree中也有。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -391,13 +415,18 @@
 							<div class="layui-col-lg8">
 								<button class="layui-btn layui-normal" id="asyncTree7_btn">点击按钮重载树</button>
 								<pre class="layui-code" lay-title="JavaScript">
-									// 回调函数中会带有两个参数，1是本次加载的数据，2是组件的根节点的jQuery对象，可以打开控制台看看是什么参数哦
 									dtree.render({
 									  elem: "#asyncTree7",
 									  url: "../json/case/asyncTree6.json",
-									  done: function(data, obj){  
+									  done: function(data, obj){  // 异步加载完毕后回调，参数：1是本次加载的数据，2是组件的根节点的jQuery对象，可以打开控制台看看是什么参数哦
 									    console.log(data);
 									    console.log(obj);
+									  },
+									  error: function(XMLHttpRequest, textStatus, errorThrown){  //异步加载异常时回调
+									    console.log("error");
+									  },
+									  complete: function(XMLHttpRequest, textStatus){ //异步加载完成时回调
+									    console.log("complete");
 									  }
 									});
 									
@@ -468,6 +497,7 @@
 
 </body>
 <script type="text/javascript" src="async.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
 <script type="text/javascript">
 	layui.extend({
 		dtree: '{/}../layui_ext/dtree/dtree'

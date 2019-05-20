@@ -28,6 +28,19 @@
 			<div class="layui-fluid">
 				<blockquote class="layui-elem-quote">以下介绍了比较常用的加载iframe页面的情况。</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul>
+										<li class="bug">【修复】iframe模块修复：配置了iframeDefaultRequest时，只会显示iframeDefaultRequest中的参数的问题。</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
 			</div>
 			
 			<div class="layui-fluid">
@@ -75,7 +88,7 @@
 									var nodeId = getUrlParam("nodeId"),
 									    parentId = getUrlParam("parentId"),
 									    context = decodeURI(getUrlParam("context")),  // 注意，此处对context做了一次转码
-									    isLeaf = getUrlParam("isLeaf"),
+									    leaf = getUrlParam("leaf"),
 									    level = getUrlParam("level"),
 									    spread = getUrlParam("spread")
 									
@@ -84,7 +97,7 @@
 									  "nodeId" : nodeId,
 									  "parentId" : parentId,
 									  "context" : context,
-									  "isLeaf" : isLeaf,
+									  "leaf" : leaf,
 									  "level" : level,
 									  "spread" : spread
 									});
@@ -99,7 +112,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="loadall">
-					<legend>点击任意节点加载</legend>
+					<legend>点击任意节点加载（iframe-iframeLoad）</legend>
 					<div class="layui-field-box">
 						<p>由上面一种加载情况可知，组件默认的加载iframe是当节点为最后一级的时候，才会触发加载iframe的事件，但很多情况下我们希望点击任意节点都可以触发加载iframe，那么你只需要这样做:</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -125,7 +138,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="zdycdcs">
-					<legend>自定义参数传递</legend>
+					<legend>自定义参数传递（iframe-iframeRequest）</legend>
 					<div class="layui-field-box">
 						<p>默认情况下，iframe加载时会将树的基本信息传递给页面，即示例1看到的效果，我们也可以改变默认参数的名称，或者在新增自定义的参数，传递给子页面，代码如下：</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -149,14 +162,14 @@
 							<div class="layui-col-lg6">
 								<p>这里即为发起请求时，Chrome调式模式提供的表单发起数据：</p>
 								<pre class="layui-code" lay-title="Form Data">
-									Request URL: http://localhost:7078/DTreeHelper/case/iframeContent.html?id=001003&parentId=001&context=%25E6%258D%259F%25E7%259B%258A%25E8%25A1%25A8&isLeaf=true&level=2&spread=false&username=zhangsan;
+									Request URL: http://localhost:7078/DTreeHelper/case/iframeContent.html?id=001003&parentId=001&context=%25E6%258D%259F%25E7%259B%258A%25E8%25A1%25A8&leaf=true&level=2&spread=false&username=zhangsan;
 									
 									
 									Query String Parameters  view source  view URL encoded
 									id: 001003
 									parentId: 001
 									context: %E6%8D%9F%E7%9B%8A%E8%A1%A8
-									isLeaf: true
+									leaf: true
 									level: 2
 									spread: false
 									username: zhangsan
@@ -204,7 +217,7 @@
 									  layer.msg(JSON.stringify(obj.param));
 									  
 									  // 当前节点为最后一级节点时触发事件
-									  if (obj.param.isLeaf) {
+									  if (obj.param.leaf) {
 									    openTab(param.context);// 这里并没有像示例1一样带参数过去，如果你想带参数的话，可以将整个param都带走，但是需要对由中文的参数做转码处理
 									  }
 									});
@@ -250,6 +263,7 @@
 
 </body>
 <script type="text/javascript" src="iframe.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
 <script type="text/javascript">
 	layui.extend({
 		dtree: '{/}../layui_ext/dtree/dtree'
@@ -312,7 +326,8 @@
 			useIframe: true,
 			iframe: {
 				iframeElem: "#iframe_content",
-				iframeUrl: "iframeContent.html"
+				iframeUrl: "iframeContent.html",
+				//iframeDefaultRequest: {nodeId: "id"}
 			}
 		});
 		
@@ -321,8 +336,8 @@
 			layer.msg(JSON.stringify(obj.iframeParam));
 			
 			// 当前节点为最后一级节点时触发事件
-			if (obj.iframeParam.isLeaf) {
-				openTab(obj.param.context);
+			if (obj.iframeParam.leaf) {
+				openTab(obj.iframeParam.context);
 			}
 		});
 		
@@ -337,7 +352,7 @@
 			layer.msg(JSON.stringify(obj.param));
 			
 			// 当前节点为最后一级节点时触发事件
-			if (obj.param.isLeaf) {
+			if (obj.param.leaf) {
 				openTab(obj.param.context);
 			}
 		});

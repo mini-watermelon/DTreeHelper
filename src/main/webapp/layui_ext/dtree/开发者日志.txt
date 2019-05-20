@@ -1,10 +1,16 @@
-修复 》 优化 》 新增 》  更新 》 移除
+大改》 修复 》 优化 》 新增 》  更新 》 移除
 基础属性 》 checkbar属性 》 menubar属性 》 toolbar属性 》 iframe属性 》  基础方法 》 内置方法
 
 ------------------------v2.5.0(2019/？/？)【大版本】(未上线)：------------------------
+【大改】数据格式:reponse中isLast属性更换为last属性。
+【大改】数据格式:reponse中isChecked属性更换为checked属性。
+【大改】数据格式:defaultRequest中isLeaf属性更换为leaf属性。
+【大改】数据格式:defaultRequest中isChecked属性更换为checked属性。
+【大改】内置属性:record开启后，原来记录节点的全部数据（排除children和basicData）改为只记录用户自定义的数据（同样排除children和basicData）
 【修复】toolbar模块修复：自定义的toolbar的回调函数的第二个$div参数修复，现在可以取到值
 【修复】toolbar模块修复：内置函数：changeTreeNodeEdit中的title未定义的问题。
 【修复】menubar模块修复：将dtree放在form中，menubar的默认按钮单击之后会提交表单的问题。
+【修复】iframe模块修复：配置了iframeDefaultRequest时，只会显示iframeDefaultRequest中的参数的问题。
 【优化】toolbar模块优化：内置的三个按钮中的label均加上title提示
 【优化】基础方法优化：render方法和reload方法中，如果树在当前页面中被加载过一次了，再次加载会从缓存中取出树，并将树上次点击的节点作为参数记录下载，现在优化为还是从缓存中取，但是会重置上次记录的参数。
 【优化】内置函数优化：getLiItemDom 当parentId为0时组件自动判定为false从而使用内置parentId的问题。
@@ -14,7 +20,12 @@
 【新增】基础属性新增：contentType属性，用于可以显示配置发送信息至服务器时内容编码类型
 【新增】基础属性新增：response属性中新增disabled，标识节点禁用。
 【新增】基础属性新增：response属性中新增isHide，标识节点隐藏。
+【新增】基础属性新增：formatter属性，用于对树展示节点的文字信息格式化处理。
 【新增】基础属性新增：errDataShow属性，标识是否在递归数据出现错误后，显示错误信息。
+【新增】基础属性新增：none，用于定于树初始化未加载节点时的提示文字。
+【新增】基础属性新增：error：用于异步加载中出现异常时的用户自定义函数。
+【新增】基础属性新增：errDataShow属性，标识是否在递归数据出现错误后，显示错误信息。
+【新增】基础属性新增：drawable属性，用于开启拖拽。
 【新增】基础方法新增：getParam： 获取指定节点选中值
 【新增】基础方法新增：getAllParentParam： 获取指定节点的全部上级节点
 【新增】基础方法新增：initNoAllCheck： 复选框半选状态初始化设置
@@ -25,6 +36,7 @@
 【新增】toolbar模块新增：toolbar内置新增两个默认方法：pulldown：展开当前节点下的全部节点，pullup：收缩当前节点下的全部节点
 【新增】toolbar模块新增：toolbar新增属性：toolbarWay，工具栏显示方式，contextmenu:右键，follow:跟随节点，fixed:固定在节点右侧
 【新增】toolbar模块新增：toolbarBtn中新增一系列的属性（id、placeholder、verify、defElem、readonly、disabled、filter）
+【新增】toolbar模块新增：toolbarBtn中,optionsData支持使用function回调
 【新增】内置属性新增：errNode属性，记录在渲染节点时有问题的数据。
 【新增】内置属性新增：usefontStyle属性，用于最终指定树的每个关键部位使用的图标
 【新增】内置方法新增：replaceDom：替换节点的dom值，或指定值。
@@ -59,10 +71,11 @@
 【新增】内置方法新增：toolbarListener：toolbar内置监听
 【新增】内置方法新增：getNowNodeOrNull：获取当前选中div，没有选中则为null
 【新增】内置方法新增：navThis：选中div
+【新增】内置方法新增：getNoneDom：当无节点数据时显示dom信息
 【新增】内置方法新增：dynamicToolbarDom：在节点后动态绑定fixed和follow条件的工具栏
-【新增】内置方法更新：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式
-【新增】内置方法更新：changeTreeNodeAdd新增一个回传参数：refresh，用于新增完成后，局部刷新
-
+【更新】内置方法更新：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式
+【更新】内置方法更新：changeTreeNodeAdd新增一个回传参数：refresh，用于新增完成后，局部刷新
+【更新】内置方法更新：parseData新增一个回传参数：fmtTitle，用于获取formatter标记过的内容，原来的title函数只获取原始title信息
 
 
 

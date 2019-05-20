@@ -40,9 +40,9 @@
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label class="layui-form-label">isLeaf：</label>
+									<label class="layui-form-label">leaf：</label>
 									<div class="layui-input-block">
-										<input type="text" id="isLeaf" name="isLeaf" class="layui-input"/>
+										<input type="text" id="leaf" name="leaf" class="layui-input"/>
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -96,7 +96,7 @@ var getUrlParam = function(name) {
 		var nodeId = getUrlParam("nodeId"),
 			parentId = getUrlParam("parentId"),
 			context = decodeURI(getUrlParam("context")),
-			isLeaf = getUrlParam("isLeaf"),
+			leaf = getUrlParam("leaf"),
 			level = getUrlParam("level"),
 			spread = getUrlParam("spread")
 			
@@ -104,7 +104,7 @@ var getUrlParam = function(name) {
 			"nodeId" : nodeId,
 			"parentId" : parentId,
 			"context" : context,
-			"isLeaf" : isLeaf,
+			"leaf" : leaf,
 			"level" : level,
 			"spread" : spread
 		});

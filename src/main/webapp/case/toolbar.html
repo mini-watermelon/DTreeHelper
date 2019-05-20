@@ -10,6 +10,9 @@
 <link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
 
 <link rel="stylesheet" href="case.css">
+<style>
+*[class^="vs"]{display: none!important;}
+</style>
 </head>
 <body>
 
@@ -25,6 +28,34 @@
 			<div class="layui-fluid">
 				<blockquote class="layui-elem-quote">在开发过程中，我们会经常涉及到对树的节点的操作，比如，新增节点，修改节点，删除节点等，现在组件提供了方便的功能，你只需要简单配置即可实现这些功能。<span style="color:#FF5722;">从2.5.0版本开始，工具栏支持节点后图标和绑定右键菜单两种形式，回调函数中ajax不限于同步请求。</span></blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul>
+										<li class="bug">【修复】toolbar模块修复：自定义的toolbar的回调函数的第二个$div参数修复，现在可以取到值</li>
+										<li class="bug">【修复】toolbar模块修复：内置函数：changeTreeNodeEdit中的title未定义的问题。</li>
+										<li>【优化】toolbar模块优化：内置的三个按钮中的label均加上title提示</li>
+										<li>【新增】toolbar模块新增：toolbar内置新增两个默认方法：pulldown：展开当前节点下的全部节点，pullup：收缩当前节点下的全部节点</li>
+										<li>【新增】toolbar模块新增：toolbar新增属性：toolbarWay，工具栏显示方式，contextmenu:右键，follow:跟随节点，fixed:固定在节点右侧</li>
+										<li>【新增】toolbar模块新增：toolbarBtn中新增一系列的属性（id、placeholder、verify、defElem、readonly、disabled、filter）</li>
+										<li>【新增】toolbar模块新增：toolbarBtn中,optionsData支持使用function回调</li>
+										<li>【新增】内置方法新增：partialRefreshAdd：局部刷新树--当前节点新增子节点时</li>
+										<li>【新增】内置方法新增：partialRefreshEdit：局部刷新树--当前节点选中时</li>
+										<li>【新增】内置方法新增：partialRefreshDel：局部刷新树--当前节点选中被删除时</li>
+										<li>【新增】内置方法新增：toolbarHide：隐藏toolbar</li>
+										<li>【新增】内置方法新增：toolbarMethod：toolbar内置方法</li>
+										<li>【新增】内置方法新增：toolbarListener：toolbar内置监听</li>
+										<li>【新增】内置方法新增：dynamicToolbarDom：在节点后动态绑定fixed和follow条件的工具栏</li>
+										<li>【更新】内置方法更新：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式</li>
+										<li>【更新】内置方法更新：changeTreeNodeAdd新增一个回传参数：refresh，用于新增完成后，局部刷新</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
 			</div>
 			
 			<div class="layui-fluid">
@@ -104,7 +135,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="zdysy">
-					<legend>自定义toolbar的内容</legend>
+					<legend>自定义toolbar的内容（toolbarBtn）</legend>
 					<div class="layui-field-box">
 						<p>toolbar加载时，每种操作都会自带一些必填属性，但是你可以自定义一些你需要添加的属性，比如备注，等等。当然你可能不需要用到这么多的功能，你还可以从增删改中选择几种。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -124,7 +155,9 @@
 									  toolbarBtn:[
 									    [
 									     {"label":"文本框","name":"name1","type":"text"},
-									     {"label":"下拉框","name":"name3","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"}},
+									     {"label":"下拉框","name":"name3","type":"select","optionsData":function(){
+									       return {"1":"男","2":"女","3":"未知","4":"泰国归来"};
+									     }},
 									     {"label":"隐藏域","name":"name4","type":"hidden"},
 									     {"label":"文本域","name":"name2","type":"textarea"},
 									     {"value":"重置按钮","name":"name6","type":"reset"},
@@ -145,7 +178,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="sjht">
-					<legend>toolbar编辑页的数据回填</legend>
+					<legend>toolbar编辑页的数据回填（toolbarFun-editTreeLoad）</legend>
 					<div class="layui-field-box">
 						<p>当你使用toolbar的编辑功能时，你肯定不希望表单数据是空的，因为照常我们打开编辑页时，数据都会回显至表单中，在toolbar中，你也可以将数据回显。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -197,7 +230,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="zdytitle">
-					<legend>自定义toolbar内容样式</legend>
+					<legend>自定义toolbar内容样式（toolbarStyle）</legend>
 					<div class="layui-field-box">
 						<p>当你使用toolbar的功能时，有时树表达的含义并不相同，有的可能是机构树，有的可能是部门树，等等，那么现在，你可以指定toolbar的标题，让每个toolbar拥有具体的含义。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -229,7 +262,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="zdyext">
-					<legend>扩展toolbar按钮</legend>
+					<legend>扩展toolbar按钮（toolbarExt）</legend>
 					<div class="layui-field-box">
 						<p>当toolbar内置的三个按钮都不能满足你的需求，又或者你想要禁用默认的按钮，自定义自己的按钮的情况下，你可以自定义扩展toolbar按钮。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -306,7 +339,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="before">
-					<legend>toolbar显示前回调<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
+					<legend>toolbar显示前回调（toolbarFun-loadToolbarBefore）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
 					<div class="layui-field-box">
 						<p>当内置的toolbarLoad属性不能满足你对节点的个性化需求时，你可以实现这个函数，来为每个节点在展示toolbar之前做一些自定义处理。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -327,7 +360,7 @@
 									      console.log(buttons);
 									      console.log(param);
 									      console.log($div);
-									      if(param.isLeaf){ // 如果是叶子节点
+									      if(param.leaf){ // 如果是叶子节点
 									        buttons.addToolbar = "";  // 取消新增功能
 									      }
 									      return buttons; // 将按钮对象返回
@@ -342,9 +375,9 @@
 				</fieldset>
 			</div>
 			
-			<div class="layui-fluid">
+			<div class="layui-fluid" data-vs="vs250">
 				<fieldset class="layui-elem-field layui-field-title" id="otherToolbar">
-					<legend>toolbar绑定节点<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<legend>toolbar绑定节点（toolbarWay）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
 					<div class="layui-field-box">
 						<p>很多情况下，系统会禁用掉右键菜单，这时树的右键菜单不管用了，那么你可以新增这一个配置项，让菜单展示在每一个节点的后面。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -363,7 +396,7 @@
 									      console.log(buttons);
 									      console.log(param);
 									      console.log($div);
-									      if(param.isLeaf){ // 如果是叶子节点
+									      if(param.leaf){ // 如果是叶子节点
 									        buttons.addToolbar = "";  // 取消新增功能
 									      }
 									      return buttons; // 将按钮对象返回
@@ -379,9 +412,9 @@
 				</fieldset>
 			</div>
 			
-			<div class="layui-fluid">
+			<div class="layui-fluid" data-vs="vs250">
 				<fieldset class="layui-elem-field layui-field-title" id="qtToolbar">
-					<legend>其他的toolbar功能<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<legend>其他的toolbar功能（toolbarShow）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
 					<div class="layui-field-box">
 						<p>toolbar不仅仅默认只有3个功能，还有两个默认功能。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -414,6 +447,7 @@
 
 </body>
 <script type="text/javascript" src="toolbar.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
 <script type="text/javascript">
 	layui.extend({
 		dtree: '{/}../layui_ext/dtree/dtree'
@@ -432,7 +466,6 @@
 		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
 		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
 		}
-		
 		
 		// 右侧弹出层
 		layer.open({
@@ -539,7 +572,9 @@
 			toolbarBtn:[
 				[
 				 {"label":"文本框","name":"name1","type":"text"},
-				 {"label":"下拉框","name":"name3","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"}},
+				 {"label":"下拉框","name":"name3","type":"select","optionsData":function(){
+			    	 return {"1":"男","2":"女","3":"未知","4":"泰国归来1"};
+				 }},
 				 {"label":"隐藏域","name":"name4","type":"hidden"},
 				 {"label":"文本域","name":"name2","type":"textarea"},
 				 {"value":"重置按钮","name":"name6","type":"reset"},
@@ -712,7 +747,7 @@
 					/* console.log(buttons);
 					console.log(param);
 					console.log($div); */
-					if(param.isLeaf){ // 如果是叶子节点
+					if(param.leaf){ // 如果是叶子节点
 						buttons.addToolbar = "";  // 取消新增功能
 					}
 					
@@ -732,7 +767,7 @@
 				/* console.log(buttons);
 				console.log(param);
 				console.log($div); */
-				if(param.isLeaf){ // 如果是叶子节点
+				if(param.leaf){ // 如果是叶子节点
 					buttons.addToolbar = "";  // 取消新增功能
 				}
 				
