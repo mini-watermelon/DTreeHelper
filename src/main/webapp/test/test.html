@@ -32,6 +32,23 @@
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
 			</div>
 			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="yjfxk">
+					<legend>示例</legend>
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-tab" lay-filter="demo">
+							  <div class="layui-tab-content">
+							    <div class="layui-tab-item layui-show">
+							    	<div style="height: 450px;overflow: auto;"><ul id="testTree" class="dtree" data-id="0"></ul></div>
+							    </div>
+							  </div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
 			<!-- <div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="yjfxk">
 					<legend>示例</legend>
@@ -398,6 +415,24 @@
 		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
 		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
 		}
+		
+		var data = [{"last":false,"children":[{"last":false,"children":[],"name":"昆明供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"16","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"曲靖供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"19","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"红河供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"20","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"玉溪供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"21","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"大理供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"22","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"楚雄供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"23","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"昭通供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"24","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"普洱供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"25","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"西双版纳供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"26","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"临沧供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"27","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"文山供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"28","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"保山供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"29","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"德宏供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"30","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"丽江供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"31","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"迪庆供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"32","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"怒江供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"33","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"云南电力试验研究院（集团）有限公司","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"34","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"瑞丽供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"35","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"云南文山电力股份有限公司","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"36","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true}],"name":"云南电网有限责任公司","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"15","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true}];
+		
+		var d = dtree.render({
+			elem: "#testTree",
+			data : data,
+			dataStyle: "layuiStyle",
+			response:{
+				title:"name",
+				rootName:"data"
+			},
+			dot:false,
+			menubar:true,
+			skin:"layui",
+			initLevel:1
+			//dataFormat: "list",
+			//skin: "layui"
+		})
 		
 		/* var DTree;
 		element.on("tab(demo)", function(data){

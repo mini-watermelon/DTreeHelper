@@ -33,9 +33,9 @@
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
 									<ul>
-										<li>【新增】基础方法新增：initNoAllCheck： 复选框半选状态初始化设置</li>
+										<!-- <li>【新增】基础方法新增：initNoAllCheck： 复选框半选状态初始化设置</li>
 										<li>【新增】基础方法新增：initAllCheck： 复选框选中状态初始化设置</li>
-										<li>【新增】checkbar模块新增：checkbarData新增属性："halfChoose"，用于记录选中和半选中的数据</li>
+										<li>【新增】checkbar模块新增：checkbarData新增属性："halfChoose"，用于记录选中和半选中的数据</li> -->
 									</ul>
 								</div>
 							</li>
@@ -246,7 +246,6 @@
 							<div class="layui-col-lg3"><button class="layui-btn layui-btn-normal" id="checkbarTreea_btnc">获取所有复选框节点值</button><div style="height: 500px;overflow: auto;"><ul id="checkbarTreec" class="dtree" data-id="0" style="width: 240px;"></ul></div></div>
 							<div class="layui-col-lg3"><button class="layui-btn layui-btn-normal" id="checkbarTreea_btnd">获取选中和半选的复选框节点值</button><div style="height: 500px;overflow: auto;"><ul id="checkbarTreed" class="dtree" data-id="0" style="width: 240px;"></ul></div></div>
 							<div class="layui-col-lg12">
-								
 								<pre class="layui-code" lay-title="JavaScript">
 									dtree.render({
 									  elem: "#checkbarTreea",
@@ -283,6 +282,77 @@
 									});
 								</pre>
 								<p>多级复选框，只需要在返回的checkArr参数中，新增一个json串即可，注意：type表示当前节点的第几个复选框，可不能乱填哦</p>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="多级复选框的数据示例">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [{
+									  "id":"001",
+									  "title": "湖南省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"},{"type": "1", "checked": "0"}],
+									  "children":[...]
+									},{
+									  "id":"002",
+									  "title": "湖北省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"},{"type": "1", "checked": "0"}],
+									  "children":[...]
+									},{
+									  "id":"003",
+									  "title": "广东省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"},{"type": "1", "checked": "0"}],
+									  "children":[..]
+									},{
+									  "id":"004",
+									  "title": "浙江省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"},{"type": "1", "checked": "0"}],
+									  "children":[...]
+									},{
+									  "id":"005",
+									  "title": "福建省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"},{"type": "1", "checked": "0"}],
+									  "children":[...]
+									}]
+									}
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="clicknode">
+					<legend>点击节点选中checkbar（使用内置函数选中）</legend>
+					<div class="layui-field-box">
+						<p>复选框的选中事件是绑定在复选框图标上的，但是你依然可以通过点击节点来选中/不选/半选复选框，复选框的选中形式也是完全由checkbarType来控制。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="checkbarTreeNode" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									var DTreeNode = dtree.render({
+									  elem: "#checkbarTreeNode",
+									  url: "../json/case/checkbarTree1.json",
+									  checkbar: true,
+									  checkbarType: "all" 
+									  }
+									});
+									
+									// 绑定节点点击事件
+									dtree.on("node(checkbarTreeNode)", function(obj){
+									  var nodeId = obj.param.nodeId;
+									  var $checkbar = DTreeNode.getNodeDom(nodeId).checkbox(); //获取当前点击节点的checkbar的dom
+									  DTreeNode.temp = [$checkbar]; //通过内置交换对象，将复选框放入交换队列中
+									  DTreeNode.changeCheck(); //调取内置选中函数，选中/不选/半选复选框
+									  var checkbarNodes = dtree.getCheckbarNodesParam("checkbarTreeNode");
+									  layer.msg(JSON.stringify(checkbarNodes));
+									});
+								</pre>
 							</div>
 						</div>
 					</div>
@@ -392,7 +462,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["checkbar的4种记录"];
+							var tts = ["点击节点选中"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -535,6 +605,22 @@
 			elem: "#checkbarTree5",
 			url: "../json/case/checkbarTree5.json",
 			checkbar:true
+		});
+		
+		// 2.checkbarTreeNode
+		var DTreeNode = dtree.render({
+			elem: "#checkbarTreeNode",
+			url: "../json/case/checkbarTree1.json",
+			checkbar:true
+		});
+		
+		dtree.on("node(checkbarTreeNode)", function(obj){
+			var nodeId = obj.param.nodeId;
+			var $checkbar = DTreeNode.getNodeDom(nodeId).checkbox();
+			DTreeNode.temp = [$checkbar];
+			DTreeNode.changeCheck();
+			var checkbarNodes = dtree.getCheckbarNodesParam("checkbarTreeNode");
+			layer.msg(JSON.stringify(checkbarNodes));
 		});
 		
 		// 2.checkbarTree6

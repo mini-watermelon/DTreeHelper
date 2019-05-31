@@ -45,23 +45,39 @@
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
 									<ul>
-										<li>【新增】基础属性新增：iconfont属性，用于定义使用图标数组或string</li>
-										<li>【新增】基础属性新增：iconfontStyle属性，用于自定义树的每个关键部位使用的图标</li>
-										<li>【新增】内置属性新增：usefontStyle属性，用于最终指定树的每个关键部位使用的图标</li>
-										<li>【新增】内置方法新增：ensureTheme：确认最终主题。</li>
-										<li>【新增】内置方法新增：useDefaultOrUserDefineFnodeStyle：赋值一级图标</li>
-										<li>【新增】内置方法新增：useDefaultOrUserDefineSnodeStyle：赋值二级图标</li>
-										<li>【新增】内置方法新增：useDefaultOrUserDefineCheckboxStyle：赋值复选框图标</li>
-										<li>【新增】内置方法新增：useDefaultOrUserDefineMenubarStyle：赋值菜单栏图标</li>
-										<li>【新增】内置方法新增：useDefaultOrUserDefineMenubarExtStyle：赋值扩展菜单栏图标</li>
-										<li>【新增】内置方法新增：useDefaultOrUserDefineToolbarStyle：赋值扩展菜单栏图标</li>
-										<li>【新增】内置方法新增：useDefaultOrUserDefineToolbarExtStyle：赋值扩展工具栏图标</li>
-										<li>【新增】内置方法新增：operateIcon： 设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理</li>
+										<li>【新增】内置属性新增：line，用于指定树线</li>
+										<li>【新增】内置方法新增：showLine：用于显示树线</li>
+										<li>【新增】内置方法新增：showLineLi：作用在单个LI显示树线</li>
 									</ul>
 								</div>
 							</li>
 						</ul>
 				</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="line">
+					<legend>显示树线（line）</legend>
+					<div class="layui-field-box">
+						<p>直观显示树线</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTreeLine" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTreeLine",
+									  url: "../json/case/styleTree1.json",
+									  line: true  // 显示树线
+									});
+									
+									dtree.on("node('styleTreeLine')", function(data){
+									  layer.msg(JSON.stringify(data.param));
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
 			</div>
 			
 			<div class="layui-fluid">
@@ -208,7 +224,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="skin">
-					<legend>主题换肤（skin）</legend>
+					<legend>主题换肤（skin-layui）</legend>
 					<div class="layui-field-box">
 						<p>当你觉得树的样式风格你感到太少女心时，你可以配置主题换肤。</p>
 						<p>一般来说，主题都内置好了图标及样式风格，一般情况无需在指定图标等参数，除非你就是想用自己的。。。</p>
@@ -229,6 +245,30 @@
 					</div>
 				</fieldset>
 			</div>
+			
+			<!-- <div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="skin">
+					<legend>主题换肤（skin-layuiSimple）</legend>
+					<div class="layui-field-box">
+						<p>当你觉得树的样式风格你感到太少女心时，你可以配置主题换肤。</p>
+						<p>一般来说，主题都内置好了图标及样式风格，一般情况无需在指定图标等参数，除非你就是想用自己的。。。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTree5Simple" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree4",
+									  url: "../json/case/styleTree5.json",
+									  initLevel: 1,
+									  checkbar:true,
+									  skin: "layuiSimple"  // layui主题风格
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div> -->
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="zdyskin">
@@ -363,7 +403,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["自定义图标"];
+							var tts = ["显示树线","自定义图标"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -380,6 +420,15 @@
 				});
 			}
 		});
+		
+		// styleTreeLine
+		dtree.render({
+			elem: "#styleTreeLine",
+	//		url: "../json/case/asyncTree1.json",
+			url: "../json/case/styleTree1.json",
+			line: true  // 显示树线
+		});
+		
 		
 		// 1.styleTree1
 		dtree.render({
@@ -445,6 +494,16 @@
 			checkbar:true,
 			skin:"layui"
 		});
+		
+
+		// 3.styleTree5
+		/* dtree.render({
+			elem: "#styleTree5Simple",
+			url: "../json/case/styleTree5.json",
+			initLevel: 1,
+			checkbar:true,
+			skin:"layuiSimple"
+		}); */
 		
 		// 3.styleTree6
 		dtree.render({

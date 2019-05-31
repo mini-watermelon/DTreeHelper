@@ -40,7 +40,21 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="012">v2.5.0(2019/5/20)【大版本】【大改：5，修复：4，优化：3，新增：58，更新：3】<a href="../version/dtree_v2.5.0_201905202036.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
+							<h3 class="layui-timeline-title" id="013">v2.5.0(2019/5/20)【大版本】【适配：1，修复：2，新增：3】<a href="../version/dtree_v2.5.0_201906010100.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
+							<ul>
+								<li>【适配】对layui2.5适配</li>
+								<li class="bug">【修复】内置属性修复，error方法，现在可以正确的获取参数列表中的参数，如无定义则默认打印textStatus。</li>
+								<li class="bug">【修复】内置属性修复，complete方法，现在可以正确的获取参数列表中的参数</li>
+								<li>【新增】内置属性新增：line，用于指定树线</li>
+								<li>【新增】内置方法新增：showLine：用于显示树线</li>
+								<li>【新增】内置方法新增：showLineLi：作用在单个LI显示树线</li>
+							</ul>
+						</div>
+					</li>
+					<li class="layui-timeline-item">
+						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title" id="013">v2.5.0(2019/5/20)【大版本】【大改：5，修复：4，优化：3，新增：58，更新：3】<a href="../version/dtree_v2.5.0_201905202036.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
 							<ul>
 								<li class="big">【大改】数据格式:reponse中isLast属性更换为last属性。</li>
 								<li class="big">【大改】数据格式:reponse中isChecked属性更换为checked属性。</li>
@@ -373,7 +387,7 @@
 					formatter: {
 						title: function(data) {
 							var tt = data.title;
-							var tts = ["v2.5.0(2019/？/？)【大版本】"];
+							var tts = ["v2.5.0(2019/06/01)【适配】"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

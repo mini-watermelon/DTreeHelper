@@ -192,6 +192,14 @@
 									<td colspan="6"><span style="font-weight: bold;">树样式风格图标参数</span></td>
 								</tr>
 								<tr>
+									<td data-vs="vs250">line<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>Boolean</td>
+									<td>开启树线</td>
+									<td>false</td>
+									<td>true / false</td>
+									<td>true</td>
+								</tr>
+								<tr>
 									<td>skin</td>
 									<td>String</td>
 									<td>树主题。<a href="javascript:void(0);" data-id="skin" class="position-a">详见参数释义</a></td>
@@ -300,6 +308,14 @@
 								</tr>
 								<tr>
 									<td colspan="6"><span style="font-weight: bold;">重要内置参数（无需配置）</span></td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">temp</span></td>
+									<td>Array</td>
+									<td>内置交换变量,该变量仅对详细阅读过dtree源码的开发者使用，一般情况下不需要使用。也无需配置</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
 								</tr>
 								<tr>
 									<td><span style="color:#c2c2c2;">node</span></td>
@@ -1444,7 +1460,7 @@
 									<td>
 										<pre class="layui-code" lay-title="render方法示例">
 											var DemoTree = dtree.render({
-											  elem: 'siTree',
+											  elem: '#siTree',
 											  url: '/siTree.json',
 											  initLevel: 2,
 											  icon: 3
@@ -1493,7 +1509,7 @@
 									<td>获取指定节点选中值</td>
 									<td>
 										<pre class="layui-code" lay-title="getParam方法示例">
-											var param = dtree.getNowParam("demoTree", "001");
+											var param = dtree.getParam("demoTree", "001"); //获取ID为001的节点的值
 											console.log(param);
 										</pre>
 									</td>
@@ -1638,7 +1654,8 @@
 							<tbody>
 								<tr><td colspan="6"><span style="font-weight: bold;">基础参数</span></td></tr>
 								<tr><td>initLevel</td><td><span style="color:#5FB878">覆盖</span></td><td>type</td><td><span style="color:#5FB878">覆盖</span></td><td>elem</td><td><span style="color:#5FB878">覆盖</span></td></tr>
-								<tr><td> </td><td> </td><td>cache</td><td><span style="color:#5FB878">覆盖</span></td><td>obj</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>accordion</td><td><span style="color:#5FB878">覆盖</span></td><td>cache</td><td><span style="color:#5FB878">覆盖</span></td><td>obj</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>record</td><td><span style="color:#5FB878">覆盖</span></td><td>load</td><td><span style="color:#5FB878">覆盖</span></td><td>none</td><td><span style="color:#5FB878">覆盖</span></td></tr>
 								<tr><td colspan="6"><span style="font-weight: bold;">数据参数</span></td></tr>
 								<tr><td>data</td><td><span style="color:#5FB878">覆盖</span></td><td>headers</td><td><span style="color:#5FB878">覆盖</span></td><td>defaultRequest</td><td><span style="color:#FFB800">扩展</span></td></tr>
 								<tr><td>url</td><td><span style="color:#5FB878">覆盖</span></td></td><td>method</td><td><span style="color:#5FB878">覆盖</span><td>response</td><td><span style="color:#FFB800">扩展</span></tr>
@@ -1647,7 +1664,7 @@
 								<tr><td colspan="6"><span style="font-weight: bold;">树样式风格图标参数</span></td></tr>
 								<tr><td>skin</td><td><span style="color:#5FB878">覆盖</span></td><td>ficon</td><td><span style="color:#5FB878">覆盖</span></td><td>firstIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
 								<tr><td>icon</td><td><span style="color:#5FB878">覆盖</span></td><td>dot</td><td><span style="color:#5FB878">覆盖</span></td><td>nodeIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
-								<tr><td> </td><td> </td><td> </td><td> </td><td>leafIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
+								<tr><td>iconfont</td><td><span style="color:#5FB878">覆盖</span></td><td>iconfontStyle</td><td><span style="color:#5FB878">覆盖</span></td><td>leafIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
 								<tr><td colspan="6"><span style="font-weight: bold;">工具栏参数</span></td></tr>
 								<tr><td>toolbar</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarStyle</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarScroll</td><td><span style="color:#5FB878">覆盖</span></td></tr>
 								<tr><td>toolbarLoad</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarShow</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarBtn</td><td><span style="color:#5FB878">覆盖</span></td></tr>
@@ -2083,6 +2100,18 @@
 									<td>设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理</td>
 									<td>-</td>
 								</tr>
+								<tr data-vs="vs250">
+									<td><span style="color:#c2c2c2;">DTree.prototype.showLine</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>ArrayDom</td>
+									<td>展开树线</td>
+									<td>-</td>
+								</tr>
+								<tr data-vs="vs250">
+									<td><span style="color:#c2c2c2;">DTree.prototype.showLineLi</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>Dom</td>
+									<td>设置树线</td>
+									<td>-</td>
+								</tr>
 								<tr><td colspan="5"><span style="font-weight: bold;">复选框函数</span></td></tr>
 								<tr id="chooseDataInit1">
 									<td><a href="javascript:void(0);" data-id="chooseDataInit" class="position-a">DTree.prototype.chooseDataInit</a></td>
@@ -2404,7 +2433,7 @@
 											var $cite = DemoTree.getNodeDom("001").cite(); //获取文本存储元素
 											var $fnode = DemoTree.getNodeDom("001").fnode(); //获取一级图标元素
 											var $snode = DemoTree.getNodeDom("001").snode(); //获取二级图标元素
-											var $checkbar = DemoTree.getNodeDom("001").checkbar(); //获取复选框元素集合
+											var $checkbox = DemoTree.getNodeDom("001").checkbox(); //获取复选框元素集合
 											var $nextUl = DemoTree.getNodeDom("001").nextUl(); //获取相邻的ul元素
 											var $parentLi = DemoTree.getNodeDom("001").parentLi(); //获取父级li元素
 											var $parentDiv = DemoTree.getNodeDom("001").parentDiv(); //获取基于当前$div的上级$div

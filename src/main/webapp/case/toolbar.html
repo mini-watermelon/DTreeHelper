@@ -35,7 +35,7 @@
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
 									<ul>
-										<li class="bug">【修复】toolbar模块修复：自定义的toolbar的回调函数的第二个$div参数修复，现在可以取到值</li>
+										<!-- <li class="bug">【修复】toolbar模块修复：自定义的toolbar的回调函数的第二个$div参数修复，现在可以取到值</li>
 										<li class="bug">【修复】toolbar模块修复：内置函数：changeTreeNodeEdit中的title未定义的问题。</li>
 										<li>【优化】toolbar模块优化：内置的三个按钮中的label均加上title提示</li>
 										<li>【新增】toolbar模块新增：toolbar内置新增两个默认方法：pulldown：展开当前节点下的全部节点，pullup：收缩当前节点下的全部节点</li>
@@ -50,7 +50,7 @@
 										<li>【新增】内置方法新增：toolbarListener：toolbar内置监听</li>
 										<li>【新增】内置方法新增：dynamicToolbarDom：在节点后动态绑定fixed和follow条件的工具栏</li>
 										<li>【更新】内置方法更新：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式</li>
-										<li>【更新】内置方法更新：changeTreeNodeAdd新增一个回传参数：refresh，用于新增完成后，局部刷新</li>
+										<li>【更新】内置方法更新：changeTreeNodeAdd新增一个回传参数：refresh，用于新增完成后，局部刷新</li> -->
 									</ul>
 								</div>
 							</li>
@@ -75,7 +75,7 @@
 									  elem: "#toolbarTree1",
 									  url: "/DTreeHelper/toolbar/query",
 									  initLevel: "1",
-									  dot:false,
+									  line:true,
 									  toolbar:true,
 									  record:true,
 									  dataFormat: "list",
@@ -509,7 +509,8 @@
 			elem: "#toolbarTree1",
 			url: "/DTreeHelper/toolbar/query",
 			initLevel: "1",
-			dot:false,
+			line:true,
+	//		dot:false,
 			toolbar:true,
 			record:true,
 			dataFormat: "list",
@@ -522,9 +523,10 @@
 						url: "/DTreeHelper/toolbar/insert",
 						success: function(result){
 							DTree1.changeTreeNodeAdd("refresh");
+						//	DTree1.changeTreeNodeAdd(true);
 						},
 						error: function(){
-							 DTree1.changeTreeNodeAdd(false);
+							DTree1.changeTreeNodeAdd(false);
 						}
 							
 					});

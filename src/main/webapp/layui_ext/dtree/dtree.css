@@ -51,6 +51,18 @@
 .dtree-nav-ul-sid{display: none;}
 .dtree-none-text{font-size: 12px;text-align: center;color: gray;}
 
+/* 树线*/
+.dtree-nav-first-line,.dtree-nav-line,.dtree-nav-last-line{width: 100%;position: relative;}
+.dtree-nav-first-line:before{content:"";position: absolute;height: 0;border-left: 1px dotted #c0c4cc;}
+.dtree-nav-first-line:after{content:"";position: absolute;height: 0;border-top: 1px dotted #c0c4cc;}
+
+.dtree-nav-line:before{content:"";position: absolute;top: 0;left: 7px;width: 0;height: 100%;border-left: 1px dotted #c0c4cc;}
+.dtree-nav-line:after{content:"";position: absolute;top: 16px;left: 8px;width: 9px;height: 0;border-top: 1px dotted #c0c4cc;}
+
+.dtree-nav-last-line:before{content:"";position: absolute;top: 0;left: 7px;width: 0;height: 17px;border-left: 1px dotted #c0c4cc;}
+.dtree-nav-last-line:after{content:"";position: absolute;top: 16px;left: 8px;width: 9px;height: 0;border-top: 1px dotted #c0c4cc;}
+
+
 /* 图标及复选框*/
 .dtreefont{cursor: pointer;}
 .dtreefont-special{margin: 0 4px;}

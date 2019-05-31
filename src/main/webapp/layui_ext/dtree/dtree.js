@@ -3,7 +3,7 @@
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/
  *@License https://www.layui.com/
- *@LASTTIME 2019/5/20
+ *@LASTTIME 2019/6/01
  *@VERSION v2.5.0
  */
 layui.define(['jquery','layer','form'], function(exports) {
@@ -18,7 +18,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 		LI_DIV_TOOLBAR = "dtree-toolbar", TOOLBAR_TOOL = "dtree-toolbar-tool",  TOOLBAR_TOOL_EM = "dtree-toolbar-fixed",
 		LI_DIV_CHECKBAR = "dtree-nav-checkbox-div", 
 		LI_CLICK_CHECKBAR = "d-click-checkbar",		//绑定点击复选框时需要用到
-		LI_DIV_TEXT_CLASS = "t-click", UL_ROOT="dtree";
+		LI_DIV_TEXT_CLASS = "t-click", UL_ROOT="dtree",
+		LI_NAV_FIRST_LINE = "dtree-nav-first-line", LI_NAV_LINE = "dtree-nav-line", LI_NAV_LAST_LINE = "dtree-nav-last-line";
+	
 	
 	// 树的公共指定
 	var NAV_THIS = "dtree-nav-this",	//当前节点
@@ -436,6 +438,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.none = this.options.none || "无数据";		// 初始加载无记录时显示文字
 
 		/** 样式相关参数**/
+		this.line = (typeof (this.options.line) === "boolean") ? this.options.line : false; // 开启树线，默认不开启
 		this.iconfont = this.options.iconfont || DTREEFONT; // 默认图标字体 dtreefont
 		this.iconfontStyle = this.options.iconfontStyle || {}; // 用于自定义树的每个关键部位使用的图标
 		this.firstIconArray = $.extend(firstIconArray, this.options.firstIconArray) || firstIconArray;	//用户自定义一级图标集合，node
@@ -474,7 +477,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.success = this.options.success || function(data, obj){};		//树加载完毕后执行解析树之前的回调（仅限异步加载）
 		this.done = this.options.done || function(data, obj){};		//树加载完毕后的回调（仅限异步加载）
 		this.formatter = $.extend(this.formatter, this.options.formatter)|| this.formatter ;	// 数据过滤
-		this.error = this.options.error || function(XMLHttpRequest, textStatus, errorThrown){};		// 异步加载异常回调
+		this.error = this.options.error || function(XMLHttpRequest, textStatus, errorThrown){layer.msg(textStatus, {icon:2});};		// 异步加载异常回调
 		this.complete = this.options.complete || function(XMLHttpRequest, textStatus){};	// 异步加载完成回调
 		
 		/** 复选框参数**/
@@ -548,6 +551,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.none = this.options.none || this.none;  // 初始节点加载无数据时显示文字
 		
 		/** 样式相关参数**/
+		this.line = (typeof (this.options.line) === "boolean") ? this.options.line : this.line; // 开启树线，默认不开启
 		this.iconfont = this.options.iconfont || this.iconfont; // 默认图标字体 dtreefont
 		this.iconfontStyle = this.options.iconfontStyle || this.iconfontStyle; // 用于自定义树的每个关键部位使用的图标
 		this.firstIconArray = $.extend(firstIconArray, this.options.firstIconArray) || this.firstIconArray;	//用户自定义一级图标集合，node
@@ -1079,6 +1083,61 @@ layui.define(['jquery','layer','form'], function(exports) {
 		}
 	};
 	
+	// 显示树线
+	DTree.prototype.showLine = function($lis){
+		var _this = this;
+		if(_this.line){
+			if($lis && $lis.length > 0) {
+				$lis.each(function(){
+					_this.showLineLi($(this));
+				});
+			} else {
+				_this.obj.find("li[data-id]").each(function(){
+					_this.showLineLi($(this));
+				});
+			}
+		}
+	}
+	
+	// 真正显示树线的方法
+	DTree.prototype.showLineLi = function($li){
+		var _this = this;
+		var $div = $li.children("div"),
+			$nextLi = $li.next("li"),
+			$ul = $li.parent("ul");
+		if($ul[0].id == _this.obj[0].id) {
+			// 根节点下的节点
+			$li.removeClass(LI_NAV_LINE);
+			$li.removeClass(LI_NAV_LAST_LINE);
+			$li.addClass(LI_NAV_FIRST_LINE);
+		} else {
+			// 非根节点下的节点
+			var $pnextLi = $ul.parent("li").next("li");
+			if($pnextLi.length == 0) {
+				if($nextLi.length == 0){
+					$li.removeClass(LI_NAV_LINE);
+					$li.removeClass(LI_NAV_FIRST_LINE);
+					$li.addClass(LI_NAV_LAST_LINE);
+				} else {
+					$li.removeClass(LI_NAV_FIRST_LINE);
+					$li.removeClass(LI_NAV_LAST_LINE);
+					$li.addClass(LI_NAV_LINE);
+				}
+			}else {
+				var $pnextdiv = $pnextLi.children("div");
+				if($nextLi.length == 0 && $div.children("cite").attr("data-leaf") == "leaf" && $pnextdiv.children("cite").attr("data-leaf") == "leaf") {
+					$li.removeClass(LI_NAV_FIRST_LINE);
+					$li.removeClass(LI_NAV_LINE);
+					$li.addClass(LI_NAV_LAST_LINE);
+				} else {
+					$li.removeClass(LI_NAV_FIRST_LINE);
+					$li.removeClass(LI_NAV_LAST_LINE);
+					$li.addClass(LI_NAV_LINE);
+				}
+			}
+		}
+	}
+	
 	/******************** 初始化数据区域 ********************/
 	// 重载树
 	DTree.prototype.reload = function(options){
@@ -1123,6 +1182,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 				} else {
 					_this.loadTree(_this.data, 1);
 				}
+				
+				// 显示树线
+				_this.showLine();
 				
 				// 这种情况下需要一开始就将toolbar显示在页面上
 				if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
@@ -1193,6 +1255,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 							_this.loadTree(d, 1);
 						}
 						
+						// 显示树线
+						_this.showLine();
+						
 						// 这种情况下需要一开始就将toolbar显示在页面上
 						if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
 							_this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
@@ -1204,6 +1269,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 						// 加载完毕后的回调
 						_this.done(result, _this.obj);
 					} else {
+						// 如果打印不出任何信息说明是在这里，用了错误的数据格式
 						if (_this.dataStyle == 'layuiStyle'){
 							layer.msg(result[_this.response.message], {icon:2});
 						} else {
@@ -1212,11 +1278,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown){// 异步加载异常回调
-					_this.error();
+					_this.error(XMLHttpRequest, textStatus, errorThrown);
 				},
 				complete: function(XMLHttpRequest, textStatus){// 异步加载完成回调
 					if(_this.load){layer.close(index);}
-					_this.complete();
+					_this.complete(XMLHttpRequest, textStatus);
 				}
 			});
 		}
@@ -1247,6 +1313,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 			} else {
 				_this.loadTree(data, level);
 			}
+			
+			// 显示树线
+			_this.showLine();
 
 			// 这种情况下需要一开始就将toolbar显示在页面上
 			if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
@@ -1292,6 +1361,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 						} else {
 							_this.loadTree(result[_this.response.rootName], level, $ul);
 						}
+						
+						// 显示树线
+						_this.showLine();
 						
 						// 这种情况下需要一开始就将toolbar显示在页面上
 						if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
@@ -1757,14 +1829,32 @@ layui.define(['jquery','layer','form'], function(exports) {
 		} else { div += " d-contextmenu='false'>"; }
 
 		var hideClass = "";
+		var lineClass = "";
 		if(hide){hideClass = NAV_HIDE;}
-		var li = ["<li " + "class='"+LI_CLICK_CHECKBAR+" "+LI_NAV_ITEM+" "+hideClass+"'" + "data-id='"+treeId+"'" + "data-pid='"+(flag == "root" ? ((typeof parentId !== undefined && parentId != "") ? parentId : "-1") : parentId)+"'" + "dtree-id='"+rootId+"'" + "data-index='"+level+"'" + "dtree-hide='"+hide+"'" +">" +
+		/*if(_this.line){
+			if(flag == "root") {
+				lineClass = LI_NAV_FIRST_LINE;
+			} else if(last == true){
+				lineClass = LI_NAV_LAST_LINE;
+			} else {
+				lineClass = LI_NAV_LINE;
+			}
+		}*/
+		/*if(_this.line){
+			if(flag == "root") {
+				lineClass = LI_NAV_FIRST_LINE;
+			} else {
+				lineClass = LI_NAV_LINE;
+			}
+		}*/
+		var li = ["<li " + "class='"+LI_CLICK_CHECKBAR+" "+LI_NAV_ITEM+" "+hideClass+" "+lineClass+"'" + "data-id='"+treeId+"'" + "data-pid='"+(flag == "root" ? ((typeof parentId !== undefined && parentId != "") ? parentId : "-1") : parentId)+"'" + "dtree-id='"+rootId+"'" + "data-index='"+level+"'" + "dtree-hide='"+hide+"'" +">" +
 		          	div ,
 					dom.fnode(),
 					dom.node(),
 					dom.checkbox(),
 					dom.text(),
 					"</div>", dom.ul(), "</li>"].join("");
+		
 		return li;
 	};
 
@@ -2018,6 +2108,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 					// 建造完毕后，选中该DIV
 					$thisDiv = $ul.find("div[data-id='"+parseData.treeId()+"']");
 					_this.setNodeParam($thisDiv);
+					
+					_this.showLine($ul.find("li"));
 				} else {
 					layer.msg("添加失败,节点ID为undefined！",{icon:5});
 					// 重新赋值
@@ -2066,6 +2158,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			$p_div = _this.getNodeDom($div).parentDiv();
 		
 		$p_li.remove();
+		_this.showLine($p_ul.find("li"));
 		// 判断父级ul中是否还存在li,如果不存在，则需要修改节点的样式
 		if($p_ul.children("li").length == 0){
 			var $icon_i = $p_div.find("i[data-spread]");
@@ -3371,6 +3464,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var temp = _this.temp;
 		var id = temp[0], $ul = temp[1], $div = temp[2], level = temp[3];
 		var flag = false;
+		console.log(returnID);
 		if(returnID){
 			var $thisDiv = _this.obj.find("[data-id='"+id+"']");
 			if(typeof returnID === "object"){
@@ -3413,10 +3507,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 			}
 			$ul.addClass(NAV_SHOW);	//展开UL
 			_this.accordionUL($ul);
-			
 			if(flag) {
 				_this.getChild($div);
 			} else {
+				//		_this.showLine();
+				_this.showLine($ul.find("li"));
 				// 这种情况下需要在新增节点后对节点新增工具栏
 				if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
 					_this.dynamicToolbarDom($thisDiv.find("cite[data-leaf]"));
@@ -3484,6 +3579,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 		if(flag){
 			$p_li.remove();
+			_this.showLine($p_ul.find("li"));
 			// 判断父级ul中是否还存在li,如果不存在，则需要修改节点的样式
 			if($p_ul.children("li").length == 0){
 				var $icon_i = $p_div.find("i[data-spread]");

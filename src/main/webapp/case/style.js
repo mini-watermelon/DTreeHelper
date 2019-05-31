@@ -1,4 +1,9 @@
 var menuTree = [{
+	"id":"line",
+	"title": "显示树线",
+	"last": true,
+	"children":[]
+},{
 	"id":"dot",
 	"title": "隐藏一级图标小圆点",
 	"last": true,

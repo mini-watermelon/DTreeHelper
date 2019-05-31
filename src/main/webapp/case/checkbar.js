@@ -19,6 +19,11 @@ var menuTree = [{
 	"last": true,
 	"children":[]
 },{
+	"id":"clicknode",
+	"title": "点击节点选中",
+	"last": true,
+	"children":[]
+},{
 	"id":"before",
 	"title": "checkbar选中前回调（高级功能）",
 	"last": true,
