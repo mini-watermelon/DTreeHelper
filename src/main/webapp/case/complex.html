@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
 
 <link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
 	<div class="container">
@@ -30,9 +35,9 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
-									<ul>
-										<!-- <li>【新增】基础属性新增：formatter属性，用于对树展示节点的文字信息格式化处理。</li>
-										<li>【更新】内置方法更新：parseData新增一个回传参数：fmtTitle，用于获取formatter标记过的内容，原来的title函数只获取原始title信息</li> -->
+									<ul data-vlog="vs250">
+										<li>【新增】基础属性新增：formatter属性，用于对树展示节点的文字信息格式化处理。</li>
+										<li>【更新】内置方法更新：parseData新增一个回传参数：fmtTitle，用于获取formatter标记过的内容，原来的title函数只获取原始title信息</li>
 									</ul>
 								</div>
 							</li>

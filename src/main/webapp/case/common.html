@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
 
 <link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
 
@@ -31,8 +36,8 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
-									<ul>
-										<!-- <li>【优化】基础方法优化：render方法和reload方法中，如果树在当前页面中被加载过一次了，再次加载会从缓存中取出树，并将树上次点击的节点作为参数记录下来，现在优化为还是从缓存中取，但是会重置上次记录的参数。</li>
+									<ul data-vlog="vs250">
+										<li>【优化】基础方法优化：render方法和reload方法中，如果树在当前页面中被加载过一次了，再次加载会从缓存中取出树，并将树上次点击的节点作为参数记录下来，现在优化为还是从缓存中取，但是会重置上次记录的参数。</li>
 										<li>【优化】内置函数优化：getLiItemDom 当parentId为0时组件自动判定为false从而使用内置parentId的问题。</li>
 										<li>【新增】基础属性新增：accordion属性，用于开启手风琴模式</li>
 										<li>【新增】基础属性新增：none，用于定于树初始化未加载节点时的提示文字。</li>
@@ -56,7 +61,7 @@
 										<li>【新增】内置方法新增：getAllHideNodesParam： 获取全部hide节点的值</li>
 										<li>【新增】内置方法新增：getNowNodeOrNull：获取当前选中div，没有选中则为null</li>
 										<li>【新增】内置方法新增：navThis：选中div</li>
-										<li>【新增】内置方法新增：getNoneDom：当无节点数据时显示dom信息</li> -->
+										<li>【新增】内置方法新增：getNoneDom：当无节点数据时显示dom信息</li>
 									</ul>
 								</div>
 							</li>
@@ -248,6 +253,37 @@
 									  if(obj.show){
 									    // 调用内置函数，第二个参数为json数组，如果你不想访问默认的url，你可以自己使用ajax访问你的url，然后将data数据传入进来即可。
 									    CommonTree5.getChild($(obj.dom).parent("div"), [{"id":"001001","title": "测试啦","parentId": "0"}]); 
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="djwbjzjd">
+					<legend>点击文本加载节点用法</legend>
+					<div class="layui-field-box">
+						<p>默认情况下，你点击树前面的图标时，才会展开或隐藏节点，但你依然可以设计为点击文字加载。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="overflow: auto;"><ul id="commonTreet" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									var CommonTreet = dtree.render({
+									  elem: "#commonTreet",
+									  url: "../json/case/commonTree2.json",
+									  initLevel: "1"
+									});
+									
+									// 绑定节点点击事件
+									dtree.on("node(commonTreet)", function(obj){
+									  if(!obj.param.leaf){
+									    var $div = obj.dom;
+									    CommonTreet.clickSpread($div);  //调用内置函数展开节点
+									  } else {
+									    layer.msg("叶子节点就不展开了");
 									  }
 									});
 								</pre>
@@ -640,6 +676,22 @@
 			console.log($(obj.dom).parent("div")[0]);
 			if(obj.show){
 				CommonTree5.getChild($(obj.dom).parent("div"), [{"id":"001001","title": "测试啦","parentId": "0"}]);
+			}
+		});
+
+		// 2.commonTreet
+		var CommonTreet = dtree.render({
+			elem: "#commonTreet",
+			url: "../json/case/commonTree2.json",
+			initLevel: "1"
+		});
+		
+		dtree.on("node(commonTreet)", function(obj){
+			if(!obj.param.leaf){
+				var $div = obj.dom;
+				CommonTreet.clickSpread($div);
+			} else {
+				layer.msg("叶子节点就不展开了");
 			}
 		});
 

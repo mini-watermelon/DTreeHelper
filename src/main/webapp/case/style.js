@@ -4,13 +4,13 @@ var menuTree = [{
 	"last": true,
 	"children":[]
 },{
-	"id":"dot",
-	"title": "隐藏一级图标小圆点",
+	"id":"hficon",
+	"title": "隐藏一级图标",
 	"last": true,
 	"children":[]
 },{
-	"id":"hficon",
-	"title": "隐藏一级图标",
+	"id":"ficon",
+	"title": "自定义一级图标显示",
 	"last": true,
 	"children":[]
 },{
@@ -35,7 +35,12 @@ var menuTree = [{
 	"children":[]
 },{
 	"id":"skin",
-	"title": "主题换肤",
+	"title": "主题换肤{layui}",
+	"last": true,
+	"children":[]
+},{
+	"id":"skin2",
+	"title": "主题换肤{laySimple}",
 	"last": true,
 	"children":[]
 },{
@@ -46,6 +51,11 @@ var menuTree = [{
 },{
 	"id":"zdyicon",
 	"title": "自定义图标",
+	"last": true,
+	"children":[]
+},{
+	"id":"returnicon",
+	"title": "后台返回图标",
 	"last": true,
 	"children":[]
 }];

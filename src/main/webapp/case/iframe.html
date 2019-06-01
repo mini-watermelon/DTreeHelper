@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
 
 <link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 <style type="text/css">
 	.layui-tab-item{height:400px;overflow: auto;}
 </style>
@@ -34,8 +39,8 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
-									<ul>
-										<!-- <li class="bug">【修复】iframe模块修复：配置了iframeDefaultRequest时，只会显示iframeDefaultRequest中的参数的问题。</li> -->
+									<ul data-vlog="vs250">
+										<li class="bug">【修复】iframe模块修复：配置了iframeDefaultRequest时，只会显示iframeDefaultRequest中的参数的问题。</li>
 									</ul>
 								</div>
 							</li>

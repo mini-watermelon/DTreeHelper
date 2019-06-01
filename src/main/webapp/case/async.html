@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
 
 <link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
 
@@ -31,8 +36,11 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
-									<ul>
-										<!-- <li class="big">【大改】数据格式:reponse中isLast属性更换为last属性。</li>
+									<ul data-vlog="vs999">
+										<li>【新增】基础属性新增：response中新增ficonClass，可以指定一级图标样式。</li>
+									</ul>
+									<ul data-vlog="vs250">
+										<li class="big">【大改】数据格式:reponse中isLast属性更换为last属性。</li>
 										<li class="big">【大改】数据格式:reponse中isChecked属性更换为checked属性。</li>
 										<li class="big">【大改】数据格式:defaultRequest中isLeaf属性更换为leaf属性。</li>
 										<li class="big">【大改】数据格式:defaultRequest中isChecked属性更换为checked属性。</li>
@@ -44,7 +52,7 @@
 										<li>【新增】基础属性新增：error：用于异步加载中出现异常时的用户自定义函数</li>
 										<li>【新增】基础属性新增：complete：用于异步加载全部完成后用户的自定义函数</li>
 										<li>【新增】内置属性新增：errData属性，记录在渲染节点时有问题的数据。</li>
-										<li>【新增】内置方法新增：msgErrData： 判断在数据加载时是否存在错误数据，并是否打印错误数据</li> -->
+										<li>【新增】内置方法新增：msgErrData： 判断在数据加载时是否存在错误数据，并是否打印错误数据</li>
 									</ul>
 								</div>
 							</li>

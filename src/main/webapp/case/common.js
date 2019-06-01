@@ -25,7 +25,12 @@ var menuTree = [{
 	"children":[]
 },{
 	"id":"qxzdjz",
-	"title": "取消自动加载子节点用法",
+	"title": "取消自动加载节点用法",
+	"last": true,
+	"children":[]
+},{
+	"id":"djwbjzjd",
+	"title": "点击文本加载节点用法",
 	"last": true,
 	"children":[]
 },{

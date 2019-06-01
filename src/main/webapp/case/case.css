@@ -3,6 +3,7 @@
 }
 
 *[data-vs^="vs"]{display: none;}
+*[data-vlog^="vs"]{display: none;}
 
 .div_h3title {width: 100%;border-bottom: 1px solid #EEEEEE;}
 .div_h3title i{font-size: 24px;}

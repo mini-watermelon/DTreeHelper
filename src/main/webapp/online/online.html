@@ -8,7 +8,11 @@
 
 <link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
 <link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
-
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 <link rel="stylesheet" href="online.css">
 <link rel="stylesheet" href="global.css">
 <style type="text/css">
@@ -51,7 +55,7 @@
 
 <div class="layui-layout layui-layout-admin">
 	<fieldset class="layui-elem-field layui-field-title">
-	  <legend>数据/URL&配置项准备</legend>
+	  <legend>数据/URL&配置项准备（或者你可以直接将前面的案例演示中的代码直接粘贴至此，注意ID的修改即可。）</legend>
 	  <div class="layui-field-box">
 	  	<button class="layui-btn layui-btn-xs url_btn" data-url="url/dataAndUrl1.html" style="margin-left: 5px;">dtree标准数据集</button>
 	  	<button class="layui-btn layui-btn-xs url_btn" data-url="url/dataAndUrl2.html">常用格式+list风格数据集</button>
@@ -89,7 +93,7 @@
             <div class="layui-field-box">
               <div class="layui-row layui-col-space10" style="margin-top: 10px;">
                <div class="layui-col-xs12">
-                  <ul id="demoTree" class="dtree" data-id="0"></ul>
+                  <div id="toolbarDiv"><ul id="demoTree" class="dtree" data-id="0"></ul></div>
                </div>
              </div>
            </div>

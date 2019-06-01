@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
 
 <link rel="stylesheet" href="log.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 <style type="text/css">
 	.big{color:#FF5722;font-weight: bold;}
 	.bug{font-weight: bold;}
@@ -40,12 +45,27 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="013">v2.5.0(2019/5/20)【大版本】【适配：1，修复：2，新增：3】<a href="../version/dtree_v2.5.0_201906010100.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
+							<h3 class="layui-timeline-title" id="015">v2.5.0(2019/？/？)【优化】【优化：3，新增：1，更新：1，移除：1】<a href="https://gitee.com/miniwatermelon/DTreeHelper" class="layui-btn layui-btn-sm layui-btn-normal">尚未发布，gitee抢先下载！</a></h3>
+							<ul>
+								<li>【优化】基础属性优化：ficon，可以设置Array型数据，与icon的配置方式相同</li>
+								<li>【优化】基础属性优化：skin，其中设置layui看起来更像layui的风格，新增laySimple风格，遵从简约版layui树形菜单。</li>
+								<li>【优化】内置方法优化：涉及样式的一系列内置方法优化</li>
+								<li>【新增】基础属性新增：response中新增ficonClass，可以指定一级图标样式。</li>
+								<li>【更新】内置方法更新：parseData：增加对ficonClass属性的解析</li>
+								<li>【移除】基础属性移除：dot，移除一级图标小圆点的单独设置，改为在ficon中配置，与icon的配置方式相同</li>
+							</ul>
+						</div>
+					</li>
+					<li class="layui-timeline-item">
+						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title" id="014">v2.5.0(2019/06/01)【适配】【适配：1，修复：2，优化：1，新增：3】<a href="../version/dtree_v2.5.0_201906010100.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
 							<ul>
 								<li>【适配】对layui2.5适配</li>
-								<li class="bug">【修复】内置属性修复，error方法，现在可以正确的获取参数列表中的参数，如无定义则默认打印textStatus。</li>
-								<li class="bug">【修复】内置属性修复，complete方法，现在可以正确的获取参数列表中的参数</li>
-								<li>【新增】内置属性新增：line，用于指定树线</li>
+								<li class="bug">【修复】基础属性修复，error方法，现在可以正确的获取参数列表中的参数，如无定义则默认打印textStatus。</li>
+								<li class="bug">【修复】基础属性修复，complete方法，现在可以正确的获取参数列表中的参数</li>
+								<li>【优化】一系列内置方法优化</li>
+								<li>【新增】基础属性新增：line，用于指定树线</li>
 								<li>【新增】内置方法新增：showLine：用于显示树线</li>
 								<li>【新增】内置方法新增：showLineLi：作用在单个LI显示树线</li>
 							</ul>
@@ -54,7 +74,7 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="013">v2.5.0(2019/5/20)【大版本】【大改：5，修复：4，优化：3，新增：58，更新：3】<a href="../version/dtree_v2.5.0_201905202036.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
+							<h3 class="layui-timeline-title" id="013">v2.5.0(2019/05/20)【大版本】【大改：5，修复：4，优化：3，新增：58，更新：3】<a href="../version/dtree_v2.5.0_201905202036.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
 							<ul>
 								<li class="big">【大改】数据格式:reponse中isLast属性更换为last属性。</li>
 								<li class="big">【大改】数据格式:reponse中isChecked属性更换为checked属性。</li>
@@ -387,7 +407,7 @@
 					formatter: {
 						title: function(data) {
 							var tt = data.title;
-							var tts = ["v2.5.0(2019/06/01)【适配】"];
+							var tts = ["v2.5.0(2019/06/01)【优化】"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

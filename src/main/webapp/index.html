@@ -5,19 +5,48 @@
 <title>layui.dtree帮助手册</title>
 <link rel="stylesheet" href="layui/css/layui.css">
 <script type="text/javascript" src="layui/layui.js"></script>
+<link rel="stylesheet" href="layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="layui_ext/dtree/font/dtreefont.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 <style>
 	.version-ul{text-align: right;padding: 0 70px;}
 	.version-ul .layui-nav-child{text-align: left;}
 	.finish{position: absolute;right: 0;top: 0;width: 70px; height: 60px;text-align: center;line-height: 60px;cursor: pointer;}
 	*[data-vs^="vs"]{display: none;}
+	
+	.layui-search{width: 230px;height: 60px;line-height: 60px;margin-left: 200px;position: absolute;}
+	.dtree-select{position: absolute;max-height: 500px;height: 350px;overflow: auto;width: 100%;z-index: 123;display: none;border:1px solid silver;top: 42px;}
+	.layui-show{display: block!important;}
 </style>
+
 </head>
 <body class="layui-layout-body">
 	<div class="layui-layout layui-layout-admin">
 		<div class="layui-header">
 			<div class="layui-logo">dtree帮助手册 </div>
-			<ul class="layui-nav version-ul" lay-filter="version-ul">
-			  <li class="layui-nav-item" style="">当前正式版本：v2.5.0（20190601）（正式版）</li>
+			<div class="layui-search layui-form" lay-filter="search-form">
+				<div class="layui-form-item" style="margin-bottom: 0px;padding-top: 10px;">
+					<div class="layui-input-block" style="margin-left: 0px">
+						<div class="layui-unselect layui-form-select" id="search_module">
+							<div class="layui-select-title">
+								<input type="text" name="search_name" id="search_id" placeholder="树功能属性一览" readonly="" class="layui-input layui-unselect">
+								<i class="layui-edge"></i>
+							</div>
+						</div>
+						<div class="layui-card dtree-select" id="selectTree">
+							<div class="layui-card-body">
+								<div id="toolbarDiv"><ul id="searchTree" class="dtree" data-id="0" style="width: 100%;"></ul></div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<ul class="layui-nav version-ul" lay-filter="version-ul" style="margin-left: 400px;position: absolute;padding: 0;right: 70px;">
 			  <li class="layui-nav-item">
 			    <a href="javascript:;">文档版本：<span class="version-span">&nbsp;</span></a>
 			    <dl class="layui-nav-child version-li"></dl>
@@ -103,12 +132,20 @@
 	</div>
 </body>
 <script type="text/javascript">
-	layui.use(['element','layer'], function(){
+	layui.extend({
+		dtree: '{/}layui_ext/dtree/dtree'
+	}).use(['element','layer', 'dtree', 'form'], function(){
 		var element = layui.element,
 			layer = layui.layer,
+			form = layui.form,
+			dtree = layui.dtree,
 			$ = layui.$;
+		
+		form.render();
+		
 		// 存储所有跟文档版本信息相关的记录
 		var version = {
+			"vs999":"v2.5.0（20190601）（gitee内测版）", 
 			"vs250":"v2.5.0（20190601）（正式版）", 
 			"vs245finally":"v2.4.5_finally（20181222）（正式版）"
 		};
@@ -140,9 +177,10 @@
 			$(".version-span").html(version[versionCls]);
 			for(var key in version){
 				if(key != versionCls) {
+					console.log(versionCls);
+					if(versionCls == "vs250") break;
 					init = false;
 					layer.confirm("当前选择文档非最新，是否切换到最新？",{icon: 3, title:'提示'}, function(index){
-						console.log(key);
 						versionCls = key;
 						console.log(versionCls);
 						layui.data("dtree-version-now",{key: "versionClsNow", value: versionCls});
@@ -202,6 +240,34 @@
 				content:"finish/finish.html",
 				area:["80%","90%"]
 			})
+		});
+		
+		// 搜索功能
+		var searchTree = dtree.render({
+			elem: "#searchTree",
+			url: "json/module/module.js",
+			icon: "-1",
+			dataFormat:"list",
+			dataStyle:"layuiStyle",
+			accordion:true,
+			type:"all"
+		});
+		
+		$("#search_module").on("click",function(){
+			$(this).toggleClass("layui-form-selected");
+			$("#selectTree").toggleClass("layui-show layui-anim layui-anim-upbit");
+		});
+		
+		dtree.on("node(searchTree)", function(obj){
+			if(!obj.param.leaf){
+				var $div = obj.dom;
+				searchTree.clickSpread($div);
+			} else {
+				$("#search_id").val(obj.param.context);
+				$("#search_module").toggleClass("layui-form-selected");
+				$("#selectTree").toggleClass("layui-show layui-anim layui-anim-upbit");
+				layer.msg("功能完善中，敬请期待。。。");
+			}
 		});
 	});
 </script>

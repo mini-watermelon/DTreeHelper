@@ -35,7 +35,6 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 	// 树的自定义图标
 	var DTREEFONT = "dtreefont",									//默认使用图标字体
-		LI_DIV_SPREAD_LAST = "dtree-icon-dian",						//一级图标小圆点
 		LI_DIV_CHECKBAR_ON = "dtree-icon-fuxuankuangxuanzhong", 	//复选框选中图标
 		LI_DIV_CHECKBAR_OUT = "dtree-icon-fuxuankuang", 			//复选框未选中图标
 		LI_DIV_CHECKBAR_NOALL = "dtree-icon-fuxuankuang-banxuan",	//复选框半选图标
@@ -73,9 +72,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 		"2" : "dtree-icon-fenzhijigou",			//机构
 		"3" : "dtree-icon-fenguangbaobiao",		//报表
 		"4" : "dtree-icon-xinxipilu",			//信息
-		"5" : "dtree-icon-shuye1",				//叶子(默认)
+		"5" : "dtree-icon-shuye1",				//叶子(二级图标默认样式)
 		"6" : "dtree-icon-caidan_xunzhang",	    //勋章
-		"7" : "dtree-icon-normal-file"		    //文件
+		"7" : "dtree-icon-normal-file",		    //文件
+		"8" : "dtree-icon-dian",				//小圆点（一级图标默认样式）
+		"9" : "dtree-icon-set-sm",				//齿轮
+		"10" : "dtree-icon-rate"				//星星
 	};
 	
 	// 树的自定义样式
@@ -244,7 +246,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 			treeId: "id",			//节点ID
 			parentId: "parentId",	//父节点ID
 			title: "title",			//节点名称
-			iconClass: "iconClass",		//自定义图标
+			ficonClass: "ficonClass", //自定义一级图标
+			iconClass: "iconClass",	  //自定义二级图标
 			childName: "children",	//子节点名称
 			last: "last",		//是否最后一级节点
 //			level: "level",			//层级
@@ -346,7 +349,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 					open:"",		//节点展开
 					close:""		//节点关闭
 				},
-				dot:""				//叶子节点
+				leaf:""				//叶子节点
 			},
 			snode:{					//二级节点
 				node:{				//非叶子节点
@@ -438,7 +441,6 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.none = this.options.none || "无数据";		// 初始加载无记录时显示文字
 
 		/** 样式相关参数**/
-		this.line = (typeof (this.options.line) === "boolean") ? this.options.line : false; // 开启树线，默认不开启
 		this.iconfont = this.options.iconfont || DTREEFONT; // 默认图标字体 dtreefont
 		this.iconfontStyle = this.options.iconfontStyle || {}; // 用于自定义树的每个关键部位使用的图标
 		this.firstIconArray = $.extend(firstIconArray, this.options.firstIconArray) || firstIconArray;	//用户自定义一级图标集合，node
@@ -446,16 +448,28 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.leafIconArray = $.extend(leafIconArray, this.options.leafIconArray) || leafIconArray;	//用户自定义二级图标集合，leaf
 		this.skin = this.options.skin || "theme";	// 自定义样式 
 		if(this.skin == "layui"){ // layui主题
-			this.ficon = this.options.ficon || "1";		// 一级图标样式，0：+，-
-			this.dot = (typeof (this.options.dot) === "boolean") ? this.options.dot : false;		//是否显示一级图标的小圆点，默认不显示
-			this.icon = this.options.icon || "7";	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章, -1：不显示二级图标。默认'1'
-			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];		// 二级图标中的node节点图标
+			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : true; // 开启树线，默认开启
+			this.ficon = this.options.ficon || "7";	//一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'7'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "0") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
+			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
+			this.icon = this.options.icon || "-1";	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'-1'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];		// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'-1'
+			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
+		} else if(this.skin == "laySimple"){ // laySimple主题
+			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : false; // 开启树线，默认不开启
+			this.ficon = this.options.ficon || ["1","-1"];	//一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'-1'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "1") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'1'
+			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
+			this.icon = this.options.icon || "-1";	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'-1'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];	// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'-1'
 			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
 		} else { // 默认主题  或者自定义主题
-			this.ficon = this.options.ficon || "0";		// 一级图标样式，0：+，-
-			this.dot = (typeof (this.options.dot) === "boolean") ? this.options.dot : true;		//是否显示一级图标的小圆点，默认显示
-			this.icon = this.options.icon || "5";	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章, -1：不显示二级图标。默认'5'
-			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "0") : this.icon[0];		// 二级图标中的node节点图标
+			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : false; // 开启树线，默认不开启
+			this.ficon = this.options.ficon || "8";	//一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'8'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "0") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
+			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
+			this.icon = this.options.icon || "5";	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'5'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "0") : this.icon[0];		// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
 			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
 		}
 
@@ -559,16 +573,28 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.leafIconArray = $.extend(leafIconArray, this.options.leafIconArray) || this.leafIconArray;	//用户自定义二级图标集合，leaf
 		this.skin = this.options.skin || this.skin;	// 自定义样式 
 		if(this.skin == "layui"){ // layui主题
-			this.ficon = this.options.ficon || this.ficon;		// 一级图标样式，0：+，-
-			this.dot = (typeof (this.options.dot) === "boolean") ? this.options.dot : false;		//是否显示一级图标的小圆点，默认不显示
-			this.icon = this.options.icon || this.icon;	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章, -1：不显示二级图标。默认'1'
-			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];		// 二级图标中的node节点图标
+			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : true; // 开启树线，默认开启
+			this.ficon = this.options.ficon || this.ficon; //一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'7'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "0") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
+			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
+			this.icon = this.options.icon || this.icon;	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'-1'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];		// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'-1'
+			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
+		} else if(this.skin == "laySimple"){ // laySimple主题
+			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : false; // 开启树线，默认不开启
+			this.ficon = this.options.ficon || this.ficon;	//一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'-1'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "1") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'1'
+			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
+			this.icon = this.options.icon || this.icon;	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'-1'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];	// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'-1'
 			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
 		} else { // 默认主题  或者自定义主题
-			this.ficon = this.options.ficon || this.ficon;		// 一级图标样式，0：+，-
-			this.dot = (typeof (this.options.dot) === "boolean") ? this.options.dot : 	true;		//是否显示一级图标的小圆点，默认显示
-			this.icon = this.options.icon || this.icon;	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章, -1：不显示二级图标。默认'5'
-			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "0") : this.icon[0];		// 二级图标中的node节点图标
+			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : false; // 开启树线，默认不开启
+			this.ficon = this.options.ficon || this.ficon;	//一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'8'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "0") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
+			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
+			this.icon = this.options.icon || this.icon;	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'5'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "0") : this.icon[0];		// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
 			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
 		}
 
@@ -686,36 +712,36 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var _this = this;
 		var tempOpen = this.usefontStyle.fnode.node.open;
 		var tempClose = this.usefontStyle.fnode.node.close;
-		var tempDot = this.usefontStyle.fnode.dot;
+		var tempLeaf = this.usefontStyle.fnode.leaf;
 		
 		if(typeof fnode === 'undefined'){
-			this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.firstIconArray[this.ficon]["open"]) : tempOpen; // 一级图标中的node节点open图标
-			this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.firstIconArray[this.ficon]["close"]) : tempClose; // 一级图标中的node节点close图标
-			this.usefontStyle.fnode.dot = (tempDot == "") ? (ifont + " " + LI_DIV_SPREAD_LAST) : tempDot; // 一级图标中的node节点dot图标
+			this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["open"]) : tempOpen; // 一级图标中的node节点open图标
+			this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["close"]) : tempClose; // 一级图标中的node节点close图标
+			this.usefontStyle.fnode.leaf = (tempLeaf == "") ? (ifont + " " + this.leafIconArray[this.fleafIcon]) : tempLeaf; // 一级图标中的node节点的leaf图标
 		} else {
 			var node = fnode.node;
-			var dot = fnode.dot;
+			var leaf = fnode.leaf;
 			if(typeof node === 'undefined'){
-				this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.firstIconArray[this.ficon]["open"]) : tempOpen; // 一级图标中的node节点open图标
-				this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.firstIconArray[this.ficon]["close"]) : tempClose; // 一级图标中的node节点close图标
+				this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["open"]) : tempOpen; // 一级图标中的node节点open图标
+				this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["close"]) : tempClose; // 一级图标中的node节点close图标
 			} else {
 				var open = node.open;
 				var close = node.close;
 				if(typeof open === 'undefined'){
-					this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.firstIconArray[this.ficon]["open"]) : tempOpen; // 一级图标中的node节点open图标
+					this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["open"]) : tempOpen; // 一级图标中的node节点open图标
 				} else {
 					this.usefontStyle.fnode.node.open = ifont + " " + open;
 				}
 				if(typeof close === 'undefined') {
-					this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.firstIconArray[this.ficon]["close"]) : tempClose; // 一级图标中的node节点close图标
+					this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["close"]) : tempClose; // 一级图标中的node节点close图标
 				} else {
 					this.usefontStyle.fnode.node.close = ifont + " " + close;
 				}
 			}
-			if(typeof dot === 'undefined'){
-				this.usefontStyle.fnode.dot = (tempDot == "") ? (ifont + " " + LI_DIV_SPREAD_LAST) : tempDot; // 一级图标中的node节点dot图标
+			if(typeof leaf === 'undefined'){
+				this.usefontStyle.fnode.leaf = (tempLeaf == "") ? (ifont + " " + this.leafIconArray[this.fleafIcon]) : tempLeaf; // 一级图标中的node节点的leaf图标
 			} else {
-				this.usefontStyle.fnode.dot = ifont + " " + dot;
+				this.usefontStyle.fnode.leaf = ifont + " " + leaf;
 			}
 		}
 	};
@@ -1053,26 +1079,26 @@ layui.define(['jquery','layer','form'], function(exports) {
 					$i_node.addClass(_this.usefontStyle.snode.node.close);
 				}
 			},
-			openWithDot: function(){
+			openWithLeaf: function(){
 				$i_spread.data("spread","open");
 				$i_node.data("spread","open");
 				
-				$i_spread.removeClass(ICON_HIDE);
-				$i_spread.removeClass(_this.usefontStyle.fnode.dot);
+	//			$i_spread.removeClass(ICON_HIDE);
+				$i_spread.removeClass(_this.usefontStyle.fnode.leaf);
 				$i_spread.addClass(_this.usefontStyle.fnode.node.open);
 				if(!iconClass) {
 					$i_node.removeClass(_this.usefontStyle.snode.leaf);
 					$i_node.addClass(_this.usefontStyle.snode.node.open);
 				}
 			},
-			closeWithDot: function(){
+			closeWithLeaf: function(){
 				$i_spread.data("spread","last");
 				$i_node.data("spread","last");
 				
 				$i_spread.removeClass(_this.usefontStyle.fnode.node.open);
 				$i_spread.removeClass(_this.usefontStyle.fnode.node.close);
-				if(!_this.dot){$i_spread.addClass(ICON_HIDE);}
-				$i_spread.addClass(_this.usefontStyle.fnode.dot);
+	//			if(!_this.dot){$i_spread.addClass(ICON_HIDE);}
+				$i_spread.addClass(_this.usefontStyle.fnode.leaf);
 				
 				if(!iconClass) {
 					$i_node.removeClass(_this.usefontStyle.snode.node.open);
@@ -1406,7 +1432,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				var childListData = _this.queryListTreeByPid(parseData.treeId(), listData); // 根据已知数据的id判断该条数据是否还有子数据
 
 				// 3. 页面元素加载数据
-				$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(childListData.length), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(level), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), ($ul.hasClass(UL_ROOT) ? "root" : "item")));
+				$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(childListData.length), parseData.ficonClass(), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(level), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), ($ul.hasClass(UL_ROOT) ? "root" : "item")));
 				// 4.有子数据的元素加载子节点
 				if(childListData.length > 0){
 					var cLevel = parseInt(level)+1;
@@ -1451,7 +1477,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				if(data[_this.response.treeId] == data[_this.response.parentId]) { _this.errData.push(data); }
 				var parseData = _this.parseData(data);
 				var children = parseData.children();
-				$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(children.length), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(level), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), ($ul.hasClass(UL_ROOT) ? "root" : "item")));
+				$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(children.length), parseData.ficonClass(), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(level), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), ($ul.hasClass(UL_ROOT) ? "root" : "item")));
 				if (children.length != 0) {
 					var cLevel = parseInt(level)+1;
 					_this.loadTree(children, cLevel, _this.obj.find("ul[data-id='"+parseData.treeId()+"']"));
@@ -1500,6 +1526,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 			},
 			level: function(){
 				return data[_this.response.level] || "";
+			},
+			ficonClass: function(){
+				return data[_this.response.ficonClass] || "";
 			},
 			iconClass: function(){
 				return data[_this.response.iconClass] || "";
@@ -1589,7 +1618,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 	};
 
 	//新增节点的dom值
-	DTree.prototype.getDom = function(treeId, parentId, title, fmtTitle, last, iconClass, checkArr, level, spread, disabled, hide) {
+	DTree.prototype.getDom = function(treeId, parentId, title, fmtTitle, last, ficonClass, iconClass, checkArr, level, spread, disabled, hide) {
 		var _this = this,
 			rootId = _this.obj[0].id,
 			toolbar = _this.toolbar,
@@ -1598,30 +1627,43 @@ layui.define(['jquery','layer','form'], function(exports) {
 		return {
 			fnode: function() {	// + - 图标
 				// 获取图标的变量
-				var ficon = _this.ficon,
-					dot = _this.dot;
+				var fnodeIcon = _this.fnodeIcon,
+					fleafIcon = _this.fleafIcon;
 				
-				var fleafIconLast = _this.usefontStyle.fnode.dot,
+				var fleafIconLeaf = _this.usefontStyle.fnode.leaf,
 					fnodeIconOpen =  _this.usefontStyle.fnode.node.open,
 					fnodeIconClose =  _this.usefontStyle.fnode.node.close;
+				
+				if(ficonClass){
+					var iconfont = _this.iconfont;
+					if(typeof iconfont === 'string') {
+						fleafIconLeaf = iconfont + " " + ficonClass;
+						fnodeIconOpen = iconfont + " " + ficonClass;
+						fnodeIconClose = iconfont + " " + ficonClass;
+					} else {
+						fleafIconLeaf = iconfont[0] + " " + ficonClass;
+						fnodeIconOpen = iconfont[0] + " " + ficonClass;
+						fnodeIconClose = iconfont[0] + " " + ficonClass;
+					}
+				}
 
-				if(ficon != "-1" && dot){	// 都加载
-					return last ? "<i class='"+fleafIconLast+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
+				if(fnodeIcon != "-1" && fleafIcon != "-1"){	// 都加载
+					return last ? "<i class='"+fleafIconLeaf+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
 						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
 				}
 
-				if(ficon != "-1" && !dot){	// 加载node 隐藏leaf
-					return last ? "<i class='"+fleafIconLast+" "+ICON_HIDE+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
+				if(fnodeIcon != "-1" && fleafIcon == "-1"){	// 加载node 隐藏leaf
+					return last ? "<i class='"+fleafIconLeaf+" "+ICON_HIDE+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
 						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
 				}
 
-				if(ficon == "-1" && dot){	// 隐藏node 加载leaf
-					return last ? "<i class='"+fleafIconLast+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
+				if(fnodeIcon == "-1" && fleafIcon != "-1"){	// 隐藏node 加载leaf
+					return last ? "<i class='"+fleafIconLeaf+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
 						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
 				}
 
-				if(ficon == "-1" && !dot){	// 都隐藏
-					return last ? "<i class='"+fleafIconLast+" "+ICON_HIDE+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' style='display:none;'></i>" :
+				if(fnodeIcon == "-1" && fleafIcon == "-1"){	// 都隐藏
+					return last ? "<i class='"+fleafIconLeaf+" "+ICON_HIDE+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' style='display:none;'></i>" :
 						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
 				}
 			},
@@ -1630,39 +1672,39 @@ layui.define(['jquery','layer','form'], function(exports) {
 				var nodeIcon = _this.nodeIcon,
 					leafIcon = _this.leafIcon;
 
-				var sleafIconLast = _this.usefontStyle.snode.leaf,
+				var sleafIconLeaf = _this.usefontStyle.snode.leaf,
 					snodeIconOpen =  _this.usefontStyle.snode.node.open,
 					snodeIconClose =  _this.usefontStyle.snode.node.close;
 				if(iconClass){
 					var iconfont = _this.iconfont;
 					if(typeof iconfont === 'string') {
-						sleafIconLast = iconfont + " " + iconClass;
+						sleafIconLeaf = iconfont + " " + iconClass;
 						snodeIconOpen = iconfont + " " + iconClass;
 						snodeIconClose = iconfont + " " + iconClass;
 					} else {
-						sleafIconLast = iconfont[0] + " " + iconClass;
+						sleafIconLeaf = iconfont[0] + " " + iconClass;
 						snodeIconOpen = iconfont[0] + " " + iconClass;
 						snodeIconClose = iconfont[0] + " " + iconClass;
 					}
 				}
 
 				if(nodeIcon != "-1" && leafIcon != "-1"){	// 都加载
-					return last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					return last ? "<i class='"+sleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}
 
 				if(nodeIcon != "-1" && leafIcon == "-1"){	// 加载node 隐藏leaf
-					return last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					return last ? "<i class='"+sleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}
 
 				if(nodeIcon == "-1" && leafIcon != "-1"){	// 隐藏node 加载leaf
-					return last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					return last ? "<i class='"+sleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}
 
 				if(nodeIcon == "-1" && leafIcon == "-1"){	// 都隐藏
-					return last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					return last ? "<i class='"+sleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}
 			},
@@ -1716,8 +1758,44 @@ layui.define(['jquery','layer','form'], function(exports) {
 			checkbar = _this.checkbar;
 		
 		return {
-			fnode: function() {	// + - 图标
-				_this.getNodeDom($div).fnode().attr("data-id", treeId);
+			fnode: function(ficonClass) {	// + - 图标
+				var fnode = "";
+				
+				// 获取图标的变量
+				var fnodeIcon = _this.fnodeIcon,
+					fleafIcon = _this.fleafIcon;
+				
+				var fleafIconLeaf = _this.usefontStyle.fnode.leaf,
+					fnodeIconOpen =  _this.usefontStyle.fnode.node.open,
+					fnodeIconClose =  _this.usefontStyle.fnode.node.close;
+				
+				if(ficonClass){
+					var iconfont = _this.iconfont;
+					if(typeof iconfont === 'string') {
+						fleafIconLeaf = iconfont + " " + ficonClass;
+						fnodeIconOpen = iconfont + " " + ficonClass;
+						fnodeIconClose = iconfont + " " + ficonClass;
+					} else {
+						fleafIconLeaf = iconfont[0] + " " + ficonClass;
+						fnodeIconOpen = iconfont[0] + " " + ficonClass;
+						fnodeIconClose = iconfont[0] + " " + ficonClass;
+					}
+				}
+				
+				if(fnodeIcon != "-1" && leafIcon != "-1"){	// 都加载
+					fnode = last ? "<i class='"+fleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+						(spread ? "<i class='"+fnodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+fnodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+ficonClass+"'></i>");
+				}else if(nodeIcon != "-1" && leafIcon == "-1"){	// 加载node 隐藏leaf
+					fnode = last ? "<i class='"+fleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+						(spread ? "<i class='"+fnodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+fnodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+ficonClass+"'></i>");
+				}else if(nodeIcon == "-1" && leafIcon != "-1"){	// 隐藏node 加载leaf
+					fnode = last ? "<i class='"+fleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+						(spread ? "<i class='"+fnodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+fnodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+ficonClass+"'></i>");
+				}else if(nodeIcon == "-1" && leafIcon == "-1"){	// 都隐藏
+					fnode = last ? "<i class='"+fleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+						(spread ? "<i class='"+fnodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+fnodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+ficonClass+"'></i>");
+				}
+				if(fnode != ""){_this.getNodeDom($div).fnode().replaceWith($(fnode));}
 			},
 			node: function(iconClass) {	// 二级图标样式
 				var snode = "";
@@ -1726,33 +1804,33 @@ layui.define(['jquery','layer','form'], function(exports) {
 				var nodeIcon = _this.nodeIcon,
 					leafIcon = _this.leafIcon;
 				
-				var sleafIconLast = _this.usefontStyle.snode.leaf,
+				var sleafIconLeaf = _this.usefontStyle.snode.leaf,
 					snodeIconOpen =  _this.usefontStyle.snode.node.open,
 					snodeIconClose =  _this.usefontStyle.snode.node.close;
 				if(iconClass){
 					var iconfont = _this.iconfont;
 					if(typeof iconfont === 'string') {
-						sleafIconLast = iconfont + " " + iconClass;
+						sleafIconLeaf = iconfont + " " + iconClass;
 						snodeIconOpen = iconfont + " " + iconClass;
 						snodeIconClose = iconfont + " " + iconClass;
 					} else {
-						sleafIconLast = iconfont[0] + " " + iconClass;
+						sleafIconLeaf = iconfont[0] + " " + iconClass;
 						snodeIconOpen = iconfont[0] + " " + iconClass;
 						snodeIconClose = iconfont[0] + " " + iconClass;
 					}
 				}
 				
 				if(nodeIcon != "-1" && leafIcon != "-1"){	// 都加载
-					snode = last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					snode = last ? "<i class='"+sleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}else if(nodeIcon != "-1" && leafIcon == "-1"){	// 加载node 隐藏leaf
-					snode = last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					snode = last ? "<i class='"+sleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}else if(nodeIcon == "-1" && leafIcon != "-1"){	// 隐藏node 加载leaf
-					snode = last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					snode = last ? "<i class='"+sleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}else if(nodeIcon == "-1" && leafIcon == "-1"){	// 都隐藏
-					snode = last ? "<i class='"+sleafIconLast+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
+					snode = last ? "<i class='"+sleafIconLeaf+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" :
 						(spread ? "<i class='"+snodeIconOpen+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>" : "<i class='"+snodeIconClose+" "+DTREEFONTSPECIAL+" "+_this.style.dfont+" "+_this.style.icon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+iconClass+"'></i>");
 				}
 				if(snode != ""){_this.getNodeDom($div).snode().replaceWith($(snode));}
@@ -1812,11 +1890,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 	};
 
 	// 获取拼接好的li
-	DTree.prototype.getLiItemDom =  function(treeId, parentId, title, fmtTitle, last, iconClass, checkArr, level, spread, disabled, hide, basicData, recordData, flag) {
+	DTree.prototype.getLiItemDom =  function(treeId, parentId, title, fmtTitle, last, ficonClass, iconClass, checkArr, level, spread, disabled, hide, basicData, recordData, flag) {
 		var _this = this,
 			rootId = _this.obj[0].id;
 
-		var dom = _this.getDom(treeId, parentId, title, fmtTitle, last, iconClass, checkArr, level, spread, disabled, hide);
+		var dom = _this.getDom(treeId, parentId, title, fmtTitle, last, ficonClass, iconClass, checkArr, level, spread, disabled, hide);
 		basicData = (basicData == "{}") ? "" : basicData;
 		recordData = (recordData == "{}") ? "" : recordData;
 		var div = "<div class='"+LI_DIV_ITEM+" "+_this.style.item+"' data-id='"+treeId+"' dtree-id='"+rootId+"' dtree-click='"+eventName.itemNodeClick+"' data-basic='"+basicData+"' data-record='"+recordData+"' dtree-disabled='"+disabled+"' dtree-hide='"+hide+"' ";
@@ -2088,7 +2166,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		// 判断当前点击的节点是否是最后一级节点，如果是，则需要修改节点的样式
 		var $icon_i = $div.find("i[data-spread]");
 		if ($icon_i.eq(0).data("spread") == "last") {
-			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).openWithDot();
+			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).openWithLeaf();
 		} else {	//如果不是，也要修改节点样式
 			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).open();
 		}
@@ -2103,7 +2181,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 				if(parseData.treeId()){
 					var level = parseInt($div.parent("li").attr("data-index"))+1;
-					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(0), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), "item"));
+					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(0), parseData.ficonClass(), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), "item"));
 
 					// 建造完毕后，选中该DIV
 					$thisDiv = $ul.find("div[data-id='"+parseData.treeId()+"']");
@@ -2162,7 +2240,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		// 判断父级ul中是否还存在li,如果不存在，则需要修改节点的样式
 		if($p_ul.children("li").length == 0){
 			var $icon_i = $p_div.find("i[data-spread]");
-			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).closeWithDot();
+			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).closeWithLeaf();
 		}
 		_this.initNodeParam();
 	}
@@ -3145,7 +3223,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 								}
 							}
 							
-							$ul.append(_this.getLiItemDom(id, parentId, data.addNodeName, data.addNodeName, true, "", checkArr, level, false, false, false, "", "", "item"));
+							$ul.append(_this.getLiItemDom(id, parentId, data.addNodeName, data.addNodeName, true, "", "", checkArr, level, false, false, false, "", "", "item"));
 							// 先将li节点隐藏
 							$ul.find("li[data-id='"+id+"']").hide();
 							// 重新赋值
@@ -3473,7 +3551,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 				var parseData = _this.parseData(returnID);
 
 				if(parseData.treeId()){
-					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(0), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), "item"));
+					$ul.append(_this.getLiItemDom(parseData.treeId(), parseData.parentId(), parseData.title(), parseData.fmtTitle(), parseData.last(0), parseData.ficonClass(), parseData.iconClass(), parseData.checkArr(), level, parseData.spread(), parseData.disabled(), parseData.hide(), parseData.basicData(), parseData.recordData(), "item"));
 
 					// 建造完毕后，选中该DIV
 					$thisDiv = $ul.find("div[data-id='"+parseData.treeId()+"']");
@@ -3501,7 +3579,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			// 判断当前点击的节点是否是最后一级节点，如果是，则需要修改节点的样式
 			var $icon_i = $div.find("i[data-spread]");
 			if ($icon_i.eq(0).data("spread") == "last") {
-				_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).openWithDot();
+				_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).openWithLeaf();
 			} else {	//如果不是，也要修改节点样式
 				_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).open();
 			}
@@ -3583,7 +3661,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			// 判断父级ul中是否还存在li,如果不存在，则需要修改节点的样式
 			if($p_ul.children("li").length == 0){
 				var $icon_i = $p_div.find("i[data-spread]");
-				_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).closeWithDot();
+				_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).closeWithLeaf();
 			}
 			_this.initNodeParam();
 		}

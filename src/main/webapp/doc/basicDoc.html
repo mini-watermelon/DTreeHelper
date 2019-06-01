@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
 
 <link rel="stylesheet" href="doc.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
 
@@ -34,7 +39,8 @@
 					<span style="color:#FF5722;font-weight: bold;">gitee地址：</span><a href="https://gitee.com/miniwatermelon/DTreeHelper" target="_blank">https://gitee.com/miniwatermelon/DTreeHelper</a><br>
 					<span style="color:#FF5722;font-weight: bold;">github地址：</span><a href="https://github.com/mini-watermelon/DTreeHelper" target="_blank">https://github.com/mini-watermelon/DTreeHelper</a><br>
 					<span style="color:#FF5722;font-weight: bold;">组件官方地址：</span><a href="https://fly.layui.com/extend/dtree/" target="_blank">https://fly.layui.com/extend/dtree/</a><br>
-					<span style="color:#FF5722;font-weight: bold;">组件讨论地址：</span><a href="https://fly.layui.com/jie/43868/" target="_blank">https://fly.layui.com/jie/43868/</a>
+					<span style="color:#FF5722;font-weight: bold;">组件讨论地址（v2.4.5）：</span><a href="https://fly.layui.com/jie/43868/" target="_blank">https://fly.layui.com/jie/43868/</a><br>
+					<span style="color:#FF5722;font-weight: bold;">组件讨论地址（v2.5.0）：</span><a href="https://fly.layui.com/jie/52635/" target="_blank">https://fly.layui.com/jie/52635/</a>
 				</blockquote>
 				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
 			</div>
@@ -208,27 +214,27 @@
 									<td>"zdy" / 更多请看图标及配色方案（自定义主题）</td>
 								</tr>
 								<tr>
-									<td>dot</td>
-									<td>Boolean</td>
-									<td>一级图标小圆点</td>
-									<td>true</td>
-									<td>true / false</td>
-									<td>false</td>
-								</tr>
-								<tr>
 									<td>ficon</td>
-									<td>String</td>
-									<td>一级图标样式，0：方形+-，1：三角形， -1：不显示一级图标。</td>
-									<td>"0"</td>
-									<td>"-1" / "0" / "1" </td>
-									<td>"1"</td>
+									<td>String / Array</td>
+									<td>
+										 一级图标样式，<br/>
+										一级图标非叶子节点： 0：方形加减，1：三角形，-1：不显示一级图标非叶子节点<br/>
+										一级图标叶子节点：0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标叶子节点。
+									</td>
+									<td>"8"</td>
+									<td>"-1" / "0" / "1" / "2" / "3" / "4" / "5" / "6" / "7"  / "8"  / "9"  / "10"</td>
+									<td>"3" / ["0", "6"] / "-1" / ["-1", "2"]</td>
 								</tr>
 								<tr>
 									<td>icon</td>
 									<td>String / Array</td>
-									<td>二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章， -1：不显示二级图标。</td>
+									<td>
+										二级图标样式，<br/>
+										二级图标非叶子节点：0：文件夹，-1：不显示二级图标非叶子节点<br/>
+										二级图标叶子节点：0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标叶子节点。
+									</td>
 									<td>"5"</td>
-									<td>"-1" / "0" / "1" / "2" / "3" / "4" / "5" / "6"</td>
+									<td>"-1" / "0" / "1" / "2" / "3" / "4" / "5" / "6" / "7"  / "8"  / "9"  / "10"</td>
 									<td>"3" / ["0", "6"] / "-1" / ["-1", "2"]</td>
 								</tr>
 								<tr>
@@ -253,7 +259,7 @@
 									<td>用户自定义二级图标集合，作用于最后一级节点，定义该属性会扩展组件的内置属性。</td>
 									<td><a href="javascript:void(0);" data-id="leafIconArray" class="position-a">详见参数释义</a></td>
 									<td>-</td>
-									<td>{"8" : "demo-class"}</td>
+									<td>{"11" : "demo-class"}</td>
 								</tr>
 								<tr data-vs="vs250">
 									<td>iconfont<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
@@ -390,35 +396,46 @@
 						<div class="layui-card card" id="skin">
 							<div class="layui-card-header">skin</div>
 							<div class="layui-card-body">
-								<p>满足更多人对树的不同展示，组件内置了2套风格：layui风格/默认风格，内置主题会指定不同的图标和样式的默认值：</p>
+								<p>满足更多人对树的不同展示，组件内置了3套风格：layui风格 / laySimple / 默认风格，内置主题会指定不同的图标和样式的默认值：</p>
 								<p>一般来说，主题都内置好的属性使用者无需在指定图标等参数，当然，一切都是可自定义的。</p>
 								<pre class="layui-code" lay-title="默认风格的skin设定">
 									{
-									 dot: true,  // 设定小圆点显示
-									 ficon: "0",  // 设定一级图标样式
-									 icon: ["0","5"] // 设定二级图标样式。0表示非子节点图标，5表示子节点图标
+									 line: false, // 无树线
+									 ficon:["0","8"],  // 设定一级图标样式。0表示方形加减图标，8表示小圆点图标
+									 icon: ["0","5"] // 设定二级图标样式。0表示文件夹图标，5表示叶子图标
 									}
-									主题颜色： #eaeceb, #d2d2d2, black, orange, #fe7786
+									主题颜色：  #d2d2d2, #eaeceb, black, orange, #fe7786
 								</pre>
 								<p>主题颜色：</p>
-								<div class="color-div" style="background-color: #eaeceb"></div>
 								<div class="color-div" style="background-color: #d2d2d2"></div>
+								<div class="color-div" style="background-color: #eaeceb"></div>
 								<div class="color-div" style="background-color: black"></div>
 								<div class="color-div" style="background-color: orange"></div>
 								<div class="color-div" style="background-color: #fe7786"></div>
 								<pre class="layui-code" lay-title="layui风格的skin设定">
 									{
-									 dot: false,  // 设定小圆点隐藏
-									 ficon: "1",  // 设定一级图标样式
-									 icon: ["-1","8"] // 设定二级图标样式。-1表示非子节点图标不显示，8表示子节点图标
+									 line: true, // 有树线
+									 ficon: ["0","7"],  // 设定一级图标样式。0表示方形加减图标，7表示文件图标
+									 icon: "-1" // 不设定二级图标样式。
 									}
-									主题颜色： #eaeceb, #d2d2d2, #393D49, #01AAED
+									主题颜色：#666, #5FB878
 								</pre>
 								<p>主题颜色：</p>
-								<div class="color-div" style="background-color: #eaeceb"></div>
+								<div class="color-div" style="background-color: #666"></div>
+								<div class="color-div" style="background-color: #5FB878"></div>
+								<pre class="layui-code" lay-title="laySimple风格的skin设定">
+									{
+									 line: false, // 无树线
+									 ficon: ["1","-1"],  // 设定一级图标样式。1表示三角形图标，-1表示不设置叶子节点图标
+									 icon: "-1" // 不设定二级图标样式。
+									}
+									主题颜色：  #d2d2d2, #eaeceb, #01AAED, #393D49
+								</pre>
+								<p>主题颜色：</p>
 								<div class="color-div" style="background-color: #d2d2d2"></div>
-								<div class="color-div" style="background-color: #393D49"></div>
+								<div class="color-div" style="background-color: #eaeceb"></div>
 								<div class="color-div" style="background-color: #01AAED"></div>
+								<div class="color-div" style="background-color: #393D49"></div>
 							</div>
 						</div>
 						<div class="layui-card card" id="firstIconArray">
@@ -478,9 +495,12 @@
 									  "2" : "dtree-icon-fenzhijigou", //机构
 									  "3" : "dtree-icon-fenguangbaobiao", //报表
 									  "4" : "dtree-icon-xinxipilu", //信息
-									  "5" : "dtree-icon-shuye1", //叶子
+									  "5" : "dtree-icon-shuye1", //叶子（二级图标叶子节点默认样式）
 									  "6" : "dtree-icon-caidan_xunzhang", //勋章
 									  "7" : "dtree-icon-normal-file", //文件
+									  "8" : "dtree-icon-dian",	/小圆点（一级图标叶子节点默认样式）
+									  "9" : "dtree-icon-set-sm",	//齿轮
+									  "10" : "dtree-icon-rate"	//星星
 									};
 								</pre>
 								<p>预定义的图标一览：</p>
@@ -492,10 +512,13 @@
 								<div class="icon-div"><i class="dtreefont dtree-icon-shuye1"></i></div>
 								<div class="icon-div"><i class="dtreefont dtree-icon-caidan_xunzhang"></i></div>
 								<div class="icon-div"><i class="dtreefont dtree-icon-normal-file"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-dian"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-set-sm"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-rate"></i></div>
 								
 								<pre class="layui-code" lay-title="自定义的nleafIconArray">
 									dtree.render({
-									  leafIconArray: {"名称从8开始": "样式class"}
+									  leafIconArray: {"名称从11开始": "样式class"}
 									});
 								</pre>
 								<p>class为图标样式，dtree已准备好了丰富的图标，只需从中选取你喜欢的图标样式即可。</p>
@@ -758,7 +781,7 @@
 									<td>formatter<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Object</td>
 									<td>用于数据过滤</td>
-									<td><a href="javascript:void(0);" data-id="response" class="position-a">详见formatter</a></td>
+									<td><a href="javascript:void(0);" data-id="formatter" class="position-a">详见formatter</a></td>
 									<td>-</td>
 									<td>-</td>
 								</tr>
@@ -849,7 +872,8 @@
 									  treeId: "id", //节点ID（必填）
 									  parentId: "parentId", //父节点ID（必填）
 									  title: "title", //节点名称（必填）
-									  iconClass: "iconClass", //自定义图标class（非必填）
+									  ficonClass: "ficonClass", //自定义一级图标class（v2.5.0版本新增）（非必填）
+									  iconClass: "iconClass", //自定义二级图标class（非必填）
 									  childName: "children", //子节点名称（默认数据格式必填）
 									  last: "last", //是否最后一级节点（true：是，false：否，布尔值，非必填）
 									  level: "level", //层级（v2.4.5_finally_beta版本之后，该属性移除）
@@ -1896,11 +1920,15 @@
 										</pre>
 									</td>
 								</tr>
-								<tr>
-									<td><span style="color:#c2c2c2;">DTree.prototype.clickSpread</span></td>
+								<tr id="clickSpread">
+									<td>DTree.prototype.clickSpread</td>
 									<td>Dom</td>
 									<td>展开或隐藏节点</td>
-									<td>-</td>
+									<td>
+										<pre class="layui-code" lay-title="clickSpread方法示例">
+											DemoTree.clickSpread($div);
+										</pre>
+									</td>
 								</tr>
 								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.accordionUL</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>

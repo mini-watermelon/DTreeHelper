@@ -318,6 +318,11 @@ var menuTree = [{
 	 	"last": true,
 	 	"children":[]
  	},{
+ 		"id":"clickSpread",
+	 	"title": "clickSpread",
+	 	"last": true,
+	 	"children":[]
+ 	},{
  		"id":"navThis",
 	 	"title": "navThis",
 	 	"last": true,

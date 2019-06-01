@@ -17,9 +17,13 @@ layui.use(['element','layer'], function(){
 		$("*[data-vs='"+key+"']").show();
 		flag = true;
 	}
-	
+	// 根据versionCls的值来选择不需要显示的元素
+	// 选择log标题
 	for(var key in version){
+		if(key != versionCls) {
+			continue;
+		}
+		$("*[data-vlog='"+key+"']").show();
 		$(".version-title").html(version[key] + " 新增内容提示（如文档中有引用，请注意版本问题！）：")
-		break;
 	}
 });
