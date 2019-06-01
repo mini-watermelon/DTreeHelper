@@ -6,5 +6,5 @@
 ## 组件讨论QQ群：867324214（添加时请备注layui-dtree交流）
 ## 文档地址： http://www.wisdomelon.com/DTreeHelper/
 ## 组件官网地址： https://fly.layui.com/extend/dtree/
-## 官网讨论地址： https://fly.layui.com/jie/43868/
-
+## 官网讨论地址(v2.4.5)： https://fly.layui.com/jie/43868/
+## 官网讨论地址(v2.5.0)： https://fly.layui.com/jie/52635/
