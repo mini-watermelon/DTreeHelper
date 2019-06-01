@@ -238,27 +238,19 @@
 									<td>"3" / ["0", "6"] / "-1" / ["-1", "2"]</td>
 								</tr>
 								<tr>
-									<td>firstIconArray</td>
-									<td>Object</td>
-									<td>用户自定义一级图标集合，作用于非最后一级节点，定义该属性会扩展组件的内置属性。</td>
-									<td><a href="javascript:void(0);" data-id="firstIconArray" class="position-a">详见参数释义</a></td>
-									<td>-</td>
-									<td>{"2" : {"open" : "demo-open" , "close" : "demo-close"}}</td>
-								</tr>
-								<tr>
 									<td>nodeIconArray</td>
 									<td>Object</td>
-									<td>用户自定义二级图标集合，作用于非最后一级节点，定义该属性会扩展组件的内置属性。</td>
+									<td>用户自定义非叶子节点图标集合，作用于一级、二级节点，定义该属性会扩展组件的内置属性。</td>
+									<td>一级节点默认使用编号为"1"的图标集;<br/>二级节点认使用编号为"0"的图标集。</td>
 									<td><a href="javascript:void(0);" data-id="nodeIconArray" class="position-a">详见参数释义</a></td>
-									<td>-</td>
-									<td>{"1" : {"open" : "demo-open" , "close" : "demo-close"}}</td>
+									<td>{"3" : {"open" : "demo-open" , "close" : "demo-close"}}</td>
 								</tr>
 								<tr>
 									<td>leafIconArray</td>
 									<td>Object</td>
-									<td>用户自定义二级图标集合，作用于最后一级节点，定义该属性会扩展组件的内置属性。</td>
+									<td>用户自定义叶子节点图标集合，作用于最后一级、二级节点，定义该属性会扩展组件的内置属性。</td>
+									<td>一级节点默认使用编号为"5"的图标;<br/>二级节点认使用编号为"8"的图标。</td>
 									<td><a href="javascript:void(0);" data-id="leafIconArray" class="position-a">详见参数释义</a></td>
-									<td>-</td>
 									<td>{"11" : "demo-class"}</td>
 								</tr>
 								<tr data-vs="vs250">
@@ -438,30 +430,6 @@
 								<div class="color-div" style="background-color: #393D49"></div>
 							</div>
 						</div>
-						<div class="layui-card card" id="firstIconArray">
-							<div class="layui-card-header">firstIconArray</div>
-							<div class="layui-card-body">
-								<p>模块内已预定义好了一套展示方式，一般不需要用户自定义，但如果用户需要自定义图标，则需要满足如下的配置方式：</p>
-								<pre class="layui-code" lay-title="预定义的firstIconArray">
-									var firstIconArray = {
-									  "-1": {"open": "dtree-icon-null-open", "close": "dtree-icon-null-close"},  //未指定
-									  "0" : {"open": "dtree-icon-jian", "close": "dtree-icon-jia"},  //方形+-
-									  "1" : {"open": "dtree-icon-xiangxia1", "close": "dtree-icon-xiangyou"}  //三角形
-									};
-								</pre>
-								<p>预定义的图标一览：</p>
-								<div class="icon-div"><i class="dtreefont dtree-icon-jian"></i></div>
-								<div class="icon-div"><i class="dtreefont dtree-icon-jia"></i></div>
-								<div class="icon-div"><i class="dtreefont dtree-icon-xiangxia1"></i></div>
-								<div class="icon-div"><i class="dtreefont dtree-icon-xiangyou"></i></div>
-								<pre class="layui-code" lay-title="自定义的firstIconArray">
-									dtree.render({
-									  firstIconArray: {"名称从2开始": {"open": "展开样式class", "close": "收缩样式class"}}
-									});
-								</pre>
-								<p>class为图标样式，dtree已准备好了丰富的图标，只需从中选取你喜欢的图标样式即可。</p>
-							</div>
-						</div>
 						<div class="layui-card card" id="nodeIconArray">
 							<div class="layui-card-header">nodeIconArray</div>
 							<div class="layui-card-body">
@@ -469,15 +437,21 @@
 								<pre class="layui-code" lay-title="预定义的nodeIconArray">
 									var nodeIconArray = {
 									  "-1": {"open": "dtree-icon-null-open", "close": "dtree-icon-null-close"}, //未指定
-									  "0" : {"open": "dtree-icon-wenjianjiazhankai", "close": "dtree-icon-weibiaoti5"}
+									  "0" : {"open": "dtree-icon-wenjianjiazhankai", "close": "dtree-icon-weibiaoti5"}, //文件夹
+									  "1" : {"open": "dtree-icon-jian", "close": "dtree-icon-jia"},  //方形+-
+									  "2" : {"open": "dtree-icon-xiangxia1", "close": "dtree-icon-xiangyou"}  //三角形
 									};
 								</pre>
 								<p>预定义的图标一览：</p>
 								<div class="icon-div"><i class="dtreefont dtree-icon-wenjianjiazhankai"></i></div>
 								<div class="icon-div"><i class="dtreefont dtree-icon-weibiaoti5"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-jian"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-jia"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-xiangxia1"></i></div>
+								<div class="icon-div"><i class="dtreefont dtree-icon-xiangyou"></i></div>
 								<pre class="layui-code" lay-title="自定义的nodeIconArray">
 									dtree.render({
-									  nodeIconArray: {"名称从1开始": {"open": "展开样式class", "close": "收缩样式class"}}
+									  nodeIconArray: {"名称从3开始": {"open": "展开样式class", "close": "收缩样式class"}}
 									});
 								</pre>
 								<p>class为图标样式，dtree已准备好了丰富的图标，只需从中选取你喜欢的图标样式即可。</p>

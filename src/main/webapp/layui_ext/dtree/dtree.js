@@ -3,7 +3,7 @@
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/
  *@License https://www.layui.com/
- *@LASTTIME 2019/6/01
+ *@LASTTIME 2019/06/01
  *@VERSION v2.5.0
  */
 layui.define(['jquery','layer','form'], function(exports) {
@@ -52,19 +52,15 @@ layui.define(['jquery','layer','form'], function(exports) {
 		LI_DIV_TOOLBAR_EDIT = "dtree-icon-bianji", 					//toolbar的编辑图标
 		LI_DIV_TOOLBAR_DEL = "dtree-icon-roundclose";				//toolbar的删除图标
 	
-	// 树的一级节点图标集合
-	var firstIconArray = {
-		"-1": {"open": "dtree-icon-null-open", "close": "dtree-icon-null-close"},			//未指定
-		"0" : {"open": "dtree-icon-jian", "close": "dtree-icon-jia"},						//+-图标(默认)
-		"1" : {"open": "dtree-icon-xiangxia1", "close": "dtree-icon-xiangyou"}				//箭头图标
-	};
-
-	// 树的二级节点图标集合
+	// 树的非叶子节点图标集合
 	var nodeIconArray = {
 		"-1": {"open": "dtree-icon-null-open", "close": "dtree-icon-null-close"},			//未指定
-		"0" : {"open": "dtree-icon-wenjianjiazhankai", "close": "dtree-icon-weibiaoti5"}	//文件夹(默认)
+		"0" : {"open": "dtree-icon-wenjianjiazhankai", "close": "dtree-icon-weibiaoti5"},	//文件夹(二级图标默认样式)
+		"1" : {"open": "dtree-icon-jian", "close": "dtree-icon-jia"},						//+-图标(一级图标默认样式)
+		"2" : {"open": "dtree-icon-xiangxia1", "close": "dtree-icon-xiangyou"}				//箭头图标
 	};
-
+	
+	// 树的叶子节点图标集合
 	var leafIconArray = {
 		"-1": "dtree-icon-null",				//未指定
 		"0" : "dtree-icon-weibiaoti5", 			//文件夹
@@ -443,33 +439,32 @@ layui.define(['jquery','layer','form'], function(exports) {
 		/** 样式相关参数**/
 		this.iconfont = this.options.iconfont || DTREEFONT; // 默认图标字体 dtreefont
 		this.iconfontStyle = this.options.iconfontStyle || {}; // 用于自定义树的每个关键部位使用的图标
-		this.firstIconArray = $.extend(firstIconArray, this.options.firstIconArray) || firstIconArray;	//用户自定义一级图标集合，node
-		this.nodeIconArray = $.extend(nodeIconArray, this.options.nodeIconArray) || nodeIconArray;	//用户自定义二级图标集合，node
-		this.leafIconArray = $.extend(leafIconArray, this.options.leafIconArray) || leafIconArray;	//用户自定义二级图标集合，leaf
+		this.nodeIconArray = $.extend(nodeIconArray, this.options.nodeIconArray) || nodeIconArray;	//用户自定义非叶子节点图标集合，node
+		this.leafIconArray = $.extend(leafIconArray, this.options.leafIconArray) || leafIconArray;	//用户自定义叶子节点图标集合，leaf
 		this.skin = this.options.skin || "theme";	// 自定义样式 
 		if(this.skin == "layui"){ // layui主题
 			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : true; // 开启树线，默认开启
 			this.ficon = this.options.ficon || "7";	//一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'7'
-			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "0") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "1") : this.ficon[0]; // 一级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示一级图标，默认'1'
 			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
 			this.icon = this.options.icon || "-1";	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'-1'
-			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];		// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'-1'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];		// 二级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示二级图标，默认'-1'
 			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
 		} else if(this.skin == "laySimple"){ // laySimple主题
 			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : false; // 开启树线，默认不开启
-			this.ficon = this.options.ficon || ["1","-1"];	//一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'-1'
-			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "1") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'1'
+			this.ficon = this.options.ficon || ["2","-1"];	//一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'-1'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "2") : this.ficon[0]; // 一级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示一级图标，默认'2'
 			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
 			this.icon = this.options.icon || "-1";	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'-1'
-			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];	// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'-1'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];	// 二级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示二级图标，默认'-1'
 			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
 		} else { // 默认主题  或者自定义主题
 			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : false; // 开启树线，默认不开启
 			this.ficon = this.options.ficon || "8";	//一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'8'
-			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "0") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "1") : this.ficon[0]; // 一级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示一级图标，默认'1'
 			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
 			this.icon = this.options.icon || "5";	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'5'
-			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "0") : this.icon[0];		// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "0") : this.icon[0];		// 二级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示二级图标，默认'0'
 			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
 		}
 
@@ -568,33 +563,32 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.line = (typeof (this.options.line) === "boolean") ? this.options.line : this.line; // 开启树线，默认不开启
 		this.iconfont = this.options.iconfont || this.iconfont; // 默认图标字体 dtreefont
 		this.iconfontStyle = this.options.iconfontStyle || this.iconfontStyle; // 用于自定义树的每个关键部位使用的图标
-		this.firstIconArray = $.extend(firstIconArray, this.options.firstIconArray) || this.firstIconArray;	//用户自定义一级图标集合，node
-		this.nodeIconArray = $.extend(nodeIconArray, this.options.nodeIconArray) || this.nodeIconArray;	//用户自定义二级图标集合，node
-		this.leafIconArray = $.extend(leafIconArray, this.options.leafIconArray) || this.leafIconArray;	//用户自定义二级图标集合，leaf
+		this.nodeIconArray = $.extend(nodeIconArray, this.options.nodeIconArray) || this.nodeIconArray;	//用户自定义非叶子节点图标集合，node
+		this.leafIconArray = $.extend(leafIconArray, this.options.leafIconArray) || this.leafIconArray;	//用户自定义叶子节点图标集合，leaf
 		this.skin = this.options.skin || this.skin;	// 自定义样式 
 		if(this.skin == "layui"){ // layui主题
 			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : true; // 开启树线，默认开启
 			this.ficon = this.options.ficon || this.ficon; //一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'7'
-			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "0") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "1") : this.ficon[0]; // 一级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示二级图标，默认'1'
 			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
 			this.icon = this.options.icon || this.icon;	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'-1'
-			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];		// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'-1'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];		// 二级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示二级图标，默认'-1'
 			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
 		} else if(this.skin == "laySimple"){ // laySimple主题
 			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : false; // 开启树线，默认不开启
 			this.ficon = this.options.ficon || this.ficon;	//一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'-1'
-			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "1") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'1'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "2") : this.ficon[0]; // 一级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示二级图标，默认'2'
 			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
 			this.icon = this.options.icon || this.icon;	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'-1'
-			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];	// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'-1'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "-1") : this.icon[0];	// 二级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示二级图标，默认'-1'
 			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
 		} else { // 默认主题  或者自定义主题
 			this.line = (typeof (this.options.line) === "boolean") ? this.options.line : false; // 开启树线，默认不开启
 			this.ficon = this.options.ficon || this.ficon;	//一级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标。默认'8'
-			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "0") : this.ficon[0]; // 一级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
+			this.fnodeIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? (this.ficon == "-1" ? "-1" : "1") : this.ficon[0]; // 一级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示二级图标，默认'1'
 			this.fleafIcon = (typeof this.ficon === 'string' || typeof this.ficon === 'number') ? this.ficon : this.ficon[1];	// 一级图标中的leaf节点图标
 			this.icon = this.options.icon || this.icon;	//二级图标样式，0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标。默认'5'
-			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "0") : this.icon[0];		// 二级图标中的node节点图标。0：+、-，1：三角形， -1：不显示二级图标，默认'0'
+			this.nodeIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? (this.icon == "-1" ? "-1" : "0") : this.icon[0];		// 二级图标中的node节点图标。0：文件夹，1：+、-，2：三角形， -1：不显示二级图标，默认'0'
 			this.leafIcon = (typeof this.icon === 'string' || typeof this.icon === 'number') ? this.icon : this.icon[1];	// 二级图标中的leaf节点图标
 		}
 
@@ -715,25 +709,25 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var tempLeaf = this.usefontStyle.fnode.leaf;
 		
 		if(typeof fnode === 'undefined'){
-			this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["open"]) : tempOpen; // 一级图标中的node节点open图标
-			this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["close"]) : tempClose; // 一级图标中的node节点close图标
+			this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.nodeIconArray[this.fnodeIcon]["open"]) : tempOpen; // 一级图标中的node节点open图标
+			this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.nodeIconArray[this.fnodeIcon]["close"]) : tempClose; // 一级图标中的node节点close图标
 			this.usefontStyle.fnode.leaf = (tempLeaf == "") ? (ifont + " " + this.leafIconArray[this.fleafIcon]) : tempLeaf; // 一级图标中的node节点的leaf图标
 		} else {
 			var node = fnode.node;
 			var leaf = fnode.leaf;
 			if(typeof node === 'undefined'){
-				this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["open"]) : tempOpen; // 一级图标中的node节点open图标
-				this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["close"]) : tempClose; // 一级图标中的node节点close图标
+				this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.nodeIconArray[this.fnodeIcon]["open"]) : tempOpen; // 一级图标中的node节点open图标
+				this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.nodeIconArray[this.fnodeIcon]["close"]) : tempClose; // 一级图标中的node节点close图标
 			} else {
 				var open = node.open;
 				var close = node.close;
 				if(typeof open === 'undefined'){
-					this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["open"]) : tempOpen; // 一级图标中的node节点open图标
+					this.usefontStyle.fnode.node.open = (tempOpen == "") ? (ifont + " " + this.nodeIconArray[this.fnodeIcon]["open"]) : tempOpen; // 一级图标中的node节点open图标
 				} else {
 					this.usefontStyle.fnode.node.open = ifont + " " + open;
 				}
 				if(typeof close === 'undefined') {
-					this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.firstIconArray[this.fnodeIcon]["close"]) : tempClose; // 一级图标中的node节点close图标
+					this.usefontStyle.fnode.node.close = (tempClose == "") ? (ifont + " " + this.nodeIconArray[this.fnodeIcon]["close"]) : tempClose; // 一级图标中的node节点close图标
 				} else {
 					this.usefontStyle.fnode.node.close = ifont + " " + close;
 				}

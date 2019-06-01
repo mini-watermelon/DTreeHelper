@@ -23,11 +23,6 @@ var menuTree = [{
 	 	"last": true,
 	 	"children":[]
  	},{
- 		"id":"firstIconArray",
-	 	"title": "firstIconArray",
-	 	"last": true,
-	 	"children":[]
- 	},{
  		"id":"nodeIconArray",
 	 	"title": "nodeIconArray",
 	 	"last": true,

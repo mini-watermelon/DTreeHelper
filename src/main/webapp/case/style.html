@@ -54,6 +54,7 @@
 									<li>【优化】基础属性优化：skin，其中设置layui看起来更像layui的风格，新增laySimple风格，遵从简约版layui树形菜单。</li>
 									<li>【优化】内置方法优化：涉及样式的一系列内置方法优化</li>
 									<li>【移除】基础属性移除：dot，移除一级图标小圆点的单独设置，改为在ficon中配置，与icon的配置方式相同</li>
+									<li>【移除】基础属性移除：firstIconArray，与nodeIconArray合并。</li>
 								</ul>
 								<ul data-vlog="vs250">
 									<li>【新增】基础属性新增：line，用于指定树线</li>
@@ -122,7 +123,7 @@
 									  elem: "#styleTree3",
 									  url: "../json/case/styleTree1.json",
 									  initLevel: 1,
-									  ficon: ["0","-1"]  // 显示非最后一级节点图标，隐藏最后一级节点图标
+									  ficon: ["1","-1"]  // 显示非最后一级节点图标，隐藏最后一级节点图标
 									});
 								</pre>
 							</div>
@@ -133,7 +134,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="extend1">
-					<legend>扩展自定义一级图标（firstIconArray）</legend>
+					<legend>扩展自定义一级图标（nodeIconArray）</legend>
 					<div class="layui-field-box">
 						<p>当你觉得自定义图标不够用时，你可以根据图标库中提供的图标class，自定义图标。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -144,8 +145,8 @@
 									  elem: "#styleTree4",
 									  url: "../json/case/styleTree1.json",
 									  initLevel: 1,
-									  firstIconArray: {"2":{"open":"dtree-icon-jian1","close":"dtree-icon-jia1"}}, // 自定扩展的一级非最后一级图标，从2开始
-									  ficon: ["2","7"], // 使用，2表示使用扩展的图标，7表示最后一级图标使用内置的文件图标
+									  nodeIconArray: {"3":{"open":"dtree-icon-jian1","close":"dtree-icon-jia1"}}, // 自定扩展的一级非最后一级图标，从2开始
+									  ficon: ["3","7"], // 使用，3表示使用扩展的图标，7表示最后一级图标使用内置的文件图标
 									});
 								</pre>
 							</div>
@@ -201,7 +202,7 @@
 			
 			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="extend">
-					<legend>扩展自定义二级图标（leafIconArray）</legend>
+					<legend>扩展自定义二级图标（nodeIconArray、leafIconArray）</legend>
 					<div class="layui-field-box">
 						<p>当你觉得自定义图标不够用时，你可以根据图标库中提供的图标class，自定义图标。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
@@ -212,9 +213,9 @@
 									  elem: "#styleTree7",
 									  url: "../json/case/styleTree1.json",
 									  initLevel: 1,
-									  nodeIconArray:{"1":{"open":"dtree-icon-pulldown","close":"dtree-icon-pullup"}},  // 自定扩展的二级非最后一级图标，从1开始
+									  nodeIconArray:{"3":{"open":"dtree-icon-pulldown","close":"dtree-icon-pullup"}},  // 自定扩展的二级非最后一级图标，从1开始
 									  leafIconArray:{"11":"dtree-icon-star"},  // 自定义扩展的二级最后一级图标，从11开始
-									  icon: ["1","11"] // 使用
+									  icon: ["3","11"] // 使用
 									});
 								</pre>
 							</div>
@@ -484,7 +485,7 @@
 			elem: "#styleTree3",
 			url: "../json/case/styleTree1.json",
 			initLevel: 1,
-			ficon: ["0","-1"]  // 显示非最后一级节点图标，隐藏最后一级节点图标
+			ficon: ["1","-1"]  // 显示非最后一级节点图标，隐藏最后一级节点图标
 		});
 		
 		// 4.styleTree4
@@ -492,8 +493,8 @@
 			elem: "#styleTree4",
 			url: "../json/case/styleTree1.json",
 			initLevel: 1,
-			firstIconArray: {"2":{"open":"dtree-icon-jian1","close":"dtree-icon-jia1"}},
-			ficon: ["2","7"]
+			nodeIconArray: {"3":{"open":"dtree-icon-jian1","close":"dtree-icon-jia1"}},
+			ficon: ["3","7"]
 		});
 		
 		// 5.styleTree5
@@ -517,9 +518,9 @@
 			elem: "#styleTree7",
 			url: "../json/case/styleTree1.json",
 			initLevel: 1,
-			nodeIconArray:{"1":{"open":"dtree-icon-pulldown","close":"dtree-icon-pullup"}},  // 自定扩展的二级非最后一级图标，从1开始
+			nodeIconArray:{"3":{"open":"dtree-icon-pulldown","close":"dtree-icon-pullup"}},  // 自定扩展的二级非最后一级图标，从1开始
 		    leafIconArray:{"11":"dtree-icon-star"},  // 自定义扩展的二级最后一级图标，从11开始
-		    icon: ["1","11"] // 使用
+		    icon: ["3","11"] // 使用
 		});
 		
 		// 8.styleTree8
