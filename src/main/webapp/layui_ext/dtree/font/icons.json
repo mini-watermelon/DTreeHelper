@@ -120,6 +120,14 @@
         "uncode": "e6a1"
     },
     {
+        "cls": "dtree-icon-set-sm",
+        "uncode": "e621"
+    },
+    {
+        "cls": "dtree-icon-rate",
+        "uncode": "e833"
+    },
+    {
         "cls": "dtree-icon-jian1",
         "uncode": "e600"
     },
@@ -200,10 +208,6 @@
         "uncode": "e615"
     },
     {
-        "cls": "dtree-icon-set-sm",
-        "uncode": "e621"
-    },
-    {
         "cls": "dtree-icon-close1",
         "uncode": "1006"
     },
@@ -242,10 +246,6 @@
     {
         "cls": "dtree-icon-star-fill",
         "uncode": "e832"
-    },
-    {
-        "cls": "dtree-icon-rate",
-        "uncode": "e833"
     },
     {
         "cls": "dtree-icon-shujudaping",
