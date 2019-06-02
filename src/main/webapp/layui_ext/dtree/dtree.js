@@ -1049,50 +1049,54 @@ layui.define(['jquery','layer','form'], function(exports) {
 	// 设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理
 	DTree.prototype.operateIcon = function($i_spread, $i_node){
 		var _this = this;
-		var iconClass = $i_node.data("iconClass");
+		var ficonClass = $i_spread.attr("data-iconClass");
+		var iconClass = $i_node.attr("data-iconClass");
 		return{
 			open: function(){
-				$i_spread.data("spread","open");
-				$i_node.data("spread","open");
-				
-				$i_spread.removeClass(_this.usefontStyle.fnode.node.close);
-				$i_spread.addClass(_this.usefontStyle.fnode.node.open);
+				$i_spread.attr("data-spread","open");
+				$i_node.attr("data-spread","open");
+				if(!ficonClass) {
+					$i_spread.removeClass(_this.usefontStyle.fnode.node.close);
+					$i_spread.addClass(_this.usefontStyle.fnode.node.open);
+				}
 				if(!iconClass) {
 					$i_node.removeClass(_this.usefontStyle.snode.node.close);
 					$i_node.addClass(_this.usefontStyle.snode.node.open);
 				}
 			},
 			close: function(){
-				$i_spread.data("spread","close");
-				$i_node.data("spread","close");
-				
-				$i_spread.removeClass(_this.usefontStyle.fnode.node.open);
-				$i_spread.addClass(_this.usefontStyle.fnode.node.close);
+				$i_spread.attr("data-spread","close");
+				$i_node.attr("data-spread","close");
+				if(!ficonClass) {
+					$i_spread.removeClass(_this.usefontStyle.fnode.node.open);
+					$i_spread.addClass(_this.usefontStyle.fnode.node.close);
+				}
 				if(!iconClass) {
 					$i_node.removeClass(_this.usefontStyle.snode.node.open);
 					$i_node.addClass(_this.usefontStyle.snode.node.close);
 				}
 			},
 			openWithLeaf: function(){
-				$i_spread.data("spread","open");
-				$i_node.data("spread","open");
-				
-	//			$i_spread.removeClass(ICON_HIDE);
-				$i_spread.removeClass(_this.usefontStyle.fnode.leaf);
-				$i_spread.addClass(_this.usefontStyle.fnode.node.open);
+				$i_spread.attr("data-spread","open");
+				$i_node.attr("data-spread","open");
+				if(!ficonClass) {
+					$i_spread.removeClass(_this.usefontStyle.fnode.leaf);
+					$i_spread.addClass(_this.usefontStyle.fnode.node.open);
+				}
 				if(!iconClass) {
 					$i_node.removeClass(_this.usefontStyle.snode.leaf);
 					$i_node.addClass(_this.usefontStyle.snode.node.open);
 				}
 			},
 			closeWithLeaf: function(){
-				$i_spread.data("spread","last");
-				$i_node.data("spread","last");
+				$i_spread.attr("data-spread","last");
+				$i_node.attr("data-spread","last");
 				
-				$i_spread.removeClass(_this.usefontStyle.fnode.node.open);
-				$i_spread.removeClass(_this.usefontStyle.fnode.node.close);
-	//			if(!_this.dot){$i_spread.addClass(ICON_HIDE);}
-				$i_spread.addClass(_this.usefontStyle.fnode.leaf);
+				if(!ficonClass) {
+					$i_spread.removeClass(_this.usefontStyle.fnode.node.open);
+					$i_spread.removeClass(_this.usefontStyle.fnode.node.close);
+					$i_spread.addClass(_this.usefontStyle.fnode.leaf);
+				}
 				
 				if(!iconClass) {
 					$i_node.removeClass(_this.usefontStyle.snode.node.open);
@@ -1643,22 +1647,22 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 				if(fnodeIcon != "-1" && fleafIcon != "-1"){	// 都加载
 					return last ? "<i class='"+fleafIconLeaf+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
-						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
+						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+ficonClass+"'></i>");
 				}
 
 				if(fnodeIcon != "-1" && fleafIcon == "-1"){	// 加载node 隐藏leaf
 					return last ? "<i class='"+fleafIconLeaf+" "+ICON_HIDE+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
-						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
+						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+ficonClass+"'></i>");
 				}
 
 				if(fnodeIcon == "-1" && fleafIcon != "-1"){	// 隐藏node 加载leaf
 					return last ? "<i class='"+fleafIconLeaf+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" :
-						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
+						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+ficonClass+"'></i>");
 				}
 
 				if(fnodeIcon == "-1" && fleafIcon == "-1"){	// 都隐藏
 					return last ? "<i class='"+fleafIconLeaf+" "+ICON_HIDE+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='last' data-id='"+treeId+"' dtree-id='"+rootId+"' style='display:none;'></i>" :
-						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>");
+						(spread ? "<i class='"+fnodeIconOpen+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='open' data-id='"+treeId+"' dtree-id='"+rootId+"'></i>" : "<i class='"+fnodeIconClose+" "+_this.style.dfont+" "+_this.style.ficon+"' data-spread='close' data-id='"+treeId+"' dtree-id='"+rootId+"' data-iconClass='"+ficonClass+"'></i>");
 				}
 			},
 			node: function() {	// 二级图标样式
@@ -1983,7 +1987,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 					var $div = $($divs[i]);
 					var $i_spread = _this.getNodeDom($div).fnode(),
 						$i_node = _this.getNodeDom($div).snode();
-					if($i_spread.data("spread") != 'last'){
+					if($i_spread.attr("data-spread") != 'last'){
 						_this.operateIcon($i_spread, $i_node).close();
 					}
 				}
@@ -1998,7 +2002,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		var $i_spread = _this.getNodeDom($div).fnode(),
 			$i_node = _this.getNodeDom($div).snode(),
 			$cite = _this.getNodeDom($div).cite(),
-			spread = $i_spread.data("spread"),
+			spread = $i_spread.attr("data-spread"),
 			$ul = $div.next("ul");
 
 		if ($ul.length > 0) {
@@ -2159,7 +2163,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		
 		// 判断当前点击的节点是否是最后一级节点，如果是，则需要修改节点的样式
 		var $icon_i = $div.find("i[data-spread]");
-		if ($icon_i.eq(0).data("spread") == "last") {
+		if ($icon_i.eq(0).attr("data-spread") == "last") {
 			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).openWithLeaf();
 		} else {	//如果不是，也要修改节点样式
 			_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).open();
@@ -2594,7 +2598,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		temp_node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().attr("data-title") : _this.getNodeDom($div).cite().text();
 		temp_node.leaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
 		temp_node.level = _this.getNodeDom($div).parentLi().attr("data-index");
-		temp_node.spread = _this.getNodeDom($div).fnode().data("spread") == "open" ? true : false;
+		temp_node.spread = _this.getNodeDom($div).fnode().attr("data-spread") == "open" ? true : false;
 		temp_node.basicData = $div.attr("data-basic")
 		temp_node.recordData = $div.attr("data-record");
 		temp_node.dataType = $i.attr("data-type");
@@ -2775,7 +2779,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_spread = _this.getNodeDom($div).fnode(),
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
-						spread = $i_spread.data("spread"),
+						spread = $i_spread.attr("data-spread"),
 						leaf = $cite.attr("data-leaf");
 
 					if (leaf == "leaf") { continue;	}	// 说明是叶子了，则继续循环下一个
@@ -2812,7 +2816,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_spread = _this.getNodeDom($div).fnode(),
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
-						spread = $i_spread.data("spread"),
+						spread = $i_spread.attr("data-spread"),
 						leaf = $cite.attr("data-leaf");
 
 					$ul.removeClass(NAV_SHOW);
@@ -3128,7 +3132,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_spread = _this.getNodeDom($div).fnode(),
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
-						spread = $i_spread.data("spread"),
+						spread = $i_spread.attr("data-spread"),
 						leaf = $cite.attr("data-leaf");
 
 					if (leaf == "leaf") { continue;	}	// 说明是叶子了，则继续循环下一个
@@ -3165,7 +3169,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 						$i_spread = _this.getNodeDom($div).fnode(),
 						$i_node = _this.getNodeDom($div).snode(),
 						$cite = _this.getNodeDom($div).cite(),
-						spread = $i_spread.data("spread"),
+						spread = $i_spread.attr("data-spread"),
 						leaf = $cite.attr("data-leaf");
 
 					$ul.removeClass(NAV_SHOW);
@@ -3572,7 +3576,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 
 			// 判断当前点击的节点是否是最后一级节点，如果是，则需要修改节点的样式
 			var $icon_i = $div.find("i[data-spread]");
-			if ($icon_i.eq(0).data("spread") == "last") {
+			if ($icon_i.eq(0).attr("data-spread") == "last") {
 				_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).openWithLeaf();
 			} else {	//如果不是，也要修改节点样式
 				_this.operateIcon($icon_i.eq(0), $icon_i.eq(1)).open();
@@ -3811,7 +3815,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		_this.node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().attr("data-title") : _this.getNodeDom($div).cite().text();
 		_this.node.leaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
 		_this.node.level = _this.getNodeDom($div).parentLi().attr("data-index");
-		_this.node.spread = _this.getNodeDom($div).fnode().data("spread") == "open" ? true : false;
+		_this.node.spread = _this.getNodeDom($div).fnode().attr("data-spread") == "open" ? true : false;
 		_this.node.basicData = $div.attr("data-basic")
 		_this.node.recordData = $div.attr("data-record");
 		if (_this.getNodeDom($div).checkbox()) {
@@ -3853,7 +3857,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 		temp_node.context = (typeof _this.formatter.title === 'function') ? _this.getNodeDom($div).cite().attr("data-title") : _this.getNodeDom($div).cite().text();
 		temp_node.leaf = _this.getNodeDom($div).cite().attr("data-leaf") == "leaf" ? true : false;
 		temp_node.level = _this.getNodeDom($div).parentLi().attr("data-index");
-		temp_node.spread = _this.getNodeDom($div).fnode().data("spread") == "open" ? true : false;
+		temp_node.spread = _this.getNodeDom($div).fnode().attr("data-spread") == "open" ? true : false;
 		temp_node.basicData = $div.attr("data-basic")
 		temp_node.recordData = $div.attr("data-record");
 		if (_this.getNodeDom($div).checkbox()) {
@@ -4022,7 +4026,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 			layui.event.call(this, MOD_NAME, "changeTree("+$(_this.obj)[0].id+")",  {
                 dom: _this.callbackData().dom($i),
 				param: _this.callbackData().node(node),
-				show: _this.callbackData().dom($i).data("spread") == "open" ? true : false
+				show: _this.callbackData().dom($i).attr("data-spread") == "open" ? true : false
 			});
 		});
 
