@@ -34,6 +34,11 @@ var menuTree = [{
 	"last": true,
 	"children":[]
 },{
+	"id":"hei",
+	"title": "指定高度",
+	"last": true,
+	"children":[]
+},,{
 	"id":"jdjy",
 	"title": "节点禁用用法",
 	"last": true,

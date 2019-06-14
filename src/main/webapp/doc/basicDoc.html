@@ -119,6 +119,14 @@
 									<td>自定义Dom</td>
 									<td>$("#demoTree")</td>
 								</tr>
+								<tr data-vs="vs254">
+									<td>height<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></td>
+									<td>String</td>
+									<td>定义树组件的高度，与table组件的同名属性用法一致。使用时建议将外层div容器的overflow:auto。</td>
+									<td>""</td>
+									<td>"200" / "full-320"</td>
+									<td>"full-320"</td>
+								</tr>
 								<tr data-vs="vs250">
 									<td>accordion<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Boolean</td>
@@ -846,7 +854,7 @@
 									  treeId: "id", //节点ID（必填）
 									  parentId: "parentId", //父节点ID（必填）
 									  title: "title", //节点名称（必填）
-									  ficonClass: "ficonClass", //自定义一级图标class（v2.5.0版本新增）（非必填）
+									  ficonClass: "ficonClass", //自定义一级图标class（v2.5.4版本新增）（非必填）
 									  iconClass: "iconClass", //自定义二级图标class（非必填）
 									  childName: "children", //子节点名称（默认数据格式必填）
 									  last: "last", //是否最后一级节点（true：是，false：否，布尔值，非必填）
@@ -1813,6 +1821,12 @@
 									<td>重新设置树的参数</td>
 									<td>-</td>
 								</tr>
+								<tr data-vs="vs250">
+									<td><span style="color:#c2c2c2;">DTree.prototype.autoHeight</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>-</td>
+									<td>自动设置树的高度</td>
+									<td>-</td>
+								</tr>
 								<tr>
 									<td><span style="color:#c2c2c2;">DTree.prototype.reload</span></td>
 									<td>Object</td>
@@ -1917,6 +1931,16 @@
 									<td>
 										<pre class="layui-code" lay-title="navThis方法示例">
 											DemoTree.navThis($div);
+										</pre>
+									</td>
+								</tr>
+								<tr id="cancelNavThis" data-vs="vs254">
+									<td>DTree.prototype.cancelNavThis<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>Dom</td>
+									<td>取消选中div</td>
+									<td>
+										<pre class="layui-code" lay-title="cancelNavThis方法示例">
+											DemoTree.cancelNavThis();
 										</pre>
 									</td>
 								</tr>
@@ -2648,7 +2672,7 @@
 							var tts = ["基础参数一览表","iconfontStyle","response","formatter","复选框配置","获取指定节点值","复选框半选状态设置","复选框选中状态设置",
 							           "setDisabledNodes","cancelDisabledNodes","getDisabledNodesParam","getAllDisabledNodesParam","setHideNodes",
 							           "cancelHideNodes","getHideNodesParam","模拟单击","getAllHideNodesParam","menubarTips","toolbarShow","errData","getNodeDom",
-							           "获取上级节点值集","refreshTree","partialRefreshAdd","partialRefreshEdit","partialRefreshDel"];
+							           "获取上级节点值集","refreshTree","partialRefreshAdd","partialRefreshEdit","partialRefreshDel","cancelNavThis"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

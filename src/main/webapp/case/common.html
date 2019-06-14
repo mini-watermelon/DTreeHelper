@@ -36,6 +36,10 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
+									<ul data-vlog="vs254">
+										<li>【新增】基础属性新增：基础属性新增：height，调整高度，与table组件用法一致</li>
+										<li>【新增】内置方法新增：cancelNavThis，取消选中div。</li>
+									</ul>
 									<ul data-vlog="vs250">
 										<li>【优化】基础方法优化：render方法和reload方法中，如果树在当前页面中被加载过一次了，再次加载会从缓存中取出树，并将树上次点击的节点作为参数记录下来，现在优化为还是从缓存中取，但是会重置上次记录的参数。</li>
 										<li>【优化】内置函数优化：getLiItemDom 当parentId为0时组件自动判定为false从而使用内置parentId的问题。</li>
@@ -285,6 +289,31 @@
 									  } else {
 									    layer.msg("叶子节点就不展开了");
 									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			
+			<div class="layui-fluid" data-vs="vs254">
+				<fieldset class="layui-elem-field layui-field-title" id="hei">
+					<legend>指定高度（height）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></legend>
+					<div class="layui-field-box">
+						<p>树初始化未加载节点时的提示文字</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="overflow: auto;"><ul id="commonTreeh" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									// 此处注意给div设置overflow: auto;
+									&lt;div style="overflow: auto;"&gt;&lt;ul id="commonTreeh" class="dtree" data-id="0"&gt;&lt;/ul&gt;&lt;/div&gt;
+									
+									dtree.render({
+									  elem: "#commonTreeh",
+									  url: "../json/case/commonTree5.json",
+									  height: "full-150"  // 设置高度，也可以直接固定数字
 									});
 								</pre>
 							</div>
@@ -576,7 +605,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["节点禁用","节点隐藏","手风琴","无数据提示用法"];
+							var tts = ["节点禁用","节点隐藏","手风琴","无数据提示用法","指定高度"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -682,7 +711,7 @@
 		// 2.commonTreet
 		var CommonTreet = dtree.render({
 			elem: "#commonTreet",
-			url: "../json/case/commonTree2.json",
+			url: "../json/case/commonTree5.json",
 			initLevel: "1"
 		});
 		
@@ -693,6 +722,12 @@
 			} else {
 				layer.msg("叶子节点就不展开了");
 			}
+		});
+		
+		dtree.render({
+		  elem: "#commonTreeh",
+		  url: "../json/case/commonTree6.json",
+		  height: "full-150"
 		});
 
 		// 2.commonTree6

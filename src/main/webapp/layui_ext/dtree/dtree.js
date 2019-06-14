@@ -3,8 +3,8 @@
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/
  *@License https://www.layui.com/
- *@LASTTIME 2019/06/01
- *@VERSION v2.5.0
+ *@LASTTIME 2019/06/14
+ *@VERSION v2.5.4
  */
 layui.define(['jquery','layer','form'], function(exports) {
 	var $ = layui.$,
@@ -29,6 +29,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 		NAV_DIS = "dtree-disabled",		//禁用节点
 		ICON_HIDE = "dtree-icon-hide",  //隐藏图标
 		$BODY = $("body"),				//body选择器
+		$WIN = $(window),				//window窗口
+		$DOC = $(document),				//当前文档
 		MOD_NAME = "dtree",				//模块名称
 		VERSION = "v2.5.0",		//版本	
 		DTrees = {};				    //当前被实例化的树的集合
@@ -435,6 +437,19 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.record = (typeof (this.options.record) === "boolean") ? this.options.record : false;		//开启数据记录模式
 		this.load = (typeof (this.options.load) === "boolean") ? this.options.load : true;		//开启加载动画
 		this.none = this.options.none || "无数据";		// 初始加载无记录时显示文字
+		if(this.options.height) {  // 设置高度
+			if(/^full-\d+$/.test(this.options.height)) {
+				this.fullHeightGap = options.height.split('-')[1];
+				this.height = $WIN.height() - this.fullHeightGap;
+				console.log("$WIN.height(): " + $WIN.height());
+			} else {
+				this.fullHeightGap = this.options.height;
+				this.height = this.options.height;
+			}
+		} else {
+			this.fullHeightGap = "";
+			this.height = "";	
+		}
 
 		/** 样式相关参数**/
 		this.iconfont = this.options.iconfont || DTREEFONT; // 默认图标字体 dtreefont
@@ -558,6 +573,15 @@ layui.define(['jquery','layer','form'], function(exports) {
 		this.record = (typeof (this.options.record) === "boolean") ? this.options.record : this.record;		//开启数据记录模式
 		this.load = (typeof (this.options.load) === "boolean") ? this.options.load : this.load;		//开启加载动画
 		this.none = this.options.none || this.none;  // 初始节点加载无数据时显示文字
+		if(this.options.height) {  // 设置高度
+			if(/^full-\d+$/.test(this.options.height)) {
+				this.fullHeightGap = options.height.split('-')[1];
+				this.height = $WIN.height() - this.fullHeightGap;
+			} else {
+				this.fullHeightGap = this.options.height;
+				this.height = this.options.height;
+			}
+		}
 		
 		/** 样式相关参数**/
 		this.line = (typeof (this.options.line) === "boolean") ? this.options.line : this.line; // 开启树线，默认不开启
@@ -1163,6 +1187,21 @@ layui.define(['jquery','layer','form'], function(exports) {
 	}
 	
 	/******************** 初始化数据区域 ********************/
+	// 设置高度
+	DTree.prototype.autoHeight = function(){
+		var _this = this;
+		var height = _this.height;
+			console.log(height);
+		if(height != "") {
+			if(_this.elem == _this.toolbarScroll){
+				_this.obj.parent().css("height", height + "px");
+			} else {
+				var $toolbarDiv = _this.obj.closest(_this.toolbarScroll);
+				$toolbarDiv.css("height", height + "px");
+			}
+		}
+	};
+	
 	// 重载树
 	DTree.prototype.reload = function(options){
 		var _this = this;
@@ -1177,6 +1216,9 @@ layui.define(['jquery','layer','form'], function(exports) {
 			layer.msg("树组件未成功加载，请检查配置", {icon:5});
 			return ;
 		}
+		
+		// 设置组件高度
+		_this.autoHeight();
 
 		if(_this.data) {
 			if(typeof _this.data.length === 'undefined'){
@@ -1964,13 +2006,19 @@ layui.define(['jquery','layer','form'], function(exports) {
 		return event.unescape(str);
 	};
 	
+	// 取消选中div
+	DTree.prototype.cancelNavThis = function(){
+		var _this = this;
+		_this.obj.find("div[data-id]").parent().find("."+NAV_THIS).removeClass(NAV_THIS);
+		_this.obj.find("div[data-id]").parent().find("."+_this.style.itemThis).removeClass(_this.style.itemThis);
+	}
+	
 	// 选中div
 	DTree.prototype.navThis = function(id){
 		var _this = this;
 		var $div = (typeof id === 'object') ? id : (_this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']").length == 0) ? null : _this.obj.find("div[dtree-click='"+eventName.itemNodeClick+"'][data-id='"+id+"']");
 		if($div != null) {
-			_this.obj.find("div[data-id]").parent().find("."+NAV_THIS).removeClass(NAV_THIS);
-			_this.obj.find("div[data-id]").parent().find("."+_this.style.itemThis).removeClass(_this.style.itemThis);
+			_this.cancelNavThis();
 			$div.addClass(NAV_THIS);
 			$div.addClass(_this.style.itemThis);
 		}
@@ -2436,10 +2484,12 @@ layui.define(['jquery','layer','form'], function(exports) {
 	};
 	
 	//实现复选框点击
-	DTree.prototype.changeCheck = function() {
+	DTree.prototype.changeCheck = function($i) {
 		var _this = this;
 		var temp = _this.temp;
-		var $i = temp[0];
+		if(typeof $i === 'undefined') {
+			$i = temp[0];
+		}
 		// 复选框选中事件
 		if (_this.checkbarType == "all") {
 			_this.checkAllOrNot($i);

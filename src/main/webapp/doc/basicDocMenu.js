@@ -323,6 +323,11 @@ var menuTree = [{
 	 	"last": true,
 	 	"children":[]
  	},{
+ 		"id":"cancelNavThis",
+	 	"title": "cancelNavThis",
+	 	"last": true,
+	 	"children":[]
+ 	},{
  		"id":"setDisabledNodes",
 	 	"title": "setDisabledNodes",
 	 	"last": true,
