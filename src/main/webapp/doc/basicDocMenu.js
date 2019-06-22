@@ -18,6 +18,11 @@ var menuTree = [{
 	 	"last": true,
 	 	"children":[]
  	},{
+ 		"id":"scroll",
+	 	"title": "scroll",
+	 	"last": true,
+	 	"children":[]
+ 	},{
  		"id":"skin",
 	 	"title": "skin",
 	 	"last": true,
@@ -127,11 +132,6 @@ var menuTree = [{
 	 	"title": "工具栏配置",
 	 	"last": false,
 	 	"children":[{
-	 		"id":"toolbarScroll",
-		 	"title": "toolbarScroll",
-		 	"last": true,
-		 	"children":[]
-	 	},{
 	 		"id":"toolbarShow",
 		 	"title": "toolbarShow",
 		 	"last": true,
@@ -157,22 +157,27 @@ var menuTree = [{
 	 	"title": "iframe加载配置",
 	 	"last": false,
 	 	"children":[{
-	 		"id":"iframe",
-		 	"title": "iframe",
-		 	"last": true,
-		 	"children":[]
-	 	},{
 	 		"id":"iframeFun",
 		 	"title": "iframeFun",
 		 	"last": true,
 		 	"children":[]
 	 	}]
+ 	},{
+ 		"id":"select",
+	 	"title": "select加载配置",
+	 	"last": false,
+	 	"children":[]
  	}]
  },,{
 	"id":"jcff",
  	"title": "基础方法",
  	"last": false,
  	"children":[{
+ 		"id":"set",
+	 	"title": "全局配置",
+	 	"last": true,
+	 	"children":[]
+ 	},{
  		"id":"render",
 	 	"title": "初始化",
 	 	"last": true,
@@ -180,6 +185,11 @@ var menuTree = [{
  	},{
  		"id":"reload",
 	 	"title": "重新加载",
+	 	"last": true,
+	 	"children":[]
+ 	},{
+ 		"id":"renderSelect",
+	 	"title": "初始化下拉树",
 	 	"last": true,
 	 	"children":[]
  	},{
@@ -240,6 +250,11 @@ var menuTree = [{
  	},{
  		"id":"initAllCheck",
 	 	"title": "复选框选中状态设置",
+	 	"last": true,
+	 	"children":[]
+ 	},{
+ 		"id":"setSelectValue",
+	 	"title": "设置下拉树的初始展示值",
 	 	"last": true,
 	 	"children":[]
  	},{

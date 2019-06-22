@@ -17,7 +17,6 @@
 <![endif]-->
 </head>
 <body>
-
 	<div class="container">
 		<div class="layui-row layui-col-space10">
 			<div class="layui-fluid">
@@ -119,6 +118,14 @@
 									<td>自定义Dom</td>
 									<td>$("#demoTree")</td>
 								</tr>
+								<tr data-vs="vs999">
+									<td>width<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></td>
+									<td>String</td>
+									<td>定义树组件的宽度</td>
+									<td>"260"</td>
+									<td>"100%" / "320"</td>
+									<td>"320"</td>
+								</tr>
 								<tr data-vs="vs254">
 									<td>height<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></td>
 									<td>String</td>
@@ -126,6 +133,14 @@
 									<td>""</td>
 									<td>"200" / "full-320"</td>
 									<td>"full-320"</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">scroll</span></td>
+									<td>String</td>
+									<td>树的上级div容器，让树可以显示滚动条的div容器。</span></td>
+									<td>"#treeDiv"</td>
+									<td>-</td>
+									<td><a href="javascript:void(0);" data-id="scroll" class="position-a">详见scroll</a></td>
 								</tr>
 								<tr data-vs="vs250">
 									<td>accordion<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
@@ -283,7 +298,7 @@
 								<tr>
 									<td><span style="color:#FF5722;">checkbar（等）</span></td>
 									<td>Boolean</td>
-									<td>是否开启复选框模式</td>
+									<td>开启复选框模式</td>
 									<td>false</td>
 									<td>true / false</td>
 									<td><a href="javascript:void(0);" data-id="checkbar" class="position-a">详见复选框配置</a></td>
@@ -291,7 +306,7 @@
 								<tr>
 									<td><span style="color:#FF5722;">menubar（等）</span></td>
 									<td>Boolean</td>
-									<td>是否打开菜单栏</td>
+									<td>开启菜单栏</td>
 									<td>false</td>
 									<td>true / false</td>
 									<td><a href="javascript:void(0);" data-id="menubar" class="position-a">详见菜单栏配置</a></td>
@@ -299,7 +314,7 @@
 								<tr>
 									<td><span style="color:#FF5722;">toolbar（等）</span></td>
 									<td>Boolean</td>
-									<td>是否开启工具栏（可编辑模式）</td>
+									<td>开启工具栏（可编辑模式）</td>
 									<td>false</td>
 									<td>true / false</td>
 									<td><a href="javascript:void(0);" data-id="toolbar" class="position-a">详见工具栏配置</a></td>
@@ -307,10 +322,18 @@
 								<tr>
 									<td><span style="color:#FF5722;">useIframe（等）</span></td>
 									<td>Boolean</td>
-									<td>是否加载iframe</td>
+									<td>加载iframe</td>
 									<td>false</td>
 									<td>true / false</td>
 									<td><a href="javascript:void(0);" data-id="useIframe" class="position-a">详见iframe加载配置</a></td>
+								</tr>
+								<tr data-vs="vs999">
+									<td>select<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></td>
+									<td>Boolean</td>
+									<td>开启下拉树模式，无法设置该属性,如果使用renderSelect方式渲染，则该值为true</td>
+									<td>false</td>
+									<td>-</td>
+									<td><a href="javascript:void(0);" data-id="useIframe" class="position-a">详见select加载配置</a></td>
 								</tr>
 								<tr>
 									<td colspan="6"><span style="font-weight: bold;">重要内置参数（无需配置）</span></td>
@@ -393,6 +416,30 @@
 								</pre>
 							</div>
 						</div>
+						
+						<div class="layui-card card" style="margin-top:0px;" id="scroll">
+							<div class="layui-card-header">scroll</div>
+							<div class="layui-card-body">
+								<p>当你使用的是默认的右键菜单生成的toolbar时，我们强烈建议你配置这个参数，如使用的是别的toolbarWay，则该参数无需配置。</p>
+								<p>该参数是一个元素选择器的名称，可以是id选择器，也可以是class选择器，为什么需要配置这个元素，因为组件加载时，在页面中一般来说不仅仅只有一个ul元素，它必然会被一个div包裹着，而这个div可以让组件在内部自由加载，滚动等，我们需要绑定的就是这个div。当你使用了toolbar时，我们强烈建议你的dom格式为：</p>
+								<pre class="layui-code" lay-title="scroll配置" lay-encode="true">
+									// 给容器指定一个div，设置它的高度，并设置滚动条自动加载
+									<div style="height: 350px;overflow: auto;" id="toolbarDiv">
+									  <ul id="demoTree" class="dtree" data-id="0"></ul>
+									</div>
+									
+									// 那么你的js代码既可以如此写：
+									dtree.render({
+									  elem: "#demoTree",
+									  url: "../json/case/demo.json",
+									  scroll:"#toolbarDiv", // 绑定div元素
+									  toolbar:true
+									});
+								</pre>
+								<p>再次强调，使用的是默认的右键菜单生成的toolbar时，该元素必须配置，因为它会直接影响到右键菜单的生成位置！！！</p>
+							</div>
+						</div>
+						
 						<div class="layui-card card" id="skin">
 							<div class="layui-card-header">skin</div>
 							<div class="layui-card-body">
@@ -687,11 +734,19 @@
 									<td>-</td>
 									<td>-</td>
 								</tr>
+								<tr data-vs="vs999">
+									<td>withCredentials<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></td>
+									<td>Boolean</td>
+									<td>生成跨域的XHR对象。</td>
+									<td>false</td>
+									<td>true</td>
+									<td>true</td>
+								</tr>
 								<tr>
 									<td>defaultRequest</td>
 									<td>Object</td>
 									<td>默认请求参数。</td>
-									<td><a href="javascript:void(0);" data-id="filterRequest" class="position-a">详见defaultRequest</a></td>
+									<td><a href="javascript:void(0);" data-id="defaultRequest" class="position-a">详见defaultRequest</a></td>
 									<td>-</td>
 									<td>{nodeId : "id"}</td>
 								</tr>
@@ -1129,14 +1184,6 @@
 									<td>"fixed"</td>
 								</tr>
 								<tr>
-									<td><span style="color:#FF5722;">toolbarScroll</span></td>
-									<td>String</td>
-									<td>树的上级div容器，让树可以显示滚动条的div容器。</span></td>
-									<td>"#toolbarDiv"</td>
-									<td>-</td>
-									<td><a href="javascript:void(0);" data-id="toolbarScroll" class="position-a">详见toolbarScroll</a></td>
-								</tr>
-								<tr>
 									<td>toolbarLoad</td>
 									<td>String</td>
 									<td>工具栏作用域：node:所有节点，noleaf:非最后一级节点，leaf:最后一级</td>
@@ -1192,28 +1239,6 @@
 					</div>
 					
 					<div class="layui-field-box" style="background: #F2F2F2">
-						<div class="layui-card card" style="margin-top:0px;" id="toolbarScroll">
-							<div class="layui-card-header">toolbarScroll</div>
-							<div class="layui-card-body">
-								<p>当你使用的是默认的右键菜单生成的toolbar时，我们强烈建议你配置这个参数，如使用的是别的toolbarWay，则该参数无需配置。</p>
-								<p>该参数是一个元素选择器的名称，可以是id选择器，也可以是class选择器，为什么需要配置这个元素，因为组件加载时，在页面中一般来说不仅仅只有一个ul元素，它必然会被一个div包裹着，而这个div可以让组件在内部自由加载，滚动等，我们需要绑定的就是这个div。当你使用了toolbar时，我们强烈建议你的dom格式为：</p>
-								<pre class="layui-code" lay-title="toolbarScroll配置" lay-encode="true">
-									// 给容器指定一个div，设置它的高度，并设置滚动条自动加载
-									<div style="height: 350px;overflow: auto;" id="toolbarDiv">
-									  <ul id="demoTree" class="dtree" data-id="0"></ul>
-									</div>
-									
-									// 那么你的js代码既可以如此写：
-									dtree.render({
-									  elem: "#demoTree",
-									  url: "../json/case/demo.json",
-									  toolbar:true,
-									  toolbarScroll:"#toolbarDiv" // 绑定div元素
-									});
-								</pre>
-								<p>再次强调，使用的是默认的右键菜单生成的toolbar时，该元素必须配置，因为它会直接影响到右键菜单的生成位置！！！</p>
-							</div>
-						</div>
 						<div class="layui-card card" style="margin-top:0px;" id="toolbarExt">
 							<div class="layui-card-header">toolbarExt</div>
 							<div class="layui-card-body">
@@ -1378,12 +1403,44 @@
 									<td>true</td>
 								</tr>
 								<tr>
-									<td>iframe</td>
+									<td>iframeElem</td>
+									<td>String</td>
+									<td>iframe的ID</td>
+									<td>""</td>
+									<td>-</td>
+									<td>"#iframe_content"</td>
+								</tr>
+								<tr>
+									<td>iframeUrl</td>
+									<td>String</td>
+									<td>树关联的iframe地址</td>
+									<td>""</td>
+									<td>-</td>
+									<td>"iframeContent.html" / "/load/iframe"</td>
+								</tr>
+								<tr>
+									<td>iframeLoad</td>
+									<td>String</td>
+									<td>点击哪一层加载iframe： node：所有节点， leaf：默认，最后一级</td>
+									<td>"leaf"</td>
+									<td>"node" / "leaf</td>
+									<td>"node"</td>
+								</tr>
+								<tr>
+									<td>iframeDefaultRequest</td>
 									<td>Object</td>
-									<td>iframe的具体配置</td>
-									<td><a href="javascript:void(0);" data-id="iframe" class="position-a">详见iframe</a></td>
+									<td>iframe的默认参数,目的是与加载树的参数不一样</td>
+									<td><a href="javascript:void(0);" data-id="defaultRequest" class="position-a">详见defaultRequest</a></td>
 									<td>-</td>
+									<td>{nodeId : "id"}</td>
+								</tr>
+								<tr>
+									<td>iframeRequest</td>
+									<td>Object</td>
+									<td>iframe的自定义参数,目的是与加载树的参数不一样</td>
+									<td><a href="javascript:void(0);" data-id="request" class="position-a">详见request</a></td>
 									<td>-</td>
+									<td>{"username" : "admin"}</td>
 								</tr>
 								<tr>
 									<td>iframeFun</td>
@@ -1398,22 +1455,6 @@
 					</div>
 					
 					<div class="layui-field-box" style="background: #F2F2F2">
-						<div class="layui-card card" style="margin-top:0px;" id="iframe">
-							<div class="layui-card-header">iframe</div>
-							<div class="layui-card-body">
-								<p>当用户需要在点击树节点时打开iframe页面，则首先需要将useIframe属性的值设置为true，接着对该属性进行配置：</p>
-								<pre class="layui-code" lay-title="iframe配置参数一览">
-									var iframe = {
-									  iframeElem: "", //iframe的ID
-									  iframeUrl: "", //树关联的frame地址
-									  iframeLoad: "leaf", //点击哪一层加载iframe： node：所有节点， leaf：默认，最后一级
-									  iframeDefaultRequest: defaultRequest, //iframe的默认参数,目的是与加载树的参数不一样
-									  iframeRequest: {} //iframe的自定义参数
-									};
-								</pre>
-							</div>
-						</div>
-						
 						<div class="layui-card card" style="margin-top:0px;" id="iframeFun">
 							<div class="layui-card-header">iframeFun</div>
 							<div class="layui-card-body">
@@ -1428,10 +1469,8 @@
 								<pre class="layui-code" lay-title="iframe配置示例">
 									var DemoTree = dtree.render({
 									  useIframe: true,
-									  iframe: {
-									    iframeElem: "#iframeId",
-									    iframeUrl: "/demo/iframeurl"
-									  },
+									  iframeElem: "#iframeId",
+									  iframeUrl: "/demo/iframeurl"
 									  iframeFun: {
 									    iframeDone: function(iframeParam){ //iframe加载完毕后，用于用户自定义事件
 									      console.log(iframeParam);
@@ -1444,6 +1483,42 @@
 						</div>
 					</div>
 					
+					
+					<div class="layui-field-box" id="select" data-vs="vs999">
+						<p style="padding: 5px 0px;">select模式配置由以下几个参数组成：</p>
+						<p style="padding: 5px 0px;">类型释义：<span style="color:#FF5722;">Boolean</span>：布尔类型值，<span style="color:#FF5722;">Object</span>：JSON对象</p>
+						<table class="layui-table" lay-size="sm">
+							<colgroup><col width="12%"><col width="10%"><col width="30%"><col width="13%"><col width="15%"><col width="20%"></colgroup>
+							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
+							<tbody>
+								<tr>
+									<td><span style="color:#FF5722;">select</span></td>
+									<td>Boolean</td>
+									<td>开启下拉树模式，无法设置该属性,如果使用renderSelect方式渲染，则该值为true。</td>
+									<td>false</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>selectValue</td>
+									<td>String</td>
+									<td>下拉树默认显示值</td>
+									<td>""</td>
+									<td>-</td>
+									<td>"defaultValue"</td>
+								</tr>
+								<tr>
+									<td>selectTips</td>
+									<td>String</td>
+									<td>下拉树无值提示值</td>
+									<td>"请选择"</td>
+									<td>-</td>
+									<td>"请往下选择"</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<p style="padding: 5px 0px;">select模式实际上可以配置以上全全部参数，具体使用方法可以参考右侧-使用下拉树</p>
 				</fieldset>
 			</div>
 			
@@ -1459,6 +1534,26 @@
 							<colgroup><col width="20%"><col width="10%"><col width="20%"><col width="50%"></colgroup>
 							<thead><tr><th>方法名称</th><th>参数类型</th><th>说明</th><th>用法示例</th></tr></thead>
 							<tbody>
+								<tr id="set" data-vs="vs999">
+									<td><span style="color:#FF5722;">set</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></td>
+									<td>Object</td>
+									<td>全局配置，与table组件的全局配置概念一致。在同一次引用中，dtree的公共属性指定，在render中可以不指定。</td>
+									<td>
+										<pre class="layui-code" lay-title="set方法示例">
+										// 这段代码可以直接应用到layuiAdmin-pro中
+										dtree.set({
+										  headers: {access_token: layui.data(setter.tableName).access_token},
+										  withCredentials: true,
+										  error: function(XMLHttpRequest, textStatus, errorThrown){
+										    // 出错则重定向到主页
+										    if(textStatus == setter.response.statusCode.logout){
+										      view.exit();
+										    }
+										  }
+										});
+										</pre>
+									</td>
+								</tr>
 								<tr id="render">
 									<td><span style="color:#FF5722;">render</span></td>
 									<td>Object</td>
@@ -1488,13 +1583,34 @@
 										</pre>
 									</td>
 								</tr>
+								<tr id="renderSelect" data-vs="vs999">
+									<td><span style="color:#FF5722;">renderSelect</span></td>
+									<td>Object</td>
+									<td>初始化下拉树树</td>
+									<td>
+										<pre class="layui-code" lay-title="renderSelect方法示例">
+											var DemoSelectTree = dtree.renderSelect({
+											  elem: '#siTree',
+											  url: '/siTree.json',
+											  selectTips: "我想做一个提示语"
+											});
+										</pre>
+									</td>
+								</tr>
 								<tr id="click1" data-vs="vs250">
 									<td>click<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Object, String</td>
 									<td>模拟单击事件</td>
 									<td>
 										<pre class="layui-code" lay-title="click方法示例">
-											dtree.click(DemoTree, "001"); // 会自动帮你触发一次对应Id的节点的点击事件
+											var DemoTree = dtree.renderSelect({
+											  elem: '#siTree',
+											  url: '/siTree.json',
+											  done: function(){
+											    dtree.click(DemoTree, "001"); // 会自动帮你触发一次对应Id的节点的点击事件
+											  }
+											});
+											
 										</pre>
 									</td>
 								</tr>
@@ -1570,7 +1686,13 @@
 									<td>初始化选中节点，并设值</td>
 									<td>
 										<pre class="layui-code" lay-title="dataInit方法示例">
-											var params = dtree.dataInit("demoTree", "001");
+											var DemoTree = dtree.renderSelect({
+											  elem: '#demoTree',
+											  url: '/demoTree.json',
+											  done: function(){
+											    var params = dtree.dataInit("demoTree", "001");
+											  }
+											});
 										</pre>
 									</td>
 								</tr>
@@ -1580,7 +1702,13 @@
 									<td>初始化选中复选框，并设值</td>
 									<td>
 										<pre class="layui-code" lay-title="chooseDataInit方法示例">
-											var params = dtree.chooseDataInit("demoTree", "001,002,003");
+											var DemoTree = dtree.renderSelect({
+											  elem: '#demoTree',
+											  url: '/demoTree.json',
+											  done: function(){
+											    var params = dtree.chooseDataInit("demoTree", "001,002,003");
+											  }
+											});
 										</pre>
 									</td>
 								</tr>
@@ -1601,7 +1729,13 @@
 									<td>复选框半选状态初始化设置，用于给初始选中的复选框反选级联关系</td>
 									<td>
 										<pre class="layui-code" lay-title="initNoAllCheck方法示例">
-											dtree.initNoAllCheck("demoTree");
+											var DemoTree = dtree.renderSelect({
+											  elem: '#demoTree',
+											  url: '/demoTree.json',
+											  done: function(){
+											    dtree.initNoAllCheck("demoTree");
+											  }
+											});
 										</pre>
 									</td>
 								</tr>
@@ -1611,7 +1745,30 @@
 									<td>复选框选中状态初始化设置，用于给初始选中的复选框反选级联关系</td>
 									<td>
 										<pre class="layui-code" lay-title="initAllCheck方法示例">
-											dtree.initAllCheck("demoTree");
+											var DemoTree = dtree.renderSelect({
+											  elem: '#demoTree',
+											  url: '/demoTree.json',
+											  done: function(){
+											    dtree.initAllCheck("demoTree");
+											  }
+											});
+										</pre>
+									</td>
+								</tr>
+								<tr id="setSelectValue" data-vs="vs999">
+									<td>setSelectValue<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>String / String</td>
+									<td>设置下拉树的初始展示值</td>
+									<td>
+										<pre class="layui-code" lay-title="setSelectValue方法示例">
+											var DemoTree = dtree.renderSelect({
+											  elem: '#demoTree',
+											  url: '/demoTree.json',
+											  done: function(){
+											    dtree.setSelectValue("demoTree"); // 如不传第二个参数，则树会自动根据当前选中节点回显值
+												dtree.setSelectValue("demoTree", "值");
+											  }
+											});
 										</pre>
 									</td>
 								</tr>
@@ -1662,26 +1819,39 @@
 								<tr><td>initLevel</td><td><span style="color:#5FB878">覆盖</span></td><td>type</td><td><span style="color:#5FB878">覆盖</span></td><td>elem</td><td><span style="color:#5FB878">覆盖</span></td></tr>
 								<tr><td>accordion</td><td><span style="color:#5FB878">覆盖</span></td><td>cache</td><td><span style="color:#5FB878">覆盖</span></td><td>obj</td><td><span style="color:#5FB878">覆盖</span></td></tr>
 								<tr><td>record</td><td><span style="color:#5FB878">覆盖</span></td><td>load</td><td><span style="color:#5FB878">覆盖</span></td><td>none</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>scroll</td><td><span style="color:#5FB878">覆盖</span></td><td>width</td><td><span style="color:#5FB878">覆盖</span></td><td>height</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								
 								<tr><td colspan="6"><span style="font-weight: bold;">数据参数</span></td></tr>
 								<tr><td>data</td><td><span style="color:#5FB878">覆盖</span></td><td>headers</td><td><span style="color:#5FB878">覆盖</span></td><td>defaultRequest</td><td><span style="color:#FFB800">扩展</span></td></tr>
 								<tr><td>url</td><td><span style="color:#5FB878">覆盖</span></td></td><td>method</td><td><span style="color:#5FB878">覆盖</span><td>response</td><td><span style="color:#FFB800">扩展</span></tr>
 								<tr><td>async</td><td><span style="color:#5FB878">覆盖</span></td><td>dataType</td><td><span style="color:#5FB878">覆盖</span></td><td>request</td><td><span style="color:#5FB878">覆盖</span></td></tr>
-								<tr><td>dataFormat</td><td><span style="color:#5FB878">覆盖</span></td><td>dataStyle</td><td><span style="color:#5FB878">覆盖</span></td><td>done</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>contentType</td><td><span style="color:#5FB878">覆盖</span></td><td>withCredentials</td><td><span style="color:#5FB878">覆盖</span></td><td>filterRequest</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>dataFormat</td><td><span style="color:#5FB878">覆盖</span></td><td>dataStyle</td><td><span style="color:#5FB878">覆盖</span></td><td>success</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>error</td><td><span style="color:#5FB878">覆盖</span></td><td>complete</td><td><span style="color:#5FB878">覆盖</span></td><td>done</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>errDataShow</td><td><span style="color:#5FB878">覆盖</span></td><td>formatter</td><td><span style="color:#5FB878">覆盖</span></td><td> </td><td><span style="color:#5FB878"> </span></td></tr>
+								
 								<tr><td colspan="6"><span style="font-weight: bold;">树样式风格图标参数</span></td></tr>
-								<tr><td>skin</td><td><span style="color:#5FB878">覆盖</span></td><td>ficon</td><td><span style="color:#5FB878">覆盖</span></td><td>firstIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
-								<tr><td>icon</td><td><span style="color:#5FB878">覆盖</span></td><td>dot</td><td><span style="color:#5FB878">覆盖</span></td><td>nodeIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
-								<tr><td>iconfont</td><td><span style="color:#5FB878">覆盖</span></td><td>iconfontStyle</td><td><span style="color:#5FB878">覆盖</span></td><td>leafIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
-								<tr><td colspan="6"><span style="font-weight: bold;">工具栏参数</span></td></tr>
-								<tr><td>toolbar</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarStyle</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarScroll</td><td><span style="color:#5FB878">覆盖</span></td></tr>
-								<tr><td>toolbarLoad</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarShow</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarBtn</td><td><span style="color:#5FB878">覆盖</span></td></tr>
-								<tr><td>toolbarExt</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarFun</td><td><span style="color:#5FB878">覆盖</span></td><td> </td><td> </td></tr>
-								<tr><td colspan="6"><span style="font-weight: bold;">菜单栏参数</span></td></tr>
-								<tr><td>menubar</td><td><span style="color:#5FB878">覆盖</span></td><td>menubarTips</td><td><span style="color:#5FB878">覆盖</span></td><td>menubarFun</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>skin</td><td><span style="color:#5FB878">覆盖</span></td><td>ficon</td><td><span style="color:#5FB878">覆盖</span></td><td>nodeIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
+								<tr><td>line</td><td><span style="color:#5FB878">覆盖</span></td><td>icon</td><td><span style="color:#5FB878">覆盖</span></td><td>leafIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
+								<tr><td>iconfont</td><td><span style="color:#5FB878">覆盖</span></td><td>iconfontStyle</td><td><span style="color:#5FB878">覆盖</span></td><td> </td><td><span style="color:#FFB800"> </span></td></tr>
+								
 								<tr><td colspan="6"><span style="font-weight: bold;">复选框参数</span></td></tr>
 								<tr><td>checkbar</td><td><span style="color:#5FB878">覆盖</span></td><td>checkbarLoad</td><td><span style="color:#5FB878">覆盖</span></td><td>checkbarType</td><td><span style="color:#5FB878">覆盖</span></td></tr>
 								<tr><td>checkbarData</td><td><span style="color:#5FB878">覆盖</span></td><td>checkbarFun</td><td><span style="color:#5FB878">覆盖</span></td><td> </td><td> </td></tr>
+								
+								<tr><td colspan="6"><span style="font-weight: bold;">菜单栏参数</span></td></tr>
+								<tr><td>menubar</td><td><span style="color:#5FB878">覆盖</span></td><td>menubarTips</td><td><span style="color:#5FB878">覆盖</span></td><td>menubarFun</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								
+								<tr><td colspan="6"><span style="font-weight: bold;">工具栏参数</span></td></tr>
+								<tr><td>toolbar</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarStyle</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarWay</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>toolbarLoad</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarShow</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarBtn</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>toolbarExt</td><td><span style="color:#5FB878">覆盖</span></td><td>toolbarFun</td><td><span style="color:#5FB878">覆盖</span></td><td> </td><td> </td></tr>
+								
 								<tr><td colspan="6"><span style="font-weight: bold;">iframe模式参数</span></td></tr>
-								<tr><td>useIframe </td><td><span style="color:#5FB878">覆盖</span></td><td>iframe</td><td><span style="color:#5FB878">覆盖</span></td><td>iframeFun</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>useIframe </td><td><span style="color:#5FB878">覆盖</span></td><td>iframeElem</td><td><span style="color:#5FB878">覆盖</span></td><td>iframeDefaultRequest</td><td><span style="color:#FFB800">扩展</span></td></tr>
+								<tr><td>iframeUrl</td><td><span style="color:#5FB878">覆盖</span></td><td>iframeLoad</td><td><span style="color:#5FB878">覆盖</span></td><td>iframeRequest</td><td><span style="color:#FFB800">扩展</span></td></tr>
+								<tr><td>iframeFun</td><td><span style="color:#5FB878">覆盖</span></td><td> </td><td><span style="color:#5FB878"> </span></td><td> </td><td><span style="color:#5FB878"></span></td></tr>
+							
 							</tbody>
 						</table>
 					</div>
@@ -1821,6 +1991,12 @@
 									<td>重新设置树的参数</td>
 									<td>-</td>
 								</tr>
+								<tr data-vs="vs999">
+									<td><span style="color:#c2c2c2;">DTree.prototype.renderSelect</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>Object</td>
+									<td>初始化下拉树的参数</td>
+									<td>-</td>
+								</tr>
 								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.autoHeight</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
@@ -1896,6 +2072,12 @@
 									<td><span style="color:#c2c2c2;">DTree.prototype.getLiItemDom</span></td>
 									<td>String, String, String, Boolean, String, Array, String, String, Boolean, Boolean, String, String, Boolean</td>
 									<td>新增节点拼接好的li</td>
+									<td>-</td>
+								</tr>
+								<tr data-vs="vs250">
+									<td><span style="color:#c2c2c2;">DTree.prototype.getNoneDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>-</td>
+									<td>显示树提示信息</td>
 									<td>-</td>
 								</tr>
 								<tr id="dataInit1">
@@ -2070,6 +2252,19 @@
 											//DemoTree.partialRefreshDel($div);
 										</pre>
 									</td>
+								</tr>
+								<tr data-vs="vs999"><td colspan="5"><span style="font-weight: bold;">下拉树函数</span></td></tr>
+								<tr data-vs="vs999">
+									<td><span style="color:#c2c2c2;">DTree.prototype.setSelectValue</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>String</td>
+									<td>设置下拉树的初始展示值</td>
+									<td>-</td>
+								</tr>
+								<tr data-vs="vs999">
+									<td><span style="color:#c2c2c2;">DTree.prototype.renderSelectDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+									<td>-</td>
+									<td>渲染下拉树的Dom结构</td>
+									<td>-</td>
 								</tr>
 								<tr data-vs="vs250"><td colspan="5"><span style="font-weight: bold;">字体及图标函数</span></td></tr>
 								<tr data-vs="vs250">
@@ -2672,7 +2867,7 @@
 							var tts = ["基础参数一览表","iconfontStyle","response","formatter","复选框配置","获取指定节点值","复选框半选状态设置","复选框选中状态设置",
 							           "setDisabledNodes","cancelDisabledNodes","getDisabledNodesParam","getAllDisabledNodesParam","setHideNodes",
 							           "cancelHideNodes","getHideNodesParam","模拟单击","getAllHideNodesParam","menubarTips","toolbarShow","errData","getNodeDom",
-							           "获取上级节点值集","refreshTree","partialRefreshAdd","partialRefreshEdit","partialRefreshDel","cancelNavThis"];
+							           "获取上级节点值集","refreshTree","partialRefreshAdd","partialRefreshEdit","partialRefreshDel","cancelNavThis","全局配置","select加载配置","初始化下拉树"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

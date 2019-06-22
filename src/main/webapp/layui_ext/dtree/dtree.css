@@ -97,6 +97,11 @@
 .dtree-nav-div cite.dtree-disabled{font-style: normal; cursor: not-allowed; color:#c2c2c2!important;}
 .dtree-nav-div>cite.dtree-disabled:hover{color:#c2c2c2!important;}
 
+
+/** 下拉树属性*/
+.dtree-select{position: absolute;max-height: 500px;height: 350px;overflow: auto;width: 99%;z-index: 123;display: none;border:1px solid silver;top: 42px;}
+.dtree-select-show{display: block!important;}
+
 /* 简单适配*/
 @media screen and (max-width:1700px) and (min-width:1300px){	
 	.dtree-nav-item {padding-left: 15px;}

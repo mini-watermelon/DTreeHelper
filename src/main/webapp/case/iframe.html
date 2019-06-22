@@ -39,6 +39,9 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
+									<ul data-vlog="vs999">
+										<li>【优化】iframe模块优化：将原来用iframe包住的属性提出，撤销iframe这一层。</li>
+									</ul>
 									<ul data-vlog="vs250">
 										<li class="bug">【修复】iframe模块修复：配置了iframeDefaultRequest时，只会显示iframeDefaultRequest中的参数的问题。</li>
 									</ul>
@@ -67,10 +70,8 @@
 									  elem: "#iframeTree1",
 									  url: "../json/case/iframeTree1.json",
 									  useIframe: true,  //启用iframe
-									  iframe: {
-									    iframeElem: "#iframe_content",  // iframe的ID
-									    iframeUrl: "iframeContent.html" // iframe路由到的地址
-									  }
+									  iframeElem: "#iframe_content",  // iframe的ID
+									  iframeUrl: "iframeContent.html", // iframe路由到的地址
 									});
 									
 									// iframe页面代码示例
@@ -128,11 +129,9 @@
 									  elem: "#iframeTree1",
 									  url: "../json/case/iframeTree1.json",
 									  useIframe: true,  //启用iframe
-									  iframe: {
-									    iframeElem: "#iframe_content",  // iframe的ID
-									    iframeUrl: "iframeContent.html", // iframe路由到的地址
-									    iframeLoad: "all" // 表示点击任意节点加载iframe
-									  }
+									  iframeElem: "#iframe_content",  // iframe的ID
+									  iframeUrl: "iframeContent.html", // iframe路由到的地址
+									  iframeLoad: "all" // 表示点击任意节点加载iframe
 									});
 								</pre>
 							</div>
@@ -154,13 +153,11 @@
 									  elem: "#iframeTree1",
 									  url: "../json/case/iframeTree1.json",
 									  useIframe: true,  //启用iframe
-									  iframe: {
-									    iframeElem: "#iframe_content",  // iframe的ID
-									    iframeUrl: "iframeContent.html", // iframe路由到的地址
-									    iframeLoad: "all" // 表示点击任意节点加载iframe
-									    iframeDefaultRequest: {nodeId: "id"}, // 这里就将nodeId这个参数名称改为了id这个名称
-									    iframeRequest: {username: "zhangsan"} // 这里就自定义了需要传递的参数
-									  }
+									  iframeElem: "#iframe_content",  // iframe的ID
+									  iframeUrl: "iframeContent.html", // iframe路由到的地址
+									  iframeLoad: "all" // 表示点击任意节点加载iframe
+									  iframeDefaultRequest: {nodeId: "id"}, // 这里就将nodeId这个参数名称改为了id这个名称
+									  iframeRequest: {username: "zhangsan"} // 这里就自定义了需要传递的参数
 									});
 								</pre>
 							</div>
@@ -329,11 +326,9 @@
 			elem: "#iframeTree1",
 			url: "../json/case/iframeTree1.json",
 			useIframe: true,
-			iframe: {
-				iframeElem: "#iframe_content",
-				iframeUrl: "iframeContent.html",
-				//iframeDefaultRequest: {nodeId: "id"}
-			}
+			iframeElem: "#iframe_content",
+			iframeUrl: "iframeContent.html"
+			//iframeDefaultRequest: {nodeId: "id"}
 		});
 		
 		// 绑定节点的单击事件

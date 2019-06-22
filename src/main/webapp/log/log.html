@@ -45,9 +45,32 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="015">v2.5.4(2019/6/14)【修复】【优化：3，新增：3，更新：2，移除：1】<a href="../version/dtree_v2.5.4_201906141500.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
+							<h3 class="layui-timeline-title" id="016">v2.5.4(2019/？/？)【优化】【优化：3，新增：11，更新：1】<a href="https://gitee.com/miniwatermelon/DTreeHelper" class="layui-btn layui-btn-sm layui-btn-normal">暂未发布，gitee抢先下载！</a></h3>
 							<ul>
-								<li>【修复】内置方法中，使用jquery的data()获取值不到的问题。</li>
+								<li>【优化】iframe模块优化：将原来用iframe包住的属性提出，撤销iframe这一层。</li>
+								<li>【优化】内置属性优化：toolbarScroll属性更名为scroll。</li>
+								<li>【优化】内置方法优化：当异步加载出现异常时，以文字形式而非弹框形式提示。</li>
+								<li>【新增】标签属性新增：ul标签上新增data-value属性，用于指定下拉树的初始展示值</li>
+								<li>【新增】基础属性新增：width，设置树的宽度。</li>
+								<li>【新增】基础属性新增：withCredentials，用于开启生成跨域的XHR对象，设置后可指定同源session，默认false。</li>
+								<li>【新增】基础属性新增：select，设置树模式为下拉树</li>
+								<li>【新增】基础属性新增：selectTips，设置下拉树时的输入框提示文字</li>
+								<li>【新增】基础方法新增：set，与table组件的set概念一致。同一次引用中，dtree的公共属性指定，所有基础属性都可以指定。</li>
+								<li>【新增】基础方法新增：renderSelect，初始化下拉树</li>
+								<li>【新增】基础方法新增：setSelectValue，设置下拉树的初始展示值</li>
+								<li>【新增】内置方法新增：setSelectValue，设置下拉树的初始展示值</li>
+								<li>【新增】内置方法新增：selectSetting，设置下拉树的初始元素</li>
+								<li>【新增】内置方法新增：renderSelectDom，渲染下拉树的Dom结构</li>
+								<li>【更新】内置方法更新：getNoneDom方法，添加errText子方法，显示错误信息。</li>
+							</ul>
+						</div>
+					</li>
+					<li class="layui-timeline-item">
+						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title" id="015">v2.5.4(2019/6/14)【修复】【优化：3，新增：3，更新：2，移除：2】<a href="../version/dtree_v2.5.4_201906141500.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
+							<ul>
+								<li class="bug">【修复】内置方法中，使用jquery的data()获取值不到的问题。</li>
 								<li>【优化】基础属性优化：ficon，可以设置Array型数据，与icon的配置方式相同</li>
 								<li>【优化】基础属性优化：skin，其中设置layui看起来更像layui的风格，新增laySimple风格，遵从简约版layui树形菜单。</li>
 								<li>【优化】内置方法优化：涉及样式的一系列内置方法优化</li>
@@ -412,7 +435,7 @@
 					formatter: {
 						title: function(data) {
 							var tt = data.title;
-							var tts = ["v2.5.0(2019/06/01)【优化】"];
+							var tts = ["v2.5.4(2019/6/17)【优化】"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
