@@ -45,8 +45,13 @@
 					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
-							<h3 class="layui-timeline-title" id="016">v2.5.4(2019/？/？)【优化】【优化：3，新增：11，更新：1】<a href="https://gitee.com/miniwatermelon/DTreeHelper" class="layui-btn layui-btn-sm layui-btn-normal">暂未发布，gitee抢先下载！</a></h3>
+							<h3 class="layui-timeline-title" id="016">v2.5.5(2019/10/12)【新增】【修复：1，优化：7，新增：13，更新：1】<a href="../version/dtree_v2.5.5_201910122222.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>
 							<ul>
+								<li>【修复】内置方法修复：partialRefreshEdit，支持修改parentId后及时返显到下挂节点</li>
+								<li>【优化】单页模式中树的缓存问题</li>
+								<li>【优化】基础属性优化，开启line时，toolbar的fixed显示不正常</li>
+								<li>【优化】基础属性优化，开启line时，div选中 悬停背景对齐</li>
+								<li>【优化】基础方法优化：success方法的放置位置，可以将不同的数据格式在success方法内做转换，或添加根节点。</li>
 								<li>【优化】iframe模块优化：将原来用iframe包住的属性提出，撤销iframe这一层。</li>
 								<li>【优化】内置属性优化：toolbarScroll属性更名为scroll。</li>
 								<li>【优化】内置方法优化：当异步加载出现异常时，以文字形式而非弹框形式提示。</li>
@@ -55,12 +60,14 @@
 								<li>【新增】基础属性新增：withCredentials，用于开启生成跨域的XHR对象，设置后可指定同源session，默认false。</li>
 								<li>【新增】基础属性新增：select，设置树模式为下拉树</li>
 								<li>【新增】基础属性新增：selectTips，设置下拉树时的输入框提示文字</li>
-								<li>【新增】基础方法新增：set，与table组件的set概念一致。同一次引用中，dtree的公共属性指定，所有基础属性都可以指定。</li>
+								<li>【新增】基础属性新增：selectInputName，设置下拉树内部表单标签的name</li>
 								<li>【新增】基础方法新增：renderSelect，初始化下拉树</li>
-								<li>【新增】基础方法新增：setSelectValue，设置下拉树的初始展示值</li>
-								<li>【新增】内置方法新增：setSelectValue，设置下拉树的初始展示值</li>
+								<li>【新增】基础方法新增：selectVal，设置下拉树的初始展示值</li>
+								<li>【新增】基础方法新增：set，与table组件的set概念一致。同一次引用中，dtree的公共属性指定，所有基础属性都可以指定。</li>
+								<li>【新增】内置方法新增：selectVal，设置下拉树的初始展示值</li>
 								<li>【新增】内置方法新增：selectSetting，设置下拉树的初始元素</li>
 								<li>【新增】内置方法新增：renderSelectDom，渲染下拉树的Dom结构</li>
+								<li>【新增】内置方法新增：clickNodeCheckbar，点击节点选中复选框</li>
 								<li>【更新】内置方法更新：getNoneDom方法，添加errText子方法，显示错误信息。</li>
 							</ul>
 						</div>

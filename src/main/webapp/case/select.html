@@ -36,13 +36,14 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
-									<ul data-vlog="vs999">
+									<ul data-vlog="vs255">
 										<li>【新增】标签属性新增：ul标签上新增data-value属性，用于指定下拉树的初始展示值</li>
 										<li>【新增】基础属性新增：select，设置树模式为下拉树</li>
 										<li>【新增】基础属性新增：selectTips，设置下拉树时的输入框提示文字</li>
+										<li>【新增】基础属性新增：selectInputName，设置下拉树内部表单标签的name</li>
 										<li>【新增】基础方法新增：renderSelect，初始化下拉树</li>
-										<li>【新增】基础方法新增：setSelectValue，设置下拉树的初始展示值</li>
-										<li>【新增】内置方法新增：setSelectValue，设置下拉树的初始展示值</li>
+										<li>【新增】基础方法新增：selectVal，设置下拉树的初始展示值</li>
+										<li>【新增】内置方法新增：selectVal，设置下拉树的初始展示值</li>
 										<li>【新增】内置方法新增：selectSetting，设置下拉树的初始元素</li>
 										<li>【新增】内置方法新增：renderSelectDom，渲染下拉树的Dom结构</li>
 									</ul>
@@ -97,7 +98,7 @@
 			</div>
 			
 			<div class="layui-fluid">
-				<fieldset class="layui-elem-field layui-field-title" id="selectValue">
+				<fieldset class="layui-elem-field layui-field-title" id="selectInitVal">
 					<legend>指定下拉树的默认显示值</legend>
 					<div class="layui-field-box">
 						<p>你可以改变下拉树的初始值。</p>
@@ -111,11 +112,43 @@
 									dtree.renderSelect({
 									  elem: "#selTree3",
 									  url: "../json/case/asyncTree1.json",
-									  selectValue: "湘潭市", // 你可以在这里指定默认值
+									  selectInitVal: "湘潭市", // 你可以在这里指定默认值
 									  done: function(){
 									    dtree.dataInit("selTree3", "001003");
-									    dtree.setSelectValue("selTree3"); // 也可以在这里指定，第二个参数如果不填，则会自动读取
+									    // 也可以在这里指定，第二个参数如果不填，则会自动返显当前选中的数据
+									    var selectParam = dtree.selectVal("selTree3"); 
 									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="selectInputName">
+					<legend>指定下拉树的表单名称</legend>
+					<div class="layui-field-box">
+						<p>你可以给隐藏的表单输入框指定名称，前提是这些值都是树可以返回的。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<ul id="selTree4" class="dtree" data-id="0"></ul></div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									&lt;ul id="selTree4" class="dtree" data-id="0" &gt;&lt;/ul&gt;&lt;/div&gt;
+									dtree.renderSelect({
+									  elem: "#selTree4",
+									  url: "../json/case/asyncTree1.json",
+									  selectInputName: {
+									    nodeId: "nodeId",
+									    context: "context"
+									  }
+									});
+									
+									dtree.on('node("selTree4")', function(obj){
+									  var param = dtree.selectVal("selTree4");
+									  layer.msg(JSON.stringify(param));
 									});
 								</pre>
 							</div>
@@ -172,7 +205,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["常规用法","指定显示框默认文字","下拉树的默认显示值"];
+							var tts = ["常规用法","指定显示框默认文字","下拉树的默认显示值","指定表单名称"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -194,26 +227,44 @@
 		dtree.renderSelect({
 			elem: "#selTree1",
 			width: "100%",
-			url: "../json/case/commonTree3.json",
-			toolbar: true,
-			menubar: true,
-			checkbar: true
+			url: "../json/case/commonTree3.json"
+		//	toolbar: true,
+		//	menubar: true,
+		//	checkbar: true
 		});
 		
+		// 2.selTree2
 		dtree.renderSelect({
 		  elem: "#selTree2",
 		  url: "../json/case/asyncTree1.json",
 		  selectTips: "我想做一个成熟的提示语"
 		});
 		
+		// 3.selTree3
 		dtree.renderSelect({
 		  elem: "#selTree3",
 		  url: "../json/case/asyncTree1.json",
-		  selectValue: "湘潭市", // 你可以在这里指定默认值
+		  selectInitVal: "湘潭市", // 你可以在这里指定默认值
 		  done: function(){
 		    dtree.dataInit("selTree3", "001003");
-		    dtree.setSelectValue("selTree3"); // 也可以在这里指定，第二个参数如果不填，则会自动读取
+		    dtree.selectVal("selTree3"); // 也可以在这里指定，第二个参数如果不填，则会自动读取
 		  }
+		});
+		
+		// 4.selTree4
+		dtree.renderSelect({
+		  elem: "#selTree4",
+		  url: "../json/case/asyncTree1.json",
+		  selectInputName: {
+			  nodeId: "nodeId",
+			  context: "context"
+		  }
+		});
+		
+		dtree.on('node("selTree4")', function(obj){
+			// 这个方法还可以返回你设置的元素的json串
+			var param = dtree.selectVal("selTree4");
+			layer.msg(JSON.stringify(param));
 		});
 	});
 </script>

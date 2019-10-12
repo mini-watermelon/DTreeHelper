@@ -39,7 +39,8 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
-									<ul data-vlog="vs999">
+									<ul data-vlog="vs255">
+										<li>【修复】内置方法修复：partialRefreshEdit，支持修改parentId后及时返显到下挂节点</li>
 										<li>【优化】内置属性优化：toolbarScroll属性更名为scroll，该属性提升为基础属性。</li>
 									</ul>
 									<ul data-vlog="vs250">
@@ -722,11 +723,10 @@
 							        	   form.on("submit(dtree_editNode_form)",function(data){
 							        		   console.log(data.field);
 							        		   
-							        		   var json = {"id":"123123123123","title": data.field.editNodeName,"parentId": node.parentId};
+							        		   var json = {"id":"123123123123","title": data.field.editNodeName,"parentId": node.nodeId};
 							        		   
 							        		   var str = data.field.editNodeName;
 							        		   DTree5.partialRefreshEdit($div, json);
-							        		   
 							        		   layer.close(index);
 											   return false;
 							        	   });
@@ -745,7 +745,12 @@
 			           ]
 		});
 		
-		// 1.toolbarTree5
+		dtree.on("node('toolbarTree5')", function(obj){
+			var node = obj.param;
+			layer.msg(JSON.stringify(node));
+		});
+		
+		// 1.toolbarTree6
 		dtree.render({
 			elem: "#toolbarTree6",
 			url: "../json/case/toolbarTree1.json",
@@ -771,6 +776,7 @@
 		  elem: "#toolbarTree7",
 		  url: "../json/case/toolbarTree1.json",
 		  toolbar:true,
+		  line: true,
 		  toolbarWay:"fixed",
 		  toolbarFun:{
 			loadToolbarBefore: function(buttons, param, $div){

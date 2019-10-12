@@ -351,9 +351,9 @@
 									// 绑定节点点击事件
 									dtree.on("node(checkbarTreeNode)", function(obj){
 									  var nodeId = obj.param.nodeId;
-									  var $checkbar = DTreeNode.getNodeDom(nodeId).checkbox(); //获取当前点击节点的checkbar的dom
-									  DTreeNode.temp = [$checkbar]; //通过内置交换对象，将复选框放入交换队列中
-									  DTreeNode.changeCheck(); //调取内置选中函数，选中/不选/半选复选框
+									  
+									  DTreeNode.clickNodeCheckbar(nodeId);// 点击节点选中复选框
+									  
 									  var checkbarNodes = dtree.getCheckbarNodesParam("checkbarTreeNode");
 									  layer.msg(JSON.stringify(checkbarNodes));
 									});
@@ -621,9 +621,10 @@
 		
 		dtree.on("node(checkbarTreeNode)", function(obj){
 			var nodeId = obj.param.nodeId;
-			var $checkbar = DTreeNode.getNodeDom(nodeId).checkbox();
+			/* var $checkbar = DTreeNode.getNodeDom(nodeId).checkbox();
 			DTreeNode.temp = [$checkbar];
-			DTreeNode.changeCheck();
+			DTreeNode.changeCheck(); */
+			DTreeNode.clickNodeCheckbar(nodeId);
 			var checkbarNodes = dtree.getCheckbarNodesParam("checkbarTreeNode");
 			layer.msg(JSON.stringify(checkbarNodes));
 		});

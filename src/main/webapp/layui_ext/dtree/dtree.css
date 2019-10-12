@@ -62,7 +62,7 @@
 .dtree-none-text{font-size: 12px;text-align: center;color: gray;}
 
 /* 树线*/
-.dtree-nav-first-line,.dtree-nav-line,.dtree-nav-last-line{width: 100%;position: relative;}
+.dtree-nav-first-line,.dtree-nav-line,.dtree-nav-last-line{position: relative;}
 .dtree-nav-first-line:before{content:"";position: absolute;height: 0;border-left: 1px dotted #c0c4cc;}
 .dtree-nav-first-line:after{content:"";position: absolute;height: 0;border-top: 1px dotted #c0c4cc;}
 

@@ -9,8 +9,13 @@ var menuTree = [{
 	"last": true,
 	"children":[]
 },{
-	"id":"selectValue",
+	"id":"selectInitVal",
 	"title": "下拉树的默认显示值",
+	"last": true,
+	"children":[]
+},{
+	"id":"selectInputName",
+	"title": "指定表单名称",
 	"last": true,
 	"children":[]
 }];

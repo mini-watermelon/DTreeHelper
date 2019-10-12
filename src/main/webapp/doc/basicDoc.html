@@ -118,8 +118,8 @@
 									<td>自定义Dom</td>
 									<td>$("#demoTree")</td>
 								</tr>
-								<tr data-vs="vs999">
-									<td>width<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></td>
+								<tr data-vs="vs255">
+									<td>width<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>String</td>
 									<td>定义树组件的宽度</td>
 									<td>"260"</td>
@@ -241,7 +241,7 @@
 									<td>String / Array</td>
 									<td>
 										 一级图标样式，<br/>
-										一级图标非叶子节点： 0：方形加减，1：三角形，-1：不显示一级图标非叶子节点<br/>
+										一级图标非叶子节点： 0：文件夹，1：方形加减，2：三角形，-1：不显示一级图标非叶子节点<br/>
 										一级图标叶子节点：0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示一级图标叶子节点。
 									</td>
 									<td>"8"</td>
@@ -253,7 +253,7 @@
 									<td>String / Array</td>
 									<td>
 										二级图标样式，<br/>
-										二级图标非叶子节点：0：文件夹，-1：不显示二级图标非叶子节点<br/>
+										二级图标非叶子节点：0：文件夹，1：方形加减，2：三角形，-1：不显示二级图标非叶子节点<br/>
 										二级图标叶子节点：0：文件夹，1：人员，2：机构，3：报表，4：信息，5：叶子，6：勋章，7：文件，8：小圆点，9：齿轮，10：星星， -1：不显示二级图标叶子节点。
 									</td>
 									<td>"5"</td>
@@ -327,13 +327,13 @@
 									<td>true / false</td>
 									<td><a href="javascript:void(0);" data-id="useIframe" class="position-a">详见iframe加载配置</a></td>
 								</tr>
-								<tr data-vs="vs999">
-									<td>select<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></td>
+								<tr data-vs="vs255">
+									<td>select<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>Boolean</td>
 									<td>开启下拉树模式，无法设置该属性,如果使用renderSelect方式渲染，则该值为true</td>
 									<td>false</td>
 									<td>-</td>
-									<td><a href="javascript:void(0);" data-id="useIframe" class="position-a">详见select加载配置</a></td>
+									<td><a href="javascript:void(0);" data-id="dtreeSelect" class="position-a">详见select加载配置</a></td>
 								</tr>
 								<tr>
 									<td colspan="6"><span style="font-weight: bold;">重要内置参数（无需配置）</span></td>
@@ -734,8 +734,8 @@
 									<td>-</td>
 									<td>-</td>
 								</tr>
-								<tr data-vs="vs999">
-									<td>withCredentials<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></td>
+								<tr data-vs="vs255">
+									<td>withCredentials<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>Boolean</td>
 									<td>生成跨域的XHR对象。</td>
 									<td>false</td>
@@ -777,18 +777,18 @@
 								<tr>
 									<td><span style="color:#FF5722;">success</span></td>
 									<td>Function</td>
-									<td>异步加载完毕后,树解析前的回调函数,携带两个参数，data:当前异步加载的数据，obj:当前组件的根节点</td>
+									<td>加载完毕后,树解析前的回调函数,携带两个参数，res:当前异步加载的数据，$obj:当前组件的根节点的JQuery对象。data和url加载均可使用</td>
 									<td>-</td>
 									<td>-</td>
-									<td>success:function(data, obj){}</td>
+									<td>success:function(res, $obj){}</td>
 								</tr>
 								<tr>
 									<td><span style="color:#FF5722;">done</span></td>
 									<td>Function</td>
-									<td>异步加载完毕后的回调函数,携带两个参数，data:当前异步加载的数据，obj:当前组件的根节点</td>
+									<td>加载完毕后,树解析后的回调函数,携带两个参数，res:当前异步加载的数据，$obj:当前组件的根节点的JQuery对象。data和url加载均可使用</td>
 									<td>-</td>
 									<td>-</td>
-									<td>done:function(data, obj){}</td>
+									<td>done:function(res, $obj){}</td>
 								</tr>
 								<tr>
 									<td>dataStyle</td>
@@ -1484,7 +1484,7 @@
 					</div>
 					
 					
-					<div class="layui-field-box" id="select" data-vs="vs999">
+					<div class="layui-field-box" id="dtreeSelect" data-vs="vs255">
 						<p style="padding: 5px 0px;">select模式配置由以下几个参数组成：</p>
 						<p style="padding: 5px 0px;">类型释义：<span style="color:#FF5722;">Boolean</span>：布尔类型值，<span style="color:#FF5722;">Object</span>：JSON对象</p>
 						<table class="layui-table" lay-size="sm">
@@ -1500,12 +1500,12 @@
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>selectValue</td>
+									<td>selectInitVal</td>
 									<td>String</td>
-									<td>下拉树默认显示值</td>
+									<td>下拉树初始ID值</td>
 									<td>""</td>
 									<td>-</td>
-									<td>"defaultValue"</td>
+									<td>"001"</td>
 								</tr>
 								<tr>
 									<td>selectTips</td>
@@ -1513,13 +1513,55 @@
 									<td>下拉树无值提示值</td>
 									<td>"请选择"</td>
 									<td>-</td>
-									<td>"请往下选择"</td>
+									<td>"我是一个提示"</td>
+								</tr>
+								<tr>
+									<td>selectInputName</td>
+									<td>Object</td>
+									<td>下拉树内部表单标签的name键值对</td>
+									<td>{nodeId: this.obj[0].id + "_select_nodeId"}</td>
+									<td>-</td>
+									<td>{nodeId: "id",context: "title"}</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
-					<p style="padding: 5px 0px;">select模式实际上可以配置以上全全部参数，具体使用方法可以参考右侧-使用下拉树</p>
+					<p style="padding: 5px 0px;">select模式实际上可以配置所有的基础参数，具体使用方法可以参考右侧-使用下拉树</p>
 				</fieldset>
+			</div>
+			
+			<div class="layui-field-box" style="background: #F2F2F2">
+				<div class="layui-card card" style="margin-top:0px;" id="selectInputName">
+					<div class="layui-card-header">selectInputName</div>
+					<div class="layui-card-body">
+						<p>用于配置select中表单的键值对，key值为树中可以获取到的值的名称，value值为表单的name</p>
+						<pre class="layui-code" lay-title="可设置的参数一览">
+							{
+							  nodeId: "", //节点ID
+							  parentId: "", //父节点ID
+							  context: "", //节点内容
+							  leaf: "", //是否叶子节点
+							  level: "", //层级
+							  spread: "", //节点展开状态
+							  dataType: "", //节点标记
+							  checked: "", //节点复选框选中状态
+							  initchecked: "", //节点复选框初始状态
+							  basicData: "", //用户自定义的记录节点数据
+							  recordData: "", //当前data数据
+							}
+						</pre>
+						<pre class="layui-code" lay-title="selectInputName配置示例">
+							dtree.render({
+							  elem: "#selTree4",
+							  url: "../json/case/asyncTree1.json",
+							  selectInputName: {
+							    nodeId: "id",  // 这里，内置表单名称为id，值为nodeId的值
+							    context: "title"  // 这里，内置表单名称为title，值为context的值
+							  }
+							});
+						</pre>
+					</div>
+				</div>
 			</div>
 			
 			<div class="layui-fluid">
@@ -1534,8 +1576,8 @@
 							<colgroup><col width="20%"><col width="10%"><col width="20%"><col width="50%"></colgroup>
 							<thead><tr><th>方法名称</th><th>参数类型</th><th>说明</th><th>用法示例</th></tr></thead>
 							<tbody>
-								<tr id="set" data-vs="vs999">
-									<td><span style="color:#FF5722;">set</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></td>
+								<tr id="set" data-vs="vs255">
+									<td><span style="color:#FF5722;">set</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>Object</td>
 									<td>全局配置，与table组件的全局配置概念一致。在同一次引用中，dtree的公共属性指定，在render中可以不指定。</td>
 									<td>
@@ -1583,8 +1625,8 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="renderSelect" data-vs="vs999">
-									<td><span style="color:#FF5722;">renderSelect</span></td>
+								<tr id="renderSelect" data-vs="vs255">
+									<td><span style="color:#FF5722;">renderSelect</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>Object</td>
 									<td>初始化下拉树树</td>
 									<td>
@@ -1603,7 +1645,7 @@
 									<td>模拟单击事件</td>
 									<td>
 										<pre class="layui-code" lay-title="click方法示例">
-											var DemoTree = dtree.renderSelect({
+											var DemoTree = dtree.render({
 											  elem: '#siTree',
 											  url: '/siTree.json',
 											  done: function(){
@@ -1686,7 +1728,7 @@
 									<td>初始化选中节点，并设值</td>
 									<td>
 										<pre class="layui-code" lay-title="dataInit方法示例">
-											var DemoTree = dtree.renderSelect({
+											var DemoTree = dtree.render({
 											  elem: '#demoTree',
 											  url: '/demoTree.json',
 											  done: function(){
@@ -1702,7 +1744,7 @@
 									<td>初始化选中复选框，并设值</td>
 									<td>
 										<pre class="layui-code" lay-title="chooseDataInit方法示例">
-											var DemoTree = dtree.renderSelect({
+											var DemoTree = dtree.render({
 											  elem: '#demoTree',
 											  url: '/demoTree.json',
 											  done: function(){
@@ -1729,7 +1771,7 @@
 									<td>复选框半选状态初始化设置，用于给初始选中的复选框反选级联关系</td>
 									<td>
 										<pre class="layui-code" lay-title="initNoAllCheck方法示例">
-											var DemoTree = dtree.renderSelect({
+											var DemoTree = dtree.render({
 											  elem: '#demoTree',
 											  url: '/demoTree.json',
 											  done: function(){
@@ -1745,7 +1787,7 @@
 									<td>复选框选中状态初始化设置，用于给初始选中的复选框反选级联关系</td>
 									<td>
 										<pre class="layui-code" lay-title="initAllCheck方法示例">
-											var DemoTree = dtree.renderSelect({
+											var DemoTree = dtree.render({
 											  elem: '#demoTree',
 											  url: '/demoTree.json',
 											  done: function(){
@@ -1755,18 +1797,18 @@
 										</pre>
 									</td>
 								</tr>
-								<tr id="setSelectValue" data-vs="vs999">
-									<td>setSelectValue<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+								<tr id="selectVal" data-vs="vs255">
+									<td>selectVal<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>String / String</td>
 									<td>设置下拉树的初始展示值</td>
 									<td>
-										<pre class="layui-code" lay-title="setSelectValue方法示例">
+										<pre class="layui-code" lay-title="selectVal方法示例">
 											var DemoTree = dtree.renderSelect({
 											  elem: '#demoTree',
 											  url: '/demoTree.json',
 											  done: function(){
-											    dtree.setSelectValue("demoTree"); // 如不传第二个参数，则树会自动根据当前选中节点回显值
-												dtree.setSelectValue("demoTree", "值");
+											    dtree.selectVal("demoTree"); // 如不传第二个参数，则树会自动根据当前选中节点回显值
+												dtree.selectVal("demoTree", "值");
 											  }
 											});
 										</pre>
@@ -1991,8 +2033,8 @@
 									<td>重新设置树的参数</td>
 									<td>-</td>
 								</tr>
-								<tr data-vs="vs999">
-									<td><span style="color:#c2c2c2;">DTree.prototype.renderSelect</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+								<tr data-vs="vs255">
+									<td><span style="color:#c2c2c2;">DTree.prototype.renderSelect</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>Object</td>
 									<td>初始化下拉树的参数</td>
 									<td>-</td>
@@ -2253,15 +2295,15 @@
 										</pre>
 									</td>
 								</tr>
-								<tr data-vs="vs999"><td colspan="5"><span style="font-weight: bold;">下拉树函数</span></td></tr>
-								<tr data-vs="vs999">
-									<td><span style="color:#c2c2c2;">DTree.prototype.setSelectValue</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+								<tr data-vs="vs255"><td colspan="5"><span style="font-weight: bold;">下拉树函数</span></td></tr>
+								<tr data-vs="vs255">
+									<td><span style="color:#c2c2c2;">DTree.prototype.selectVal</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>String</td>
 									<td>设置下拉树的初始展示值</td>
 									<td>-</td>
 								</tr>
-								<tr data-vs="vs999">
-									<td><span style="color:#c2c2c2;">DTree.prototype.renderSelectDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
+								<tr data-vs="vs255">
+									<td><span style="color:#c2c2c2;">DTree.prototype.renderSelectDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>-</td>
 									<td>渲染下拉树的Dom结构</td>
 									<td>-</td>
@@ -2451,6 +2493,16 @@
 										<pre class="layui-code" lay-title="changeCheckbarNodes方法示例">
 											var flag = DemoTree.changeCheckbarNodes();
 											console.log(flag);
+										</pre>
+									</td>
+								</tr>
+								<tr id="clickNodeCheckbar">
+									<td>DTree.prototype.clickNodeCheckbar<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
+									<td>string</td>
+									<td>点击节点选择复选框</td>
+									<td>
+										<pre class="layui-code" lay-title="changeCheckbarNodes方法示例">
+											DemoTree.clickNodeCheckbar("001");
 										</pre>
 									</td>
 								</tr>
@@ -2864,10 +2916,8 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["基础参数一览表","iconfontStyle","response","formatter","复选框配置","获取指定节点值","复选框半选状态设置","复选框选中状态设置",
-							           "setDisabledNodes","cancelDisabledNodes","getDisabledNodesParam","getAllDisabledNodesParam","setHideNodes",
-							           "cancelHideNodes","getHideNodesParam","模拟单击","getAllHideNodesParam","menubarTips","toolbarShow","errData","getNodeDom",
-							           "获取上级节点值集","refreshTree","partialRefreshAdd","partialRefreshEdit","partialRefreshDel","cancelNavThis","全局配置","select加载配置","初始化下拉树"];
+							var tts = ["基础参数一览表","复选框配置","获取指定节点值","复选框半选状态设置","复选框选中状态设置","menubarTips","toolbarShow","errData","getNodeDom","clickNodeCheckbar",
+							           "获取上级节点值集","partialRefreshAdd","partialRefreshEdit","partialRefreshDel","cancelNavThis","全局配置","select加载配置","初始化下拉树","selectInputName"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

@@ -163,10 +163,15 @@ var menuTree = [{
 		 	"children":[]
 	 	}]
  	},{
- 		"id":"select",
+ 		"id":"dtreeSelect",
 	 	"title": "select加载配置",
 	 	"last": false,
-	 	"children":[]
+	 	"children":[{
+	 		"id":"selectInputName",
+		 	"title": "selectInputName",
+		 	"last": true,
+		 	"children":[]
+	 	}]
  	}]
  },,{
 	"id":"jcff",
@@ -253,7 +258,7 @@ var menuTree = [{
 	 	"last": true,
 	 	"children":[]
  	},{
- 		"id":"setSelectValue",
+ 		"id":"selectVal",
 	 	"title": "设置下拉树的初始展示值",
 	 	"last": true,
 	 	"children":[]
@@ -435,6 +440,11 @@ var menuTree = [{
  	},{
  		"id":"changeCheckbarNodes1",
 	 	"title": "changeCheckbarNodes",
+	 	"last": true,
+	 	"children":[]
+ 	},{
+ 		"id":"clickNodeCheckbar",
+	 	"title": "clickNodeCheckbar",
 	 	"last": true,
 	 	"children":[]
  	},{
