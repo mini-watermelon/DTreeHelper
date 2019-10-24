@@ -341,7 +341,15 @@
 								<tr>
 									<td><span style="color:#FF5722;">temp</span></td>
 									<td>Array</td>
-									<td>内置交换变量,该变量仅对详细阅读过dtree源码的开发者使用，一般情况下不需要使用。也无需配置</td>
+									<td>内置交换变量,该变量仅对详细阅读过dtree源码的开发者使用，一般情况下不需要使用，也无需配置。</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">bak</span></td>
+									<td>String</td>
+									<td>内置变量，备份Html。</td>
 									<td>-</td>
 									<td>-</td>
 									<td>-</td>
@@ -1492,7 +1500,7 @@
 							<thead><tr><th>参数</th><th>类型</th><th>说明</th><th>默认值</th><th>可选值</th><th>示例</th></tr> </thead>
 							<tbody>
 								<tr>
-									<td><span style="color:#FF5722;">select</span></td>
+									<td><span style="color:#FF5722;">select</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>Boolean</td>
 									<td>开启下拉树模式，无法设置该属性,如果使用renderSelect方式渲染，则该值为true。</td>
 									<td>false</td>
@@ -1500,7 +1508,7 @@
 									<td>-</td>
 								</tr>
 								<tr>
-									<td>selectInitVal</td>
+									<td>selectInitVal<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>String</td>
 									<td>下拉树初始ID值</td>
 									<td>""</td>
@@ -1508,7 +1516,7 @@
 									<td>"001"</td>
 								</tr>
 								<tr>
-									<td>selectTips</td>
+									<td>selectTips<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>String</td>
 									<td>下拉树无值提示值</td>
 									<td>"请选择"</td>
@@ -1516,7 +1524,7 @@
 									<td>"我是一个提示"</td>
 								</tr>
 								<tr>
-									<td>selectInputName</td>
+									<td>selectInputName<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
 									<td>Object</td>
 									<td>下拉树内部表单标签的name键值对</td>
 									<td>{nodeId: this.obj[0].id + "_select_nodeId"}</td>
@@ -1532,9 +1540,10 @@
 			
 			<div class="layui-field-box" style="background: #F2F2F2">
 				<div class="layui-card card" style="margin-top:0px;" id="selectInputName">
-					<div class="layui-card-header">selectInputName</div>
+					<div class="layui-card-header">selectInputName<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></div>
 					<div class="layui-card-body">
 						<p>用于配置select中表单的键值对，key值为树中可以获取到的值的名称，value值为表单的name</p>
+						<p>如果没有配置defaultRequest，则该配置的key与node一致，否则，key与defaultRequest映射的value一致。</p>
 						<pre class="layui-code" lay-title="可设置的参数一览">
 							{
 							  nodeId: "", //节点ID
@@ -1980,6 +1989,19 @@
 										</pre>
 									</td>
 								</tr>
+								<tr id="changeSelect">
+									<td>changeSelect</td>
+									<td>Object</td>
+									<td>下拉树面板开闭状态改变后，用户自定义想做的事情，<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.6新增）</span></td>
+									<td>
+										<pre class="layui-code" lay-title="changeSelect方法示例">
+											dtree.on("changeSelect('demoTree')" ,function(obj){
+											  console.log(obj.show); // 下拉树面板是否展开
+											  console.log(obj.param); // 点击下拉树选中的参数集
+											});
+										</pre>
+									</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -2039,6 +2061,18 @@
 									<td>初始化下拉树的参数</td>
 									<td>-</td>
 								</tr>
+								<tr data-vs="vs256">
+									<td><span style="color:#c2c2c2;">DTree.prototype.reloadSelectSetting</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.6新增）</span></td>
+									<td>Object</td>
+									<td>重新设置下拉树的基本参数</td>
+									<td>-</td>
+								</tr>
+								<tr data-vs="vs256">
+									<td><span style="color:#c2c2c2;">DTree.prototype.reloadSelectDom</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.6新增）</span></td>
+									<td>Object</td>
+									<td>，重新渲染下拉树的Dom结构</td>
+									<td>-</td>
+								</tr>
 								<tr data-vs="vs250">
 									<td><span style="color:#c2c2c2;">DTree.prototype.autoHeight</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>-</td>
@@ -2056,6 +2090,17 @@
 									<td>-</td>
 									<td>初始化树</td>
 									<td>-</td>
+								</tr>
+								<tr id="rollbackHtml" data-vs="vs256">
+									<td>DTree.prototype.rollbackHtml</td>
+									<td>String</td>
+									<td>基于备份的Html数据回滚，并且附上选中状态</td>
+									<td>
+										<pre class="layui-code" lay-title="rollbackHtml方法示例">
+											//DemoTree.rollbackHtml("001");
+											//DemoTree.rollbackHtml("001,002,004");
+										</pre>
+									</td>
 								</tr>
 								<tr id="getChild">
 									<td>DTree.prototype.getChild</td>
@@ -2175,6 +2220,16 @@
 									<td>
 										<pre class="layui-code" lay-title="setDisabledNodes方法示例">
 											DemoTree.setDisabledNodes("001,002");
+										</pre>
+									</td>
+								</tr>
+								<tr id="setDisabledAllNodes" data-vs="vs256">
+									<td><span style="color:#FF5722;">DTree.prototype.setDisabledAllNodes</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.6新增）</span></td>
+									<td>-</td>
+									<td>设置全部节点为disabled</td>
+									<td>
+										<pre class="layui-code" lay-title="setDisabledNodes方法示例">
+											DemoTree.setDisabledAllNodes();
 										</pre>
 									</td>
 								</tr>
@@ -2479,6 +2534,17 @@
 										</pre>
 									</td>
 								</tr>
+								<tr id="getCheckbarJsonArrParam" data-vs="vs256">
+									<td>DTree.prototype.getCheckbarJsonArrParam<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.6新增）</span></td>
+									<td>-</td>
+									<td>获取基于返回参数的树的复选框参数数组</td>
+									<td>
+										<pre class="layui-code" lay-title="getCheckbarJsonArrParam方法示例">
+											var param = DemoTree.getCheckbarJsonArrParam();
+											console.log(param);
+										</pre>
+									</td>
+								</tr>
 								<tr>
 									<td><span style="color:#c2c2c2;">DTree.prototype.getCheckbarNodeParam</span></td>
 									<td>Dom,Dom</td>
@@ -2503,6 +2569,46 @@
 									<td>
 										<pre class="layui-code" lay-title="changeCheckbarNodes方法示例">
 											DemoTree.clickNodeCheckbar("001");
+										</pre>
+									</td>
+								</tr>
+								<tr id="checkAllNode" data-vs="vs256">
+									<td>DTree.prototype.checkAllNode<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.6新增）</span></td>
+									<td>-</td>
+									<td>复选框全选</td>
+									<td>
+										<pre class="layui-code" lay-title="checkAllNode方法示例">
+											DemoTree.checkAllNode();
+										</pre>
+									</td>
+								</tr>
+								<tr id="cancelCheckedNode" data-vs="vs256">
+									<td>DTree.prototype.cancelCheckedNode<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.6新增）</span></td>
+									<td>-</td>
+									<td>取消全部复选框选中</td>
+									<td>
+										<pre class="layui-code" lay-title="cancelCheckedNode方法示例">
+											DemoTree.cancelCheckedNode();
+										</pre>
+									</td>
+								</tr>
+								<tr id="invertCheckedNode" data-vs="vs256">
+									<td>DTree.prototype.invertCheckedNode<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.6新增）</span></td>
+									<td>-</td>
+									<td>反选复选框</td>
+									<td>
+										<pre class="layui-code" lay-title="invertCheckedNode方法示例">
+											DemoTree.invertCheckedNode();
+										</pre>
+									</td>
+								</tr>
+								<tr id="removeCheckedNode" data-vs="vs256">
+									<td>DTree.prototype.removeCheckedNode<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.6新增）</span></td>
+									<td>-</td>
+									<td>删除选中节点</td>
+									<td>
+										<pre class="layui-code" lay-title="removeCheckedNode方法示例">
+											DemoTree.removeCheckedNode();
 										</pre>
 									</td>
 								</tr>
@@ -2916,8 +3022,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["基础参数一览表","复选框配置","获取指定节点值","复选框半选状态设置","复选框选中状态设置","menubarTips","toolbarShow","errData","getNodeDom","clickNodeCheckbar",
-							           "获取上级节点值集","partialRefreshAdd","partialRefreshEdit","partialRefreshDel","cancelNavThis","全局配置","select加载配置","初始化下拉树","selectInputName"];
+							var tts = ["基础参数一览表","select加载配置","初始化下拉树","selectInputName","changeSelect","rollbackHtml","setDisabledAllNodes","getCheckbarJsonArrParam"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

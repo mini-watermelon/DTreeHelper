@@ -255,6 +255,7 @@
 							<div class="layui-fluid">
 								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
 									$("#openTree3_btn").click(function(){
+									  var DTree = null;
 									  layer.open({
 									    type: 1, //type:0 也行
 									    title: "选择树",
@@ -262,7 +263,7 @@
 									    content: '<ul id="openTree3" class="dtree" data-id="0"></ul>',
 									    btn: ['确认选择'],
 									    success: function(layero, index){
-									      var DTree = dtree.render({
+									      DTree = dtree.render({
 									        obj: $(layero).find("#openTree3"), 
 									        url: "../json/case/openTree3.json",
 									        checkbar: true // 开启复选框
@@ -276,14 +277,11 @@
 									        flag = false;
 									      }
 									      
-									      var ids = [], names = [];
-									      for(var key in params){
-									        var param = params[key];
-									        ids.push(param.nodeId);
-									        names.push(param.context);
-									      }
-									      $("#reportId3").val(ids.join(","));
-									      $("#reportName3").val(names.join(","));
+									      // 获取复选框数组数据
+									      var paramJsonArr = DTree.getCheckbarJsonArrParam();
+									      $("#reportId3").val(paramJsonArr["nodeId"].join(","));
+									      $("#reportName3").val(paramJsonArr["context"].join(","));
+									      
 									      if(flag){
 									        layer.close(index);
 									      }
@@ -419,6 +417,7 @@
 									        flag = false;
 									      }
 									      
+									      // 设置复选框的值，也可以用示例3的方式
 									      var ids = [], names = [];
 									      for(var key in params){
 									        var param = params[key];
@@ -427,6 +426,8 @@
 									      }
 									      $("#reportId5").val(ids.join(","));
 									      $("#reportName5").val(names.join(","));
+									      
+									      
 									      if(flag){
 									        layer.close(index);
 									      }
@@ -489,7 +490,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = [];
+							var tts = ["弹层获取复选框数据"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -557,6 +558,7 @@
 		
 		// 2.openTree3
 		$("#openTree3_btn").click(function(){
+			var DTree = null;
 			layer.open({
 				type: 1,	//type:0 也行
 				title: "选择树",
@@ -564,7 +566,7 @@
 				content: '<ul id="openTree3" class="dtree" data-id="0"></ul>',
 				btn: ['确认选择'],
 				success: function(layero, index){
-					var DTree = dtree.render({
+					DTree = dtree.render({
 						obj: $(layero).find("#openTree3"),   // 如果直接用elem加载不出来，则可以使用这个方式加载jquery的DOM
 						url: "../json/case/openTree3.json",
 						checkbar: true // 开启复选框
@@ -579,7 +581,11 @@
 						flag = false;
 					}
 					
-					var ids = [];
+					var paramJsonArr = DTree.getCheckbarJsonArrParam();
+					$("#reportId3").val(paramJsonArr["nodeId"].join(","));
+					$("#reportName3").val(paramJsonArr["context"].join(","));
+					
+					/* var ids = [];
 					var names = [];
 					for(var key in params){
 						var param = params[key];
@@ -588,7 +594,7 @@
 					}
 					
 					$("#reportId3").val(ids.join(","));
-					$("#reportName3").val(names.join(","));
+					$("#reportName3").val(names.join(",")); */
 					
 					if(flag){
 						layer.close(index);

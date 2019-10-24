@@ -36,6 +36,11 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
+									<ul data-vlog="vs256">
+										<li>【新增】基础属性新增：bak，内置属性，备份Html。</li>
+										<li>【新增】内置方法新增：rollbackHtml，基于备份的Html数据回滚</li>
+										<li>【新增】内置方法新增：setDisabledAllNodes，设置全部节点为disabled</li>
+									</ul>
 									<ul data-vlog="vs255">
 										<li>【新增】基础属性新增：width，设置树的宽度。</li>
 										<li>【新增】基础方法新增：set，可以增加同一次引用中，dtree的公共属性指定，所有基础属性都可以指定。</li>
@@ -345,6 +350,7 @@
 									  url: "../json/case/commonTree6.json",
 									  done: function(result, $ul){
 									    //CommonTree6.setDisabledNodes("001,002"); // 设置节点禁用
+									    //CommonTree6.setDisabledAllNodes(); // 设置全部节点禁用
 									    //CommonTree6.cancelDisabledNodes("001"); // 取消节点禁用
 									    //var p1 = CommonTree6.getDisabledNodesParam("001,002"); // 获取禁用节点的信息
 									    //var p2 = CommonTree6.getAllDisabledNodesParam(); // 获取全部禁用节点的信息
@@ -612,7 +618,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["节点禁用","节点隐藏","手风琴","无数据提示用法","指定高度"];
+							var tts = ["节点禁用"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -740,7 +746,10 @@
 		// 2.commonTree6
 		var CommonTree6 = dtree.render({
 		  elem: "#commonTree6",
-		  url: "../json/case/commonTree6.json"
+		  url: "../json/case/commonTree6.json",
+		  /*done: function(){
+			  CommonTree6.setDisabledAllNodes();
+		  }*/
 		});
 		
 		$("#commonTree6_btn").click(function(){

@@ -36,6 +36,9 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
+									<ul data-vlog="vs256">
+										<li>【优化】数据格式:获取格式中的basicData和recordData将提前转化为JSON格式，不在需要手动转换。</li>
+									</ul>
 									<ul data-vlog="vs255">
 										<li>【新增】基础属性新增：withCredentials，用于开启生成跨域的XHR对象，设置后可指定同源session，默认false。</li>
 									</ul>
@@ -256,10 +259,8 @@
 									// 点击节点名称获取获取basicData的值
 									dtree.on("node('asyncTree6')" ,function(obj){
 									  var basicData = obj.param.basicData;  // 取出
-									  basicData = dtree.unescape(basicData); // 转义
-									  var basicDataJSON = JSON.parse(basicData);  // 转成JSON格式
 									  
-									  layer.msg(JSON.stringify(basicDataJSON));  //输出
+									  layer.msg(JSON.stringify(basicData));  //输出
 									});
 								</pre>
 							</div>
@@ -320,10 +321,8 @@
 									// 点击节点名称获取获取basicData的值
 									dtree.on("node('asyncTreeRecord')" ,function(obj){
 									  var recordData = obj.param.recordData;  // 取出
-									  recordData = dtree.unescape(recordData); // 转义
-									  var recordDataJSON = JSON.parse(recordData);  // 转成JSON格式
 									  
-									  layer.msg(JSON.stringify(recordDataJSON));  //输出
+									  layer.msg(JSON.stringify(recordData));  //输出
 									});
 								</pre>
 							</div>
@@ -546,7 +545,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = [];
+							var tts = ["basicData用法","recordData用法"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -631,10 +630,10 @@
 		
 		dtree.on("node('asyncTree6')" ,function(obj){
 			var basicData = obj.param.basicData;
-			basicData = dtree.unescape(basicData);
-			var basicDataJSON = JSON.parse(basicData);
+			//basicData = dtree.unescape(basicData);
+			//var basicDataJSON = JSON.parse(basicData);
 			
-		 	layer.msg(JSON.stringify(basicDataJSON));
+		 	layer.msg(JSON.stringify(basicData));
 		});
 		
 		//6. asyncTreeRecord
@@ -646,10 +645,10 @@
 		
 		dtree.on("node('asyncTreeRecord')" ,function(obj){
 			var recordData = obj.param.recordData;
-			recordData = dtree.unescape(recordData);
-			var recordDataJSON = JSON.parse(recordData);
+			//recordData = dtree.unescape(recordData);
+			//var recordDataJSON = JSON.parse(recordData);
 			
-		 	layer.msg(JSON.stringify(recordDataJSON));
+		 	layer.msg(JSON.stringify(recordData));
 		});
 		
 		dtree.render({

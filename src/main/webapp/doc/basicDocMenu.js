@@ -307,6 +307,11 @@ var menuTree = [{
 	 	"title": "iframe加载完毕",
 	 	"last": true,
 	 	"children":[]
+ 	},{
+ 		"id":"changeSelect",
+	 	"title": "下拉树点击",
+	 	"last": true,
+	 	"children":[]
  	}]
 },{
 	"id":"nzhsyl",
@@ -325,6 +330,11 @@ var menuTree = [{
  	},{
  		"id":"getChild",
 	 	"title": "getChild",
+	 	"last": true,
+	 	"children":[]
+ 	},{
+ 		"id":"rollbackHtml",
+	 	"title": "rollbackHtml",
 	 	"last": true,
 	 	"children":[]
  	},{
@@ -350,6 +360,11 @@ var menuTree = [{
  	},{
  		"id":"setDisabledNodes",
 	 	"title": "setDisabledNodes",
+	 	"last": true,
+	 	"children":[]
+ 	},{
+ 		"id":"setDisabledAllNodes",
+	 	"title": "setDisabledAllNodes",
 	 	"last": true,
 	 	"children":[]
  	},{
@@ -435,6 +450,11 @@ var menuTree = [{
  	},{
  		"id":"getCheckbarNodesParam1",
 	 	"title": "getCheckbarNodesParam",
+	 	"last": true,
+	 	"children":[]
+ 	},{
+ 		"id":"getCheckbarJsonArrParam",
+	 	"title": "getCheckbarJsonArrParam",
 	 	"last": true,
 	 	"children":[]
  	},{

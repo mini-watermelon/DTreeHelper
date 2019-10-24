@@ -1,36 +1,36 @@
 var menuTree = [{
 	"id":"rryf",
-	"title": "render/reload用法",
+	"title": "render/reload",
 	"last": true,
 	"children":[]
 },{
 	"id":"djryjdhdsj",
-	"title": "节点点击事件用法",
+	"title": "节点点击事件",
 	"last": true,
 	"children":[]
 },{
 	"id":"jdybjz",
-	"title": "异步加载简单用法",
+	"title": "异步加载简单",
 	"last": true,
 	"children":[]
 },{
 	"id":"yjfxk",
-	"title": "一级复选框简单用法",
+	"title": "一级复选框简单",
 	"last": true,
 	"children":[]
 },{
 	"id":"zdyjdzk",
-	"title": "初始自定节点展开用法",
+	"title": "初始自定节点展开",
 	"last": true,
 	"children":[]
 },{
 	"id":"qxzdjz",
-	"title": "取消自动加载节点用法",
+	"title": "取消自动加载节点",
 	"last": true,
 	"children":[]
 },{
 	"id":"djwbjzjd",
-	"title": "点击文本加载节点用法",
+	"title": "点击文本加载节点",
 	"last": true,
 	"children":[]
 },{
@@ -40,22 +40,22 @@ var menuTree = [{
 	"children":[]
 },,{
 	"id":"jdjy",
-	"title": "节点禁用用法",
+	"title": "节点禁用",
 	"last": true,
 	"children":[]
 },{
 	"id":"jdyc",
-	"title": "节点隐藏用法",
+	"title": "节点隐藏",
 	"last": true,
 	"children":[]
 },{
 	"id":"accordion",
-	"title": "手风琴用法",
+	"title": "手风琴",
 	"last": true,
 	"children":[]
 },{
 	"id":"nonetext",
-	"title": "无数据提示用法",
+	"title": "无数据提示",
 	"last": true,
 	"children":[]
 },{
