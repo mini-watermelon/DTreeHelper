@@ -36,6 +36,11 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
+									<ul data-vlog="vs25x">
+										<li>【优化】基础方法优化：success方法，新增一个入参，表示是否第一次渲染数据，并支持在增量加载时，加载子节点时也可以回调该方法。</li>
+										<li>【优化】基础方法优化：done方法，新增一个入参，表示是否第一次渲染数据，并支持在增量加载时，在加载子节点时也可以回调该方法。</li>
+										<li>【新增】基础属性新增：asyncLoad，异步加载初始加载层级树组</li>
+									</ul>
 									<ul data-vlog="vs256">
 										<li>【优化】数据格式:获取格式中的basicData和recordData将提前转化为JSON格式，不在需要手动转换。</li>
 									</ul>
@@ -379,18 +384,20 @@
 					<legend>异步加载成功回调（success）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></legend>
 					<div class="layui-field-box">
 						<p>树异步加载成功后，判定数据有效时的回调函数，在解析数据和done回调之前执行。</p>
+						<p>现在支持在增量加载时，加载子节点也可以回调该方法。<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
 							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTreeSuc" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<button class="layui-btn layui-normal" id="asyncTreeSuc_btn">点击按钮重载树</button>
 								<pre class="layui-code" lay-title="JavaScript">
-									// 回调函数中会带有两个参数，1是本次加载的数据，2是组件的根节点的jQuery对象，可以打开控制台看看是什么参数哦
+									// 回调函数中会带有三个参数，1是本次加载的数据，2是组件的根节点的jQuery对象，3是表示是否第一次加载，可以打开控制台看看是什么参数哦
 									dtree.render({
 									  elem: "#asyncTreeSuc",
 									  url: "../json/case/asyncTree6.json",
-									  success: function(data, obj){  
+									  success: function(data, obj, first){  
 									    console.log(data);
 									    console.log(obj);
+									    console.log(first);
 									  }
 									});
 									
@@ -403,7 +410,7 @@
 									  dtree.reload("asyncTree7",{
 									    url: "../json/case/asyncTree1.json",
 									    initLevel: "1",
-									    success: function(data, obj){
+									    success: function(data, obj, first){
 									      obj.attr("data-id","-1"); // 修改ul的data-id
 									    }
 									  });
@@ -420,6 +427,7 @@
 					<legend>异步加载完毕后回调（done）</legend>
 					<div class="layui-field-box">
 						<p>有时，你需要在树异步加载完毕后在，success回调和解析之后，在执行一些自定义的方法，就好像table组件中有done回调一样，dtree中也有。</p>
+						<p>现在支持在增量加载时，加载子节点也可以回调该方法。<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
 							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTree7" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
@@ -428,9 +436,10 @@
 									dtree.render({
 									  elem: "#asyncTree7",
 									  url: "../json/case/asyncTree6.json",
-									  done: function(data, obj){  // 异步加载完毕后回调，参数：1是本次加载的数据，2是组件的根节点的jQuery对象，可以打开控制台看看是什么参数哦
+									  done: function(data, obj, first){  // 异步加载完毕后回调，参数：1是本次加载的数据，2是组件的根节点的jQuery对象，3是表示是否第一次加载，可以打开控制台看看是什么参数哦
 									    console.log(data);
 									    console.log(obj);
+									    console.log(first);
 									  },
 									  error: function(XMLHttpRequest, textStatus, errorThrown){  //异步加载异常时回调
 									    console.log("error");
@@ -449,8 +458,10 @@
 									  dtree.reload("asyncTree7",{
 									    url: "../json/case/asyncTree1.json",
 									    initLevel: "1",
-									    done: function(data, obj){
-									      dtree.dataInit("asyncTree7", "003002"); // 选中深圳市
+									    done: function(data, obj, first){
+									      if(first) {
+									        dtree.dataInit("asyncTree7", "003002"); // 选中深圳市
+									      }
 									    }
 									  });
 									})
@@ -491,6 +502,41 @@
 									token: 123456789  // 该参数被携带
 									User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36
 									X-Requested-With: XMLHttpRequest
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs25x">
+				<fieldset class="layui-elem-field layui-field-title" id="asyncLoad">
+					<legend>异步初始化加载层级（asyncLoad）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></legend>
+					<div class="layui-field-box">
+						<p>你可以指定异步加载的某一个节点初始化加载层级。</p>
+						<p>当你配置了asyncLoad，在树初始化加载之后，仍会去你配置的asyncLoad数组里尝试加载下一级节点，如果中间某一级节点的ID匹配不上，或者已经加载完成，则终止加载。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTreeLoad" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-normal" id="asyncTreeSuc_btn">点击按钮重载树</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#asyncTreeLoad",
+									  url: "/DTreeHelper/toolbar/query",
+									  initLevel: "1",
+									  asyncLoad: ["003","003001"],
+									  done: function(res, $ul, first){
+									    
+									    var data = res.data;
+									    for(var i=0; i&lt;data.length; i++) {
+									      var d = data[i];
+									      if(d.id == '003001001') {
+									        dtree.dataInit("asyncTreeLoad", "003001001"); // 增量加载下尝试初始化选中
+									        break;
+									      }
+									    }
+									  }
+									});
 								</pre>
 							</div>
 						</div>
@@ -545,7 +591,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["basicData用法","recordData用法"];
+							var tts = ["basicData用法","recordData用法","异步初始化加载层级"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -708,6 +754,24 @@
 			url: "../json/case/asyncTree1.json",
 			initLevel: 1,
 			headers: {"token":"123456789"}
+		});
+		
+		//9. asyncTreeLoad
+		dtree.render({
+			elem: "#asyncTreeLoad",
+			url: "/DTreeHelper/toolbar/query",
+			initLevel: "1",
+			asyncLoad: ["003","003001"],
+			done: function(res, $ul, first){
+				var data = res.data;
+				for(var i=0; i<data.length; i++) {
+					var d = data[i];
+					if(d.id == '003001001') {
+						dtree.dataInit("asyncTreeLoad", "003001001");
+						break;
+					}
+				}
+			}
 		});
 		
 	/*	var test = util.timeAgo("2018-12-20 11:20:00", true);

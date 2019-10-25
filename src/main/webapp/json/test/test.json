@@ -1,214 +1,94 @@
 {
-	"status":{"code":200,"message":"操作成功"},
-	"data":[{
-		"id":"001",
-		"title": "湖南省",
-		"last": false,
-		"level": "1",
-		"parentId": "001",
-		"checkArr": "",
-		"children":[{
-			"id":"001001",
-			"title": "长沙市",
-			"last":true,
-			"hide":true,
-			"parentId": "001",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"001002",
-			"title": "株洲市",
-			"last":true,
-			"parentId": "001",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"001003",
-			"title": "湘潭市",
-			"last":true,
-			"disabled": true,
-			"parentId": "001",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"001004",
-			"title": "衡阳市",
-			"last":true,
-			"parentId": "001",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"001005",
-			"title": "郴州市",
-			"last":true,
-			"parentId": "001",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		}]
-	},{
-		"id":"002",
-		"title": "湖北省",
-		"last": false,
-		"parentId": "0",
-		"level": "1",
-		"checkArr": [{"type": "0", "checked": "0"}],
-		"children":[{
-			"id":"002001",
-			"title": "武汉市",
-			"last":true,
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"002002",
-			"title": "黄冈市",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"last":true,
-			"parentId": "002",
-			"level": "2"
-		},{
-			"id":"002003",
-			"title": "潜江市",
-			"last":true,
-			"parentId": "002",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"002004",
-			"title": "荆州市",
-			"last":true,
-			"parentId": "002",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"002005",
-			"title": "襄阳市",
-			"last":true,
-			"parentId": "002",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"				
-		}]
-	},{
-		"id":"003",
-		"title": "广东省",
-		"last": false,
-		"parentId": "0",
-		"level": "1",
-		"checkArr": [{"type": "0", "checked": "0"}],
-		"children":[{
-			"id":"003001",
-			"title": "广州市",
-			"last":false,
-			"parentId": "003",
-			"level": "2",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"children":[{
-				"id":"003001001",
-				"title": "天河区",
-				"last":true,
-				"parentId": "003001",
-				"checkArr": [{"type": "0", "checked": "0"}],
-				"level": "3"
-			},{
-				"id":"003001002",
-				"title": "花都区",
-				"last":true,
-				"parentId": "003001",
-				"checkArr": [{"type": "0", "checked": "0"}],
-				"level": "3"
-			}]
-		},{
-			"id":"003002",
-			"title": "深圳市",
-			"last":true,
-			"parentId": "003",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"003003",
-			"title": "中山市",
-			"last":true,
-			"parentId": "003",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"003004",
-			"title": "东莞市",
-			"last":true,
-			"parentId": "003",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"003005",
-			"title": "珠海市",
-			"last":true,
-			"parentId": "003",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"003006",
-			"title": "韶关市",
-			"last":true,
-			"parentId": "003",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		}]
-	},{
-		"id":"004",
-		"title": "浙江省",
-		"last": false,
-		"level": "1",
-		"parentId": "0",
-		"checkArr": [{"type": "0", "checked": "0"}],
-		"children":[{
-			"id":"004001",
-			"title": "杭州市",
-			"last":true,
-			"parentId": "004",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"004002",
-			"title": "温州市",
-			"last":true,
-			"parentId": "004",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"004003",
-			"title": "绍兴市",
-			"last":true,
-			"parentId": "004",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"004004",
-			"title": "金华市",
-			"last":true,
-			"parentId": "004",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		},{
-			"id":"004005",
-			"title": "义乌市",
-			"last":true,
-			"parentId": "004",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		}]
-	},{
-		"id":"005",
-		"title": "福建省",
-		"last": false,
-		"parentId": "0",
-		"level": "1",
-		"checkArr": [{"type": "0", "checked": "0"}],
-		"children":[{
-			"id":"005001",
-			"title": "厦门市",
-			"last":true,
-			"parentId": "005",
-			"checkArr": [{"type": "0", "checked": "0"}],
-			"level": "2"
-		}]
-	}]
+    "data": [
+        {
+            "checkArr": "[{"type": "0", "checked": "0"}]",
+            "children": [
+                {
+                    "checkArr": "[{"type": "0", "checked": "0"}]",
+                    "children": [],
+                    "id": "001001",
+                    "parentId": "001",
+                    "rdesc": "管理所有产品部门组员",
+                    "title": "产品主管"
+                }
+            ],
+            "id": "001",
+            "parentId": "0",
+            "rdesc": "管理整个公司产品部门",
+            "title": "产品经理"
+        },
+        {
+            "checkArr": "[{"type": "0", "checked": "0"}]",
+            "children": [
+                {
+                    "checkArr": "[{"type": "0", "checked": "0"}]",
+                    "children": [
+                        {
+                            "checkArr": "[{"type": "0", "checked": "0"}]",
+                            "children": [],
+                            "id": "002001001",
+                            "parentId": "002001",
+                            "rdesc": "协同开发人员一同完成产品开发",
+                            "title": "开发人员"
+                        }
+                    ],
+                    "id": "002001",
+                    "parentId": "002",
+                    "rdesc": "管理所有技术研发",
+                    "title": "技术主管"
+                }
+            ],
+            "id": "002",
+            "parentId": "0",
+            "rdesc": "担任整个公司产品研发",
+            "title": "技术总监"
+        },
+        {
+            "checkArr": "[{"type": "0", "checked": "0"}]",
+            "children": [
+                {
+                    "checkArr": "[{"type": "0", "checked": "0"}]",
+                    "children": [
+                        {
+                            "checkArr": "[{"type": "0", "checked": "0"}]",
+                            "children": [],
+                            "id": "003001001",
+                            "parentId": "003001",
+                            "rdesc": "协同销售一组长做好销售工作",
+                            "title": "销售一组组员"
+                        }
+                    ],
+                    "id": "003001",
+                    "parentId": "003",
+                    "rdesc": "管理销售一组组员做好销售工作",
+                    "title": "销售一组"
+                },
+                {
+                    "checkArr": "[{"type": "0", "checked": "0"}]",
+                    "children": [
+                        {
+                            "checkArr": "[{"type": "0", "checked": "0"}]",
+                            "children": [],
+                            "id": "003002001",
+                            "parentId": "003002",
+                            "rdesc": "协同销售二组长做好销售工作",
+                            "title": "销售二组组员"
+                        }
+                    ],
+                    "id": "003002",
+                    "parentId": "003",
+                    "rdesc": "管理销售二组组员做好销售工作",
+                    "title": "销售二组"
+                }
+            ],
+            "id": "003",
+            "parentId": "0",
+            "rdesc": "管理所有销售",
+            "title": "销售经理"
+        }
+    ],
+    "status": {
+        "code": 200,
+        "message": "操作成功"
+    }
 }

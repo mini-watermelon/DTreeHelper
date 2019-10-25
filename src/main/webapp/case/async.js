@@ -48,4 +48,9 @@ var menuTree = [{
 	"title": "添加headers属性",
 	"last": true,
 	"children":[]
+},{
+	"id":"asyncLoad",
+	"title": "异步初始化加载层级",
+	"last": true,
+	"children":[]
 }];

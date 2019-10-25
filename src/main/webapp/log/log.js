@@ -1,4 +1,10 @@
 var menuTree = [{
+	"id":"019",
+ 	"title": "v2.5.x(2019/?/?)【优化】",
+ 	"last": true,
+ 	"level": "1",
+ 	"children":[]
+ },{
 	"id":"018",
  	"title": "v2.5.6(2019/10/24)【新增】",
  	"last": true,

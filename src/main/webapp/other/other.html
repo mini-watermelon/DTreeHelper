@@ -374,7 +374,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["下拉框", "弹出层下拉框" ,"穿梭框"];
+							var tts = ["穿梭框"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -469,7 +469,10 @@
 			if(param.length == 0) {
 				layer.msg("请至少选择一个节点");
 			}
-			dtree.reload("cskTree2",{data:param});
+			dtree.reload("cskTree2",{
+				data:param
+				
+			});
 		});
 	});
 </script>

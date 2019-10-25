@@ -3,8 +3,8 @@
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/
  *@License https://www.layui.com/
- *@LASTTIME 2019/10/24
- *@VERSION v2.5.6
+ *@LASTTIME 2019/10/25
+ *@VERSION v2.5.x
  */
 layui.define(['jquery','layer','form'], function(exports) {
     var $ = layui.$,
@@ -32,7 +32,7 @@ layui.define(['jquery','layer','form'], function(exports) {
         $WIN = $(window),				//window窗口
         $DOC = $(document),				//当前文档
         MOD_NAME = "dtree",				//模块名称
-        VERSION = "v2.5.6",				//版本
+        VERSION = "v2.5.x",				//版本
         OPTIONS = {},					//全局属性配置
         DTrees = {};				    //当前被实例化的树的集合
 
@@ -496,6 +496,7 @@ layui.define(['jquery','layer','form'], function(exports) {
         /** 数据加载参数**/
         this.url = this.options.url || OPTIONS.url || ""; //请求地址
         this.async = (typeof (this.options.async) === "boolean") ? this.options.async : (typeof (OPTIONS.async) === "boolean") ? OPTIONS.async : true; //异步同步加载,默认异步加载
+        this.asyncLoad = this.options.asyncLoad || OPTIONS.asyncLoad || []; //初始异步加载层级数据
         this.headers = this.options.headers || OPTIONS.headers || {}; //ajax header属性
         this.method = this.options.method || OPTIONS.method || "post"; //请求类型
         this.dataType = this.options.dataType || OPTIONS.dataType || "json"; //参数类型
@@ -509,8 +510,8 @@ layui.define(['jquery','layer','form'], function(exports) {
         this.dataStyle = this.options.dataStyle || OPTIONS.dataStyle || "defaultStyle"; //用于用户配置layui通用的json数据风格,layuiStyle:layui风格，defaultStyle：默认风格
         this.errDataShow = this.options.errDataShow || OPTIONS.errDataShow || false; //是否在递归数据出现错误后，显示错误信息，默认false
         this.withCredentials = this.options.withCredentials || OPTIONS.withCredentials || false; //是否允许跨域请求，默认false
-        this.success = this.options.success || OPTIONS.success || function(data, obj){}; //树加载完毕后执行解析树之前的回调
-        this.done = this.options.done || OPTIONS.done || function(data, obj){};	 //树加载完毕后的回调
+        this.success = this.options.success || OPTIONS.success || function(data, obj, first){}; //树加载完毕后执行解析树之前的回调
+        this.done = this.options.done || OPTIONS.done || function(data, obj, first){};	 //树加载完毕后的回调
         this.formatter = $.extend(this.formatter, this.options.formatter || OPTIONS.formatter) || this.formatter; //数据过滤
         this.error = this.options.error || OPTIONS.error || function(XMLHttpRequest, textStatus, errorThrown){}; // 异步加载异常回调
         this.complete = this.options.complete || OPTIONS.complete || function(XMLHttpRequest, textStatus){};	// 异步加载完成回调
@@ -636,6 +637,7 @@ layui.define(['jquery','layer','form'], function(exports) {
         /** 数据加载参数**/
         this.url = this.options.url || this.url; //请求地址
         this.async = (typeof (this.options.async) === "boolean") ? this.options.async : this.async;	//异步同步加载,默认异步加载
+        this.asyncLoad = this.options.asyncLoad || this.asyncLoad; //初始异步加载层级数据
         this.headers = this.options.headers || this.headers; //ajax header属性
         this.method = this.options.method || this.method; //请求类型
         this.dataType = this.options.dataType || this.dataType; //参数类型
@@ -1385,8 +1387,42 @@ layui.define(['jquery','layer','form'], function(exports) {
         _this.init();
     };
 
-    // 初始化树
-    DTree.prototype.init = function(){
+    // 初始化加载
+    DTree.prototype.loadTreeInit = function(){
+    	var _this = this;
+    	var asyncLoad = _this.asyncLoad;
+    	// 初始化加载
+    	_this.init(function(){
+    		// ajax加载之后的回调
+    		//console.log(asyncLoad);
+    		if(asyncLoad && asyncLoad.length > 0) {
+    			// 说明此时要异步加载子节点
+    			_this.loadChildTreeInit(asyncLoad, 0);
+    		}
+    	})
+    }
+    
+    // 初始化加载子节点
+    DTree.prototype.loadChildTreeInit = function(asyncLoad, i){
+    	var _this = this;
+    	if(i == asyncLoad.length) { // 满足条件，终止递归
+    		return ;
+    	}
+
+    	var $div = _this.getNode(asyncLoad[i]);
+    	
+    	if($div && $div.length > 0) {
+    		// 加载子节点
+    		_this.getChild($div, undefined, function(){
+    			// 继续递归
+    			_this.loadChildTreeInit(asyncLoad, ++i);
+    		});
+    	}
+    	
+    }
+    
+ // 初始化树
+    DTree.prototype.init = function(callback){
         var _this = this;
         if (typeof _this !== "object") {
             //_this.obj.html(_this.getNoneDom().errText("树组件未成功加载，请检查配置"));
@@ -1398,191 +1434,58 @@ layui.define(['jquery','layer','form'], function(exports) {
         _this.autoHeight();
 
         if(_this.data) {
-            if(typeof _this.data.length === 'undefined'){
-                //_this.obj.html(_this.getNoneDom().errText("数据解析异常，data数据格式不正确"));
-                layer.msg("数据解析异常，data数据格式不正确", {icon:5});
-                return ;
-            }
-
-            if(_this.data.length == 0) {
-                _this.obj.html(_this.getNoneDom().text());
-                return ;
-            }
-
-            //先将ul中的元素清空
-            _this.obj.html("");
-
-            setTimeout(function () {
-                // 加载完毕后执行树解析前的回调
-                _this.success(_this.data, _this.obj);
-
-                // 第一次解析树
-                if (_this.dataFormat == 'list'){
-                    //1.识别根节点ul中的data-id标签，判断顶级父节点
-                    var pid = _this.obj.attr("data-id");
-                    //2.构建一个存放节点的树组
-                    var rootListData = _this.queryListTreeByPid(pid, _this.data);
-                    _this.loadListTree(rootListData, _this.data, 1);
-                } else {
-                    _this.loadTree(_this.data, 1);
-                }
-
-                // 显示树线
-                _this.showLine();
-
-                // 这种情况下需要一开始就将toolbar显示在页面上
-                if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
-                    _this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
-                }
-
-                // 判断是否存在错误数据，并是否打印错误数据
-                _this.msgErrData();
-                
-                // 设置复选框的初始值
-                if(_this.select){
-                	_this.selectVal(_this.selectInitVal);
-                }
-
-                // 保存树副本
-                _this.bak = _this.obj.html();
-                
-                // 加载完毕后的回调
-                _this.done(_this.data, _this.obj);
-            }, 100);
+        	_this.dataLoadTree(true, _this.obj, _this.data);
         } else {
-            if (!_this.url) {
-                //_this.obj.html(_this.getNoneDom().errText("数据请求异常，url参数未指定"));
-                layer.msg("数据请求异常，url参数未指定", {icon:5});
-                return ;
-            }
-
-            //先将ul中的元素清空
-            _this.obj.html("");
-
-            var index = _this.load ? layer.load(1) : "";
-
-            AjaxHelper.request({
-                async: _this.async,
-                headers: _this.headers,
-                type: _this.method,
-                url: _this.url,
-                dataType: _this.dataType,
-                contentType: _this.contentType,
-                withCredentials: _this.withCredentials,
-                data: _this.getFilterRequestParam(_this.getRequestParam()),
-                success: function(result) {
-                    if (typeof result === 'string') {
-                        result = $.parseJSON(result);
-                    }
-                    
-                    // 加载完毕后执行树解析前的回调
-                    _this.success(result, _this.obj);
-                    
-                    var code = "";
-                    if (_this.dataStyle == 'layuiStyle'){
-                        code = result[_this.response.statusName];
-                    } else {
-                        code = result.status[_this.response.statusName];
-                    }
-
-                    if (code == _this.response.statusCode) {
-                        var d = result[_this.response.rootName];
-
-                        if(typeof d.length === 'undefined'){
-                            _this.obj.html(_this.getNoneDom().errText("数据解析异常，url回调后的数据格式不正确"));
-                            //layer.msg("数据解析异常，url回调后的数据格式不正确", {icon:5});
-                            return ;
-                        }
-
-                        if(d.length == 0) {
-                            _this.obj.html(_this.getNoneDom().text());
-                            return ;
-                        }
-
-                        // 第一次解析树
-                        if (_this.dataFormat == 'list'){
-                            //1.识别根节点ul中的data-id标签，判断顶级父节点
-                            var pid = _this.obj.attr("data-id");
-                            //2.构建一个存放节点的树组
-                            var rootListData = _this.queryListTreeByPid(pid, d);
-                            _this.loadListTree(rootListData, d, 1);
-                        } else {
-                            _this.loadTree(d, 1);
-                        }
-
-                        // 显示树线
-                        _this.showLine();
-
-                        // 这种情况下需要一开始就将toolbar显示在页面上
-                        if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
-                            _this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
-                        }
-
-                        // 判断是否存在错误数据，并是否打印错误数据
-                        _this.msgErrData();
-                        
-                        // 设置复选框的初始值
-                        if(_this.select){
-                        	_this.selectVal(_this.selectInitVal);
-                        }
-
-                        // 保存树副本
-                        _this.bak = _this.obj.html();
-                        
-                        // 加载完毕后的回调
-                        _this.done(result, _this.obj);
-                    } else {
-                        // 如果打印不出任何信息说明是在这里，用了错误的数据格式， 或返回码不正确
-                        if (_this.dataStyle == 'layuiStyle'){
-                            _this.obj.html(_this.getNoneDom().errText(result[_this.response.message]));
-                            _this.error(null, code, result[_this.response.message]);
-                            //layer.msg(result[_this.response.message], {icon:2});
-                        } else {
-                            _this.obj.html(_this.getNoneDom().errText(result.status[_this.response.message]));
-                            _this.error(null, code, result.status[_this.response.message]);
-                            //layer.msg(result.status[_this.response.message], {icon:2});
-                        }
-                    }
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown){// 异步加载异常回调
-                    _this.obj.html(_this.getNoneDom().errText(textStatus + ": " + errorThrown));
-                    _this.error(XMLHttpRequest, textStatus, errorThrown);
-                },
-                complete: function(XMLHttpRequest, textStatus){// 异步加载完成回调
-                    if(_this.load){layer.close(index);}
-                    _this.complete(XMLHttpRequest, textStatus);
-                }
-            });
+        	_this.asyncLoadTree(true, _this.obj, callback);
         }
     };
 
     // 加载子节点
-    DTree.prototype.getChild = function($div, data) {
+    DTree.prototype.getChild = function($div, data, callback) {
         var _this = this, $ul = $div.next("ul");
 
         _this.setNodeParam($div);
 
         if(typeof data !== 'undefined') {
-            if(typeof data.length === 'undefined'){
-                //_this.obj.html(_this.getNoneDom().errText("数据解析异常，data数据格式不正确"));
-                layer.msg("数据解析异常，data数据格式不正确", {icon:5});
-                return ;
-            }
+        	_this.dataLoadTree(false, $ul, data);
+        } else {
+        	_this.asyncLoadTree(false, $ul, callback);
+        }
+    };
+    
+    // 用data加载树
+    DTree.prototype.dataLoadTree = function(first, $ul, data){
+    	var _this = this;
+    	
+    	if(typeof data.length === 'undefined'){
+            layer.msg("数据解析异常，data数据格式不正确", {icon:5});
+            return ;
+        }
 
-            //先将ul中的元素清空
-            $ul.html("");
+        if(first && data.length == 0) {
+        	$ul.html(_this.getNoneDom().text());
+            return ;
+        }
 
+        //先将ul中的元素清空
+        $ul.html("");
+
+        setTimeout(function () {
+            // 加载完毕后执行树解析前的回调
+            _this.success(data, $ul, true);
+
+            var pid = (first == true) ? $ul.attr("data-id") : _this.node.nodeId;
+            var level = (first == true) ? 1 : parseInt(_this.node.level)+1;
+            
             // 解析树
             if (_this.dataFormat == 'list'){
-                var pid = _this.node.nodeId;
-                var level = parseInt(_this.node.level)+1;
-
-                var listData = _this.queryListTreeByPid(pid, data);
-                _this.loadListTree(listData, _this.data, level);
+                //1.构建一个存放节点的树组
+                var rootListData = _this.queryListTreeByPid(pid, data);
+                _this.loadListTree(rootListData, _this.data, level);
             } else {
                 _this.loadTree(data, level);
             }
-
+            
             // 显示树线
             _this.showLine();
 
@@ -1594,86 +1497,144 @@ layui.define(['jquery','layer','form'], function(exports) {
             // 判断是否存在错误数据，并是否打印错误数据
             _this.msgErrData();
             
-            // 保存树副本
-            _this.bak = _this.obj.html();
-
-        } else {
-            if (!_this.url) {
-                //_this.obj.html(_this.getNoneDom().errText("数据请求异常，url参数未指定"));
-                layer.msg("数据请求异常，url参数未指定", {icon:5});
-                return ;
+            // 设置复选框的初始值
+            if(first && _this.select){
+            	_this.selectVal(_this.selectInitVal);
             }
 
-            $ul.html("");
-            var index = _this.load ? layer.load(1) : "";
-            AjaxHelper.request({
-                async: _this.async,
-                headers: _this.headers,
-                type: _this.method,
-                url: _this.url,
-                dataType: _this.dataType,
-                withCredentials: _this.withCredentials,
-                data:  _this.getFilterRequestParam(_this.getRequestParam()),
-                success: function(result) {
-                    if (typeof result === 'string') {
-                        result = $.parseJSON(result);
-                    }
-                    var code = "";
-                    if (_this.dataStyle == 'layuiStyle'){
-                        code = result[_this.response.statusName];
-                    } else {
-                        code = result.status[_this.response.statusName];
-                    }
-
-                    if (code == _this.response.statusCode) {
-                        // 解析树
-                        var pid = _this.node.nodeId;
-                        var level = parseInt(_this.node.level)+1;
-                        if (_this.dataFormat == 'list'){
-                            var pListData = _this.queryListTreeByPid(pid, result[_this.response.rootName]);
-                            _this.loadListTree(pListData, result[_this.response.rootName], level, $ul);
-                        } else {
-                            _this.loadTree(result[_this.response.rootName], level, $ul);
-                        }
-
-                        // 显示树线
-                        _this.showLine();
-
-                        // 这种情况下需要一开始就将toolbar显示在页面上
-                        if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
-                            _this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
-                        }
-
-                        // 判断是否存在错误数据，并是否打印错误数据
-                        _this.msgErrData();
-
-                        $ul.addClass(NAV_SHOW);
-                        
-                        // 保存树副本
-                        _this.bak = _this.obj.html();
-                    } else {
-                        if (_this.dataStyle == 'layuiStyle'){
-                            _this.obj.html(_this.getNoneDom().errText(result[_this.response.message]));
-                            _this.error(null, code, result[_this.response.message]);
-                            //layer.msg(result[_this.response.message], {icon:2});
-                        } else {
-                            _this.obj.html(_this.getNoneDom().errText(result.status[_this.response.message]));
-                            _this.error(null, code, result.status[_this.response.message]);
-                            //layer.msg(result.status[_this.response.message], {icon:2});
-                        }
-                    }
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown){// 异步加载异常回调
-                    _this.obj.html(_this.getNoneDom().errText(textStatus + ": " + errorThrown));
-                    _this.error(XMLHttpRequest, textStatus, errorThrown);
-                },
-                complete: function(XMLHttpRequest, textStatus){// 异步加载完成回调
-                    if(_this.load){layer.close(index);}
-                    _this.complete(XMLHttpRequest, textStatus);
-                }
-            });
+            // 保存树副本
+            _this.bak = _this.obj.html();
+            
+            // 加载完毕后的回调
+            _this.done(_this.data, $ul, first);
+        }, 100);
+    }
+    
+    // 异步加载树
+    DTree.prototype.asyncLoadTree = function(first, $ul, callback){
+    	var _this = this;
+    	
+    	if (!_this.url) {
+            layer.msg("数据请求异常，url参数未指定", {icon:5});
+            return ;
         }
-    };
+
+        //先将ul中的元素清空
+        $ul.html("");
+
+        var index = _this.load ? layer.load(1) : "";
+
+        AjaxHelper.request({
+            async: _this.async,
+            headers: _this.headers,
+            type: _this.method,
+            url: _this.url,
+            dataType: _this.dataType,
+            contentType: _this.contentType,
+            withCredentials: _this.withCredentials,
+            data: _this.getFilterRequestParam(_this.getRequestParam()),
+            success: function(result) {
+                if (typeof result === 'string') {
+                    result = $.parseJSON(result);
+                }
+
+                // 加载完毕后执行树解析前的回调
+                _this.success(result, $ul, true);
+                
+                var code = "";
+                if (_this.dataStyle == 'layuiStyle'){
+                    code = result[_this.response.statusName];
+                } else {
+                    code = result.status[_this.response.statusName];
+                }
+
+                if (code == _this.response.statusCode) {
+                	
+                    var d = result[_this.response.rootName];
+
+                    if(first && typeof d.length === 'undefined'){
+                        $ul.html(_this.getNoneDom().errText("数据解析异常，url回调后的数据格式不正确"));
+                        //layer.msg("数据解析异常，url回调后的数据格式不正确", {icon:5});
+                        return ;
+                    }
+
+                    if(first && d.length == 0) {
+                        $ul.html(_this.getNoneDom().text());
+                        return ;
+                    }
+
+                    //1.识别根节点ul中的data-id标签，判断顶级父节点
+                    var pid = (first == true) ? $ul.attr("data-id") : _this.node.nodeId;
+                    var level = (first == true) ? 1 : parseInt(_this.node.level)+1;
+                    
+                    // 第一次解析树
+                    if (_this.dataFormat == 'list'){
+                        //1.构建一个存放节点的树组
+                        var rootListData = _this.queryListTreeByPid(pid, d);
+                        if(first) {
+                        	_this.loadListTree(rootListData, d, level);
+                        } else {
+                        	_this.loadListTree(rootListData, d, level, $ul);
+                        }
+                    } else {
+                    	if(first) {
+                    		 _this.loadTree(d, level);
+                        } else {
+                        	 _this.loadTree(d, level, $ul);
+                        }
+                    }
+
+                    // 显示树线
+                    _this.showLine();
+
+                    // 这种情况下需要一开始就将toolbar显示在页面上
+                    if(_this.toolbar && _this.toolbarWay != 'contextmenu') {
+                        _this.setToolbarDom().setToolbarPlace(_this.toolbarMenu);
+                    }
+
+                    // 判断是否存在错误数据，并是否打印错误数据
+                    _this.msgErrData();
+                    
+                    if(!first) {
+                    	$ul.addClass(NAV_SHOW);
+                    }
+                    
+                    // 设置复选框的初始值
+                    if(first && _this.select){
+                    	_this.selectVal(_this.selectInitVal);
+                    }
+
+                    // 保存树副本
+                    _this.bak = _this.obj.html();
+                    
+                    // 加载完毕后的回调
+                    _this.done(result, $ul, first);
+                    
+                    callback && callback();
+                } else {
+                    // 如果打印不出任何信息说明是在这里，用了错误的数据格式， 或返回码不正确
+                    if (_this.dataStyle == 'layuiStyle'){
+                        _this.obj.html(_this.getNoneDom().errText(result[_this.response.message]));
+                        _this.error(null, code, result[_this.response.message]);
+                        //layer.msg(result[_this.response.message], {icon:2});
+                    } else {
+                        _this.obj.html(_this.getNoneDom().errText(result.status[_this.response.message]));
+                        _this.error(null, code, result.status[_this.response.message]);
+                        //layer.msg(result.status[_this.response.message], {icon:2});
+                    }
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){// 异步加载异常回调
+                _this.obj.html(_this.getNoneDom().errText(textStatus + ": " + errorThrown));
+                _this.error(XMLHttpRequest, textStatus, errorThrown);
+            },
+            complete: function(XMLHttpRequest, textStatus){// 异步加载完成回调
+                if(_this.load){layer.close(index);}
+                _this.complete(XMLHttpRequest, textStatus);
+            }
+        });
+    	
+    }
 
     // 初始化树或者拼接树
     DTree.prototype.loadListTree = function(pListData, listData, level, $ul){
@@ -2190,18 +2151,20 @@ layui.define(['jquery','layer','form'], function(exports) {
     DTree.prototype.dataInit = function(chooseId){
         var _this = this;
         var $div = _this.obj.find("div[data-id='"+chooseId+"']");
-        _this.getNodeDom($div).parentLi().find("."+NAV_THIS).removeClass(NAV_THIS);
-        _this.getNodeDom($div).parentLi().find("."+_this.style.itemThis).removeClass(_this.style.itemThis);
-        $div.addClass(NAV_THIS);
-        $div.addClass(_this.style.itemThis);
-        _this.setNodeParam($div);
-        // 将该节点的父节点全部展开
-        var $li_parents = $div.parents("."+LI_NAV_ITEM);
-        $li_parents.children("ul").addClass(NAV_SHOW);
-        $li_parents.children("."+LI_DIV_ITEM).children("i[data-spread]."+event.trimToDot(_this.usefontStyle.fnode.node.close)).addClass(_this.usefontStyle.fnode.node.open);
-        $li_parents.children("."+LI_DIV_ITEM).children("i[data-spread]."+event.trimToDot(_this.usefontStyle.fnode.node.close)).removeClass(_this.usefontStyle.fnode.node.close);
-        $li_parents.children("."+LI_DIV_ITEM).children("i[data-spread]."+event.trimToDot(_this.usefontStyle.snode.node.close)).addClass(_this.usefontStyle.snode.node.open);
-        $li_parents.children("."+LI_DIV_ITEM).children("i[data-spread]."+event.trimToDot(_this.usefontStyle.snode.node.close)).removeClass(_this.usefontStyle.snode.node.close);
+        if($div && $div.length > 0) {
+        	_this.obj.find("."+NAV_THIS).removeClass(NAV_THIS);
+        	_this.obj.find("."+_this.style.itemThis).removeClass(_this.style.itemThis);
+        	$div.addClass(NAV_THIS);
+        	$div.addClass(_this.style.itemThis);
+        	_this.setNodeParam($div);
+        	// 将该节点的父节点全部展开
+        	var $li_parents = $div.parents("."+LI_NAV_ITEM);
+        	$li_parents.children("ul").addClass(NAV_SHOW);
+        	$li_parents.children("."+LI_DIV_ITEM).children("i[data-spread]."+event.trimToDot(_this.usefontStyle.fnode.node.close)).addClass(_this.usefontStyle.fnode.node.open);
+        	$li_parents.children("."+LI_DIV_ITEM).children("i[data-spread]."+event.trimToDot(_this.usefontStyle.fnode.node.close)).removeClass(_this.usefontStyle.fnode.node.close);
+        	$li_parents.children("."+LI_DIV_ITEM).children("i[data-spread]."+event.trimToDot(_this.usefontStyle.snode.node.close)).addClass(_this.usefontStyle.snode.node.open);
+        	$li_parents.children("."+LI_DIV_ITEM).children("i[data-spread]."+event.trimToDot(_this.usefontStyle.snode.node.close)).removeClass(_this.usefontStyle.snode.node.close);
+        }
         return _this.getNowParam();
     };
     
@@ -3613,7 +3576,8 @@ layui.define(['jquery','layer','form'], function(exports) {
             $p_li = $div.parent("li[data-index]"),	//当前选中节点的顶级li节点
             $p_ul = $p_li.parent("ul"),	//当前选中节点的顶级li节点的父级ul
             $p_div = $p_ul.prev("div"), //当前选中节点的顶级li节点的父级ul的前一个div
-            title = $cite.html();
+            title = (typeof _this.formatter.title === 'function') ? $cite.attr("data-title") : $cite.text();
+        
         switch (tool) {
             case defaultTool.pulldown:
                 _this.toolbarMethod().pulldown($ul);
@@ -4744,7 +4708,7 @@ layui.define(['jquery','layer','form'], function(exports) {
                 DTrees[id] = dTree;
                 dTree.initTreePlus();
                 dTree.openTreePlus();
-                dTree.init();
+                dTree.loadTreeInit();
                 dTree.bindBrowserEvent();
             }
 
@@ -4767,7 +4731,7 @@ layui.define(['jquery','layer','form'], function(exports) {
                 DTrees[id] = dTree;
                 dTree.initTreePlus();
                 dTree.openTreePlus();
-                dTree.init();
+                dTree.loadTreeInit();
                 dTree.bindBrowserEvent();
             }
 
@@ -4785,7 +4749,7 @@ layui.define(['jquery','layer','form'], function(exports) {
             dTree.initTreePlus();
             dTree.openTreePlus();
             dTree.initNodeParam();
-            dTree.init();
+            dTree.loadTreeInit();
             dTree.unbindBrowserEvent();
             dTree.bindBrowserEvent();
         },

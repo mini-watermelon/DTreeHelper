@@ -42,7 +42,26 @@
 			
 			<div class="layui-fluid">
 				<ul class="layui-timeline">
-				<li class="layui-timeline-item">
+					<li class="layui-timeline-item">
+						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title" id="019">v2.5.x(2019/?/?)【优化】<a href="https://gitee.com/miniwatermelon/DTreeHelper" class="layui-btn layui-btn-sm layui-btn-normal">暂未发布，gitee抢先下载</a></h3>
+							<ul>
+								<li>【优化】基础方法优化：success方法，新增一个入参，表示是否第一次渲染数据，并支持在增量加载时，加载子节点时也可以回调该方法。</li>
+								<li>【优化】基础方法优化：done方法，新增一个入参，表示是否第一次渲染数据，并支持在增量加载时，在加载子节点时也可以回调该方法。</li>
+								<li>【优化】内置方法优化：dataInit方法，仅支持一个节点改变背景色的优化。</li>
+								<li>【优化】内置方法优化：init方法，入参新增一个异步加载完成后的回调函数，内部使用。</li>
+								<li>【优化】内置方法优化：getChild方法，入参新增一个异步加载完成后的回调函数，内部使用。</li>
+								<li>【优化】toolbat模块优化：当设置dataFormat时，默认的增删改数据中会出现dataFormat配置的元素，优化之后仅获取文字。</li>
+								<li>【新增】基础属性新增：asyncLoad，异步加载初始加载层级树组</li>
+								<li>【新增】内置方法新增：loadTreeInit，初始化加载树</li>
+								<li>【新增】内置方法新增：loadChildTreeInit，初始化加载子节点</li>
+								<li>【新增】内置方法新增：dataLoadTree，用data加载树</li>
+								<li>【新增】内置方法新增：asyncLoadTree，异步加载树</li>
+							</ul>
+						</div>
+					</li>
+					<li class="layui-timeline-item">
 						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 						<div class="layui-timeline-content layui-text">
 							<h3 class="layui-timeline-title" id="018">v2.5.6(2019/10/24)【新增】【修复：1，优化：3，新增：12】<a href="../version/dtree_v2.5.6_20191024.zip" class="layui-btn layui-btn-sm layui-btn-normal">下载</a></h3>

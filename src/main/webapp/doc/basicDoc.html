@@ -710,6 +710,14 @@
 									<td>true / false</td>
 									<td>false</td>
 								</tr>
+								<tr data-vs="vs25x">
+									<td>asyncLoad<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></td>
+									<td>Array</td>
+									<td>异步加载初始加载层级数组。</td>
+									<td>[]</td>
+									<td>-</td>
+									<td>["003","003001"]</td>
+								</tr>
 								<tr>
 									<td>headers</td>
 									<td>Object</td>
@@ -785,18 +793,18 @@
 								<tr>
 									<td><span style="color:#FF5722;">success</span></td>
 									<td>Function</td>
-									<td>加载完毕后,树解析前的回调函数,携带两个参数，res:当前异步加载的数据，$obj:当前组件的根节点的JQuery对象。data和url加载均可使用</td>
+									<td>加载完毕后,树解析前的回调函数,携带三个参数，<br/>res:当前异步加载的数据，<br/>$obj:当前组件的根节点的JQuery对象，<br/>first:是否首次加载。<br/>data和url加载均可使用，<br/>增量加载时，加载子节点时也可以回调该方法</td>
+									<td>success:function(res, $obj, first){}</td>
 									<td>-</td>
-									<td>-</td>
-									<td>success:function(res, $obj){}</td>
+									<td>success:function(data, ul, first){}<br/>（可以改变形参）</td>
 								</tr>
 								<tr>
 									<td><span style="color:#FF5722;">done</span></td>
 									<td>Function</td>
-									<td>加载完毕后,树解析后的回调函数,携带两个参数，res:当前异步加载的数据，$obj:当前组件的根节点的JQuery对象。data和url加载均可使用</td>
+									<td>加载完毕后,树解析后的回调函数,携带三个参数，<br/>res:当前异步加载的数据，<br/>$obj:当前组件的根节点的JQuery对象，<br/>first:是否首次加载。<br/>data和url加载均可使用，<br/>增量加载时，加载子节点时也可以回调该方法</td>
+									<td>done:function(res, $obj, first){}</td>
 									<td>-</td>
-									<td>-</td>
-									<td>done:function(res, $obj){}</td>
+									<td>done:function(data, ul, first){}<br/>（可以改变形参）</td>
 								</tr>
 								<tr>
 									<td>dataStyle</td>
@@ -2112,6 +2120,30 @@
 											//DemoTree.getChild($div, arrayJson);
 										</pre>
 									</td>
+								</tr>
+								<tr data-vs="vs25x">
+									<td><span style="color:#c2c2c2;">DTree.prototype.loadTreeInit</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></td>
+									<td>-</td>
+									<td>初始化加载树</td>
+									<td>-</td>
+								</tr>
+								<tr data-vs="vs25x">
+									<td><span style="color:#c2c2c2;">DTree.prototype.loadChildTreeInit</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></td>
+									<td>-</td>
+									<td>初始化加载子节点</td>
+									<td>-</td>
+								</tr>
+								<tr data-vs="vs25x">
+									<td><span style="color:#c2c2c2;">DTree.prototype.dataLoadTree</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></td>
+									<td>-</td>
+									<td>用data加载树</td>
+									<td>-</td>
+								</tr>
+								<tr data-vs="vs25x">
+									<td><span style="color:#c2c2c2;">DTree.prototype.asyncLoadTree</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></td>
+									<td>-</td>
+									<td>异步加载树</td>
+									<td>-</td>
 								</tr>
 								<tr>
 									<td><span style="color:#c2c2c2;">DTree.prototype.loadListTree</span></td>
