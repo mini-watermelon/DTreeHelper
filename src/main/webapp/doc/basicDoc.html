@@ -88,6 +88,42 @@
 			</div>
 			
 			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="bccsylb">
+					<legend>标签参数一览表</legend>
+					<div class="layui-field-box">
+						<p>树的ul元素上，与树相关的设置的属性 <em>&lt;ul id="demoTree" class="dtree" data-id="0" data-value="001"&gt;&lt;/ul&gt;</em>，如下所示：</p>
+						<p style="padding: 5px 0px;">参数名称：<span style="color:#FF5722;">红色</span>：重要参数，黑色：可选参数</p>
+						<table class="layui-table" lay-size="sm">
+							<colgroup><col width="15%"><col width="70%"><col width="15%"></colgroup>
+							<thead><tr><th>参数</th><th>说明</th><th>示例</th></tr> </thead>
+							<tbody>
+								<tr>
+									<td><span style="color:#FF5722;">id</span></td>
+									<td>树绑定的元素ID，唯一值，后面的事件监听也需要绑定ID，后续所有基于树的操作都是根据这个ID来绑定关联的。</td>
+									<td>"demoTree"</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">class</span></td>
+									<td>样式，一般不需要修改</td>
+									<td>"dtree"</td>
+								</tr>
+								<tr>
+									<td><span style="color:#FF5722;">data-id</span></td>
+									<td>树的加载数据中，根节点对于的parentId的值，如设置了dataFormat:"list"，则此属性必输</td>
+									<td>"0"</td>
+								</tr>
+								<tr data-vs="vs255">
+									<td>data-value<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></td>
+									<td>下拉树的初始值，一般为数据的ID，树会记录这个值并返回对应的context显示</td>
+									<td>"001"</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</fieldset>
+			</div>
+								
+			<div class="layui-fluid">
 				<fieldset class="layui-elem-field layui-field-title" id="jccsylb">
 					<legend>基础参数一览表</legend>
 					<div class="layui-field-box">
@@ -1866,12 +1902,19 @@
 								</tr>
 							</tbody>
 						</table>
-					
-						<p style="padding: 5px 0px;">以下列出重复使用<span style="color:#FF5722;">dtree.render</span>或使用<span style="color:#FF5722;">dtree.reload</span>方法之后对内置属性的影响：</p>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="yingxiang">
+					<legend>注意事项</legend>
+					<div class="layui-field-box">
+						<p style="padding: 5px 0px;">以下列出重复使用<span style="color:#FF5722;">dtree.render</span>或使用<span style="color:#FF5722;">dtree.reload</span>或使用<span style="color:#FF5722;">dtree.renderSelect</span>方法之后对内置属性的影响：</p>
 						<p style="padding: 5px 0px;"><span style="color:#5FB878">覆盖</span>：即会重新定义该属性。</p>
 						<p style="padding: 5px 0px;"><span style="color:#FFB800">扩展</span>：即会在该属性原有的基础定义上扩展该属性。</p>
 						<!-- <p style="padding: 5px 0px;"><span style="color:#FF5722">无效</span>：即重复定义无效，只生效于第一次定义的属性。</p> -->
-						<table class="layui-table" lay-size="sm" id="yingxiang">
+						<table class="layui-table" lay-size="sm">
 							<thead><tr><th>属性</th><th>影响</th><th>属性</th><th>影响</th><th>属性</th><th>影响</th></tr></thead>
 							<tbody>
 								<tr><td colspan="6"><span style="font-weight: bold;">基础参数</span></td></tr>
@@ -1885,9 +1928,9 @@
 								<tr><td>url</td><td><span style="color:#5FB878">覆盖</span></td></td><td>method</td><td><span style="color:#5FB878">覆盖</span><td>response</td><td><span style="color:#FFB800">扩展</span></tr>
 								<tr><td>async</td><td><span style="color:#5FB878">覆盖</span></td><td>dataType</td><td><span style="color:#5FB878">覆盖</span></td><td>request</td><td><span style="color:#5FB878">覆盖</span></td></tr>
 								<tr><td>contentType</td><td><span style="color:#5FB878">覆盖</span></td><td>withCredentials</td><td><span style="color:#5FB878">覆盖</span></td><td>filterRequest</td><td><span style="color:#5FB878">覆盖</span></td></tr>
-								<tr><td>dataFormat</td><td><span style="color:#5FB878">覆盖</span></td><td>dataStyle</td><td><span style="color:#5FB878">覆盖</span></td><td>success</td><td><span style="color:#5FB878">覆盖</span></td></tr>
-								<tr><td>error</td><td><span style="color:#5FB878">覆盖</span></td><td>complete</td><td><span style="color:#5FB878">覆盖</span></td><td>done</td><td><span style="color:#5FB878">覆盖</span></td></tr>
-								<tr><td>errDataShow</td><td><span style="color:#5FB878">覆盖</span></td><td>formatter</td><td><span style="color:#5FB878">覆盖</span></td><td> </td><td><span style="color:#5FB878"> </span></td></tr>
+								<tr><td>asyncLoad</td><td><span style="color:#5FB878">覆盖</span></td><td>dataFormat</td><td><span style="color:#5FB878">覆盖</span></td><td>dataStyle</td><td><span style="color:#5FB878">覆盖</span></tr>
+								<tr></td><td>success</td><td><span style="color:#5FB878">覆盖</span></td><td>done</td><td><span style="color:#5FB878">覆盖</span></td><td>complete</td><td><span style="color:#5FB878">覆盖</span></td></tr>
+								<tr><td>error</td><td><span style="color:#5FB878">覆盖</span></td><td>errDataShow</td><td><span style="color:#5FB878">覆盖</span></td><td>formatter</td><td><span style="color:#5FB878">覆盖</span></td></tr>
 								
 								<tr><td colspan="6"><span style="font-weight: bold;">树样式风格图标参数</span></td></tr>
 								<tr><td>skin</td><td><span style="color:#5FB878">覆盖</span></td><td>ficon</td><td><span style="color:#5FB878">覆盖</span></td><td>nodeIconArray</td><td><span style="color:#FFB800">扩展</span></td></tr>
@@ -1910,6 +1953,9 @@
 								<tr><td>useIframe </td><td><span style="color:#5FB878">覆盖</span></td><td>iframeElem</td><td><span style="color:#5FB878">覆盖</span></td><td>iframeDefaultRequest</td><td><span style="color:#FFB800">扩展</span></td></tr>
 								<tr><td>iframeUrl</td><td><span style="color:#5FB878">覆盖</span></td><td>iframeLoad</td><td><span style="color:#5FB878">覆盖</span></td><td>iframeRequest</td><td><span style="color:#FFB800">扩展</span></td></tr>
 								<tr><td>iframeFun</td><td><span style="color:#5FB878">覆盖</span></td><td> </td><td><span style="color:#5FB878"> </span></td><td> </td><td><span style="color:#5FB878"></span></td></tr>
+							
+								<tr><td colspan="6"><span style="font-weight: bold;">下拉树参数</span></td></tr>
+								<tr><td>selectTips</td><td><span style="color:#5FB878">覆盖</span></td><td>selectInitVal</td><td><span style="color:#5FB878">覆盖</span></td><td>selectInputName</td><td><span style="color:#FFB800">扩展</span></td></tr>
 							
 							</tbody>
 						</table>
@@ -3054,7 +3100,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["基础参数一览表","select加载配置","初始化下拉树","selectInputName","changeSelect","rollbackHtml","setDisabledAllNodes","getCheckbarJsonArrParam"];
+							var tts = ["异步数据接口规范","select加载配置","初始化下拉树","selectInputName","changeSelect","rollbackHtml","setDisabledAllNodes","getCheckbarJsonArrParam"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

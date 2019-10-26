@@ -344,10 +344,12 @@
 							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;"><ul id="commonTree6" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
 								<button class="layui-btn layui-btn-normal" id="commonTree6_btn">点击按钮获取被禁用节点信息</button>
+								<button class="layui-btn layui-btn-normal" id="commonTree62_btn">点击按钮获取被选中节点信息</button>
 								<pre class="layui-code" lay-title="JavaScript">
 									var CommonTree6 = dtree.render({
 									  elem: "#commonTree6",
 									  url: "../json/case/commonTree6.json",
+									  checkbar: true,
 									  done: function(result, $ul){
 									    //CommonTree6.setDisabledNodes("001,002"); // 设置节点禁用
 									    //CommonTree6.setDisabledAllNodes(); // 设置全部节点禁用
@@ -361,6 +363,10 @@
 									$("#commonTree6_btn").click(function(){
 									  var param = CommonTree6.getAllDisabledNodesParam(); // 获取全部禁用节点的信息
 									  layer.msg(JSON.stringify(param));
+									});
+									$("#commonTree62_btn").click(function(){
+									  var params = dtree.getCheckbarNodesParam("commonTree6"); //获取被选中节点信息
+									  layer.msg(JSON.stringify(params));
 									});
 								</pre>
 							</div>
@@ -747,6 +753,7 @@
 		var CommonTree6 = dtree.render({
 		  elem: "#commonTree6",
 		  url: "../json/case/commonTree6.json",
+		  checkbar: true
 		  /*done: function(){
 			  CommonTree6.setDisabledAllNodes();
 		  }*/
@@ -755,6 +762,11 @@
 		$("#commonTree6_btn").click(function(){
 			var param = CommonTree6.getAllDisabledNodesParam(); // 获取全部禁用节点的信息
 			layer.msg(JSON.stringify(param));
+		});
+		
+		$("#commonTree62_btn").click(function(){
+			var params = dtree.getCheckbarNodesParam("commonTree6");
+			layer.msg(JSON.stringify(params));
 		});
 		
 		// 2.commonTree7

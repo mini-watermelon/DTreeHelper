@@ -4,6 +4,11 @@ var menuTree = [{
  	"last": true,
  	"children":[]
  },{
+	"id":"bccsylb",
+ 	"title": "标签参数一览表",
+ 	"last": true,
+ 	"children":[]
+ },{
 	"id":"jccsylb",
  	"title": "基础参数一览表",
  	"last": true,
@@ -173,7 +178,7 @@ var menuTree = [{
 		 	"children":[]
 	 	}]
  	}]
- },,{
+ },{
 	"id":"jcff",
  	"title": "基础方法",
  	"last": false,
@@ -272,12 +277,12 @@ var menuTree = [{
 	 	"title": "字符串反格式化",
 	 	"last": true,
 	 	"children":[]
- 	},{
- 		"id":"yingxiang",
-	 	"title": "注意事项",
-	 	"last": true,
-	 	"children":[]
  	}]
+},{
+	"id":"yingxiang",
+ 	"title": "注意事项",
+ 	"last": true,
+ 	"children":[]
 },{
 	"id":"sjjt",
  	"title": "事件监听",

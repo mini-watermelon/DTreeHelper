@@ -47,6 +47,7 @@
 【新增】基础属性新增：select，设置树模式为下拉树
 【新增】基础属性新增：selectTips，设置下拉树时的输入框提示文字
 【新增】基础属性新增：selectInputName，设置下拉树内部表单标签的name
+【新增】基础属性新增：selectInitVal，设置下拉树的初始展示值
 【新增】基础属性新增：withCredentials，用于开启生成跨域的XHR对象，设置后可指定同源session，默认false。
 【新增】基础方法新增：set，可以增加同一次引用中，dtree的公共属性指定，所有基础属性都可以指定。
 【新增】基础方法新增：renderSelect，初始化下拉树

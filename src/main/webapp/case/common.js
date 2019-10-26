@@ -10,12 +10,12 @@ var menuTree = [{
 	"children":[]
 },{
 	"id":"jdybjz",
-	"title": "异步加载简单",
+	"title": "异步加载",
 	"last": true,
 	"children":[]
 },{
 	"id":"yjfxk",
-	"title": "一级复选框简单",
+	"title": "一级复选框",
 	"last": true,
 	"children":[]
 },{
