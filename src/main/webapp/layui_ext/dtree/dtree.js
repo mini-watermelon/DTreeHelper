@@ -1394,8 +1394,9 @@ layui.define(['jquery','layer','form'], function(exports) {
     	// 初始化加载
     	_this.init(function(){
     		// ajax加载之后的回调
-    		//console.log(asyncLoad);
     		if(asyncLoad && asyncLoad.length > 0) {
+    			_this.obj.addClass(NAV_SHOW);
+    			
     			// 说明此时要异步加载子节点
     			_this.loadChildTreeInit(asyncLoad, 0);
     		}
@@ -1412,6 +1413,14 @@ layui.define(['jquery','layer','form'], function(exports) {
     	var $div = _this.getNode(asyncLoad[i]);
     	
     	if($div && $div.length > 0) {
+    		// 设置节点状态
+    		var $ul = $div.next("ul"),
+	    		$i_spread = _this.getNodeDom($div).fnode(),
+	            $i_node = _this.getNodeDom($div).snode();
+    		
+    		$ul.addClass(NAV_SHOW);
+    		_this.accordionUL($ul);
+    		_this.operateIcon($i_spread, $i_node).open();
     		// 加载子节点
     		_this.getChild($div, undefined, function(){
     			// 继续递归
@@ -1421,11 +1430,10 @@ layui.define(['jquery','layer','form'], function(exports) {
     	
     }
     
- // 初始化树
+    // 初始化树
     DTree.prototype.init = function(callback){
         var _this = this;
         if (typeof _this !== "object") {
-            //_this.obj.html(_this.getNoneDom().errText("树组件未成功加载，请检查配置"));
             layer.msg("树组件未成功加载，请检查配置", {icon:5});
             return ;
         }
@@ -1472,7 +1480,7 @@ layui.define(['jquery','layer','form'], function(exports) {
 
         setTimeout(function () {
             // 加载完毕后执行树解析前的回调
-            _this.success(data, $ul, true);
+            _this.success(data, $ul, first);
 
             var pid = (first == true) ? $ul.attr("data-id") : _this.node.nodeId;
             var level = (first == true) ? 1 : parseInt(_this.node.level)+1;
@@ -1539,7 +1547,7 @@ layui.define(['jquery','layer','form'], function(exports) {
                 }
 
                 // 加载完毕后执行树解析前的回调
-                _this.success(result, $ul, true);
+                _this.success(result, $ul, first);
                 
                 var code = "";
                 if (_this.dataStyle == 'layuiStyle'){
@@ -2137,12 +2145,12 @@ layui.define(['jquery','layer','form'], function(exports) {
         var lineClass = "";
         if(hide){hideClass = NAV_HIDE;}
         var li = ["<li " + "class='"+LI_CLICK_CHECKBAR+" "+LI_NAV_ITEM+" "+hideClass+" "+lineClass+"'" + "data-id='"+treeId+"'" + "data-pid='"+(flag == "root" ? ((typeof parentId !== undefined && parentId != "") ? parentId : "-1") : parentId)+"'" + "dtree-id='"+rootId+"'" + "data-index='"+level+"'" + "dtree-hide='"+hide+"'" +">" +
-        div ,
-            dom.fnode(),
-            dom.node(),
-            dom.checkbox(),
-            dom.text(),
-            "</div>", dom.ul(), "</li>"].join("");
+                  div ,
+		          dom.fnode(),
+		          dom.node(),
+		          dom.checkbox(),
+		          dom.text(),
+		          "</div>", dom.ul(), "</li>"].join("");
 
         return li;
     };
