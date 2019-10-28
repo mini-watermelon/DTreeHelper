@@ -38,4 +38,9 @@ var menuTree = [{
 	"title": "下拉搜索",
 	"last": true,
 	"children":[]
+},{
+	"id":"selectCardHeight",
+	"title": "下拉面板高度",
+	"last": true,
+	"children":[]
 }];

@@ -308,6 +308,31 @@
 			</div>
 			
 			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="selectCardHeight">
+					<legend>下拉面板高度指定（selectCardHeight）</legend>
+					<div class="layui-field-box">
+						<p>指定下拉面板展开的高度，如果不指定，默认是350。<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></p>
+						<p>将下拉树输入框拉到最底部，树会自动向上展开，可以试试。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<ul id="selTree8" class="dtree" data-id="-1"></ul>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									&lt;ul id="selTree8" class="dtree" data-id="0" &gt;&lt;/ul&gt;&lt;/div&gt;
+									var SelTree8 = dtree.renderSelect({
+									  elem: "#selTree8",
+									  url: "../json/case/asyncTree1.json",
+									  selectCardHeight: "150",
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
 				<blockquote class="layui-elem-quote">dtree坚持不懈，推出各种场景的适配方案，旨在全方位满足你的需求。</blockquote>
 			</div>
 			
@@ -354,7 +379,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["常规用法","常规用法2","指定显示框默认文字","下拉树的默认显示值","指定表单名称","重新加载下拉树","下拉多选/选择重置","下拉搜索"];
+							var tts = ["常规用法","常规用法2","指定显示框默认文字","下拉树的默认显示值","指定表单名称","重新加载下拉树","下拉多选/选择重置","下拉搜索","下拉面板高度"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -485,6 +510,13 @@
 				var nodeId = obj.param["selTree7_select_nodeId"];
 				SelTree7.rollbackHtml(nodeId);
 			}
+		});
+		
+		// 8.selTree8
+		var SelTree8 = dtree.renderSelect({
+		  elem: "#selTree8",
+		  url: "../json/case/asyncTree1.json",
+		  selectCardHeight: "150",
 		});
 		
 	});

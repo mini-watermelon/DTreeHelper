@@ -3,7 +3,7 @@
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/
  *@License https://www.layui.com/
- *@LASTTIME 2019/10/25
+ *@LASTTIME 2019/10/28
  *@VERSION v2.5.x
  */
 layui.define(['jquery','layer','form'], function(exports) {
@@ -710,6 +710,7 @@ layui.define(['jquery','layer','form'], function(exports) {
         this.selectDiv = this.obj[0].id + "_select_div";		// 模拟的select节点
         this.selectTipsName = this.obj[0].id + "_select_input"; // select的提示输入框名称
         this.selectTips = this.options.selectTips || "请选择";			// 输入框的提示语
+        this.selectCardHeight = this.options.selectCardHeight || "350";			// 下拉面板的高度
         this.selectInputName = this.options.selectInputName || {nodeId: this.obj[0].id + "_select_nodeId"};  // select表单中的元素
         
         // 调取下拉树的特殊处理页面元素标识
@@ -721,6 +722,7 @@ layui.define(['jquery','layer','form'], function(exports) {
         
     	this.selectInitVal = this.obj.attr("data-value") || this.options.selectInitVal || this.selectInitVal;	//输入框的值
         this.selectTips = this.options.selectTips || this.selectTips;			// 输入框的提示语
+        this.selectCardHeight = this.options.selectCardHeight || this.selectCardHeight;			// 下拉面板的高度
         this.selectInputName = $.extend(this.selectInputName, this.options.selectInputName) || this.selectInputName;  // select表单中的元素
         
         // 调取下拉树的特殊处理页面元素标识
@@ -749,7 +751,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 
         _this.obj.before(prevHtml);
 
-        _this.obj.wrap('<div class="layui-card dtree-select" dtree-id="' + rootId + '" dtree-card="' + _this.selectCardDiv + '"></div>').wrap('<div class="layui-card-body"></div>').wrap('<div id="' + _this.selectTreeDiv + '"></div>');
+        var cardStyle = "style=";
+        if(this.selectCardHeight) {
+        	cardStyle += "'height:"+_this.selectCardHeight+"px'";
+        }
+        _this.obj.wrap('<div class="layui-card dtree-select" dtree-id="' + rootId + '" dtree-card="' + _this.selectCardDiv + '" ' + cardStyle + '></div>').wrap('<div class="layui-card-body"></div>').wrap('<div id="' + _this.selectTreeDiv + '"></div>');
     
     }
     
@@ -774,6 +780,11 @@ layui.define(['jquery','layer','form'], function(exports) {
 
         $("div[dtree-id='"+rootId+"'][dtree-select='"+_this.selectDiv+"']").find("div.layui-select-title").html(prevHtml);
 
+        var cardStyle = "style=";
+        if(this.selectCardHeight) {
+        	cardStyle += "'height:"+_this.selectCardHeight+"px'";
+        }
+        $("div[dtree-id='"+rootId+"'][dtree-card='"+_this.selectCardDiv+"']").attr("style", cardStyle);
     }
 
     // 设置输入框的值
@@ -1477,6 +1488,8 @@ layui.define(['jquery','layer','form'], function(exports) {
 
         //先将ul中的元素清空
         $ul.html("");
+        
+        var index = _this.load ? layer.load(1) : "";
 
         setTimeout(function () {
             // 加载完毕后执行树解析前的回调
@@ -1515,6 +1528,8 @@ layui.define(['jquery','layer','form'], function(exports) {
             
             // 加载完毕后的回调
             _this.done(_this.data, $ul, first);
+            
+            if(_this.load){layer.close(index);}
         }, 100);
     }
     
@@ -4638,9 +4653,34 @@ layui.define(['jquery','layer','form'], function(exports) {
             // 绑定select的点击事件
             $("div[dtree-id='" + rootId + "'][dtree-select='"+_this.selectDiv+"']").on("click", function(event){
                 event.stopPropagation();
+                var dl = $(this).find('dl');
+                //debugger;
                 $(this).toggleClass("layui-form-selected");
-                $("div[dtree-id='" + rootId + "'][dtree-card='"+_this.selectCardDiv+"']").toggleClass("dtree-select-show layui-anim layui-anim-upbit");
-            
+                
+                var $card = $("div[dtree-id='" + rootId + "'][dtree-card='"+_this.selectCardDiv+"']");
+                
+                $card.toggleClass("dtree-select-show layui-anim layui-anim-upbit");
+                var top = $(this).offset().top + $(this).outerHeight() - $WIN.scrollTop() - 5,
+                	cardHeight = $card.height(),
+                	winHeight = $WIN.height();
+                console.log("top =  $(this).offset().top: " + $(this).offset().top + " + $(this).outerHeight(): " + $(this).outerHeight() + " - $WIN.scrollTop(): " + $WIN.scrollTop() + " - 5 =" + top);
+                console.log("winHeight = " + winHeight);
+                if($card.hasClass('dtree-select-up')) {
+            		$card.removeClass('dtree-select-up');
+            	} 
+                
+	            //上下定位识别
+                if(top + cardHeight > $WIN.height() && top >= cardHeight){
+                	console.log(" top + cardHeight : "+ top + " + " + cardHeight + " > $WIN.height() :" + $WIN.height() + " && top >= cardHeight :" + top + " > " + cardHeight);
+                	if($card.hasClass('dtree-select-up')) {
+                		$card.removeClass('dtree-select-up');
+                	} else {
+                		$card.addClass('dtree-select-up');
+                	}
+	            } else {
+	            	$card.removeClass('dtree-select-up');
+	            }
+                
                 // 下拉树面板开闭状态改变后，用户自定义想做的事情
                 layui.event.call(this, MOD_NAME, "changeSelect("+$(_this.obj)[0].id+")",  {
                 	show: $(this).hasClass("layui-form-selected"),
