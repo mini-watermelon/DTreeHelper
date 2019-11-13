@@ -22,7 +22,7 @@
     <spring.version>4.2.5.RELEASE</spring.version>
     <shiro.version>1.3.2</shiro.version>
     <JSR303.version>5.4.1.Final</JSR303.version>
-    <jackson.version>2.8.8</jackson.version>
+    <jackson.version>2.9.10.1</jackson.version>
     <dom4j.version>1.6.1</dom4j.version>
     <cn.hutool>4.4.4</cn.hutool>
 
