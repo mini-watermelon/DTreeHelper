@@ -36,6 +36,19 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 								<div class="layui-timeline-content layui-text">
 									<h3 class="layui-timeline-title version-title"></h3>
+									<ul data-vlog="vs257">
+										<li>【优化】内置方法优化：setDisabledNodes，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【优化】内置方法优化：cancelDisabledNodes，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【优化】内置方法优化：getDisabledNodesParam，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【优化】内置方法优化：setHideNodes，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【优化】内置方法优化：cancelHideNodes，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【优化】内置方法优化：getHideNodesParam，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【新增】内置方法新增：setDisabledNode，设置单个节点的禁用</li>
+										<li>【新增】内置方法新增：cancelDisabledNode，设置单个节点的取消禁用</li>
+										<li>【新增】内置方法新增：setHideNode，设置单个节点的隐藏</li>
+										<li>【新增】内置方法新增：cancelHideNode，设置单个节点的取消隐藏</li>
+										<li>【新增】内置函数新增：fuzzySearch，模糊查询，搜索节点，保留父节点。</li>
+									</ul>
 									<ul data-vlog="vs256">
 										<li>【新增】基础属性新增：bak，内置属性，备份Html。</li>
 										<li>【新增】内置方法新增：rollbackHtml，基于备份的Html数据回滚</li>
@@ -309,6 +322,34 @@
 				</fieldset>
 			</div>
 			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="fuzzySearch">
+					<legend>搜索节点（fuzzySearch）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></legend>
+					<div class="layui-field-box">
+						<p>搜索节点，模糊匹配，保留树结构。（layui-dtree群友： 没水平的水瓶 提供。）</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height:450px;overflow: auto;"><ul id="commonTreeFuzzySearch" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<input type="text" name="fuzzySearchInput" value="" placeholder="请输入节点名称" class="layui-input"/>
+								<button class="layui-btn layui-btn-normal" id="commonTreeFuzzySearch_btn">搜索节点</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									var CommonTreeFuzzySearch = dtree.render({
+									  elem: "#commonTreeFuzzySearch",
+									  url: "../json/case/commonTree2.json"
+									});
+									
+									$("#commonTreeFuzzySearch_btn").click(function(){
+									  var input = $("input[name='fuzzySearchInput']").val();
+									  // 调用内置函数搜索节点
+									  CommonTreeFuzzySearch.fuzzySearch(input);
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
 			
 			<div class="layui-fluid" data-vs="vs254">
 				<fieldset class="layui-elem-field layui-field-title" id="hei">
@@ -350,11 +391,13 @@
 									  elem: "#commonTree6",
 									  url: "../json/case/commonTree6.json",
 									  checkbar: true,
-									  done: function(result, $ul){
+									  done: function(result, $ul, first){
 									    //CommonTree6.setDisabledNodes("001,002"); // 设置节点禁用
+									    //CommonTree6.setDisabledNodes(["001","002"]); // 设置节点禁用
 									    //CommonTree6.setDisabledAllNodes(); // 设置全部节点禁用
 									    //CommonTree6.cancelDisabledNodes("001"); // 取消节点禁用
 									    //var p1 = CommonTree6.getDisabledNodesParam("001,002"); // 获取禁用节点的信息
+									    //var p1 = CommonTree6.getDisabledNodesParam(["001","002"]); // 获取禁用节点的信息
 									    //var p2 = CommonTree6.getAllDisabledNodesParam(); // 获取全部禁用节点的信息
 									    //console.log(p1);
 									    //console.log(p2);
@@ -391,8 +434,10 @@
 									  url: "../json/case/commonTree7.json",
 									  function(result, $ul){
 									    //CommonTree7.setHideNodes("001,002"); // 设置节点隐藏
+									    //CommonTree7.setHideNodes(["001","002"]);// 设置节点隐藏
 									    //CommonTree7.cancelHideNodes("001"); // 取消节点隐藏
 									    //var p1 = CommonTree7.getHideNodesParam("001,002"); // 获取隐藏节点的信息
+									    //var p1 = CommonTree7.getHideNodesParam(["001","002"]);// 获取隐藏节点的信息
 									    //var p2 = CommonTree7.getAllHideNodesParam(); // 获取全部隐藏节点的信息
 									    //console.log(p1);
 									    //console.log(p2);
@@ -624,7 +669,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["节点禁用"];
+							var tts = ["节点禁用","节点隐藏","搜索节点"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -733,7 +778,7 @@
 			url: "../json/case/commonTree5.json",
 			initLevel: "1"
 		});
-		
+
 		dtree.on("node(commonTreet)", function(obj){
 			if(!obj.param.leaf){
 				var $div = obj.dom;
@@ -742,6 +787,19 @@
 				layer.msg("叶子节点就不展开了");
 			}
 		});
+		
+		// 2.commonTreet
+		var CommonTreeFuzzySearch = dtree.render({
+			elem: "#commonTreeFuzzySearch",
+			url: "../json/case/commonTree2.json"
+		});
+		
+		$("#commonTreeFuzzySearch_btn").click(function(){
+			var input = $("input[name='fuzzySearchInput']").val();
+			CommonTreeFuzzySearch.fuzzySearch(input);
+		});
+		
+		
 		
 		dtree.render({
 		  elem: "#commonTreeh",
@@ -754,9 +812,6 @@
 		  elem: "#commonTree6",
 		  url: "../json/case/commonTree6.json",
 		  checkbar: true
-		  /*done: function(){
-			  CommonTree6.setDisabledAllNodes();
-		  }*/
 		});
 		
 		$("#commonTree6_btn").click(function(){

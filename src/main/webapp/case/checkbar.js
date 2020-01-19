@@ -19,6 +19,16 @@ var menuTree = [{
 	"last": true,
 	"children":[]
 },{
+	"id":"initchoose",
+	"title": "初始化选中节点",
+	"last": true,
+	"children":[]
+},{
+	"id":"initcheck",
+	"title": "初始化返选节点",
+	"last": true,
+	"children":[]
+},{
 	"id":"clicknode",
 	"title": "点击节点选中",
 	"last": true,

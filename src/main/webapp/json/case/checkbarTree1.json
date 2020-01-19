@@ -54,6 +54,7 @@
 			"id":"002001",
 			"title": "武汉市",
 			"last":true,
+			"parentId": "002",
 			"checkArr": [{"type": "0", "checked": "0"}],
 			"level": "2"
 		},{

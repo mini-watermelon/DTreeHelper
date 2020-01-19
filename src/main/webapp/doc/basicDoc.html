@@ -27,7 +27,7 @@
 			</div>
 			
 			<div class="layui-fluid">
-				<blockquote class="layui-elem-quote">layui应用日益广泛的情况下，人们对"树"这种特殊数据结构的需求日益增多，而layui-dtree（谐音：layui的树）的出现，极大程度的满足了各类人群对于树的不同追求。dtree发展到现在，可以总结为7大块核心功能：<b>异步加载、复选框、菜单栏、工具栏、iframe加载、定制化换肤、下拉树</b>等，你所见到市面上开源树的功能，dtree几乎全部囊括在内，只待你一一发掘，让她在你的项目中发光。</blockquote>
+				<blockquote class="layui-elem-quote">layui应用日益广泛的情况下，开发者对"树"这种特殊数据结构的需求日益增多，而layui-dtree的出现，极大程度的满足了各类人群对于树的不同追求。dtree发展到现在，可以总结为7大块核心功能：<b>异步加载、复选框、菜单栏、工具栏、iframe加载、定制化换肤、下拉树</b>等，你所见到市面上开源树的功能，dtree几乎全部囊括在内，只待你一一发掘，让她在你的项目中发光。</blockquote>
 				<blockquote class="layui-elem-quote">
 					<span style="color:#FF5722;font-weight: bold;">如何选择版本：</span>dtree发展到现在，已经更新了许多的版本，但是dtree不会安于现状，将会持续更新。<br>
 					如果你是喜欢最新的版本，或具有敏锐的发现bug的嗅觉，或是希望加入到dtree的测试队伍，或是最新版中有一个内容是你正好需要的，你可以在下方或者右上角选择（git最新版）去gitee进行下载。<br>
@@ -191,7 +191,7 @@
 									<td>String/Number</td>
 									<td>默认展开层级，当该值大于level时，则会展开树的节点，直到不大于当前待展开节点的level。</td>
 									<td>2</td>
-									<td>1 / 2 / 3 / 4 / 5 / 6 / 7</td>
+									<td>1 / 2 / 3 / 4 / 5 / ... / 999</td>
 									<td>5</td>
 								</tr>
 								<tr>
@@ -213,7 +213,7 @@
 								<tr>
 									<td>record<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></td>
 									<td>Boolean</td>
-									<td>数据记录模式，开启后，用于记录用户提供的JSON数据串中，指定当前节点的JSON数据（排除basicData字段和children字段）。</td>
+									<td>数据记录模式，开启后，用于记录用户提供的JSON数据串中，指定当前节点的JSON数据（排除树必须的字段）。</td>
 									<td>false</td>
 									<td>true / false</td>
 									<td>true</td>
@@ -437,7 +437,7 @@
 							<div class="layui-card-body">
 								elem：树绑定的元素ID。<br/>
 								obj：树绑定的DOM。<br/>
-								使用elem元素可以绑定已经在页面中存在的元素，而如果是页面中点击某个按钮生成的元素的话，则可以用obj来指定，这在使用layer.open()中打开一个树极为有效，它可以规避元素在生成之前被绑定从而找不到的问题。最终组件会将elem转换为该属性，elem和obj属性必须指定一个，如果同时指定，则优先obj属性的配置项
+								使用elem元素可以绑定已经在页面中存在的元素，而如果是页面中点击某个按钮生成的元素的话，则可以用obj来指定，这在使用layer.open()中打开一个树极为有效，它可以规避元素在生成之前被绑定从而找不到的问题。最终组件会将elem转换为obj属性，elem和obj属性必须指定一个，如果同时指定，则优先obj属性的配置项
 								<pre class="layui-code" lay-title="elem参数使用示例">
 									dtree.render({
 									  elem: "#elemTree",
@@ -746,8 +746,8 @@
 									<td>true / false</td>
 									<td>false</td>
 								</tr>
-								<tr data-vs="vs25x">
-									<td>asyncLoad<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></td>
+								<tr data-vs="vs257">
+									<td>asyncLoad<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
 									<td>Array</td>
 									<td>异步加载初始加载层级数组。</td>
 									<td>[]</td>
@@ -825,6 +825,14 @@
 									<td><a href="javascript:void(0);" data-id="response" class="position-a">详见response</a></td>
 									<td>-</td>
 									<td>{statusCode : 0}</td>
+								</tr>
+								<tr data-vs="vs257">
+									<td>beforeSend<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
+									<td>Function</td>
+									<td>树发送ajax请求前的回调函数,携带三个参数，<br/>ajax:当前操作本身的options数据，<br/>XMLHttpRequest:XMLHttp对象，<br/>self:当前ajax请求真正携带的options项。</td>
+									<td>beforeSend(ajax, XMLHttpRequest:XMLHttp, self){return true;}</td>
+									<td>-</td>
+									<td>beforeSend(ajax, XMLHttpRequest:XMLHttp, self){return false; //取消本次请求}<br/>（可以改变形参）</td>
 								</tr>
 								<tr>
 									<td><span style="color:#FF5722;">success</span></td>
@@ -1701,8 +1709,10 @@
 											var DemoTree = dtree.render({
 											  elem: '#siTree',
 											  url: '/siTree.json',
-											  done: function(){
-											    dtree.click(DemoTree, "001"); // 会自动帮你触发一次对应Id的节点的点击事件
+											  done: function(res, $ul, first){
+											    if(first) {
+											      dtree.click(DemoTree, "001"); // 会自动帮你触发一次对应Id的节点的点击事件
+											    }
 											  }
 											});
 											
@@ -1784,8 +1794,10 @@
 											var DemoTree = dtree.render({
 											  elem: '#demoTree',
 											  url: '/demoTree.json',
-											  done: function(){
-											    var params = dtree.dataInit("demoTree", "001");
+											  done: function(res, $ul, first){
+											    if(first) {
+											      var params = dtree.dataInit("demoTree", "001");
+											    }
 											  }
 											});
 										</pre>
@@ -1793,15 +1805,21 @@
 								</tr>
 								<tr id="chooseDataInit">
 									<td>chooseDataInit</td>
-									<td>String / Object, String</td>
-									<td>初始化选中复选框，并设值</td>
+									<td>String / Object, String / Array</td>
+									<td>初始化选中复选框，并设值，不会带上任何级联关系</td>
 									<td>
 										<pre class="layui-code" lay-title="chooseDataInit方法示例">
 											var DemoTree = dtree.render({
 											  elem: '#demoTree',
 											  url: '/demoTree.json',
-											  done: function(){
-											    var params = dtree.chooseDataInit("demoTree", "001,002,003");
+											  done: function(res, $ul, first){
+											    if(first) {
+											      var params = dtree.chooseDataInit("demoTree", "001,002,003"); // 字符串形式
+											      var params = dtree.chooseDataInit("demoTree", ["001","002","003"]); // 数组形式
+											      var params = dtree.chooseDataInit("demoTree", 123); // 单个赋值可以不带字符串
+											      // 多级复选框
+											      var params = dtree.chooseDataInit("demoTree",[["001001","001002"],["001003","001004"]]);
+											    }
 											  }
 											});
 										</pre>
@@ -1818,6 +1836,17 @@
 										</pre>
 									</td>
 								</tr>
+								<tr id="getCheckbarJsonArrParam" data-vs="vs257">
+									<td>getCheckbarJsonArrParam<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
+									<td>String / Object</td>
+									<td>获取复选框选中值（基于返回参数）</td>
+									<td>
+										<pre class="layui-code" lay-title="getCheckbarJsonArrParam方法示例">
+											var params = dtree.getCheckbarJsonArrParam("demoTree");
+											console.log(params);
+										</pre>
+									</td>
+								</tr>
 								<tr id="initNoAllCheck" data-vs="vs250">
 									<td>initNoAllCheck<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>String / Object</td>
@@ -1827,8 +1856,10 @@
 											var DemoTree = dtree.render({
 											  elem: '#demoTree',
 											  url: '/demoTree.json',
-											  done: function(){
-											    dtree.initNoAllCheck("demoTree");
+											  done: function(res, $ul, first){
+											    if(first) {
+											      dtree.initNoAllCheck("demoTree");
+											    }
 											  }
 											});
 										</pre>
@@ -1859,9 +1890,12 @@
 											var DemoTree = dtree.renderSelect({
 											  elem: '#demoTree',
 											  url: '/demoTree.json',
-											  done: function(){
-											    dtree.selectVal("demoTree"); // 如不传第二个参数，则树会自动根据当前选中节点回显值
-												dtree.selectVal("demoTree", "值");
+											  done: function(res, $ul, first)){
+											    if(first) {
+											      dtree.selectVal("demoTree"); // 如不传第二个参数，则树会自动根据当前选中节点回显值
+												  //dtree.selectVal("demoTree", "值");
+											    }
+											   
 											  }
 											});
 										</pre>
@@ -1886,6 +1920,19 @@
 										<pre class="layui-code" lay-title="unescape方法示例">
 											var html = dtree.unescape("需要被反格式化的内容");
 											console.log(html);
+										</pre>
+									</td>
+								</tr>
+								<tr id="serialize" data-vs="vs257">
+									<td>serialize<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
+									<td>String, Object</td>
+									<td>序列化JSON对象</td>
+									<td>
+										<pre class="layui-code" lay-title="serialize方法示例">
+										var param = dtree.getNowParam("demoTree");
+										//第一个参数为序列化字符串头部字符，第二个参数为JSON对象
+										var data = dtree.serialize("", param); 
+										console.log(data);
 										</pre>
 									</td>
 								</tr>
@@ -2167,26 +2214,26 @@
 										</pre>
 									</td>
 								</tr>
-								<tr data-vs="vs25x">
-									<td><span style="color:#c2c2c2;">DTree.prototype.loadTreeInit</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></td>
+								<tr data-vs="vs257">
+									<td><span style="color:#c2c2c2;">DTree.prototype.loadTreeInit</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
 									<td>-</td>
 									<td>初始化加载树</td>
 									<td>-</td>
 								</tr>
-								<tr data-vs="vs25x">
-									<td><span style="color:#c2c2c2;">DTree.prototype.loadChildTreeInit</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></td>
+								<tr data-vs="vs257">
+									<td><span style="color:#c2c2c2;">DTree.prototype.loadChildTreeInit</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
 									<td>-</td>
 									<td>初始化加载子节点</td>
 									<td>-</td>
 								</tr>
-								<tr data-vs="vs25x">
-									<td><span style="color:#c2c2c2;">DTree.prototype.dataLoadTree</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></td>
+								<tr data-vs="vs257">
+									<td><span style="color:#c2c2c2;">DTree.prototype.dataLoadTree</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
 									<td>-</td>
 									<td>用data加载树</td>
 									<td>-</td>
 								</tr>
-								<tr data-vs="vs25x">
-									<td><span style="color:#c2c2c2;">DTree.prototype.asyncLoadTree</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></td>
+								<tr data-vs="vs257">
+									<td><span style="color:#c2c2c2;">DTree.prototype.asyncLoadTree</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
 									<td>-</td>
 									<td>异步加载树</td>
 									<td>-</td>
@@ -2271,6 +2318,16 @@
 									<td>开启手风琴模式时对其他节点的处理</td>
 									<td>-</td>
 								</tr>
+								<tr id="navThis" data-vs="vs257">
+									<td>DTree.prototype.fuzzySearch<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
+									<td>String</td>
+									<td>模糊查询，搜索节点，保留父节点</td>
+									<td>
+										<pre class="layui-code" lay-title="fuzzySearch方法示例">
+											DemoTree.fuzzySearch(inputValue);
+										</pre>
+									</td>
+								</tr>
 								<tr id="navThis" data-vs="vs250">
 									<td>DTree.prototype.navThis<br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
 									<td>Dom</td>
@@ -2293,13 +2350,20 @@
 								</tr>
 								<tr id="setDisabledNodes" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.setDisabledNodes</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
-									<td>String</td>
+									<td>String/Array</td>
 									<td>设置节点为disabled</td>
 									<td>
 										<pre class="layui-code" lay-title="setDisabledNodes方法示例">
 											DemoTree.setDisabledNodes("001,002");
+											DemoTree.setDisabledNodes(["001","002"]);
+											DemoTree.setDisabledNodes(1);
 										</pre>
 									</td>
+								</tr>
+								<tr id="setDisabledNodes" data-vs="vs257">
+									<td><span style="color:#FF5722;">DTree.prototype.setDisabledNode</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
+									<td>Dom</td>
+									<td>设置单个节点为disabled</td>
 								</tr>
 								<tr id="setDisabledAllNodes" data-vs="vs256">
 									<td><span style="color:#FF5722;">DTree.prototype.setDisabledAllNodes</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.6新增）</span></td>
@@ -2313,21 +2377,28 @@
 								</tr>
 								<tr id="cancelDisabledNodes" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.cancelDisabledNodes</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
-									<td>String</td>
+									<td>String/Array</td>
 									<td>将节点的disabled取消</td>
 									<td>
 										<pre class="layui-code" lay-title="cancelDisabledNodes方法示例">
 											DemoTree.cancelDisabledNodes("001,002,003");
+											DemoTree.cancelDisabledNodes(["001","002"]);
 										</pre>
 									</td>
 								</tr>
+								<tr id="cancelDisabledNode" data-vs="vs257">
+									<td><span style="color:#FF5722;">DTree.prototype.cancelDisabledNode</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
+									<td>Dom</td>
+									<td>设置单个节点取消disabled</td>
+								</tr>
 								<tr id="getDisabledNodesParam" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.getDisabledNodesParam</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
-									<td>String</td>
+									<td>String/Array</td>
 									<td>获取指定disabled节点的值</td>
 									<td>
 										<pre class="layui-code" lay-title="getDisabledNodesParam方法示例">
 											var param = DemoTree.getDisabledNodesParam("001,003");
+											var param = DemoTree.getDisabledNodesParam(["001","002"]);
 											console.log(param);
 										</pre>
 									</td>
@@ -2345,31 +2416,44 @@
 								</tr>
 								<tr id="setHideNodes" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.setHideNodes</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
-									<td>String</td>
+									<td>String/Array</td>
 									<td>设置节点为hide</td>
 									<td>
 										<pre class="layui-code" lay-title="setHideNodes方法示例">
 											DemoTree.setHideNodes("001,002,003");
+											DemoTree.setHideNodes(["001","002"]);
 										</pre>
 									</td>
 								</tr>
+								<tr id="setHideNode" data-vs="vs257">
+									<td><span style="color:#FF5722;">DTree.prototype.setHideNode</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
+									<td>Dom</td>
+									<td>设置单个节点为hide</td>
+								</tr>
 								<tr id="cancelHideNodes" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.cancelHideNodes</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
-									<td>String</td>
+									<td>String/Array</td>
 									<td>将节点的hide取消</td>
 									<td>
 										<pre class="layui-code" lay-title="cancelHideNodes方法示例">
 											DemoTree.cancelHideNodes("001,002,003");
+											DemoTree.cancelHideNodes(["001","002"]);
 										</pre>
 									</td>
 								</tr>
+								<tr id="cancelHideNode" data-vs="vs257">
+									<td><span style="color:#FF5722;">DTree.prototype.cancelHideNode</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></td>
+									<td>Dom</td>
+									<td>设置单个节点取消hide</td>
+								</tr>
 								<tr id="getHideNodesParam" data-vs="vs250">
 									<td><span style="color:#FF5722;">DTree.prototype.getHideNodesParam</span><br/><span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></td>
-									<td>String</td>
+									<td>String/Array</td>
 									<td>获取指定hide节点的值</td>
 									<td>
 										<pre class="layui-code" lay-title="getHideNodesParam方法示例">
 											var param = DemoTree.getHideNodesParam("001,002,003");
+											var param = DemoTree.getHideNodesParam(["001","002"]);
 											console.log(param);
 										</pre>
 									</td>
@@ -2511,11 +2595,13 @@
 								<tr><td colspan="5"><span style="font-weight: bold;">复选框函数</span></td></tr>
 								<tr id="chooseDataInit1">
 									<td><a href="javascript:void(0);" data-id="chooseDataInit" class="position-a">DTree.prototype.chooseDataInit</a></td>
-									<td>String</td>
+									<td>String/Array</td>
 									<td>初始化复选框的值</td>
 									<td>
 										<pre class="layui-code" lay-title="chooseDataInit方法示例">
 											DemoTree.chooseDataInit("001,002,003");
+											DemoTree.chooseDataInit(["001","002","003"]);
+											DemoTree.chooseDataInit(123);
 										</pre>
 									</td>
 								</tr>
@@ -2603,7 +2689,7 @@
 								</tr>
 								<tr id="getCheckbarNodesParam1">
 									<td><a href="javascript:void(0);" data-id="getCheckbarNodesParam" class="position-a">DTree.prototype.getCheckbarNodesParam</a></td>
-									<td>-</td>
+									<td>Boolean</td>
 									<td>获取树的复选框操作值的全部参数</td>
 									<td>
 										<pre class="layui-code" lay-title="getCheckbarNodesParam方法示例">
@@ -3100,7 +3186,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["异步数据接口规范","select加载配置","初始化下拉树","selectInputName","changeSelect","rollbackHtml","setDisabledAllNodes","getCheckbarJsonArrParam"];
+							var tts = ["异步数据接口规范","select加载配置","初始化下拉树","selectInputName","changeSelect","rollbackHtml","setDisabledAllNodes","getCheckbarJsonArrParam","序列化JSON对象","获取复选框选中值1"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";

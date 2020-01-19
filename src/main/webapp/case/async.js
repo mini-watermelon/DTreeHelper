@@ -34,6 +34,11 @@ var menuTree = [{
 	"last": true,
 	"children":[]
 },{
+	"id":"ybjzbeforesend",
+	"title": "异步加载之前回调",
+	"last": true,
+	"children":[]
+},{
 	"id":"ybjzsuccess",
 	"title": "异步加载成功回调",
 	"last": true,

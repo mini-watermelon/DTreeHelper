@@ -29,7 +29,7 @@
 <body class="layui-layout-body">
 	<div class="layui-layout layui-layout-admin">
 		<div class="layui-header">
-			<div class="layui-logo">dtree帮助手册 </div>
+			<div class="layui-logo"><a class="logo" href="javascript: void(0);" style="color: #009688;" title="作者寄语">dtree帮助手册</a></div>
 			<!-- <div class="layui-search layui-form" lay-filter="search-form">
 				<div class="layui-form-item" style="margin-bottom: 0px;padding-top: 10px;">
 					<div class="layui-input-block" style="margin-left: 0px">
@@ -55,9 +55,10 @@
 			  </li>
 			  <li class="layui-nav-item">
 			    <!-- <a href="https://gitee.com/miniwatermelon/DTreeHelper" target="_blank">组件下载：<span class="version-download">v9.9.9（gitee持续更新）</span></a> -->
-			    <a href="version/dtree_v2.5.6_20191024.zip">组件下载：<span class="version-download">v2.5.6（20191024）（正式版）</span></a>
+			    <a href="version/dtree_v2.5.7_20200119.zip">组件下载：<span class="version-download">v2.5.7（20200119）（正式版）</span></a>
 			    <dl class="layui-nav-child"> 
-			      <dd><a href="https://gitee.com/miniwatermelon/DTreeHelper" target="_blank">v2.5.x（gitee持续更新）</a></dd>
+			      <!-- <dd><a href="https://gitee.com/miniwatermelon/DTreeHelper" target="_blank">v2.5.7（20200119）（正式版）</a></dd> -->
+			      <dd><a href="version/dtree_v2.5.7_20200119.zip" target="_blank">v2.5.7（2020119）（正式版）</a></dd>
 			      <dd><a href="version/dtree_v2.5.6_20191024.zip" target="_blank">v2.5.6（20191024）（正式版）</a></dd>
 			      <dd><a href="version/dtree_v2.5.5_201910122222.zip" target="_blank">v2.5.5（20191012）（正式版）</a></dd>
 			      <dd><a href="version/dtree_v2.5.4_201906141500.zip" target="_blank">v2.5.4（20190614）（正式版）</a></dd>
@@ -84,16 +85,16 @@
 					<li class="layui-nav-item layui-nav-itemed">
 						<a href="javascript:void(0);">案例演示</a>
 						<dl class="layui-nav-child">
-							<dd><a href="javascript:void(0);" data-id="case/common.html">常见使用<span data-vlog="vs256" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/common.html">常见使用<span data-vlog="vs257" class='layui-badge-dot'></span></a></dd>
 							<dd><a href="javascript:void(0);" data-id="case/complex.html">数据格式<span data-vlog="vs250" class='layui-badge-dot'></span></a></dd>
-							<dd><a href="javascript:void(0);" data-id="case/async.html">异步加载<span data-vlog="vs25x" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/async.html">异步加载<span data-vlog="vs257" class='layui-badge-dot'></span></a></dd>
 							<dd><a href="javascript:void(0);" data-id="case/open.html">弹出框选中回调<span data-vlog="vs256" class='layui-badge-dot'></span></a></dd>
-							<dd><a href="javascript:void(0);" data-id="case/checkbar.html">开启复选框<span data-vlog="vs256" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/checkbar.html">开启复选框<span data-vlog="vs257" class='layui-badge-dot'></span></a></dd>
 							<dd><a href="javascript:void(0);" data-id="case/menubar.html">开启菜单栏<span data-vlog="vs250" class='layui-badge-dot'></span></a></dd>
 							<dd><a href="javascript:void(0);" data-id="case/toolbar.html">开启工具栏<span data-vlog="vs255" class='layui-badge-dot'></span></a></dd>
 							<!-- <dd data-vs="vs250"><a href="javascript:void(0);" data-id="case/draw.html">开启拖拽<span class='layui-badge-dot'></span></a></dd> -->
 							<dd><a href="javascript:void(0);" data-id="case/iframe.html">开启iframe<span data-vlog="vs255" class='layui-badge-dot'></span></a></dd>
-							<dd><a href="javascript:void(0);" data-id="case/select.html">使用下拉树<span data-vlog="vs256" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/select.html">使用下拉树<span data-vlog="vs257" class='layui-badge-dot'></span></a></dd>
 							<dd><a href="javascript:void(0);" data-id="case/style.html">图标及配色方案<span data-vlog="vs255" class='layui-badge-dot'></span></a></dd>
 						</dl>
 					</li>
@@ -152,7 +153,7 @@
 		
 		// 存储所有跟文档版本信息相关的记录
 		var version = {
-			"vs25x":"v2.5.x（内测版，gitee持续更新）",
+			"vs257":"v2.5.7（20200119）（正式版）",
 			"vs256":"v2.5.6（20191024）（正式版）", 
 			"vs255":"v2.5.5（20191012）（正式版）", 
 			"vs254":"v2.5.4（20190614）（正式版）", 
@@ -188,7 +189,7 @@
 			for(var key in version){
 				if(key != versionCls) {
 					console.log(versionCls);
-					if(versionCls == "vs256") break;
+					if(versionCls == "vs257") break;
 					init = false;
 					layer.confirm("当前选择文档非最新，是否切换到最新？",{icon: 3, title:'提示'}, function(index){
 						versionCls = key;
@@ -225,6 +226,8 @@
 				flag = true;
 				
 			}
+			
+			showAuthorMsg();
 		}
 		
 		element.on("nav(version-ul)", function(elem){
@@ -254,6 +257,43 @@
 				area:["80%","90%"]
 			})
 		});
+		
+		$(".logo").click(function(){
+			layer.open({
+				type: 2,
+				title: "作者寄语",
+				area: ["600px", "800px"],
+				content: "msg.html",
+				btn: ["期待再次起航"]
+			});
+		});
+		
+		// 作者寄语
+		function showAuthorMsg() {
+			// layui.data("dtree-author-msg", {key: "msg", remove: true});
+			var msg = layui.data("dtree-author-msg", "msg");
+			if(!msg) {
+				layer.open({
+					type: 2,
+					title: "作者寄语",
+					anim: 1,
+					area: ["600px", "800px"],
+					content: "msg.html",
+					btn: ["期待再次起航"],
+					yes: function(index, layero) {
+						layui.data("dtree-author-msg", {key: "msg", value: "readed"});
+						layer.close(index);
+					},
+					cancel: function(index, layero) {
+						layui.data("dtree-author-msg", {key: "msg", value: "readed"});
+						layer.close(index);
+					},
+					end: function() {
+						layui.data("dtree-author-msg", {key: "msg", value: "readed"});
+					}
+				});
+			}
+		}
 		
 		// 搜索功能
 		/* var searchTree = dtree.render({

@@ -34,6 +34,11 @@ var menuTree = [{
 	"last": true,
 	"children":[]
 },{
+	"id":"fuzzySearch",
+	"title": "搜索节点",
+	"last": true,
+	"children":[]
+},{
 	"id":"hei",
 	"title": "指定高度",
 	"last": true,

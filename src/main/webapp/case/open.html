@@ -335,9 +335,11 @@
 									      var DTree = dtree.render({
 									        obj: $(layero).find("#openTree4"), 
 									        url: "../json/case/openTree1.json",
-									        done: function(data, obj){  //使用异步加载回调
-									          var reportId = $("#reportId4").val();
-									          dtree.dataInit("openTree4", reportId); // 初始化值
+									        done: function(data, obj, first){  //使用异步加载回调
+									          if(first) {
+									            var reportId = $("#reportId4").val();
+									            dtree.dataInit("openTree4", reportId); // 初始化值
+									          }
 									        }
 									      });
 									      
@@ -403,9 +405,11 @@
 									        obj: $(layero).find("#openTree5"), 
 									        url: "../json/case/openTree3.json",
 									        checkbar: true, // 开启复选框
-									        done: function(data, obj){  //使用异步加载回调
-									         var reportId = $("#reportId5").val();
-									         dtree.chooseDataInit("openTree5", reportId); // 初始化复选框的值
+									        done: function(data, obj, first){  //使用异步加载回调
+									          if(first) {
+									            var reportId = $("#reportId5").val();
+									            dtree.chooseDataInit("openTree5", reportId); // 初始化复选框的值
+									          }
 									        }
 									      });
 									    },
@@ -615,9 +619,11 @@
 					var DTree = dtree.render({
 						obj: $(layero).find("#openTree4"),
 						url: "../json/case/openTree1.json",
-						done: function(data, obj){
-							var reportId = $("#reportId4").val();
-							dtree.dataInit("openTree4", reportId); // 初始化值
+						done: function(data, obj, first){
+							if(first) {
+								var reportId = $("#reportId4").val();
+								dtree.dataInit("openTree4", reportId); // 初始化值
+							}
 						}
 					});
 					
@@ -651,10 +657,12 @@
 						obj: $(layero).find("#openTree5"),   // 如果直接用elem加载不出来，则可以使用这个方式加载jquery的DOM
 						url: "../json/case/openTree3.json",
 						checkbar: true, // 开启复选框
-						done: function(data, obj){
-							var reportId = $("#reportId5").val();
-							dtree.chooseDataInit("openTree5", reportId); // 初始化复选框的值
-							DTree.initAllCheck();
+						done: function(data, obj, first){
+							if(first) {
+								var reportId = $("#reportId5").val();
+								dtree.chooseDataInit("openTree5", reportId); // 初始化复选框的值
+								DTree.initAllCheck();
+							}
 						}
 					});
 				},

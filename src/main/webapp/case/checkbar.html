@@ -37,6 +37,10 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 							<div class="layui-timeline-content layui-text">
 								<h3 class="layui-timeline-title version-title"></h3>
+								<ul data-vlog="vs257">
+									<li>【新增】基础方法新增：getCheckbarJsonArrParam，获取基于返回参数的树的复选框参数，选中数据横向存储</li>
+									<li>【优化】内置方法优化：chooseDataInit，现支持单个数据、带分隔符的字符串、数组、二维数组（多级复选框）。</li>
+								</ul>
 								<ul data-vlog="vs256">
 									<li>【新增】内置方法新增：getCheckbarJsonArrParam，获取基于返回参数的树的复选框参数数组</li>
 									<li>【新增】内置方法新增：checkAllNode，复选框全选</li>
@@ -285,12 +289,22 @@
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
 							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="checkbarTree5" class="dtree" data-id="0"></ul></div></div>
 							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" id="checkbarTree5_btna">获取选中复选框值（形态1）</button>
+								<button class="layui-btn layui-btn-normal" id="checkbarTree5_btnb">获取选中复选框值（形态2）</button>
 								<pre class="layui-code" lay-title="JavaScript">
 									dtree.render({
 									  elem: "#checkbarTree5",
 									  url: "../json/case/checkbarTree5.json",
 									  checkbar: true  
 									  }
+									});
+									$("#checkbarTree5_btna").click(function(){ // 形态1
+									  var params = dtree.getCheckbarNodesParam("checkbarTree5");
+									  layer.msg(JSON.stringify(params));
+									});
+									$("#checkbarTree5_btnb").click(function(){ // 形态2
+									  var params = dtree.getCheckbarJsonArrParam("checkbarTree5");
+									  layer.msg(JSON.stringify(params));
 									});
 								</pre>
 								<p>多级复选框，只需要在返回的checkArr参数中，新增一个json串即可，注意：type表示当前节点的第几个复选框，可不能乱填哦</p>
@@ -331,6 +345,66 @@
 									  "children":[...]
 									}]
 									}
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="initchoose">
+					<legend>初始化选中节点</legend>
+					<div class="layui-field-box">
+						<p>除了可以从返回数据中指定节点的选中（checked属性的值为：0-未选中，1-选中，2-半选。）之外，还可以在树加载完毕之后的done回调里给树节点选中。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="checkbarTreeInitchoose" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#checkbarTreeInitchoose",
+									  url: "../json/case/checkbarTree1.json",
+									  checkbar:true,
+									  done: function(res, $ul, first){
+									    if(first) {
+									      dtree.chooseDataInit("checkbarTreeInitchoose","001001,001002"); // 初始化选中
+									      // 或者是
+									      // dtree.chooseDataInit("checkbarTreeInitchoose",["001001","001002"]); // 初始化选中
+									      // 多级复选框下使用二维数组初始化
+									      // dtree.chooseDataInit("checkbarTreeInitchoose",[["001001","001002"],["001003","001004"]]);
+									    }
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="initcheck">
+					<legend>初始化返选节点</legend>
+					<div class="layui-field-box">
+						<p>如果在某些状态下，原始数据中父节点的选中或半选状态并没有被带上，那么你也可以在done回调里，将这些状态反选到树上。</p>
+						<p>示例中就是将“湖南省”节点反选成为了半选状态。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="checkbarTreeInitcheck" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#checkbarTreeInitcheck",
+									  url: "../json/case/checkbarTree1.json",
+									  checkbar:true,
+									  checkbarType:"no-all", //半选
+									  done: function(res, $ul, first){
+									    if(first) {
+									      dtree.chooseDataInit("checkbarTreeInitcheck","001001,001002");
+									      // 反选半选状态
+									      dtree.initNoAllCheck("checkbarTreeInitcheck");
+									    }
+									  }
+									});
 								</pre>
 							</div>
 						</div>
@@ -474,7 +548,7 @@
 					formatter: {
 						title: function(data){
 							var tt = data.title;
-							var tts = ["点击节点选中"];
+							var tts = ["点击节点选中","多级checkbar"];
 							for(var i=0; i<tts.length; i++) {
 								if(tt == tts[i]) {
 									tt += "&nbsp;<span class='layui-badge-dot'></span>";
@@ -616,7 +690,50 @@
 		dtree.render({
 			elem: "#checkbarTree5",
 			url: "../json/case/checkbarTree5.json",
-			checkbar:true
+			checkbar:true,
+			done: function(res, $ul, first){
+				if(first) {
+					//dtree.chooseDataInit("checkbarTree5",[["001001","001002"],["001003","001004"]]);
+				}
+			}
+		});
+		
+		$("#checkbarTree5_btna").click(function(){
+			var params = dtree.getCheckbarNodesParam("checkbarTree5");
+			layer.msg(JSON.stringify(params));
+			console.log(params);
+		});
+		
+		$("#checkbarTree5_btnb").click(function(){
+			var params = dtree.getCheckbarJsonArrParam("checkbarTree5");
+			layer.msg(JSON.stringify(params));
+			console.log(params);
+		});
+		
+		// 2.checkbarTreeInitchoose
+		dtree.render({
+			elem: "#checkbarTreeInitchoose",
+			url: "../json/case/checkbarTree1.json",
+			checkbar:true,
+			done: function(res, $ul, first){
+				if(first) {
+					dtree.chooseDataInit("checkbarTreeInitchoose","001001,001002");
+				}
+			}
+		});
+		
+		// 2.checkbarTreeInitcheck
+		dtree.render({
+			elem: "#checkbarTreeInitcheck",
+			url: "../json/case/checkbarTree1.json",
+			checkbar:true,
+			checkbarType:"no-all",
+			done: function(res, $ul, first){
+				if(first) {
+					dtree.chooseDataInit("checkbarTreeInitcheck","001001,001002");
+					dtree.initNoAllCheck("checkbarTreeInitcheck");
+				}
+			}
 		});
 		
 		// 2.checkbarTreeNode

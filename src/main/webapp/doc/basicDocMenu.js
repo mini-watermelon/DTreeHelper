@@ -253,6 +253,11 @@ var menuTree = [{
 	 	"last": true,
 	 	"children":[]
  	},{
+ 		"id":"getCheckbarJsonArrParam",
+	 	"title": "获取复选框选中值1",
+	 	"last": true,
+	 	"children":[]
+ 	},{
  		"id":"initNoAllCheck",
 	 	"title": "复选框半选状态设置",
 	 	"last": true,
@@ -275,6 +280,11 @@ var menuTree = [{
  	},{
  		"id":"unescape",
 	 	"title": "字符串反格式化",
+	 	"last": true,
+	 	"children":[]
+ 	},{
+ 		"id":"serialize",
+	 	"title": "序列化JSON对象",
 	 	"last": true,
 	 	"children":[]
  	}]

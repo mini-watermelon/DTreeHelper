@@ -36,6 +36,12 @@
 							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
 							<div class="layui-timeline-content layui-text">
 								<h3 class="layui-timeline-title version-title"></h3>
+								<ul data-vlog="vs257">
+									<li>【修复】select模块修复：当设置默认值时，存在点击select面板后，默认值消失的问题。</li>
+									<li>【修复】select模块修复：带复选框的下拉树设置默认值无效的问题。</li>
+									<li>【优化】select模块优化：自适应当前组件的位置，向上或向下展开树。</li>
+									<li>【新增】基础属性新增：selectCardHeight，树面板的高度</li>
+								</ul>
 								<ul data-vlog="vs256">
 									<li>【修复】标签属性修复：ul标签上data-value属性设置无效的问题</li>
 									<li>【优化】基础方法优化：render，支持加载下拉树</li>
@@ -74,9 +80,10 @@
 								<ul id="selTree1" class="dtree" data-id="0"></ul></div>
 							<div class="layui-col-lg12">
 								<pre class="layui-code" lay-title="JavaScript">
+									&lt;ul id="selTree1" class="dtree" data-id="0" &gt;&lt;/ul&gt;
 									dtree.renderSelect({
 									  elem: "#selTree1",
-									  width: "100%", // 可以在这里指定树的宽度来填满div
+									  width: "100%", // 指定树的宽度
 									  url: "../json/case/asyncTree1.json"
 									});
 								</pre>
@@ -121,7 +128,7 @@
 							</div>
 							<div class="layui-col-lg12">
 								<pre class="layui-code" lay-title="JavaScript">
-									&lt;ul id="selTree5" class="dtree" data-id="0" &gt;&lt;/ul&gt;&lt;/div&gt;
+									&lt;ul id="selTree5" class="dtree" data-id="0" &gt;&lt;/ul&gt;
 									dtree.renderSelect({
 									  elem: "#selTree5",
 									  url: "../json/case/asyncTree1.json"
@@ -179,10 +186,13 @@
 									  elem: "#selTree3",
 									  url: "../json/case/asyncTree1.json",
 									  selectInitVal: "001003", // 你可以在这里指定默认值
-									  done: function(){
-									    dtree.dataInit("selTree3", "001003");
-									    // 也可以在这里指定，第二个参数如果不填，则会自动返显当前选中的数据
-									    var selectParam = dtree.selectVal("selTree3"); 
+									  done: function(res, $ul, first){
+									    if(first) {
+									      dtree.dataInit("selTree3", "001003");
+									      // 也可以在这里指定，第二个参数如果不填，则会自动返显当前选中的数据
+									      var selectParam = dtree.selectVal("selTree3"); 
+									    }
+									    
 									  }
 									});
 								</pre>
@@ -234,11 +244,17 @@
 							</div>
 							<div class="layui-col-lg12">
 								<pre class="layui-code" lay-title="JavaScript">
-									&lt;ul id="selTree6" class="dtree" data-id="0" &gt;&lt;/ul&gt;&lt;/div&gt;
+									&lt;ul id="selTree6" class="dtree" data-id="0" &gt;&lt;/ul&gt;
 									var SelTree6 = dtree.renderSelect({
 									  elem: "#selTree6",
 									  url: "../json/case/checkarrTree1.json",
-									  checkbar: true //开启复选框
+									  checkbar: true, // 设置复选框
+									  checkbarType: "self",
+									  selectInitVal: "001001,001003", // 设置默认值
+									  done: function(){
+									    // dtree.chooseDataInit("selTree6", "001001,001003");
+									    // dtree.selectVal("selTree6"); // 也可以在这里指定，第二个参数如果不填，则会自动读取
+									  }
 									});
 									
 									dtree.on('chooseDone("selTree6")', function(obj){
@@ -266,7 +282,7 @@
 								<ul id="selTree7" class="dtree" data-id="0"></ul></div>
 							<div class="layui-col-lg12">
 								<pre class="layui-code" lay-title="JavaScript">
-									&lt;ul id="selTree7" class="dtree" data-id="0" &gt;&lt;/ul&gt;&lt;/div&gt;
+									&lt;ul id="selTree7" class="dtree" data-id="0" &gt;&lt;/ul&gt;
 									var SelTree7 = dtree.renderSelect({
 									  elem: "#selTree7",
 									  url: "../json/case/asyncTree1.json",
@@ -311,7 +327,7 @@
 				<fieldset class="layui-elem-field layui-field-title" id="selectCardHeight">
 					<legend>下拉面板高度指定（selectCardHeight）</legend>
 					<div class="layui-field-box">
-						<p>指定下拉面板展开的高度，如果不指定，默认是350。<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.x新增）</span></p>
+						<p>指定下拉面板展开的高度，如果不指定，默认是350。<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></p>
 						<p>将下拉树输入框拉到最底部，树会自动向上展开，可以试试。</p>
 						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
 							<div class="layui-col-lg12">
@@ -319,7 +335,7 @@
 							</div>
 							<div class="layui-col-lg12">
 								<pre class="layui-code" lay-title="JavaScript">
-									&lt;ul id="selTree8" class="dtree" data-id="0" &gt;&lt;/ul&gt;&lt;/div&gt;
+									&lt;ul id="selTree8" class="dtree" data-id="0" &gt;&lt;/ul&gt;
 									var SelTree8 = dtree.renderSelect({
 									  elem: "#selTree8",
 									  url: "../json/case/asyncTree1.json",
@@ -466,7 +482,14 @@
 		var SelTree6 = dtree.renderSelect({
 		  elem: "#selTree6",
 		  url: "../json/case/checkbarTree1.json",
-		  checkbar: true
+		  checkbar: true,
+		  checkbarType: "self",
+		  selectInitVal: "001001,001003",
+		  done: function(){
+			  // dtree.chooseDataInit("selTree6", "001001,001003");
+			  // dtree.selectVal("selTree6"); // 也可以在这里指定，第二个参数如果不填，则会自动读取
+			  //dtree.initAllCheck("selTree6");
+		  }
 		});
 		
 		dtree.on('chooseDone("selTree6")', function(obj){
