@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+
+	<div class="dialog-tree-div">
+		<div class="dialog-show-tree">
+			<ul id="openTree2" class="dtree" data-id="0"></ul>
+		</div>
+	</div>
+
+	<div class="dialog-button">
+		<div class="layui-input-block">
+			<button class="layui-btn layui-btn-normal" data-id="layui-submit">确定</button>
+			<button class="layui-btn layui-btn-normal" data-id="layui-close">取消</button>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['layer','dtree'], function(){
+		var dtree = layui.dtree,
+			layer = parent.layer === undefined ? layui.layer : top.layer,
+			$ = layui.$;
+		
+		var DTree = dtree.render({
+			elem: "#openTree2",
+			url: "../json/case/openTree1.json",
+            method: "get",
+			icon: 5
+		});
+			
+		dtree.on("nodedblclick('openTree2')", function(obj){
+			parent.layui.$("#reportId2").val(obj.param.nodeId);
+			parent.layui.$("#reportName2").val(obj.param.context);
+			
+			var index = parent.layer.getFrameIndex(window.name);
+			parent.layer.close(index);
+		});
+		
+		
+		// 监听鼠标按下事件
+		$(document).on("click","button[data-id]", function(e){
+			var did = $(this).attr("data-id");
+			switch(did){
+				case "layui-submit": //确定按钮
+					var param = dtree.getNowParam("openTree2");
+					parent.layui.$("#reportId2").val(param.nodeId);
+					parent.layui.$("#reportName2").val(param.context);
+					
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+					break;
+				case "layui-close": //取消按钮
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+					break;
+			}
+		})
+	});
+</script>
+</html>

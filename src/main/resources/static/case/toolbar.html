@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<style>
+*[class^="vs"]{display: none!important;}
+</style>
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">在开发过程中，我们会经常涉及到对树的节点的操作，比如，新增节点，修改节点，删除节点等，现在组件提供了方便的功能，你只需要简单配置即可实现这些功能。<span style="color:#FF5722;">从2.5.0版本开始，工具栏支持节点后图标和绑定右键菜单两种形式，回调函数中ajax不限于同步请求。</span></blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul data-vlog="vs255">
+										<li>【修复】内置方法修复：partialRefreshEdit，支持修改parentId后及时返显到下挂节点</li>
+										<li>【优化】内置属性优化：toolbarScroll属性更名为scroll，该属性提升为基础属性。</li>
+									</ul>
+									<ul data-vlog="vs250">
+										<li class="bug">【修复】toolbar模块修复：自定义的toolbar的回调函数的第二个$div参数修复，现在可以取到值</li>
+										<li class="bug">【修复】toolbar模块修复：内置函数：changeTreeNodeEdit中的title未定义的问题。</li>
+										<li>【优化】toolbar模块优化：内置的三个按钮中的label均加上title提示</li>
+										<li>【新增】toolbar模块新增：toolbar内置新增两个默认方法：pulldown：展开当前节点下的全部节点，pullup：收缩当前节点下的全部节点</li>
+										<li>【新增】toolbar模块新增：toolbar新增属性：toolbarWay，工具栏显示方式，contextmenu:右键，follow:跟随节点，fixed:固定在节点右侧</li>
+										<li>【新增】toolbar模块新增：toolbarBtn中新增一系列的属性（id、placeholder、verify、defElem、readonly、disabled、filter）</li>
+										<li>【新增】toolbar模块新增：toolbarBtn中,optionsData支持使用function回调</li>
+										<li>【新增】内置方法新增：partialRefreshAdd：局部刷新树--当前节点新增子节点时</li>
+										<li>【新增】内置方法新增：partialRefreshEdit：局部刷新树--当前节点选中时</li>
+										<li>【新增】内置方法新增：partialRefreshDel：局部刷新树--当前节点选中被删除时</li>
+										<li>【新增】内置方法新增：toolbarHide：隐藏toolbar</li>
+										<li>【新增】内置方法新增：toolbarMethod：toolbar内置方法</li>
+										<li>【新增】内置方法新增：toolbarListener：toolbar内置监听</li>
+										<li>【新增】内置方法新增：dynamicToolbarDom：在节点后动态绑定fixed和follow条件的工具栏</li>
+										<li>【更新】内置方法更新：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式</li>
+										<li>【更新】内置方法更新：changeTreeNodeAdd新增一个回传参数：refresh，用于新增完成后，局部刷新</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="jdsy">
+					<legend>常规toolbar的使用</legend>
+					<div class="layui-field-box">
+						<p>当你配置了toolbar参数时，在你鼠标移动至树的某一个节点时，点击鼠标右键，即可出现toolbar的菜单了。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 980px;overflow: auto;" id="toolbarDiv"><ul id="toolbarTree1" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									<div style="height: 550px;overflow: auto;" id="toolbarDiv">
+									  <ul id="toolbarTree1" class="dtree" data-id="0"></ul>
+									</div>
+									
+									var DTree1 = dtree.render({
+									  elem: "#toolbarTree1",
+									  url: "/DTreeHelper/toolbar/query",
+									  initLevel: "1",
+									  line:true,
+									  toolbar:true,
+									  record:true,
+									  dataFormat: "list",
+									  scroll:"#toolbarDiv",
+									  toolbarFun: {
+									    addTreeNode: function(treeNode, $div){
+									      $.ajax({
+									        type: "post",
+									        data: treeNode,
+									        url: "/DTreeHelper/toolbar/insert",
+									        success: function(result){
+									          //DTree1.changeTreeNodeAdd(treeNode.nodeId); // 添加成功，返回ID
+									          //DTree1.changeTreeNodeAdd(true); // 添加成功
+									          //DTree1.changeTreeNodeAdd(result.data); // 添加成功，返回一个JSON对象
+									          //DTree1.changeTreeNodeAdd("refresh"); // 添加成功，局部刷新树
+									        },
+									        error: function(){
+									          //DTree1.changeTreeNodeAdd(false); // 添加失败
+									        }
+									      });
+									    },
+									    editTreeNode: function(treeNode, $div){
+									      $.ajax({
+									        type: "post",
+									        data: treeNode,
+									        url: "/DTreeHelper/toolbar/update",
+									        success: function(result){
+									          //DTree1.changeTreeNodeEdit(true);// 修改成功
+									          //DTree1.changeTreeNodeEdit(result.param); // 修改成功，返回一个JSON对象
+									        },
+									        error: function(){
+									          //DTree1.changeTreeNodeEdit(false);//修改失败
+									        }
+									      });
+									    },
+									    delTreeNode: function(treeNode, $div){
+									      $.ajax({
+									        type: "post",
+									        data: treeNode,
+									        url: "/DTreeHelper/toolbar/delete",
+									        success: function(result){
+									          //DTree1.changeTreeNodeDel(true); // 删除成功
+									        },
+									        error: function(){
+									          //DTree1.changeTreeNodeDel(false);// 删除失败
+									        }
+									      });
+									    }
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="zdysy">
+					<legend>自定义toolbar的内容（toolbarBtn）</legend>
+					<div class="layui-field-box">
+						<p>toolbar加载时，每种操作都会自带一些必填属性，但是你可以自定义一些你需要添加的属性，比如备注，等等。当然你可能不需要用到这么多的功能，你还可以从增删改中选择几种。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 650px;overflow: auto;" id="toolbarDiv2"><ul id="toolbarTree2" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									<div style="height: 550px;overflow: auto;" id="toolbarDiv2">
+									  <ul id="toolbarTree2" class="dtree" data-id="0"></ul>
+									</div>
+									
+									dtree.render({
+									  elem: "#toolbarTree2",
+									  url: "../json/case/toolbarTree1.json",
+									  toolbar:true,
+									  scroll:"#toolbarDiv2",
+									  toolbarShow:["add","delete"],  // 这样就只会出现两个了
+									  toolbarBtn:[
+									    [
+									     {"label":"文本框","name":"name1","type":"text"},
+									     {"label":"下拉框","name":"name3","type":"select","optionsData":function(){
+									       return {"1":"男","2":"女","3":"未知","4":"泰国归来"};
+									     }},
+									     {"label":"隐藏域","name":"name4","type":"hidden"},
+									     {"label":"文本域","name":"name2","type":"textarea"},
+									     {"value":"重置按钮","name":"name6","type":"reset"},
+									     {"label":"文本框+只读","name":"name1","type":"text","readonly":true,"value":"只读"},
+									     {"label":"下拉框+禁用","name":"name3","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"},"disabled":true},
+									     {"label":"隐藏域+校验","name":"name4","type":"hidden","verify":"required"},
+									     {"label":"文本域+默认表单（之前是新增节点文本框）","name":"name2","type":"textarea","defElem":"nowChange"},
+									     {"value":"提交+默认按钮","name":"name7","type":"submit","defElem":"btn"},
+									    ] // 这就是自定义新增中的内容
+									  ]
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="sjht">
+					<legend>toolbar编辑页的数据回填（toolbarFun-editTreeLoad）</legend>
+					<div class="layui-field-box">
+						<p>当你使用toolbar的编辑功能时，你肯定不希望表单数据是空的，因为照常我们打开编辑页时，数据都会回显至表单中，在toolbar中，你也可以将数据回显。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 650px;overflow: auto;" id="toolbarDiv3"><ul id="toolbarTree3" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									<div style="height: 550px;overflow: auto;" id="toolbarDiv3">
+									  <ul id="toolbarTree3" class="dtree" data-id="0"></ul>
+									</div>
+									
+									var DTree3 = dtree.render({
+									  elem: "#toolbarTree3",
+									  url: "../json/case/toolbarTree1.json",
+									  toolbar:true,
+									  scroll:"#toolbarDiv3",
+									  toolbarShow:["edit"],  // 这样就只会出现一个编辑页
+									  toolbarBtn:[
+									    [], //将新增页制空
+									    [{"label":"级别","name":"level","type":"text"},
+									     {"label":"下拉","name":"test","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"}}
+									    ] // 自定义编辑页的内容
+									  ],
+									  toolbarFun: {
+									    editTreeLoad: function(treeNode){
+									      // 这里可以发送ajax请求，来获取参数值，最后将参数值以form能识别的键值对json的形式返回
+									      $.ajax({
+									         ... // ajax基本参数
+									         success: function(result){
+									           var param = result.data;
+									           // 这里的param格式为：  {level:treeNode.level, test:"3"};
+									           DTree3.changeTreeNodeDone(param); // 配套使用
+									         }
+									      }) 
+									    },
+									    editTreeNode: function(treeNode, $div){
+									      layer.msg(JSON.stringify(treeNode));
+									      DTree3.changeTreeNodeEdit(true);
+									    }
+									  }
+									});
+								</pre>
+								<p>这样你就可以看到数据回显了。其他的操作同上</p>
+							</div>
+						</div>
+						<p style="color:#FF5722">param格式说明：为JSON格式，其中key为你配置的toolbarBtn中的name，值则为name需要回显的值。</p>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="zdytitle">
+					<legend>自定义toolbar内容样式（toolbarStyle）</legend>
+					<div class="layui-field-box">
+						<p>当你使用toolbar的功能时，有时树表达的含义并不相同，有的可能是机构树，有的可能是部门树，等等，那么现在，你可以指定toolbar的标题，让每个toolbar拥有具体的含义。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;" id="toolbarDiv4"><ul id="toolbarTree4" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									<div style="height: 350px;overflow: auto;" id="toolbarDiv4">
+									  <ul id="toolbarTree4" class="dtree" data-id="0"></ul>
+									</div>
+									
+									dtree.render({
+									  elem: "#toolbarTree4",
+									  url: "../json/case/toolbarTree1.json",
+									  toolbar:true,
+									  toolbarStyle: {
+									    title: "地名",
+									    area: ["50%", "400px"]
+									  },
+									  scroll:"#toolbarDiv4"
+									});
+								</pre>
+								<p>当你点击右键菜单，可以看到添加节点变成了添加地名，弹出框的标题，表单的输入项的labelName也一并发生了变化。</p>
+								<p>如果你在toolbarBtn中配置了某一个默认按钮的label，则会以你配置的label为准。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="zdyext">
+					<legend>扩展toolbar按钮（toolbarExt）</legend>
+					<div class="layui-field-box">
+						<p>当toolbar内置的三个按钮都不能满足你的需求，又或者你想要禁用默认的按钮，自定义自己的按钮的情况下，你可以自定义扩展toolbar按钮。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 1050px;overflow: auto;" id="toolbarDiv5"><ul id="toolbarTree5" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									<div style="height: 350px;overflow: auto;" id="toolbarDiv5">
+									  <ul id="toolbarTree5" class="dtree" data-id="0"></ul>
+									</div>
+									
+									var DTree5 = dtree.render({
+									  elem: "#toolbarTree5",
+									  url: "../json/case/toolbarTree1.json",
+									  toolbar:true,
+									  scroll:"#toolbarDiv5",
+									  toolbarShow:[], // 默认按钮制空
+									  toolbarExt:[{toolbarId: "testAdd",icon:"dtree-icon-wefill",title:"自定义新增",handler: function(node,$div){
+									      layer.msg(JSON.stringify(node));
+									      // 你可以在此添加一个layer.open，里面天上你需要添加的表单元素，就跟你写新增页面是一样的
+									      layer.open({
+									        ...,
+									        success: function(layero, index){
+									          form.render();
+									          form.on("submit(addNode_form)",function(data){// 假设form的filter为addNode_form
+									            console.log(data.field);// 从form中取值，数据来源由你自己定
+									            
+									            var json = {"id":data.field.addId,"title": data.field.addNodeName,"parentId": node.nodeId};
+									            var arr = [{"id":data.field.addId,"title": data.field.addNodeName,"parentId": node.nodeId}];
+									            //DTree5.partialRefreshAdd($div); // 省略第二个参数，则会加载url
+									            //DTree5.partialRefreshAdd($div, json); // 如果是json对象，则会追加元素
+									            //DTree5.partialRefreshAdd($div, arr); //如果是json数组，则会重载节点中的全部子节点
+									            
+									            layer.close(index);
+									            return false;
+									          });
+									        }
+									      })
+									    }
+									  },
+									  {toolbarId: "testEdit",icon:"dtree-icon-bianji",title:"自定义编辑",handler: function(node,$div){
+									      layer.msg(JSON.stringify(node));
+									      // 你可以在此添加一个layer.open，里面天上你需要添加的表单元素，就跟你写编辑页面是一样的
+									      layer.open({
+									        ...,
+									        success: function(layero, index){
+									          form.render();
+									          form.on("submit(editNode_form)",function(data){// 假设form的filter为editNode_form
+									            console.log(data.field);// 从form中取值，数据来源由你自己定
+									            
+									            var json = {"id":data.field.addId,"title": data.field.addNodeName,"parentId": node.nodeId};
+									            //DTree5.partialRefreshEdit($div, data.field.addNodeName); // 如果是字符串，则会更新文本内容
+									            //DTree5.partialRefreshEdit($div, json); // 如果是json对象，则会更新节点的其他属性
+									            
+									            layer.close(index);
+									            return false;
+									          });
+									        }
+									      })
+									    }
+									  },
+									  {toolbarId: "testDel",icon:"dtree-icon-roundclose",title:"自定义删除",handler: function(node,$div){
+									      layer.msg(JSON.stringify(node));
+									      DTree5.partialRefreshDel($div); // 这样即可删除节点
+									    }
+									  }]
+									});
+								</pre>
+								<p>当你点击右键菜单，可以看到出现了你自定义的菜单，并且当你点击它时，会弹出回调信息的提示信息。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="before">
+					<legend>toolbar显示前回调（toolbarFun-loadToolbarBefore）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
+					<div class="layui-field-box">
+						<p>当内置的toolbarLoad属性不能满足你对节点的个性化需求时，你可以实现这个函数，来为每个节点在展示toolbar之前做一些自定义处理。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 550px;overflow: auto;" id="toolbarDiv6"><ul id="toolbarTree6" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									<div style="height: 350px;overflow: auto;" id="toolbarDiv6">
+									  <ul id="toolbarTree6" class="dtree" data-id="0"></ul>
+									</div>
+									
+									dtree.render({
+									  elem: "#toolbarTree6",
+									  url: "../json/case/toolbarTree1.json",
+									  toolbar:true,
+									  scroll:"#toolbarDiv6",
+									  toolbarFun:{
+									    loadToolbarBefore: function(buttons, param, $div){
+									      console.log(buttons);
+									      console.log(param);
+									      console.log($div);
+									      if(param.leaf){ // 如果是叶子节点
+									        buttons.addToolbar = "";  // 取消新增功能
+									      }
+									      return buttons; // 将按钮对象返回
+									    }
+									  }
+									});
+								</pre>
+								<p>当你点击右键菜单，可以看到出现了你自定义的菜单，并且当你点击它时，会弹出回调信息的提示信息。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs250">
+				<fieldset class="layui-elem-field layui-field-title" id="otherToolbar">
+					<legend>toolbar绑定节点（toolbarWay）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>很多情况下，系统会禁用掉右键菜单，这时树的右键菜单不管用了，那么你可以新增这一个配置项，让菜单展示在每一个节点的后面。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;" id="toolbarDiv7"><ul id="toolbarTree7" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+								  	<ul id="toolbarTree7" class="dtree" data-id="0"></ul>
+									
+									dtree.render({
+									  elem: "#toolbarTree7",
+									  url: "../json/case/toolbarTree1.json",
+									  toolbar:true,
+									  toolbarWay:"fixed", // "contextmenu"：右键菜单（默认），"fixed"："固定在节点后","follow"："跟随节点动态呈现"
+									  toolbarFun:{
+									    loadToolbarBefore: function(buttons, param, $div){
+									      console.log(buttons);
+									      console.log(param);
+									      console.log($div);
+									      if(param.leaf){ // 如果是叶子节点
+									        buttons.addToolbar = "";  // 取消新增功能
+									      }
+									      return buttons; // 将按钮对象返回
+									    }
+									  }
+									});
+								</pre>
+								<p>当你使用这种方式加载菜单时，就不需要配置scroll了。且toolbar是一次性加载出来的，使用loadToolbarBefore函数时,函数也是一开始就会针对每个节点执行一次。其他所有功能与上面示例的功能一致。</p>
+								<p>可以试试配置follow，看看效果哦。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs250">
+				<fieldset class="layui-elem-field layui-field-title" id="qtToolbar">
+					<legend>其他的toolbar功能（toolbarShow）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>toolbar不仅仅默认只有3个功能，还有两个默认功能。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;" id="toolbarDiv8"><ul id="toolbarTree8" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+								  	<ul id="toolbarTree8" class="dtree" data-id="0"></ul>
+									
+									dtree.render({
+									  elem: "#toolbarTree8",
+									  url: "../json/case/toolbarTree1.json",
+									  toolbar:true,
+									  toolbarWay:"follow", 
+									  toolbarShow:["pulldown","pullup"] // "pulldown"：展开当前节点下的全部节点，"pullup"：收缩当前节点下的全部节点
+									});
+								</pre>
+								<p>这个展开和收缩，与menubar中的展开和收缩是不一样的哦。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">工具栏的设计是为了让树本身实现更加丰富的功能，让树在其本身中发挥全部的特色。</blockquote>
+				<blockquote class="layui-elem-quote">实际上大部分情况下我们更加希望使用者本身自定义节点的增删改，当然如果你使用自带的增删改，也可以满足一定的需求。</blockquote>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="toolbar.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree', 'form'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			form = layui.form,
+			$ = layui.$;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = [];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		// 1.toolbarTree1
+		var DTree1 = dtree.render({
+			elem: "#toolbarTree1",
+			url: "/DTreeHelper/toolbar/query",
+            method: "get",
+			initLevel: "1",
+			line:true,
+	//		dot:false,
+			toolbar:true,
+			record:true,
+			dataFormat: "list",
+			scroll:"#toolbarDiv",
+			toolbarFun: {
+				addTreeNode: function(treeNode, $div){
+					$.ajax({
+						type: "post",
+						data: treeNode,
+						url: "/DTreeHelper/toolbar/insert",
+						success: function(result){
+							DTree1.changeTreeNodeAdd("refresh");
+						//	DTree1.changeTreeNodeAdd(true);
+						},
+						error: function(){
+							DTree1.changeTreeNodeAdd(false);
+						}
+							
+					});
+			    },
+			    editTreeNode: function(treeNode, $div){
+			    	$.ajax({
+						type: "post",
+						data: treeNode,
+						url: "/DTreeHelper/toolbar/update",
+						success: function(result){
+							 DTree1.changeTreeNodeEdit(true);
+						},
+						error: function(){
+							 DTree1.changeTreeNodeEdit(false);
+						}
+					});
+			    	console.log(treeNode);
+			     
+			    },
+			    delTreeNode: function(treeNode, $div){
+			    	$.ajax({
+						type: "post",
+						data: treeNode,
+						url: "/DTreeHelper/toolbar/delete",
+						success: function(result){
+							DTree1.changeTreeNodeDel(true);
+						},
+						error: function(){
+							DTree1.changeTreeNodeDel(false);
+						}
+					});
+			      
+			    }
+			}
+		});
+		
+		// 1.toolbarTree2
+		dtree.render({
+			elem: "#toolbarTree2",
+			url: "../json/case/toolbarTree1.json",
+            method: "get",
+			type: "all",
+			toolbar:true,
+			scroll:"#toolbarDiv2",
+			toolbarShow:["add","delete"],
+			toolbarBtn:[
+				[
+				 {"label":"文本框","name":"name1","type":"text"},
+				 {"label":"下拉框","name":"name3","type":"select","optionsData":function(){
+			    	 return {"1":"男","2":"女","3":"未知","4":"泰国归来1"};
+				 }},
+				 {"label":"隐藏域","name":"name4","type":"hidden"},
+				 {"label":"文本域","name":"name2","type":"textarea"},
+				 {"value":"重置按钮","name":"name6","type":"reset"},
+			     {"label":"文本框+只读","name":"name1","type":"text","readonly":true,"value":"只读"},
+			     {"label":"下拉框+禁用","name":"name3","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"},"disabled":true},
+			     {"label":"隐藏域+校验","name":"name4","type":"hidden","verify":"required"},
+			     {"label":"文本域+默认表单（之前是新增节点文本框）","name":"name2","type":"textarea","defElem":"nowChange"},
+			     {"value":"提交+默认按钮","name":"name7","type":"submit","defElem":"btn"},
+			    ] 
+			]
+		});
+		
+		// 1.toolbarTree3
+		var DTree3 = dtree.render({
+			elem: "#toolbarTree3",
+			url: "../json/case/toolbarTree1.json",
+            method: "get",
+			type: "all",
+			toolbar:true,
+			scroll:"#toolbarDiv3",
+			toolbarShow:["edit"],
+			toolbarBtn:[
+				[],[{"label":"级别","name":"level","type":"text"},{"label":"下拉","name":"test","type":"select","optionsData":{"1":"男","2":"女","3":"未知","4":"泰国归来"}}]
+			],
+			toolbarFun: {
+				editTreeLoad: function(treeNode){
+					// 这里可以发送ajax请求，来获取参数值，最后将参数值以form能识别的键值对json的形式返回
+					var param = {level:treeNode.level, test:"3"};
+					
+					DTree3.changeTreeNodeDone(param);
+				},
+				editTreeNode: function(treeNode){
+					layer.msg(JSON.stringify(treeNode));
+					DTree3.changeTreeNodeEdit(true);
+			    }
+			}
+		});
+		
+		// 1.toolbarTree4
+		dtree.render({
+			elem: "#toolbarTree4",
+			url: "../json/case/toolbarTree1.json",
+            method: "get",
+			type: "all",
+			toolbar:true,
+			toolbarStyle: {
+				title: "地名",
+				area: ["50%", "400px"]
+			},
+			scroll:"#toolbarDiv4"
+		});
+		
+		// 1.toolbarTree5
+		var DTree5 = dtree.render({
+			elem: "#toolbarTree5",
+			url: "../json/case/toolbarTree1.json",
+            method: "get",
+			type: "all",
+			toolbar:true,
+			scroll:"#toolbarDiv5",
+			toolbarShow:[], // 默认按钮制空
+			toolbarExt:[
+                {toolbarId: "test",
+                    icon:"dtree-icon-wefill",
+                    title:"自定义新增",
+                    handler: function(node,$div){
+                        // layer.msg(JSON.stringify(node));
+                        layer.open({
+                            type:"1",
+                            content:'<div class="dtree-toolbar-tool">' +
+                            '<form class="layui-form layui-form-pane" lay-filter="dtree_addNode_form">' +
+                            '<div class="layui-form-item">' +
+                            '<label class="layui-form-label" title="当前选中">当前选中：</label>' +
+                            '<div class="layui-input-block f-input-par">' +
+                            '<input type="text" class="layui-input f-input" value="'+node.context+'" placeholder="'+node.context+'" lay-verify="" name="nodeTitle" readonly="">' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="layui-form-item">' +
+                            '<label class="layui-form-label" title="新增节点">新增节点：</label>' +
+                            '<div class="layui-input-block f-input-par">' +
+                            ' <input type="text" class="layui-input f-input" value="" placeholder="" lay-verify="required" name="addNodeName">' +
+                            ' </div>' +
+                            '</div>' +
+                            '<div class="layui-form-item">' +
+                            '<label class="layui-form-label" title="新增ID">新增ID：</label>' +
+                            '<div class="layui-input-block f-input-par">' +
+                            ' <input type="text" class="layui-input f-input" value="" placeholder="" lay-verify="required" name="addId">' +
+                            ' </div>' +
+                            '</div>' +
+                            '<div class="layui-form-item">' +
+                            '<div class="layui-input-block" style="margin-left:0px;text-align:center;">' +
+                            '<button type="button" class="layui-btn layui-btn-normal btn-w100" lay-submit="" lay-filter="dtree_addNode_form">确认添加</button>' +
+                            '</div>' +
+                            '</div>' +
+                            '</form>' +
+                            '</div>',
+                            success: function(layero, index){
+                                form.render();
+                                form.on("submit(dtree_addNode_form)",function(data){
+                                    console.log(data.field);
+
+                                    var arr = [{"id":data.field.addId,"title": data.field.addNodeName,"parentId": node.nodeId}];
+                                    console.log(arr);
+                                    var json = {"id":data.field.addId,"title": data.field.addNodeName,"parentId": node.nodeId};
+                                    DTree5.partialRefreshAdd($div, json);
+
+
+                                    layer.close(index);
+                                    return false;
+                                });
+                            }
+                        })
+                    }
+                },
+                {toolbarId: "test2",
+                    icon:"dtree-icon-bianji",
+                    title:"自定义编辑",
+                    handler: function(node, $div){
+                        layer.open({
+                            type:"1",
+                            content:'<div class="dtree-toolbar-tool">' +
+                            '<form class="layui-form layui-form-pane" lay-filter="dtree_addNode_form">' +
+                            '<div class="layui-form-item">' +
+                            '<label class="layui-form-label" title="编辑节点">编辑节点：</label>' +
+                            '<div class="layui-input-block f-input-par">' +
+                            ' <input type="text" class="layui-input f-input" value="'+node.context+'" placeholder="" lay-verify="required" name="editNodeName">' +
+                            ' </div>' +
+                            '</div>' +
+                            '<div class="layui-form-item">' +
+                            '<div class="layui-input-block" style="margin-left:0px;text-align:center;">' +
+                            '<button type="button" class="layui-btn layui-btn-normal btn-w100" lay-submit="" lay-filter="dtree_editNode_form">确认编辑</button>' +
+                            '</div>' +
+                            '</div>' +
+                            '</form>' +
+                            '</div>',
+                            success: function(layero, index){
+                                form.render();
+                                form.on("submit(dtree_editNode_form)",function(data){
+                                    console.log(data.field);
+
+                                    var json = {"id":"123123123123","title": data.field.editNodeName,"parentId": node.nodeId};
+
+                                    var str = data.field.editNodeName;
+                                    DTree5.partialRefreshEdit($div, json);
+                                    layer.close(index);
+                                    return false;
+                                });
+                            }
+                        })
+                    }
+                }
+                ,
+                {toolbarId: "test3",
+                    icon:"dtree-icon-roundclose",
+                    title:"自定义删除",
+                    handler: function(node, $div){
+                        DTree5.partialRefreshDel($div);
+                    }
+                }
+            ]
+		});
+		
+		dtree.on("node('toolbarTree5')", function(obj){
+			var node = obj.param;
+			layer.msg(JSON.stringify(node));
+		});
+		
+		// 1.toolbarTree6
+		dtree.render({
+			elem: "#toolbarTree6",
+			url: "../json/case/toolbarTree1.json",
+			method: "get",
+			type: "all",
+			toolbar:true,
+			scroll:"#toolbarDiv6",
+			toolbarFun:{
+				loadToolbarBefore: function(buttons, param, $div){
+					/* console.log(buttons);
+					console.log(param);
+					console.log($div); */
+					if(param.leaf){ // 如果是叶子节点
+						buttons.addToolbar = "";  // 取消新增功能
+					}
+					
+					return buttons;
+				}
+				
+			}
+		});
+		
+		var DTree7 = dtree.render({
+            elem: "#toolbarTree7",
+            url: "../json/case/toolbarTree1.json",
+            method: "get",
+            toolbar:true,
+            line: true,
+            toolbarWay:"fixed",
+            toolbarFun:{
+                loadToolbarBefore: function(buttons, param, $div){
+					/* console.log(buttons);
+					 console.log(param);
+					 console.log($div); */
+                    if(param.leaf){ // 如果是叶子节点
+                        buttons.addToolbar = "";  // 取消新增功能
+                    }
+
+                    return buttons;
+                },
+                addTreeNode: function(treeNode){
+                    DTree7.changeTreeNodeAdd(true);
+                }
+            }
+        });
+		
+		dtree.render({
+            elem: "#toolbarTree8",
+            url: "../json/case/toolbarTree1.json",
+            method: "get",
+            toolbar:true,
+            toolbarWay:"follow", // "contextmenu"：右键菜单（默认），"fixed"："固定在节点后","follow"："跟随节点动态呈现",
+            toolbarShow:["pulldown","pullup"]
+		});
+		
+	});
+</script>
+</html>

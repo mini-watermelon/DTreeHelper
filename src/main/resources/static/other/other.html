@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="other.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+.select-test{position: absolute;max-height: 500px;height: 350px;overflow: auto;width: 100%;z-index: 123;display: none;border:1px solid silver;top: 42px;}
+.layui-show{display: block!important;}
+</style>
+
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">以下介绍了树的其他使用场景，有兴趣的可以参考本页提供的示例代码，结合自己的理解，做出自己希望呈现的样子。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+			</div>
+			
+			<!-- <div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="sl">
+					<legend>下拉框树的简易实现</legend>
+					<div class="layui-field-box" id="slbody">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<div class="layui-form layui-form-panel">
+									<div class="layui-form-item">
+										<label class="layui-form-label">城市：</label>
+										<div class="layui-input-block">
+											<div class="layui-unselect layui-form-select" id="city">
+												<div class="layui-select-title">
+													<input type="text" name="city" id="input_city" placeholder="请选择" readonly="" class="layui-input layui-unselect">
+													<i class="layui-edge"></i>
+												</div>
+											</div>
+											<div class="layui-card select-test" id="test">
+												<div class="layui-card-body">
+													<div id="toolbarDiv"><ul id="slTree" class="dtree" data-id="0" style="width: 100%;"></ul></div>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">备注：</label>
+										<div class="layui-input-block">
+											<input type="text" id="level" name="level" class="layui-input"/>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="代码示例" lay-code="true">
+									&lt;style type="text/css"&gt;
+									.select-test{position: absolute;max-height: 500px;height: 350px;overflow: auto;width: 100%;z-index: 123;display: none;border:1px solid silver;top: 42px;}
+									.layui-show{display: block!important;}
+									&lt;/style&gt;
+									
+									&lt;div class="layui-form layui-form-panel"&gt;
+									  &lt;div class="layui-form-item"&gt;
+									    &lt;label class="layui-form-label"&gt;城市：&lt;/label&gt;
+									    &lt;div class="layui-input-block"&gt;
+									      &lt;div class="layui-unselect layui-form-select" id="city"&gt;
+									        &lt;div class="layui-select-title"&gt;
+									          &lt;input type="text" name="city" id="input_city" placeholder="请选择" readonly="" class="layui-input layui-unselect"&gt;
+									          &lt;i class="layui-edge"&gt;&lt;/i&gt;
+									        &lt;/div&gt;
+									      &lt;/div&gt;
+									      &lt;div class="layui-card select-test" id="test"&gt;
+									        &lt;div class="layui-card-body"&gt;
+									          &lt;div id="toolbarDiv"&gt;&lt;ul id="slTree" class="dtree" data-id="0" style="width: 100%;"&gt;&lt;/ul&gt;&lt;/div&gt;
+									        &lt;/div&gt;
+									      &lt;/div&gt;
+									    &lt;/div&gt;
+									  &lt;/div&gt;
+									  &lt;div class="layui-form-item"&gt;
+									    &lt;label class="layui-form-label"&gt;备注：&lt;/label&gt;
+									    &lt;div class="layui-input-block"&gt;
+									      &lt;input type="text" id="level" name="level" class="layui-input"/&gt;
+									    &lt;/div&gt;
+									  &lt;/div&gt;
+									 &lt;/div&gt;
+									
+									// js代码，省略了layui定义引用部分
+									var DTree = dtree.render({
+									  elem: "#slTree",
+									  url: "../json/case/checkbarTree1.json",
+									  icon: "2",
+									  accordion:true
+									});
+									
+									$("#city").on("click",function(){
+									  $(this).toggleClass("layui-form-selected");
+									  $("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
+									});
+									
+									dtree.on("node(slTree)", function(obj){
+									  $("#input_city").val(obj.param.context);
+									  $("#city").toggleClass("layui-form-selected");
+									  $("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div> -->
+			
+			<!-- <div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="slopen">
+					<legend>弹出层下拉框树的简易实现</legend>
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<button class="layui-btn layui-btn-normal" id="slopen_btn">点击按钮弹出下拉树</button>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="代码示例" lay-code="true">
+									&lt;style type="text/css"&gt;
+									.select-test{position: absolute;max-height: 500px;height: 350px;overflow: auto;width: 100%;z-index: 123;display: none;border:1px solid silver;top: 42px;}
+									.layui-show{display: block!important;}
+									&lt;/style&gt;
+									
+									&lt;div class="layui-field-box" id="slopenbody" style="display: none;"&gt;
+									  &lt;div class="layui-row" style="margin-top: 10px;"&gt;
+									    &lt;div class="layui-col-lg8 layui-col-xs8 layui-col-sm8"&gt;
+									      &lt;div class="layui-form layui-form-panel"&gt;
+									        &lt;div class="layui-form-item"&gt;
+									          &lt;label class="layui-form-label"&gt;城市：&lt;/label&gt;
+									          &lt;div class="layui-input-block"&gt;
+									            &lt;div class="layui-unselect layui-form-select" id="opencity"&gt;
+									              &lt;div class="layui-select-title"&gt;
+									                &lt;input type="text" name="city1" id="input_city1" placeholder="请选择" readonly="" class="layui-input layui-unselect"&gt;
+									                &lt;i class="layui-edge"&gt;&lt;/i&gt;
+									              &lt;/div&gt;
+									            &lt;/div&gt;
+									            &lt;div class="layui-card select-test" id="opentext"&gt;
+									              &lt;div class="layui-card-body"&gt;
+									                &lt;div id="toolbarDiv"&gt;&lt;ul id="openslTree" class="dtree" data-id="0" style="width: 100%;"&gt;&lt;/ul&gt;&lt;/div&gt;
+									              &lt;/div&gt;
+									            &lt;/div&gt;
+									          &lt;/div&gt;
+									        &lt;/div&gt;
+									        &lt;div class="layui-form-item"&gt;
+									          &lt;label class="layui-form-label"&gt;备注：&lt;/label&gt;
+									          &lt;div class="layui-input-block"&gt;
+									            &lt;input type="text" id="level" name="level" class="layui-input"/&gt;
+									          &lt;/div&gt;
+									        &lt;/div&gt;
+									      &lt;/div&gt;
+									    &lt;/div&gt;
+									  &lt;/div&gt;
+									&lt;/div&gt;
+									
+									// js代码，省略了layui定义引用部分
+									
+									$("#slopen_btn").click(function(){
+									  layer.open({
+									    title: "弹出层下拉树示例",
+									    area: ["60%", "80%"],
+									    btn: ["确定", "取消"],
+									    type: 1,
+									    content: $("#slopenbody").html(),
+									    success: function(layero, index){
+									      $(layero).find("#opencity").on("click",function(){
+									        $(this).toggleClass("layui-form-selected");
+									        $(layero).find("#opentext").toggleClass("layui-show layui-anim layui-anim-upbit");
+									      });
+									      
+									      var SLDTree = dtree.render({
+									        elem: $(layero).find("#openslTree"),
+									        url: "../json/case/checkbarTree1.json",
+									        icon: "2",
+									        accordion:true
+									      });
+									      
+									      dtree.on("node(openslTree)", function(obj){
+									        $(layero).find("#input_city1").val(obj.param.context);
+									        $(layero).find("#opencity").toggleClass("layui-form-selected");
+									        $(layero).find("#opentext").toggleClass("layui-show layui-anim layui-anim-upbit");
+									      });
+									    },
+									    yes: function(){
+									      var input_city1 = $(layero).find("#input_city1").val();
+									      layer.msg("树选中的值为：" + input_city1);
+									    }
+									  })
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+					<div class="layui-field-box" id="slopenbody" style="display: none;">
+						<div class="layui-row" style="margin-top: 10px;">
+							<div class="layui-col-lg8 layui-col-xs8 layui-col-sm8">
+								<div class="layui-form layui-form-panel">
+									<div class="layui-form-item">
+										<label class="layui-form-label">城市：</label>
+										<div class="layui-input-block">
+											<div class="layui-unselect layui-form-select" id="opencity">
+												<div class="layui-select-title">
+													<input type="text" name="city1" id="input_city1" placeholder="请选择" readonly="" class="layui-input layui-unselect">
+													<i class="layui-edge"></i>
+												</div>
+											</div>
+											<div class="layui-card select-test" id="opentext">
+												<div class="layui-card-body">
+													<div id="toolbarDiv"><ul id="openslTree" class="dtree" data-id="0" style="width: 100%;"></ul></div>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">备注：</label>
+										<div class="layui-input-block">
+											<input type="text" id="level" name="level" class="layui-input"/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div> -->
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="csk">
+					<legend>穿梭框树的简易实现</legend>
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;background: #f2f2f2">
+							<div class="layui-col-lg5">
+								<div class="layui-card">
+									<div class="layui-card-header">左边的树</div>
+									<div class="layui-card-body">
+										<div style="height: 350px;overflow: auto;"><ul id="cskTree1" class="dtree" data-id="0"></ul></div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-col-lg2">
+								<div style="height: 350px;">
+									<button class="layui-btn layui-btn-normal" style="margin-top: 180px;" id="csk_btn">转移到右边</button>
+								</div>
+							</div>
+							<div class="layui-col-lg5">
+								<div class="layui-card">
+									<div class="layui-card-header">右边的树</div>
+									<div class="layui-card-body">
+										<div style="height: 350px;overflow: auto;"><ul id="cskTree2" class="dtree" data-id="-1"></ul></div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="代码示例" lay-code="true">
+									&lt;div class="layui-row layui-col-space10" style="margin-top: 10px;background: #f2f2f2"&gt;
+									  &lt;div class="layui-col-lg5"&gt;
+									    &lt;div class="layui-card"&gt;
+									      &lt;div class="layui-card-header"&gt;左边的树&lt;/div&gt;
+									      &lt;div class="layui-card-body"&gt;
+									        &lt;div style="height: 350px;overflow: auto;"&gt;&lt;ul id="cskTree1" class="dtree" data-id="0"&gt;&lt;/ul&gt;&lt;/div&gt;
+									      &lt;/div&gt;
+									    &lt;/div&gt;
+									  &lt;/div&gt;
+									  &lt;div class="layui-col-lg2"&gt;
+									    &lt;div style="height: 350px;"&gt;
+									      &lt;button class="layui-btn layui-btn-normal" style="margin-top: 180px;" id="csk_btn"&gt;转移到右边&lt;/button&gt;
+									    &lt;/div&gt;
+									  &lt;/div&gt;
+									  &lt;div class="layui-col-lg5"&gt;
+									    &lt;div class="layui-card"&gt;
+									      &lt;div class="layui-card-header"&gt;右边的树&lt;/div&gt;
+									      &lt;div class="layui-card-body"&gt;
+									        &lt;div style="height: 350px;overflow: auto;"&gt;&lt;ul id="cskTree2" class="dtree" data-id="-1"&gt;&lt;/ul&gt;&lt;/div&gt;
+									      &lt;/div&gt;
+									    &lt;/div&gt;
+									  &lt;/div&gt;
+									&lt;/div&gt;
+									
+									// js代码，省略了layui定义引用部分
+									// 1.cskTree1
+									dtree.render({
+									  elem: "#cskTree1",
+									  url: "../json/case/checkbarTree1.json",
+									  checkbar:true,
+									  load:false
+									});
+									
+									dtree.render({
+									  elem: "#cskTree2",
+									  data: [],
+									  checkbar:true,
+									  response:{treeId:"nodeId",title:"context"},
+									  dataFormat:"list"
+									});
+									
+									$("#csk_btn").click(function(){
+									  var param = dtree.getCheckbarNodesParam("cskTree1");  // 获取选中数据
+									  if(param.length == 0) {
+									    layer.msg("请至少选择一个节点");
+									  }
+									  dtree.reload("cskTree2",{data:param});
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">示例只是一个引导，实际上还有更多的应用场景，等着优秀的你去发掘。</blockquote>
+			</div>
+			
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="other.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree', 'laypage'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$,
+			laypage = layui.laypage;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = [];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		/* var DTree = dtree.render({
+			elem: "#slTree",
+			url: "../json/case/checkbarTree1.json",
+			icon: "2",
+			accordion:true
+		});
+		
+		$("#city").on("click",function(){
+			$(this).toggleClass("layui-form-selected");
+			$("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
+		});
+		
+		dtree.on("node(slTree)", function(obj){
+			$("#input_city").val(obj.param.context);
+			$("#city").toggleClass("layui-form-selected");
+			$("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
+		});
+		
+		
+		
+		$("#slopen_btn").click(function(){
+			layer.open({
+				title: "弹出层下拉树示例",
+				area: ["60%", "80%"],
+				btn: ["确定", "取消"],
+				type: 1,
+				content: $("#slopenbody").html(),
+				success: function(layero, index){
+					$(layero).find("#opencity").on("click",function(){
+						$(this).toggleClass("layui-form-selected");
+						$(layero).find("#opentext").toggleClass("layui-show layui-anim layui-anim-upbit");
+					});
+					
+					var SLDTree = dtree.render({
+						elem: $(layero).find("#openslTree"),
+						url: "../json/case/checkbarTree1.json",
+						icon: "2",
+						accordion:true
+					});
+					
+					dtree.on("node(openslTree)", function(obj){
+						$(layero).find("#input_city1").val(obj.param.context);
+						$(layero).find("#opencity").toggleClass("layui-form-selected");
+						$(layero).find("#opentext").toggleClass("layui-show layui-anim layui-anim-upbit");
+					});
+					
+				},
+				yes: function(index, layero){
+					var input_city1 = $(layero).find("#input_city1").val();
+					layer.msg("树选中的值为：" + input_city1);
+				}
+			})
+		}); */
+		
+		
+		
+		// 1.cskTree1
+		dtree.render({
+			elem: "#cskTree1",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true,
+			load:false
+		});
+		
+		dtree.render({
+			elem: "#cskTree2",
+			data: [],
+			checkbar:true,
+			response:{treeId:"nodeId",title:"context"},
+			dataFormat:"list"
+		});
+		
+		$("#csk_btn").click(function(){
+			var param = dtree.getCheckbarNodesParam("cskTree1");  // 获取选中数据
+			if(param.length == 0) {
+				layer.msg("请至少选择一个节点");
+			}
+			dtree.reload("cskTree2",{
+				data:param
+				
+			});
+		});
+	});
+</script>
+</html>

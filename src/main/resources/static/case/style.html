@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+<link rel="stylesheet" href="../test/font/iconfont.css">
+
+<link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+	/* zdy主题风格*/
+	.dtree-zdy-item-this{background-color: #c2c2c2!important;}
+	.dtree-zdy-item:hover{background-color: #f2f2f2!important;}
+	.dtree-zdy-item cite{font-size:14px!important;}
+	.dtree-zdy-item:hover cite{color:#5FB878!important;}
+	
+	.dtree-zdy-dtreefont{font-size: 18px!important;}
+	.dtree-zdy-icon{color:#2F4056!important;}
+	.dtree-zdy-checkbox:hover{color:#5FB878!important;}
+	.dtree-zdy-choose{color:#5FB878!important;}
+</style>
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">或许每个人的审美不同，有的人觉得这样挺好看了，有的人却觉得不行，现在，dtree提供了自定义的配色及图标显示方案，你想怎么配，就怎么配~。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+							<div class="layui-timeline-content layui-text">
+								<h3 class="layui-timeline-title version-title"></h3>
+								<ul data-vlog="vs255">
+									<li>【优化】基础属性优化，开启line时，toolbar的fixed显示不正常</li>
+									<li>【优化】基础属性优化，开启line时，div选中 悬停背景对齐</li>
+								</ul>
+								<ul data-vlog="vs254">
+									<li>【修复】内置方法中，使用data方法获取值不到的问题。</li>
+									<li>【优化】基础属性优化：ficon，可以设置Array型数据，与icon的配置方式相同</li>
+									<li>【优化】基础属性优化：skin，其中设置layui看起来更像layui的风格，新增laySimple风格，遵从简约版layui树形菜单。</li>
+									<li>【优化】内置方法优化：涉及样式的一系列内置方法优化</li>
+									<li>【移除】基础属性移除：dot，移除一级图标小圆点的单独设置，改为在ficon中配置，与icon的配置方式相同</li>
+									<li>【移除】基础属性移除：firstIconArray，与nodeIconArray合并。</li>
+								</ul>
+								<ul data-vlog="vs250">
+									<li>【新增】基础属性新增：line，用于指定树线</li>
+									<li>【新增】内置方法新增：showLine：用于显示树线</li>
+									<li>【新增】内置方法新增：showLineLi：作用在单个LI显示树线</li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</blockquote>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs250">
+				<fieldset class="layui-elem-field layui-field-title" id="line">
+					<legend>显示树线（line）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>直观显示树线</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTree1" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree1",
+									  url: "../json/case/styleTree1.json",
+									  line: true  // 显示树线
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="hficon">
+					<legend>隐藏一级图标（ficon）</legend>
+					<div class="layui-field-box">
+						<p>只需多配置一个参数，一级便可轻松去除，树看起来是否更加简洁。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTree2" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree2",
+									  url: "../json/case/styleTree1.json",
+									  initLevel: 1,
+									  ficon: "-1"  // 隐藏一级图标
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="ficon">
+					<legend>自定义一级图标显隐（ficon）</legend>
+					<div class="layui-field-box">
+						<p>配置数组的方式，显示不同的一级图标。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTree3" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree3",
+									  url: "../json/case/styleTree1.json",
+									  initLevel: 1,
+									  ficon: ["1","-1"]  // 显示非最后一级节点图标，隐藏最后一级节点图标
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="extend1">
+					<legend>扩展自定义一级图标（nodeIconArray）</legend>
+					<div class="layui-field-box">
+						<p>当你觉得自定义图标不够用时，你可以根据图标库中提供的图标class，自定义图标。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTree4" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree4",
+									  url: "../json/case/styleTree1.json",
+									  initLevel: 1,
+									  nodeIconArray: {"3":{"open":"dtree-icon-jian1","close":"dtree-icon-jia1"}}, // 自定扩展的一级非最后一级图标，从2开始
+									  ficon: ["3","7"], // 使用，3表示使用扩展的图标，7表示最后一级图标使用内置的文件图标
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="icon">
+					<legend>隐藏二级图标（icon）</legend>
+					<div class="layui-field-box">
+						<p>只需多配置一个参数，二级图标即被隐藏啦。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTree5" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree5",
+									  url: "../json/case/styleTree1.json",
+									  initLevel: 1,
+									  icon: "-1"  // 隐藏二级图标
+									});
+								</pre>
+								<p>实际上二级图标icon属性可以是String，也可以是一个String数组，当他是一个String类型时，表达的含义就是最后一级图标的样式，当他是一个String数组时，表达的含义是非最后一级和最后一级图标的数组，你可以自由配置图标的展示样式，详见基础文档。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="icon1">
+					<legend>自定义二级图标显隐（icon）</legend>
+					<div class="layui-field-box">
+						<p>配置数组的方式，显示不同的二级图标。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTree6" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree6",
+									  url: "../json/case/styleTree1.json",
+									  initLevel: 1,
+									  icon: ["0","-1"]  // 显示非最后一级节点图标，隐藏最后一级节点图标
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="extend">
+					<legend>扩展自定义二级图标（nodeIconArray、leafIconArray）</legend>
+					<div class="layui-field-box">
+						<p>当你觉得自定义图标不够用时，你可以根据图标库中提供的图标class，自定义图标。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTree7" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree7",
+									  url: "../json/case/styleTree1.json",
+									  initLevel: 1,
+									  nodeIconArray:{"3":{"open":"dtree-icon-pulldown","close":"dtree-icon-pullup"}},  // 自定扩展的二级非最后一级图标，从1开始
+									  leafIconArray:{"11":"dtree-icon-star"},  // 自定义扩展的二级最后一级图标，从11开始
+									  icon: ["3","11"] // 使用
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="skin">
+					<legend>主题换肤（skin-layui）</legend>
+					<div class="layui-field-box">
+						<p>适配layui-tree的标准树形风格。简单来说，就是模仿layui-tree的风格</p>
+						<p>一般来说，主题都内置好了图标及样式风格，一般情况无需在指定图标等参数，除非你就是想用自己的。。。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTree8" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree8",
+									  url: "../json/case/styleTree5.json",
+									  initLevel: 1,
+									  checkbar:true,
+									  skin: "layui"  // layui主题风格
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="skin2">
+					<legend>主题换肤（skin-laySimple）</legend>
+					<div class="layui-field-box">
+						<p>适配layui-tree的简约树形风格。简单来说，就是模仿layui-tree的无连接线风格</p>
+						<p>一般来说，主题都内置好了图标及样式风格，一般情况无需在指定图标等参数，除非你就是想用自己的。。。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTree9" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree9",
+									  url: "../json/case/styleTree5.json",
+									  initLevel: 1,
+									  checkbar:true,
+									  skin: "laySimple"  // laySimple主题风格
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="zdyskin">
+					<legend>自定义换肤（skin）</legend>
+					<div class="layui-field-box">
+						<p>当你觉得树的主题都不太符合你当前项目的色彩搭配时，你可以自定义换肤。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="styleTree10" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree10",
+									  url: "../json/case/styleTree5.json",
+									  initLevel: 1,
+									  checkbar:true,
+									  skin: "zdy"  // 自定义风格
+									});
+								</pre>
+								<pre class="layui-code" lay-title="CSS配置">
+									/* zdy主题风格*/
+									.dtree-zdy-item-this{background-color: #c2c2c2!important;} /* 当前选中行样式*/
+									.dtree-zdy-item:hover{background-color: #f2f2f2!important;} /* 行悬停样式*/
+									.dtree-zdy-item cite{font-size:14px!important;} /* 行文字样式*/
+									.dtree-zdy-item:hover cite{color:#5FB878!important;} /* 行悬停文字样式*/
+									
+									.dtree-zdy-dtreefont{font-size: 18px!important;} /* 一级图标、二级图标、复选框样式*/
+									.dtree-zdy-ficon{color:#2F4056!important;}  /*一级图标特定样式*/
+									.dtree-zdy-icon{color:#2F4056!important;}  /*二级图标特定样式*/
+									.dtree-zdy-checkbox:hover{color:#5FB878!important;}  /*复选框悬停样式*/
+									.dtree-zdy-choose{color:#5FB878!important;} /* 复选框选中样式*/
+								</pre> 
+								<p>自定义换肤，指定的class中中间的zdy代表skin配置的zdy属性，其余部分不能改变哦，当你指定了自定义样式，这些样式务必按照格式编写。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs250">
+				<fieldset class="layui-elem-field layui-field-title" id="zdyicon">
+					<legend>自定义图标（iconfont + iconfontStyle）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>当你觉得树提供的内置图标太少了，你需要在树中使用layui的图标，亦或者是使用自己的一套图标库时，则你现在可以这么做。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 700px;overflow: auto;"><ul id="styleTree11" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree11",
+									  url: "../json/case/styleTree5.json",
+									  iconfont:["dtreefont", "layui-icon", "iconfont"],
+									  iconfontStyle:[{
+									    fnode:{
+									      node:{
+									        open: "dtree-icon-jia1"
+									      }
+									    }
+									  },{
+									    checkbox:{
+									      noall:"layui-icon-rate-half",
+									      on:"layui-icon-rate-solid",
+									      out:"layui-icon-rate"
+									    }
+									  },{
+									    fnode:{
+									      node:{
+									        close: "icon-phone1"
+									      },
+									      dot:"icon-warn"
+									    },
+									    snode:{
+									      leaf: "icon-xinxipilu",
+									      node:{
+									        open:"icon-appreciate"
+									      }
+									    }
+									  }]
+									});
+								</pre>
+							</div>
+						</div>
+						<p>上方使用了dtreefont、layui-icon、以及自定义的iconfont，你可以看到几乎所有的图标都发生了变化，希望树在你的手中，可以变得更加漂亮。</p>
+						<p>想了解具体的配置项请查询基础文档中相应的内容！</p>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="returnicon">
+					<legend>后台返回图标（response-ficonClass、iconClass）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>实际上你也可以通过后台返回图标的方式，来定义图标，这样的话无论前端如何设置图标，都会以后台提供的为准。但是你依然可以设置css样式来改变图标的其他属性。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 250px;overflow: auto;"><ul id="styleTree12" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#styleTree12",
+									  url: "../json/case/styleTree12.json",
+									  initLevel: 2,
+									  dataFormat:"list"
+									});
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<p>此json的数据格式为：</p>
+								<pre class="layui-code" lay-title="数据格式" lay-encode="true">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [
+									  {"id":"001","title": "湖南省","ficonClass": "dtree-icon-same","parentId": "0"},
+									  {"id":"002","title": "湖北省","ficonClass": "dtree-icon-same","parentId": "0"},
+									  {"id":"003","title": "广东省","ficonClass": "dtree-icon-same","parentId": "0"},
+									  {"id":"004","title": "浙江省","ficonClass": "dtree-icon-same","parentId": "0"},
+									  {"id":"005","title": "福建省","ficonClass": "dtree-icon-same","parentId": "0"},
+									  {"id":"001001","title": "长沙市","ficonClass": "dtree-icon-shijian","iconClass": "dtree-icon-caidan_xunzhang","parentId": "001"},
+									  {"id":"001002","title": "株洲市","ficonClass": "dtree-icon-shijian","iconClass": "dtree-icon-caidan_xunzhang","parentId": "001"},
+									  {"id":"001003","title": "湘潭市","ficonClass": "dtree-icon-shijian","iconClass": "dtree-icon-caidan_xunzhang","parentId": "001"},
+									  {"id":"001004","title": "衡阳市","ficonClass": "dtree-icon-shijian","iconClass": "dtree-icon-caidan_xunzhang", "parentId": "001"},
+									  {"id":"001005","title": "郴州市","iconClass": "dtree-icon-caidan_xunzhang","parentId": "001"}
+									]
+									}
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">dtree，最美的树形。</blockquote>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="style.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = [];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		// 1.styleTree1
+		dtree.render({
+			elem: "#styleTree1",
+			url: "../json/case/styleTree1.json",
+            method: "get",
+			line: true  // 显示树线
+		});
+		
+		// 2.styleTree2
+		dtree.render({
+			elem: "#styleTree2",
+			url: "../json/case/styleTree1.json",
+            method: "get",
+			initLevel: 1,
+			ficon: "-1"  // 隐藏一级图标
+		});
+		
+		// 3.styleTree3
+		dtree.render({
+			elem: "#styleTree3",
+			url: "../json/case/styleTree1.json",
+            method: "get",
+			initLevel: 1,
+			ficon: ["1","-1"]  // 显示非最后一级节点图标，隐藏最后一级节点图标
+		});
+		
+		// 4.styleTree4
+		dtree.render({
+			elem: "#styleTree4",
+			url: "../json/case/styleTree1.json",
+            method: "get",
+			initLevel: 1,
+			nodeIconArray: {"3":{"open":"dtree-icon-jian1","close":"dtree-icon-jia1"}},
+			ficon: ["3","7"]
+		});
+		
+		// 5.styleTree5
+		dtree.render({
+			elem: "#styleTree5",
+			url: "../json/case/styleTree1.json",
+            method: "get",
+			initLevel: 1,
+			icon: "-1"
+		});
+		
+		// 6.styleTree6
+		dtree.render({
+			elem: "#styleTree6",
+			url: "../json/case/styleTree1.json",
+            method: "get",
+			initLevel: 1,
+			icon: ["0","-1"]
+		});
+		
+		// 7.styleTree7
+		dtree.render({
+			elem: "#styleTree7",
+			url: "../json/case/styleTree1.json",
+            method: "get",
+			initLevel: 1,
+			nodeIconArray:{"3":{"open":"dtree-icon-pulldown","close":"dtree-icon-pullup"}},  // 自定扩展的二级非最后一级图标，从1开始
+		    leafIconArray:{"11":"dtree-icon-star"},  // 自定义扩展的二级最后一级图标，从11开始
+		    icon: ["3","11"] // 使用
+		});
+		
+		// 8.styleTree8
+		dtree.render({
+			elem: "#styleTree8",
+			url: "../json/case/styleTree5.json",
+            method: "get",
+			initLevel: 1,
+			checkbar:true,
+			skin:"layui"
+		});
+		
+
+		// 9.styleTree9
+		dtree.render({
+			elem: "#styleTree9",
+			url: "../json/case/styleTree5.json",
+            method: "get",
+			initLevel: 1,
+			checkbar:true,
+			skin:"laySimple"
+		});
+		
+		// 10.styleTree10
+		dtree.render({
+			elem: "#styleTree10",
+			url: "../json/case/styleTree5.json",
+            method: "get",
+			initLevel: 1,
+			dot: false,
+			checkbar:true,
+			skin:"zdy"
+		});
+		
+		// 11.styleTree11
+		dtree.render({
+			elem: "#styleTree11",
+			url: "../json/case/styleTree5.json",
+            method: "get",
+			iconfont:["dtreefont", "layui-icon", "iconfont"],
+			iconfontStyle:[{
+				fnode:{
+					node:{
+						open: "dtree-icon-jia1"
+					}
+				}
+			},{
+				checkbox:{
+					noall:"layui-icon-rate-half",
+					on:"layui-icon-rate-solid",
+					out:"layui-icon-rate"
+				}
+			},{
+				fnode:{
+					node:{
+						close: "icon-phone1"
+					},
+					dot:"icon-warn"
+				},
+				snode:{
+					leaf: "icon-xinxipilu",
+					node:{
+						open:"icon-appreciate"
+					}
+				}
+			}]
+		});
+		
+		// 12. styleTree12
+		dtree.render({
+			elem: "#styleTree12",
+			url: "../json/case/styleTree12.json",
+            method: "get",
+			initLevel: 2,
+			dataFormat:"list"
+		});
+		
+	});
+</script>
+</html>

@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">以下介绍了在实际开发中树的基本使用方法，也是比较常见的使用。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul data-vlog="vs257">
+										<li>【优化】内置方法优化：setDisabledNodes，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【优化】内置方法优化：cancelDisabledNodes，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【优化】内置方法优化：getDisabledNodesParam，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【优化】内置方法优化：setHideNodes，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【优化】内置方法优化：cancelHideNodes，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【优化】内置方法优化：getHideNodesParam，现支持单个数据、带分隔符的字符串、数组。</li>
+										<li>【新增】内置方法新增：setDisabledNode，设置单个节点的禁用</li>
+										<li>【新增】内置方法新增：cancelDisabledNode，设置单个节点的取消禁用</li>
+										<li>【新增】内置方法新增：setHideNode，设置单个节点的隐藏</li>
+										<li>【新增】内置方法新增：cancelHideNode，设置单个节点的取消隐藏</li>
+										<li>【新增】内置函数新增：fuzzySearch，模糊查询，搜索节点，保留父节点。</li>
+									</ul>
+									<ul data-vlog="vs256">
+										<li>【新增】基础属性新增：bak，内置属性，备份Html。</li>
+										<li>【新增】内置方法新增：rollbackHtml，基于备份的Html数据回滚</li>
+										<li>【新增】内置方法新增：setDisabledAllNodes，设置全部节点为disabled</li>
+									</ul>
+									<ul data-vlog="vs255">
+										<li>【新增】基础属性新增：width，设置树的宽度。</li>
+										<li>【新增】基础方法新增：set，可以增加同一次引用中，dtree的公共属性指定，所有基础属性都可以指定。</li>
+										<li>【优化】内置方法优化：当异步加载出现异常时，以文字形式而非弹框形式提示。</li>
+										<li>【优化】基础方法优化：success方法的放置位置，可以将不同的数据格式在success方法内做转换，或添加根节点。</li>
+										<li>【更新】内置方法更新：getNoneDom方法，添加errText子方法，显示错误信息。</li>
+									</ul>
+									<ul data-vlog="vs254">
+										<li>【新增】基础属性新增：基础属性新增：height，调整高度，与table组件用法一致</li>
+										<li>【新增】内置方法新增：cancelNavThis，取消选中div。</li>
+									</ul>
+									<ul data-vlog="vs250">
+										<li>【优化】基础方法优化：render方法和reload方法中，如果树在当前页面中被加载过一次了，再次加载会从缓存中取出树，并将树上次点击的节点作为参数记录下来，现在优化为还是从缓存中取，但是会重置上次记录的参数。</li>
+										<li>【优化】内置函数优化：getLiItemDom 当parentId为0时组件自动判定为false从而使用内置parentId的问题。</li>
+										<li>【新增】基础属性新增：accordion属性，用于开启手风琴模式</li>
+										<li>【新增】基础属性新增：none，用于定于树初始化未加载节点时的提示文字。</li>
+										<li>【新增】基础方法新增：getParam： 获取指定节点选中值</li>
+										<li>【新增】基础方法新增：getAllParentParam： 获取指定节点的全部上级节点</li>
+										<li>【新增】基础方法新增：click：模拟单击事件</li>
+										<li>【新增】内置方法新增：replaceDom：替换节点的dom值，或指定值。</li>
+										<li>【新增】内置方法新增：operateIcon： 设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理</li>
+										<li>【新增】内置方法新增：getParam： 获取指定节点选中值</li>
+										<li>【新增】内置方法新增：getAllParentParam： 获取指定节点的全部上级节点</li>
+										<li>【新增】内置方法新增：getNodeDom： 根据具体的id获取基于当前id的div以及对应的其他dom元素</li>
+										<li>【新增】内置方法新增：getNode： 获取指定节点Div</li>
+										<li>【新增】内置方法新增：accordionUL： 开启手风琴模式时对其他节点的处理</li>
+										<li>【新增】内置方法新增：setDisabledNodes： 设置节点为disabled</li>
+										<li>【新增】内置方法新增：cancelDisabledNodes：将节点的disabled取消</li>
+										<li>【新增】内置方法新增：getDisabledNodesParam： 获取指定disabled节点的值</li>
+										<li>【新增】内置方法新增：getAllDisabledNodesParam： 获取全部disabled节点的值</li>
+										<li>【新增】内置方法新增：setHideNodes： 设置节点为hide</li>
+										<li>【新增】内置方法新增：cancelHideNodes： 将节点的hide取消</li>
+										<li>【新增】内置方法新增：getHideNodesParam： 获取指定hide节点的值</li>
+										<li>【新增】内置方法新增：getAllHideNodesParam： 获取全部hide节点的值</li>
+										<li>【新增】内置方法新增：getNowNodeOrNull：获取当前选中div，没有选中则为null</li>
+										<li>【新增】内置方法新增：navThis：选中div</li>
+										<li>【新增】内置方法新增：getNoneDom：当无节点数据时显示dom信息</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="rryf">
+					<legend>初始化（render） / 重新渲染（reload）</legend>
+					<div class="layui-field-box">
+						<p>两个十分重要的方法，前者也是你即将使用的最多的方法</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="commonTree0" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" id="commonTree0_btn">点击按钮重新渲染左侧树</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									// 渲染，使用data渲染
+									dtree.render({
+									  elem: "#commonTree0",
+									  data: commonTree0
+									});
+									
+									// 点击按钮，重新渲染，使用url渲染
+									$("#commonTree0_btn").click(function(){
+									  dtree.reload("commonTree0",{
+									    url: "../json/case/commonTree2.json",
+									    method: "get", //默认为post
+									    initLevel: "1" //默认为2
+									  });
+									});
+								</pre>
+							</div>
+						</div>
+						<p>其中使用到的data，或者是url返回的数据，可以参考<span style="font-weight: bold;">数据格式</span>中的<span style="font-weight: bold;">标准数据格式</span></p>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="djryjdhdsj">
+					<legend>节点点击事件（dtree.on("node(treeId)", function(obj){})）</legend>
+					<div class="layui-field-box">
+						<p>使用树时，一般情况下你是需要点击节点获取节点的数据的，那么你可以如此这般的写。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="commonTree1" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									// 渲染，使用data渲染，url渲染亦可
+									dtree.render({
+									  elem: "#commonTree1",
+									  data: commonTree1
+									});
+									
+									// 点击节点触发回调，其中obj内包含丰富的数据，打开浏览器F12查看！
+									dtree.on("node('commonTree1')" ,function(obj){
+									  layer.msg(JSON.stringify(obj.param));
+									  console.log(obj.param); // 点击当前节点传递的参数
+									  console.log(obj.dom); // 当前节点的jquery对象
+									  console.log(obj.childParams); // 当前节点的所有子节点参数
+									  console.log(obj.parentParam); // 当前节点的父节点参数
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="jdybjz">
+					<legend>异步加载（url）</legend>
+					<div class="layui-field-box">
+						<p>树的使用肯定需要异步加载，毕竟数据都来源于后端，此处按钮只是演示用，你可以在页面初始化时就加载这棵树。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 360px;overflow: auto;"><ul id="commonTree2" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" id="commonTree2_btn">点击按钮加载左侧树</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									$("#commonTree2_btn").click(function(){
+									  // 使用url异步加载
+									  dtree.render({
+									    elem: "#commonTree2",
+									    url: "../json/case/commonTree2.json"
+									  });
+									});
+									
+									// 点击节点触发回调
+									dtree.on("node('commonTree2')" ,function(obj){
+									  layer.msg(JSON.stringify(obj.param));
+									});
+								</pre>
+							</div>
+						</div>
+						<p>关于异步加载的其他参数，可以参考<span style="font-weight: bold;">异步加载</span>菜单或者是<span style="font-weight: bold;">基础文档中的异步数据接口规范</span></p>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="yjfxk">
+					<legend>一级复选框（checkbar）</legend>
+					<div class="layui-field-box">
+						<p>基本需求，默认是强级联关系，即子节点选中了，父节点一定会选中，当然你可以自由指定他们的级联关系，配置参数请查看基础文档。</p>
+						<p style="color:#FF5722;">当你选择开启复选框时，除了必须指定checkbar:true之外，数据中必须存在checkArr字段，复选框才能正常显示。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 400px;overflow: auto;"><ul id="commonTree3" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" id="commonTree3_btn">点击按钮获取所有选中节点值</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#commonTree3",
+									  url: "../json/case/commonTree3.json",
+									  icon: "2",  //修改二级图标样式
+									  checkbar: true  //开启复选框
+									});
+									
+									// 点击按钮获取所有选中节点值
+									$("#commonTree3_btn").click(function(){
+									  var params = dtree.getCheckbarNodesParam("commonTree3");
+									  layer.msg(JSON.stringify(params));
+									})
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="zdyjdzk">
+					<legend>初始自定节点展开（spread）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
+					<div class="layui-field-box">
+						<p>当你不想通过initLevel属性来统一指定节点的展开情况，而想通过后台的标识数据spread来指定时，以下示例可以作为参考。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 670px;overflow: auto;"><ul id="commonTree4" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#commonTree4",
+									  url: "../json/case/commonTree4.json",
+									  icon: "2",  //修改二级图标样式
+									  initLevel: "1"  //默认展开层级为1
+									});
+								</pre>
+								<p>你会发现，广东省这层节点被展开了，原因是因为在读取广东省的那条数据中，指定了spread:true，那么即不会受到initLevel参数的限制。</p>	
+								<p>注意：这种方式不会向上级联展开，即如果你在数据中指定了广州市的spread:true,但未指定广东省的spread,而此时的initLevel参数为1的情况下，看到的效果还是initLevel:"1"的效果。</p>
+								<pre class="layui-code" lay-title="JSON数据示例">
+									{
+									  "status":{"code":200,"message":"操作成功"},
+									  "data":[{
+									    "id":"001",
+									    "title": "湖南省",
+									    "parentId": "0",
+									    "children":[...]  // 省略
+									  },{...},{
+									    "id":"003",
+									    "title": "广东省",
+									    "parentId": "0",
+									    "spread": true,  //此处定义了spread
+									    "children":[...]
+									  },{...}]
+									}
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="qxzdjz">
+					<legend>取消自动加载子节点<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
+					<div class="layui-field-box">
+						<p>默认情况下，你点击树前面的图标时，如果是非最后一级节点，会自动的寻找你配置的url并自动的再次发送请求以获取节点数据，但现在，你可以取消这一默认操作。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="overflow: auto;"><ul id="commonTree5" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									var CommonTree5 = dtree.render({
+									  elem: "#commonTree5",
+									  url: "../json/case/commonTree5.json",
+									  initLevel: "1",
+									  type:"all"  // 改为全量加载，即取消自动加载
+									});
+									
+									// 绑定图标的点击事件
+									dtree.on("changeTree(commonTree5)",function(obj){
+									  if(obj.show){
+									    // 调用内置函数，第二个参数为json数组，如果你不想访问默认的url，你可以自己使用ajax访问你的url，然后将data数据传入进来即可。
+									    CommonTree5.getChild($(obj.dom).parent("div"), [{"id":"001001","title": "测试啦","parentId": "0"}]); 
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="djwbjzjd">
+					<legend>点击文本加载节点用法</legend>
+					<div class="layui-field-box">
+						<p>默认情况下，你点击树前面的图标时，才会展开或隐藏节点，但你依然可以设计为点击文字加载。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="overflow: auto;"><ul id="commonTreet" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									var CommonTreet = dtree.render({
+									  elem: "#commonTreet",
+									  url: "../json/case/commonTree2.json",
+									  initLevel: "1"
+									});
+									
+									// 绑定节点点击事件
+									dtree.on("node(commonTreet)", function(obj){
+									  if(!obj.param.leaf){
+									    var $div = obj.dom;
+									    CommonTreet.clickSpread($div);  //调用内置函数展开节点
+									  } else {
+									    layer.msg("叶子节点就不展开了");
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="fuzzySearch">
+					<legend>搜索节点（fuzzySearch）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></legend>
+					<div class="layui-field-box">
+						<p>搜索节点，模糊匹配，保留树结构。（layui-dtree群友： 没水平的水瓶 提供。）</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height:450px;overflow: auto;"><ul id="commonTreeFuzzySearch" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<input type="text" name="fuzzySearchInput" value="" placeholder="请输入节点名称" class="layui-input"/>
+								<button class="layui-btn layui-btn-normal" id="commonTreeFuzzySearch_btn">搜索节点</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									var CommonTreeFuzzySearch = dtree.render({
+									  elem: "#commonTreeFuzzySearch",
+									  url: "../json/case/commonTree2.json"
+									});
+									
+									$("#commonTreeFuzzySearch_btn").click(function(){
+									  var input = $("input[name='fuzzySearchInput']").val();
+									  // 调用内置函数搜索节点
+									  CommonTreeFuzzySearch.fuzzySearch(input);
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			
+			<div class="layui-fluid" data-vs="vs254">
+				<fieldset class="layui-elem-field layui-field-title" id="hei">
+					<legend>指定高度（height）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.4新增）</span></legend>
+					<div class="layui-field-box">
+						<p>树初始化未加载节点时的提示文字</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="overflow: auto;"><ul id="commonTreeh" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									// 此处注意给div设置overflow: auto;
+									&lt;div style="overflow: auto;"&gt;&lt;ul id="commonTreeh" class="dtree" data-id="0"&gt;&lt;/ul&gt;&lt;/div&gt;
+									
+									dtree.render({
+									  elem: "#commonTreeh",
+									  url: "../json/case/commonTree5.json",
+									  height: "full-150"  // 设置高度，也可以直接固定数字
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs250">
+				<fieldset class="layui-elem-field layui-field-title" id="jdjy">
+					<legend>节点禁用（disabled）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>当你的数据中设置了disabled:true参数时，则那个节点就会被禁用</p>
+						<p>被禁用的节点：节点复选框不可点击，节点不可点击，节点不可双击，右键菜单不可点击，不可点击加载iframe，无法获取复选框数据，但可进行节点展开/关闭，并通过内置函数获取该节点的数据。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;"><ul id="commonTree6" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" id="commonTree6_btn">点击按钮获取被禁用节点信息</button>
+								<button class="layui-btn layui-btn-normal" id="commonTree62_btn">点击按钮获取被选中节点信息</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									var CommonTree6 = dtree.render({
+									  elem: "#commonTree6",
+									  url: "../json/case/commonTree6.json",
+									  checkbar: true,
+									  done: function(result, $ul, first){
+									    //CommonTree6.setDisabledNodes("001,002"); // 设置节点禁用
+									    //CommonTree6.setDisabledNodes(["001","002"]); // 设置节点禁用
+									    //CommonTree6.setDisabledAllNodes(); // 设置全部节点禁用
+									    //CommonTree6.cancelDisabledNodes("001"); // 取消节点禁用
+									    //var p1 = CommonTree6.getDisabledNodesParam("001,002"); // 获取禁用节点的信息
+									    //var p1 = CommonTree6.getDisabledNodesParam(["001","002"]); // 获取禁用节点的信息
+									    //var p2 = CommonTree6.getAllDisabledNodesParam(); // 获取全部禁用节点的信息
+									    //console.log(p1);
+									    //console.log(p2);
+									  }
+									});
+									$("#commonTree6_btn").click(function(){
+									  var param = CommonTree6.getAllDisabledNodesParam(); // 获取全部禁用节点的信息
+									  layer.msg(JSON.stringify(param));
+									});
+									$("#commonTree62_btn").click(function(){
+									  var params = dtree.getCheckbarNodesParam("commonTree6"); //获取被选中节点信息
+									  layer.msg(JSON.stringify(params));
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs250">
+				<fieldset class="layui-elem-field layui-field-title" id="jdyc">
+					<legend>节点隐藏（hide）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>当你的数据中设置了hide:true参数时，则那个节点就会被隐藏</p>
+						<p>被隐藏的节点：节点不可选中，节点复选框不可点击，节点不可点击，节点不可双击，右键菜单不可点击，不可点击加载iframe，但可进行节点展开/关闭，可以获取复选框数据，并可以通过内置函数获取该节点的数据。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;"><ul id="commonTree7" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" id="commonTree7_btn">点击按钮获取被隐藏节点信息</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									var CommonTree7 = dtree.render({
+									  elem: "#commonTree7",
+									  url: "../json/case/commonTree7.json",
+									  function(result, $ul){
+									    //CommonTree7.setHideNodes("001,002"); // 设置节点隐藏
+									    //CommonTree7.setHideNodes(["001","002"]);// 设置节点隐藏
+									    //CommonTree7.cancelHideNodes("001"); // 取消节点隐藏
+									    //var p1 = CommonTree7.getHideNodesParam("001,002"); // 获取隐藏节点的信息
+									    //var p1 = CommonTree7.getHideNodesParam(["001","002"]);// 获取隐藏节点的信息
+									    //var p2 = CommonTree7.getAllHideNodesParam(); // 获取全部隐藏节点的信息
+									    //console.log(p1);
+									    //console.log(p2);
+									  }
+									});
+									$("#commonTree7_btn").click(function(){
+									  var param = CommonTree6.getAllHideNodesParam(); // 获取全部隐藏节点的信息
+									  layer.msg(JSON.stringify(param));
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs250">
+				<fieldset class="layui-elem-field layui-field-title" id="accordion">
+					<legend>手风琴（accordion）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>一次只会展开一层节点</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="overflow: auto;"><ul id="commonTree8" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#commonTree8",
+									  url: "../json/case/commonTree8.json",
+									  accordion: true  // 开启手风琴
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs250">
+				<fieldset class="layui-elem-field layui-field-title" id="nonetext">
+					<legend>无数据提示（none）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>树初始化未加载节点时的提示文字</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="overflow: auto;"><ul id="commonTree9" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#commonTree9",
+									  url: "../json/case/commonTree9.json",
+									  none: "提示说我没有数据？"
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="java">
+					<legend>服务端为java的数据定义方式</legend>
+					<div class="layui-field-box">
+						<p>很多情况下，数据是从服务端传来的，如果服务端使用的是java语言，可以定义以下几个实体类。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<p>DTreeResponse类，该类用于在servlet或任何框架的控制层中被返回成为一个JSON数据，适用于树定义返回的全部格式（默认，layui风格）</p>
+								<pre class="layui-code" lay-title="DTreeResponse" lay-encode="true">
+									package com.dtree;
+									/** response返回类*/
+									public class DTreeResponse {
+									  /** 状态码*/
+									  private int code;
+									  /** 信息标识*/
+									  private String msg;
+									  /** 状态类*/
+									  private Status status;
+									  /** 数据*/
+									  private Object data;
+									  
+									  //省略了get、set、toString方法
+									}
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<p>Stauts类，该类用于表示数据的返回状态，树默认的数据获取方式需要该类的支持，最终，该类在DTreeResponse中被set进status属性里。</p>
+								<pre class="layui-code" lay-title="Status" lay-encode="true">
+									package com.dtree;
+									/** 信息状态类*/
+									public class Status {
+									  /** 状态码*/
+									  private int code = 200;
+									  /** 信息标识*/
+									  private String message = "success";
+									  
+									  //省略了get、set、toString方法
+									}
+
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<p>DTree类，该类用于树的数据设置，树的数据采集所需要的全部字段均在此处定义，最终，该类在DTreeResponse中被以List&lt;Dtree&gt;的形式被set进data属性里。</p>
+								<pre class="layui-code" lay-title="DTreeResponse" lay-encode="true">
+									package com.dtree;
+									import java.util.ArrayList;
+									import java.util.List;
+									/** 树类*/
+									public class DTree {
+									  /** 节点ID*/
+									  private String id;
+									  /** 上级节点ID*/
+									  private String parentId;
+									  /** 节点名称*/
+									  private String title;
+									  /** 是否展开节点*/
+									  private Boolean spread;
+									  /** 是否最后一级节点*/
+									  private Boolean last;
+									  /** 是否隐藏*/
+									  private Boolean hide;
+									  /** 是否禁用*/
+									  private Boolean disabled;
+									  /** 自定义图标class*/
+									  private String iconClass;
+									  /** 表示用户自定义需要存储在树节点中的数据*/
+									  private Object basicData;
+									  /** 复选框集合*/
+									  private List&lt;CheckArr&gt; checkArr = new ArrayList&lt;CheckArr&gt;();
+									  /** 子节点集合*/
+									  private List&lt;DTree&gt; children = new ArrayList&lt;DTree&gt;();
+									  
+									  //省略了get、set、toString方法
+									}
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<p>CheckArr类，该类用于表示树的复选框，最终，该类在DTree中被以List&lt;CheckArr&gt;的形式被set进checkArr属性里。</p>
+								<pre class="layui-code" lay-title="CheckArr" lay-encode="true">
+									package com.dtree;
+									/** 复选框设计类*/
+									public class CheckArr {
+									  /** 复选框标记*/
+									  private String type;
+									  /** 复选框是否选中*/
+									  private String checked;
+									  
+									  //省略了get、set、toString方法
+									}
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<p>Servlet中伪代码示例。</p>
+								<pre class="layui-code" lay-title="Servlet" lay-encode="true">
+									protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+									  //1. 从request中获取dtree传来的参数
+									  String nodeId = request.getParameter("nodeId");
+									  //2. 根据参数查询数据库数据，假设查的是User表的数据
+									  List&lt;User&gt; users = userService.query(nodeId);
+									  //3. 此时你可以直接将users放在DTreeResponse中然后将DTreeResponse变成json格式返回，只要在在树中配置了response映射字段，树组件也会成功识别数据
+									  DTreeResponse resp = new DTreeResponse();
+									  resp.setData(users);
+									  printJson(resp); // 输出JSON格式
+									  
+									  //3.或者user中没有树需要的全部对象，你可以将users转换为List&lt;DTree&gt;对象，根据业务逻辑分配checkArr参数，或者是递归将数据放在children中使数据具有层级关系，最后将List<DTree>放在DTreeResponse中。
+									  List&lt;DTree&gt; dtrees = new ArrayList&lt;DTree&gt;();
+									  // 遍历数据
+									  DTree d = null;
+									  for(User user : users){
+									    d = new DTree();
+									    d.setId(user.getId());
+									    //... 做出转换，最后放进集合中
+									    
+									    dtrees.add(d);
+									  }
+									  DTreeResponse resp = new DTreeResponse();
+									  resp.setData(dtrees);
+									  printJson(resp); // 输出JSON格式
+									}
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">这仅仅是树组件的一些常规使用方式，当然，组件的功能远远不止这些。</blockquote>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = ["节点禁用","节点隐藏","搜索节点"];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		// 1.commonTree0
+		dtree.render({
+			elem: "#commonTree0",
+			data: commonTree1
+		});
+		
+		// 1.commonTree0
+		$("#commonTree0_btn").click(function(){
+			if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+				layer.msg("异步加载功能需要将项目发布到服务器上",{icon:5});
+				return;
+			}
+			
+			dtree.reload("commonTree0",{
+				url: "../json/case/commonTree2.json",
+				method: "get",
+				initLevel: "1"
+			});
+		});
+		
+		// 1.commonTree1
+		dtree.render({
+			elem: "#commonTree1",
+			data: commonTree1
+		});
+		
+		dtree.on("node('commonTree1')" ,function(obj){
+		  layer.msg(JSON.stringify(obj.param));
+		});
+		// 2.commonTree2
+		$("#commonTree2_btn").click(function(){
+			if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+				layer.msg("异步加载功能需要将项目发布到服务器上",{icon:5});
+				return;
+			}
+			
+			dtree.render({
+				elem: "#commonTree2",
+				url: "../json/case/commonTree2.json",
+				method: "get"
+			});
+		});
+		
+		dtree.on("node('commonTree2')" ,function(obj){
+		  layer.msg(JSON.stringify(obj.param));
+		});
+		
+		// 2.commonTree3
+		dtree.render({
+			elem: "#commonTree3",
+			url: "../json/case/commonTree3.json",
+            method: "get",
+			icon: "2",
+			checkbar: true
+		});
+		
+		$("#commonTree3_btn").click(function(){
+			var params = dtree.getCheckbarNodesParam("commonTree3");
+			layer.msg(JSON.stringify(params));
+		})
+
+		// 2.commonTree4
+		dtree.render({
+			elem: "#commonTree4",
+			url: "../json/case/commonTree4.json",
+            method: "get",
+			icon: "2",
+			initLevel: "1"
+		});
+
+		// 2.commonTree5
+		var CommonTree5 = dtree.render({
+			elem: "#commonTree5",
+			url: "../json/case/commonTree5.json",
+            method: "get",
+			icon: "2",
+			initLevel: "1",
+			type:"all"
+		});
+		
+		dtree.on("changeTree(commonTree5)",function(obj){
+			console.log($(obj.dom));
+			console.log($(obj.dom).parent("div")[0]);
+			if(obj.show){
+				CommonTree5.getChild($(obj.dom).parent("div"), [{"id":"001001","title": "测试啦","parentId": "0"}]);
+			}
+		});
+
+		// 2.commonTreet
+		var CommonTreet = dtree.render({
+			elem: "#commonTreet",
+			url: "../json/case/commonTree5.json",
+            method: "get",
+			initLevel: "1"
+		});
+
+		dtree.on("node(commonTreet)", function(obj){
+			if(!obj.param.leaf){
+				var $div = obj.dom;
+				CommonTreet.clickSpread($div);
+			} else {
+				layer.msg("叶子节点就不展开了");
+			}
+		});
+		
+		// 2.commonTreet
+		var CommonTreeFuzzySearch = dtree.render({
+			elem: "#commonTreeFuzzySearch",
+			url: "../json/case/commonTree2.json",
+            method: "get",
+		});
+		
+		$("#commonTreeFuzzySearch_btn").click(function(){
+			var input = $("input[name='fuzzySearchInput']").val();
+			CommonTreeFuzzySearch.fuzzySearch(input);
+		});
+		
+		
+		
+		dtree.render({
+            elem: "#commonTreeh",
+            url: "../json/case/commonTree6.json",
+            method: "get",
+            height: "full-150"
+		});
+
+		// 2.commonTree6
+		var CommonTree6 = dtree.render({
+            elem: "#commonTree6",
+            url: "../json/case/commonTree6.json",
+            method: "get",
+            checkbar: true
+		});
+		
+		$("#commonTree6_btn").click(function(){
+			var param = CommonTree6.getAllDisabledNodesParam(); // 获取全部禁用节点的信息
+			layer.msg(JSON.stringify(param));
+		});
+		
+		$("#commonTree62_btn").click(function(){
+			var params = dtree.getCheckbarNodesParam("commonTree6");
+			layer.msg(JSON.stringify(params));
+		});
+		
+		// 2.commonTree7
+		var CommonTree7 = dtree.render({
+            elem: "#commonTree7",
+            url: "../json/case/commonTree7.json",
+            method: "get",
+            record: true
+		});
+		
+		// 2.commonTree2
+		$("#commonTree7_btn").click(function(){
+			var param = CommonTree7.getAllHideNodesParam(); // 获取全部隐藏节点的信息
+			layer.msg(JSON.stringify(param));
+			console.log(JSON.stringify(param));
+		});
+		
+		dtree.render({
+			elem: "#commonTree8",
+			url: "../json/case/commonTree3.json",
+            method: "get",
+			accordion: true
+		});
+		
+		
+		dtree.render({
+		  elem: "#commonTree9",
+		  data: [],
+		  none: "提示说我没有数据？"
+		});
+	
+	});
+</script>
+</html>

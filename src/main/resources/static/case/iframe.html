@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+	.layui-tab-item{height:400px;overflow: auto;}
+</style>
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">以下介绍了比较常用的加载iframe页面的情况。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul data-vlog="vs255">
+										<li>【优化】iframe模块优化：将原来用iframe包住的属性提出，撤销iframe这一层。</li>
+									</ul>
+									<ul data-vlog="vs250">
+										<li class="bug">【修复】iframe模块修复：配置了iframeDefaultRequest时，只会显示iframeDefaultRequest中的参数的问题。</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="loadiframe">
+					<legend>加载iframe</legend>
+					<div class="layui-field-box">
+						<p>很多情况下，页面中会出现一种左树右内容的布局，而通常情况下就是点击树的某个节点来动态加载iframe的。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 400px;overflow: auto;"><ul id="iframeTree1" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<div style="height: 400px; width:100%;overflow: auto;">
+									<iframe src="iframeContent.html" id="iframe_content" name="iframe_content" frameborder="0" style="width: 100%;height: 99%;"></iframe>
+								</div>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									// 树代码示例
+									dtree.render({
+									  elem: "#iframeTree1",
+									  url: "../json/case/iframeTree1.json",
+									  useIframe: true,  //启用iframe
+									  iframeElem: "#iframe_content",  // iframe的ID
+									  iframeUrl: "iframeContent.html", // iframe路由到的地址
+									});
+									
+									// iframe页面代码示例
+									/** 获取本页面url中的参数值 */
+									var getUrlParam = function(name) {
+									  var url = location.search;
+									  url = url.substring(url.indexOf("?"));
+									  if (url.indexOf("?") != -1) {
+									    var str = url.substr(1);
+									    strs = str.split("&");
+									    for ( var i = 0; i < strs.length; i++) {
+									      if (name == strs[i].split("=")[0]) {
+									        return unescape(strs[i].split("=")[1]);
+									      }
+									    }
+									  }
+									  return "";
+									}
+									
+									var nodeId = getUrlParam("nodeId"),
+									    parentId = getUrlParam("parentId"),
+									    context = decodeURI(getUrlParam("context")),  // 注意，此处对context做了一次转码
+									    leaf = getUrlParam("leaf"),
+									    level = getUrlParam("level"),
+									    spread = getUrlParam("spread")
+									
+									// 赋值
+									form.val("show_form",{
+									  "nodeId" : nodeId,
+									  "parentId" : parentId,
+									  "context" : context,
+									  "leaf" : leaf,
+									  "level" : level,
+									  "spread" : spread
+									});
+									
+									form.render(); //刷新表单
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="loadall">
+					<legend>点击任意节点加载（iframe-iframeLoad）</legend>
+					<div class="layui-field-box">
+						<p>由上面一种加载情况可知，组件默认的加载iframe是当节点为最后一级的时候，才会触发加载iframe的事件，但很多情况下我们希望点击任意节点都可以触发加载iframe，那么你只需要这样做:</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									// 树代码示例
+									dtree.render({
+									  elem: "#iframeTree1",
+									  url: "../json/case/iframeTree1.json",
+									  useIframe: true,  //启用iframe
+									  iframeElem: "#iframe_content",  // iframe的ID
+									  iframeUrl: "iframeContent.html", // iframe路由到的地址
+									  iframeLoad: "all" // 表示点击任意节点加载iframe
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="zdycdcs">
+					<legend>自定义参数传递（iframe-iframeRequest）</legend>
+					<div class="layui-field-box">
+						<p>默认情况下，iframe加载时会将树的基本信息传递给页面，即示例1看到的效果，我们也可以改变默认参数的名称，或者在新增自定义的参数，传递给子页面，代码如下：</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg6">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									// 树代码示例
+									dtree.render({
+									  elem: "#iframeTree1",
+									  url: "../json/case/iframeTree1.json",
+									  useIframe: true,  //启用iframe
+									  iframeElem: "#iframe_content",  // iframe的ID
+									  iframeUrl: "iframeContent.html", // iframe路由到的地址
+									  iframeLoad: "all" // 表示点击任意节点加载iframe
+									  iframeDefaultRequest: {nodeId: "id"}, // 这里就将nodeId这个参数名称改为了id这个名称
+									  iframeRequest: {username: "zhangsan"} // 这里就自定义了需要传递的参数
+									});
+								</pre>
+							</div>
+							<div class="layui-col-lg6">
+								<p>这里即为发起请求时，Chrome调式模式提供的表单发起数据：</p>
+								<pre class="layui-code" lay-title="Form Data">
+									Request URL: http://localhost:7078/DTreeHelper/case/iframeContent.html?id=001003&parentId=001&context=%25E6%258D%259F%25E7%259B%258A%25E8%25A1%25A8&leaf=true&level=2&spread=false&username=zhangsan;
+									
+									
+									Query String Parameters  view source  view URL encoded
+									id: 001003
+									parentId: 001
+									context: %E6%8D%9F%E7%9B%8A%E8%A1%A8
+									leaf: true
+									level: 2
+									spread: false
+									username: zhangsan
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="loadmoreiframe">
+					<legend>加载多个iframe（高级功能）</legend>
+					<div class="layui-field-box">
+						<p>iframe的加载不仅仅局限于1个，你可以点击树加载不同的iframe，当然这需要element模块的支持。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;"><ul id="iframeTree2" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<div class="layui-tab layui-tab-card auto-full-height" lay-allowClose="true" lay-filter="content-tab" style="margin-top: 0px;">
+									<ul class="layui-tab-title" id="content_div_card_title"><li class="layui-this">首页</li></ul>
+									<div class="layui-tab-content">
+									    <div class="layui-tab-item layui-show">我是一个酱油页面，请点击左边的树替换我！</div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="html代码示例" lay-encode="true">
+									<div class="layui-col-lg4"><div style="height: 400px;overflow: auto;"><ul id="iframeTree2" class="dtree" data-id="0"></ul></div></div>
+									<div class="layui-col-lg8">
+									  <div class="layui-tab layui-tab-card auto-full-height" lay-allowClose="true" lay-filter="content-tab">
+									    <ul class="layui-tab-title" id="content_div_card_title"><li class="layui-this">首页</li></ul>
+									    <div class="layui-tab-content"><div class="layui-tab-item layui-show">我是一个酱油页面，请点击左边的树替换我！</div></div>
+									  </div>
+									</div>
+								</pre>
+								<pre class="layui-code" lay-title="Javascript代码示例" lay-encode="true">
+									// 树代码示例，此处无需启用iframe
+									dtree.render({
+									  elem: "#iframeTree2",
+									  url: "../json/case/iframeTree1.json"
+									});
+									
+									// 绑定节点的单击事件
+									dtree.on("node('iframeTree2')", function(obj){
+									  layer.msg(JSON.stringify(obj.param));
+									  
+									  // 当前节点为最后一级节点时触发事件
+									  if (obj.param.leaf) {
+									    openTab(param.context);// 这里并没有像示例1一样带参数过去，如果你想带参数的话，可以将整个param都带走，但是需要对由中文的参数做转码处理
+									  }
+									});
+									
+									function openTab(context){
+									  // 匹配选项卡是否存在
+									  var matchTo, tabs = $('#content_div_card_title>li');
+									  tabs.each(function(index){
+									    var li = $(this), layid = li.attr('lay-id');
+									    
+									    if(layid ===  context){
+									      matchTo = true;
+									      return;
+									    }
+									  });
+									  
+									  // 如果未在选项卡中匹配到，则追加选项卡
+									  if(!matchTo){
+									    element.tabAdd("content-tab",{
+									      id: context,
+									      title: context,
+									      content: "<iframe src='iframeContent.html' id='context_iframe' name='context_iframe' frameborder='0'></iframe>"
+									    });
+									  }
+									  
+									  // 定位当前tabs
+									  element.tabChange("content-tab", context);
+									}
+									
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">你会发现，组件的功能之强大，远远超出了你的想象。</blockquote>
+			</div>
+			
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="iframe.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = [];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		// 1.iframeTree1
+		dtree.render({
+			elem: "#iframeTree1",
+			url: "../json/case/iframeTree1.json",
+            method: "get",
+			useIframe: true,
+			iframeElem: "#iframe_content",
+			iframeUrl: "iframeContent.html"
+			//iframeDefaultRequest: {nodeId: "id"}
+		});
+		
+		// 绑定节点的单击事件
+		dtree.on("iframeDone('iframeTree1')", function(obj){
+			layer.msg(JSON.stringify(obj.iframeParam));
+			
+			// 当前节点为最后一级节点时触发事件
+			if (obj.iframeParam.leaf) {
+				openTab(obj.iframeParam.context);
+			}
+		});
+		
+		// 1.iframeTree2
+		dtree.render({
+			elem: "#iframeTree2",
+			url: "../json/case/iframeTree1.json",
+            method: "get"
+
+		});
+		
+		// 绑定节点的单击事件
+		dtree.on("node('iframeTree2')", function(obj){
+			layer.msg(JSON.stringify(obj.param));
+			
+			// 当前节点为最后一级节点时触发事件
+			if (obj.param.leaf) {
+				openTab(obj.param.context);
+			}
+		});
+		
+		function openTab(context){
+			// 匹配选项卡是否存在
+			var matchTo,
+				tabs = $('#content_div_card_title>li');
+			tabs.each(function(index){
+		    	var li = $(this),
+		    		layid = li.attr('lay-id');
+		    	
+		    	if(layid ===  context){
+		    		matchTo = true;
+		    		return;
+		    	}
+		    });
+		    
+		    // 如果未在选项卡中匹配到，则追加选项卡
+		    if(!matchTo){
+		    	element.tabAdd("content-tab",{
+					id: context,
+					title: context,
+					content: "<iframe src='iframeContent.html' id='"+context+"_iframe' name='"+context+"_iframe' frameborder='0' style='width: 100%;height: 99%;'></iframe>"
+				});
+		    }
+
+		    // 定位当前tabs
+			element.tabChange("content-tab", context);
+		}
+	});
+</script>
+</html>

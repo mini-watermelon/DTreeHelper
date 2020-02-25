@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">很多情况下，弹出层选择树回调数据是基本操作，以下介绍了弹出层回调的各个场景。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul></ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="tccsjhq">
+					<legend>弹出层数据获取</legend>
+					<div class="layui-field-box layui-form">
+						<p>充分利用layer组件，可以方便的获取数据回调，这里介绍了树的双击事件和树获取当前选中节点方法，至于为什么传出来的是这些参数，参考基础文档的defaultRequest和request。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-fluid">
+								<div class="layui-form-item">
+									<div class="layui-inline">
+										<div class="layui-input-inline">
+											<button class="layui-btn layui-normal" id="openTree1_btn">点击按钮打开数据树</button>
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label">报表ID：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="reportId1" id="reportId1" autocomplete="off" class="layui-input" readonly>
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label">报表名称：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="reportName1" id="reportName1" autocomplete="off" class="layui-input" readonly>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-fluid">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									$("#openTree1_btn").click(function(){
+									  layer.open({
+									    type: 1,  //type:0 也行
+									    title: "选择树",
+									    area: ["400px", "80%"],
+									    content: '<ul id="openTree1" class="dtree" data-id="0"></ul>',
+									    btn: ['确认选择'],
+									    success: function(layero, index){
+									      var DTree = dtree.render({
+									      //  obj: $(layero).find("#openTree1"),    如果直接用elem加载不出来，则可以使用这个方式加载jquery的DOM
+									        elem: "#openTree1",
+									        url: "../json/case/openTree1.json",
+									      });
+									      
+									      // 绑定节点的双击
+									      dtree.on("nodedblclick('openTree1')", function(obj){
+									        $("#reportId1").val(obj.param.nodeId);
+									        $("#reportName1").val(obj.param.context);
+									        
+									        layer.close(index);
+									      });
+									    },
+									    yes: function(index, layero) {
+									      var param = dtree.getNowParam("openTree1"); // 获取当前选中节点
+									      
+									      $("#reportId1").val(param.nodeId);
+									      $("#reportName1").val(param.context);
+									      layer.close(index);
+									    }
+									  });
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="tccsjhq_iframe">
+					<legend>弹出层数据获取-iframe加载</legend>
+					<div class="layui-field-box layui-form">
+						<p>充分利用layer组件，这回打开的是一个iframe，跟第一种方式稍有不同。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-fluid">
+								<div class="layui-form-item">
+									<div class="layui-inline">
+										<div class="layui-input-inline">
+											<button class="layui-btn layui-normal" id="openTree2_btn">点击按钮打开iframe树</button>
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label">报表ID：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="reportId2" id="reportId2" autocomplete="off" class="layui-input" readonly>
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label">报表名称：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="reportName2" id="reportName2" autocomplete="off" class="layui-input" readonly>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-fluid">
+								<p>这是本页面中弹出层的代码</p>
+								<pre class="layui-code" lay-title="JavaScript">
+									$("#openTree2_btn").click(function(){
+									  //1. 获取当前窗口的name
+									  var parentIfrName = window.name;
+									  //2. 获取需要回调的输入框的名称，这里已经知道了是reportId和reportName，就不在用jquery获取
+									  var dataId = "reportId2";
+									  var dataName = "reportName2"
+									  layer.open({
+									    type: 2, //打开iframe
+									    title: "选择树",
+									    area: ["400px", "80%"],
+									    content: "openTree2.html?parentIfrName="+parentIfrName+"&dataId="+dataId+"&dataName="+dataName  //这里将本页面的参数全部带给了子页面，方便页面直接获取
+									  });
+									});
+								</pre>
+								<p>由此可见本页面并没有对树进行读取，而是在iframe页面中进行了操作</p>
+								<p>这是iframe页面中的代码</p>
+							</div>
+							<div class="layui-col-lg6">
+								
+								<p>这是dom结构</p>
+								<pre class="layui-code" lay-title="dom结构" lay-encode="true">
+									<div class="dialog-tree-div">
+									  <div class="dialog-show-tree">
+									    <ul id="openTree2" class="dtree" data-id="0"></ul>
+									  </div>
+									</div>
+									
+									<div class="dialog-button">
+									  <div class="layui-input-block">
+									    <button class="layui-btn layui-btn-normal" data-id="layui-submit">确定</button>
+									    <button class="layui-btn layui-btn-normal" data-id="layui-close">取消</button>
+									  </div>
+									</div>
+								</pre>
+							</div>
+							<div class="layui-col-lg6">
+								<p>这是iframe页面中的js代码</p>
+								<pre class="layui-code" lay-title="JavaScript">
+									layui.extend({
+									  dtree: '{/}../layui_ext/dtree/dtree'  // 实际开发中将这个路径替换为自己项目中的路径
+									}).use(['layer','dtree'], function(){
+									  var dtree = layui.dtree,
+									  layer = parent.layer === undefined ? layui.layer : top.layer,
+									  $ = layui.$;
+									  
+									  var DTree = dtree.render({
+									    elem: "#openTree2",
+									    url: "../json/case/openTree1.json",
+									    icon: 5
+									  });
+									  
+									  dtree.on("nodedblclick('openTree2')", function(obj){
+									    // 这里就是父子页面传值案例
+									    parent.layui.$("#reportId2").val(obj.param.nodeId);
+									    parent.layui.$("#reportName2").val(obj.param.context);
+									    
+									    var index = parent.layer.getFrameIndex(window.name);
+									    parent.layer.close(index);
+									  });
+									  
+									  // 监听鼠标按下事件
+									  $(document).on("click","button[data-id]", function(e){
+									    var did = $(this).attr("data-id");
+									    switch(did){
+									      case "layui-submit": //确定按钮
+									        var param = dtree.getNowParam("openTree2");  //获取当前选中节点值
+									        
+									        parent.layui.$("#reportId").val(param.nodeId);
+									        parent.layui.$("#reportName").val(param.context);
+									        
+									        var index = parent.layer.getFrameIndex(window.name);
+									        parent.layer.close(index);
+									        break;
+									      case "layui-close": //取消按钮
+									        var index = parent.layer.getFrameIndex(window.name);
+									        parent.layer.close(index);
+									        break;
+									    }
+									  })
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="tcchqfxksj">
+					<legend>弹出层获取复选框数据</legend>
+					<div class="layui-field-box layui-form">
+						<p>本案例介绍了弹出复选框树的数据的回调。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-fluid">
+								<div class="layui-form-item">
+									<div class="layui-input-block">
+										<button class="layui-btn layui-normal" id="openTree3_btn">点击按钮打开复选框树</button>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">报表ID：</label>
+									<div class="layui-input-block">
+										<input type="text" name="reportId3" id="reportId3" autocomplete="off" class="layui-input" readonly>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">报表名称：</label>
+									<div class="layui-input-block">
+										<input type="text" name="reportName3" id="reportName3" autocomplete="off" class="layui-input" readonly>
+									</div>
+								</div>
+							</div>
+							<div class="layui-fluid">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									$("#openTree3_btn").click(function(){
+									  var DTree = null;
+									  layer.open({
+									    type: 1, //type:0 也行
+									    title: "选择树",
+									    area: ["400px", "80%"],
+									    content: '<ul id="openTree3" class="dtree" data-id="0"></ul>',
+									    btn: ['确认选择'],
+									    success: function(layero, index){
+									      DTree = dtree.render({
+									        obj: $(layero).find("#openTree3"), 
+									        url: "../json/case/openTree3.json",
+									        checkbar: true // 开启复选框
+									      });
+									    },
+									    yes: function(index, layero) {
+									      var flag = true;
+									      var params = dtree.getCheckbarNodesParam("openTree3"); // 获取选中值
+									      if(params.length == 0){
+									        layer.msg("请至少选择一个节点",{icon:2});
+									        flag = false;
+									      }
+									      
+									      // 获取复选框数组数据
+									      var paramJsonArr = DTree.getCheckbarJsonArrParam();
+									      $("#reportId3").val(paramJsonArr["nodeId"].join(","));
+									      $("#reportName3").val(paramJsonArr["context"].join(","));
+									      
+									      if(flag){
+									        layer.close(index);
+									      }
+									    }
+									  });
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="tccfxsj">
+					<legend>弹出层反选数据</legend>
+					<div class="layui-field-box layui-form">
+						<p>本案例介绍了当数据已有时，如何打开树时就将数据反选上去，让选中的数据高亮。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-fluid">
+								<div class="layui-form-item">
+									<div class="layui-inline">
+										<div class="layui-input-inline">
+											<button class="layui-btn layui-normal" id="openTree4_btn">点击按钮打开数据树</button>
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label">报表ID：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="reportId4" id="reportId4" autocomplete="off" class="layui-input" readonly>
+										</div>
+									</div>
+									<div class="layui-inline">
+										<label class="layui-form-label">报表名称：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="reportName4" id="reportName4" autocomplete="off" class="layui-input" readonly>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-fluid">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									$("#openTree4_btn").click(function(){
+									  layer.open({
+									    type: 1, //type:0 也行
+									    title: "选择树",
+									    area: ["400px", "80%"],
+									    content: '<ul id="openTree4" class="dtree" data-id="0"></ul>',
+									    btn: ['确认选择'],
+									    success: function(layero, index){
+									      var DTree = dtree.render({
+									        obj: $(layero).find("#openTree4"), 
+									        url: "../json/case/openTree1.json",
+									        done: function(data, obj, first){  //使用异步加载回调
+									          if(first) {
+									            var reportId = $("#reportId4").val();
+									            dtree.dataInit("openTree4", reportId); // 初始化值
+									          }
+									        }
+									      });
+									      
+									      dtree.on("nodedblclick('openTree4')", function(obj){
+									        $("#reportId4").val(obj.param.nodeId);
+									        $("#reportName4").val(obj.param.context);
+									        
+									        layer.close(index);
+									      });
+									    },
+									    yes: function(index, layero) {
+									      var param = dtree.getNowParam("openTree4"); // 获取当前选中节点
+									      
+									      $("#reportId4").val(param.nodeId);
+									      $("#reportName4").val(param.context);
+									      layer.close(index);
+									    }
+									  });
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="tccfxkfxsj">
+					<legend>弹出层复选框反选数据</legend>
+					<div class="layui-field-box layui-form">
+						<p>本案例介绍了当数据已有时，如何打开树时就将数据反选上去，让选中的数据高亮，复选框操作。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-fluid">
+								<div class="layui-form-item">
+									<div class="layui-input-block">
+										<button class="layui-btn layui-normal" id="openTree5_btn">点击按钮打开复选框树</button>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">报表ID：</label>
+									<div class="layui-input-block">
+										<input type="text" name="reportId5" id="reportId5" autocomplete="off" class="layui-input" readonly>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">报表名称：</label>
+									<div class="layui-input-block">
+										<input type="text" name="reportName5" id="reportName5" autocomplete="off" class="layui-input" readonly>
+									</div>
+								</div>
+							</div>
+							<div class="layui-fluid">
+								<pre class="layui-code" lay-title="JavaScript" lay-encode="true">
+									$("#openTree5_btn").click(function(){
+									  layer.open({
+									    type: 1, //type:0 也行
+									    title: "选择树",
+									    area: ["400px", "80%"],
+									    content: '<ul id="openTree5" class="dtree" data-id="0"></ul>',
+									    btn: ['确认选择'],
+									    success: function(layero, index){
+									      var DTree = dtree.render({
+									        obj: $(layero).find("#openTree5"), 
+									        url: "../json/case/openTree3.json",
+									        checkbar: true, // 开启复选框
+									        done: function(data, obj, first){  //使用异步加载回调
+									          if(first) {
+									            var reportId = $("#reportId5").val();
+									            dtree.chooseDataInit("openTree5", reportId); // 初始化复选框的值
+									          }
+									        }
+									      });
+									    },
+									    yes: function(index, layero) {
+									      var flag = true;
+									      var params = dtree.getCheckbarNodesParam("openTree5"); // 获取选中值
+									      if(params.length == 0){
+									        layer.msg("请至少选择一个节点",{icon:2});
+									        flag = false;
+									      }
+									      
+									      // 设置复选框的值，也可以用示例3的方式
+									      var ids = [], names = [];
+									      for(var key in params){
+									        var param = params[key];
+									        ids.push(param.nodeId);
+									        names.push(param.context);
+									      }
+									      $("#reportId5").val(ids.join(","));
+									      $("#reportName5").val(names.join(","));
+									      
+									      
+									      if(flag){
+									        layer.close(index);
+									      }
+									    }
+									  });
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">关于弹出层树的介绍就告一段落了，关键是要活学活用，还有更多的弹出样式等待你挖掘。</blockquote>
+			</div>
+			
+		</div>
+	</div>
+</body>
+<div id="opentree1div" >
+	<ul id="openTree1" class="dtree" data-id="openTree1" style="width:159px;"></ul>
+</div>
+<script type="text/javascript" src="open.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = ["弹层获取复选框数据"];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		// 1.openTree1
+		$("#openTree1_btn").click(function(){
+			layer.open({
+				type: 1,	//type:0 也行
+				title: "选择树",
+				area: ["400px", "80%"],
+				content: $("#opentree1div").html(),
+				btn: ['确认选择'],
+				success: function(layero, index){
+					var DTree = dtree.render({
+						obj: $(layero).find("#openTree1"),   // 如果直接用elem加载不出来，则可以使用这个方式加载jquery的DOM
+				//		elem: "#openTree1",
+						url: "../json/case/openTree1.json",
+                        method: "get"
+					});
+					
+					dtree.on("nodedblclick('openTree1')", function(obj){
+						$("#reportId1").val(obj.param.nodeId);
+						$("#reportName1").val(obj.param.context);
+						
+						layer.close(index);
+					});
+				},
+				yes: function(index, layero) {
+					var param = dtree.getNowParam("openTree1");
+					console.log(param);
+					$("#reportId1").val(param.nodeId);
+					$("#reportName1").val(param.context);
+					
+					layer.close(index);
+				}
+			});
+		});
+		
+		// 2.openTree2
+		$("#openTree2_btn").click(function(){
+			//1. 获取当前窗口的name
+			var parentIfrName = window.name;
+			//2. 获取需要回调的输入框的名称，这里已经知道了是reportId和reportName，就不在用jquery获取
+			var dataId = "reportId2";
+			var dataName = "reportName2"
+			layer.open({
+				type: 2,	//打开iframe
+				title: "选择树",
+				area: ["400px", "80%"],
+				content: "openTree2.html?parentIfrName="+parentIfrName+"&dataId="+dataId+"&dataName="+dataName
+			});
+		});
+		
+		// 2.openTree3
+		$("#openTree3_btn").click(function(){
+			var DTree = null;
+			layer.open({
+				type: 1,	//type:0 也行
+				title: "选择树",
+				area: ["400px", "80%"],
+				content: '<ul id="openTree3" class="dtree" data-id="0"></ul>',
+				btn: ['确认选择'],
+				success: function(layero, index){
+					DTree = dtree.render({
+						obj: $(layero).find("#openTree3"),   // 如果直接用elem加载不出来，则可以使用这个方式加载jquery的DOM
+						url: "../json/case/openTree3.json",
+                        method: "get",
+						checkbar: true // 开启复选框
+					});
+					
+				},
+				yes: function(index, layero) {
+					var flag = true;
+					var params = dtree.getCheckbarNodesParam("openTree3");
+					if(params.length == 0){
+						layer.msg("请至少选择一个节点",{icon:2});
+						flag = false;
+					}
+					
+					var paramJsonArr = DTree.getCheckbarJsonArrParam();
+					$("#reportId3").val(paramJsonArr["nodeId"].join(","));
+					$("#reportName3").val(paramJsonArr["context"].join(","));
+					
+					/* var ids = [];
+					var names = [];
+					for(var key in params){
+						var param = params[key];
+						ids.push(param.nodeId);
+						names.push(param.context);
+					}
+					
+					$("#reportId3").val(ids.join(","));
+					$("#reportName3").val(names.join(",")); */
+					
+					if(flag){
+						layer.close(index);
+					}
+				}
+			});
+		});
+		
+		// 2.openTree4
+		$("#openTree4_btn").click(function(){
+			layer.open({
+				type: 1,	//type:0 也行
+				title: "选择树",
+				area: ["400px", "80%"],
+				content: '<ul id="openTree4" class="dtree" data-id="0"></ul>',
+				btn: ['确认选择'],
+				success: function(layero, index){
+					var DTree = dtree.render({
+						obj: $(layero).find("#openTree4"),
+						url: "../json/case/openTree1.json",
+                        method: "get",
+						done: function(data, obj, first){
+							if(first) {
+								var reportId = $("#reportId4").val();
+								dtree.dataInit("openTree4", reportId); // 初始化值
+							}
+						}
+					});
+					
+					dtree.on("nodedblclick('openTree4')", function(obj){
+						$("#reportId4").val(obj.param.nodeId);
+						$("#reportName4").val(obj.param.context);
+						
+						layer.close(index);
+					});
+				},
+				yes: function(index, layero) {
+					var param = dtree.getNowParam("openTree4");
+					$("#reportId4").val(param.nodeId);
+					$("#reportName4").val(param.context);
+					
+					layer.close(index);
+				}
+			});
+		});
+		
+		// 2.openTree5
+		$("#openTree5_btn").click(function(){
+			layer.open({
+				type: 1,	//type:0 也行
+				title: "选择树",
+				area: ["400px", "80%"],
+				content: '<ul id="openTree5" class="dtree" data-id="0"></ul>',
+				btn: ['确认选择'],
+				success: function(layero, index){
+					var DTree = dtree.render({
+						obj: $(layero).find("#openTree5"),   // 如果直接用elem加载不出来，则可以使用这个方式加载jquery的DOM
+						url: "../json/case/openTree3.json",
+                        method: "get",
+						checkbar: true, // 开启复选框
+						done: function(data, obj, first){
+							if(first) {
+								var reportId = $("#reportId5").val();
+								dtree.chooseDataInit("openTree5", reportId); // 初始化复选框的值
+								DTree.initAllCheck();
+							}
+						}
+					});
+				},
+				yes: function(index, layero) {
+					var flag = true;
+					var params = dtree.getCheckbarNodesParam("openTree5");
+					console.log(params);
+					if(params.length == 0){
+						layer.msg("请至少选择一个节点",{icon:2});
+						flag = false;
+					}
+					
+					var ids = [];
+					var names = [];
+					for(var key in params){
+						var param = params[key];
+						/* if(param.leaf){
+							ids.push(param.nodeId);
+							names.push(param.context);
+						} */
+						ids.push(param.nodeId);
+						names.push(param.context);
+					}
+					
+					$("#reportId5").val(ids.join(","));
+					$("#reportName5").val(names.join(","));
+					
+					if(flag){
+						layer.close(index);
+					}
+				}
+			});
+		});
+	});
+</script>
+</html>

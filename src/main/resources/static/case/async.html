@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">以下介绍了异步加载的多种情况，包括数据格式转换，初始参数指定等。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul data-vlog="vs257">
+										<li>【优化】基础方法优化：success方法，新增一个入参，表示是否第一次渲染数据，并支持在增量加载时，加载子节点时也可以回调该方法。</li>
+										<li>【优化】基础方法优化：done方法，新增一个入参，表示是否第一次渲染数据，并支持在增量加载时，在加载子节点时也可以回调该方法。</li>
+										<li>【优化】异步加载优化：使用data加载，也会出现load效果。</li>
+										<li>【新增】基础属性新增：asyncLoad，异步加载初始加载层级树组</li>
+										<li>【新增】基础方法新增：beforeSend，异步加载发送ajax请求之前的回调</li>
+										<li>【新增】基础方法新增：serialize，序列化JSON对象</li>
+									</ul>
+									<ul data-vlog="vs256">
+										<li>【优化】数据格式:获取格式中的basicData和recordData将提前转化为JSON格式，不在需要手动转换。</li>
+									</ul>
+									<ul data-vlog="vs255">
+										<li>【新增】基础属性新增：withCredentials，用于开启生成跨域的XHR对象，设置后可指定同源session，默认false。</li>
+									</ul>
+									<ul data-vlog="vs254">
+										<li>【新增】基础属性新增：response中新增ficonClass，可以指定一级图标样式。</li>
+									</ul>
+									<ul data-vlog="vs250">
+										<li class="big">【大改】数据格式:reponse中isLast属性更换为last属性。</li>
+										<li class="big">【大改】数据格式:reponse中isChecked属性更换为checked属性。</li>
+										<li class="big">【大改】数据格式:defaultRequest中isLeaf属性更换为leaf属性。</li>
+										<li class="big">【大改】数据格式:defaultRequest中isChecked属性更换为checked属性。</li>
+										<li class="big">【大改】内置属性:record开启后，原来记录节点的全部数据（排除children和basicData）改为只记录用户自定义的数据（同样排除children和basicData）</li>
+										<li>【新增】基础属性新增：contentType属性，用于可以显示配置发送信息至服务器时内容编码类型</li>
+										<li>【新增】基础属性新增：response属性中新增disabled，标识节点禁用。</li>
+										<li>【新增】基础属性新增：response属性中新增hide，标识节点隐藏。</li>
+										<li>【新增】基础属性新增：errDataShow属性，标识是否在递归数据出现错误后，显示错误信息。</li>
+										<li>【新增】基础属性新增：error：用于异步加载中出现异常时的用户自定义函数</li>
+										<li>【新增】基础属性新增：complete：用于异步加载全部完成后用户的自定义函数</li>
+										<li>【新增】内置属性新增：errData属性，记录在渲染节点时有问题的数据。</li>
+										<li>【新增】内置方法新增：msgErrData： 判断在数据加载时是否存在错误数据，并是否打印错误数据</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="ybjzzhwtb">
+					<legend>异步加载转换为同步（async）</legend>
+					<div class="layui-field-box">
+						<p>有时，树的加载是需要在某个同步操作完成后在加载的，比如需要拿到一个变量的值，才加载树，那么树的加载也可以改变成为同步加载，这样，就不会出现变量还没提供，树就发送请求的尴尬情况了。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="asyncTree1" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#asyncTree1",
+									  url: "../json/case/asyncTree1.json",
+									  async: false  // 只需将该参数设置为false，即可同步加载
+									});
+									
+									// 点击节点名称获取选中节点值
+									dtree.on("node('asyncTree1')" ,function(obj){
+									  layer.msg(JSON.stringify(obj.param));
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="jdybjz">
+					<legend>转换返回数据格式（response）</legend>
+					<div class="layui-field-box">
+						<p>树的默认数据格式是有一定的规范的，你只需要按照这个格式来，至于键值，你怎么配，组件就怎么读，方便易用。其他更多的格式配置请参考基础文档。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;"><ul id="asyncTree2" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#asyncTree2",
+									  url: "../json/case/asyncTree2.json", // 该JSON格式被配置过了
+									  response: {statusCode: 0, rootName: "dataTree", treeId:"treeId"} // 这里指定了返回的数据格式，组件会根据这些值来替换返回JSON中的指定格式，从而读取信息
+									});
+									
+									// 点击节点名称获取选中节点值
+									dtree.on("node('asyncTree2')" ,function(obj){
+									  layer.msg(JSON.stringify(obj.param));
+									});
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="数据示例" lay-encode="true">
+									{
+									"status":{"code":0,"message":"操作成功"},
+									"dataTree": [
+									  {"treeId":"001","title": "湖南省","parentId": "0","children":[]},
+									  {"treeId":"002","title": "湖北省","parentId": "0","children":[]},
+									  {"treeId":"003","title": "广东省","parentId": "0","children":[]},
+									  {"treeId":"004","title": "浙江省","parentId": "0","children":[]},
+									  {"treeId":"005","title": "福建省","parentId": "0","children":[]}
+									]
+									}
+								</pre>
+								<p>由于在response重新设定了映射关系，所以可以看到，默认的code的值变成了0，根节点变成了dataTree，原本的id变成了treeId。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="zdgdcz">
+					<legend>指定固定传值（request）</legend>
+					<div class="layui-field-box">
+						<p>使用时，有些筛选条件不是组件自带的，比如用户名，登录账号，权限判断等，那么你可以自由指定这些参数，并带上值，那么组件在发送请求的时候，就会将你配置的参数一并带上。</p>
+						<p>初始情况下，第一次请求时，默认的参数都不会发送给后端，但是如果你需要将父级节点一开始就传递给后端的话，也可以在这里配置，比如request:{"parentId":"0"}，那么在第一次加载时，这个参数就会被带上，以后每次加载，树都会去读最新的这个数据。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;"><ul id="asyncTree3" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#asyncTree3",
+									  url: "../json/case/asyncTree3.json",
+									  request: {"username": "zhangsan"}  // 将你需要传入的固定值放入该属性中，组件就会在发起请求时将该值带入
+									});
+									
+									// 点击节点名称获取选中节点值
+									dtree.on("node('asyncTree3')" ,function(obj){
+									  layer.msg(JSON.stringify(obj.param));
+									});
+								</pre>
+								下面是发起第一次请求时，Chrome调式模式提供的表单发起数据
+								<pre class="layui-code" lay-title="Form Data">
+									Form Data  view source  view URL encoded
+									username: zhangsan
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="dtjzzjd">
+					<legend>重新加载子节点（cache）</legend>
+					<div class="layui-field-box">
+						<p>很多情况下，你的树并不是一次就加载完成的，那么很简单，树会判断当前你点击的节点是否是最后一级了(根据数据中的last字段进行判定，如不提供则树内部自动判定)，如果不是，则还会根据你配置的url往后台发送请求，并且会带上一轮参数提供给后端进行数据筛选。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTree4" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									// 默认情况下，配置了url后，当节点还可以展开时，即会自动的去往相同的url路径下发送请求加载子节点，请求子节点时，会带上一些默认参数，左侧树只是模拟请求，所以看到的数据子节点数据是一样的。
+									dtree.render({
+									  elem: "#asyncTree4",
+									  url: "../json/case/asyncTree4.json",
+									  initLevel: 1,  // 指定初始展开节点级别
+									  cache: false  // 当取消节点缓存时，则每次加载子节点都会往服务器发送请求
+									});
+									
+									// 点击节点名称获取所有选中节点值
+									dtree.on("node('asyncTree4')" ,function(obj){
+									  layer.msg(JSON.stringify(obj.param));
+									});
+								</pre>
+								下面是发起第二次请求时，Chrome调式模式提供的表单发起数据，你会发现即使你没有配置参数，组件也会自动的将这些有用的参数发送给服务端
+								<pre class="layui-code" lay-title="Form Data">
+									Form Data  view source  view URL encoded
+									nodeId: 001
+									parentId: 0
+									leaf: false
+									context: 湖南省
+									level: 1
+									spread: false
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="xjmrcsdj">
+					<legend>修改默认参数的键（defaultRequest）</legend>
+					<div class="layui-field-box">
+						<p>使用时，默认参数的键有的时候不能满足你的需求，即如果你是以一个对象的形式传递参数的话，肯定是需要修改这个键名称的，组件当然支持你修改你想要的名称，但是如果你这么改：defaultRequest:{nodeId:"parentId"}，组件虽然不会报错，但是使用时，就会出现问题哦，即：可以自由配置键，但是键名称不能与默认的键名称一致。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTree5" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									// 默认情况下，配置了url后，当节点还可以展开时，即会自动的去往相同的url路径下发送请求加载子节点，请求子节点时，会带上一些默认参数，左侧树只是模拟请求，所以看到的数据子节点数据是一样的。
+									dtree.render({
+									  elem: "#asyncTree4",
+									  url: "../json/case/asyncTree4.json",
+									  initLevel: 1,  // 指定初始展开节点级别
+									  defaultRequest:{nodeId:"tree.id",parentId:"tree.pId"} // 自定义默认参数的键配置在此
+									});
+									
+									// 点击节点名称获取选中节点值
+									dtree.on("node('asyncTree5')" ,function(obj){
+									  layer.msg(JSON.stringify(obj.param));
+									});
+								</pre>
+								下面是发起第二次请求时，Chrome调式模式提供的表单发起数据，你会发现与上个示例的参数有些许不同，你配置的参数生效了
+								<pre class="layui-code" lay-title="Form Data">
+									Form Data  view source  view URL encoded
+									tree.id: 001
+									tree.pId: 0
+									leaf: false
+									context: 湖南省
+									level: 1
+									spread: false
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="basicData">
+					<legend>basicData用法</legend>
+					<div class="layui-field-box">
+						<p>有时，树中所带的返回参数不能满足你的需求，比如你的树中需要带上一些业务逻辑数据，用户名啊，订单号之类的等。那么，这些数据就可以放在basicData这个属性中，作为JSON字符串传递。</p>
+						<p>basicData属性是一个后台传递回来的使用者自定义的json对象，用户可以直接从点击事件中取出该参数。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 300px;overflow: auto;"><ul id="asyncTree6" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#asyncTree6",
+									  url: "../json/case/asyncTree6.json"
+									});
+									
+									// 点击节点名称获取获取basicData的值
+									dtree.on("node('asyncTree6')" ,function(obj){
+									  var basicData = obj.param.basicData;  // 取出
+									  
+									  layer.msg(JSON.stringify(basicData));  //输出
+									});
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="data数据一览">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [{
+									  "id":"001",
+									  "title": "湖南省",
+									  "parentId": "0",
+									  "basicData": {"data1": "自定义数据1", "data2": "自定义数据2", "data3": "自定义'我带了单引号'3"}
+									},{
+									  "id":"002",
+									  "title": "湖北省",
+									  "parentId": "0",
+									  "basicData": {"data1": "自定义数据11", "data2": "自定义数据22", "data3": "自定义'我带了单引号'33"}
+									},{
+									  "id":"003",
+									  "title": "广东省",
+									  "parentId": "0",
+									  "basicData": {"data1": "自定义数据111", "data2": "自定义数据222", "data3": "自定义'我带了单引号'333"}
+									},{
+									  "id":"004",
+									  "title": "浙江省",
+									  "parentId": "0",
+									  "basicData": {"data1": "自定义数据1111", "data2": "自定义数据2222", "data3": "自定义'我带了单引号'3333"}
+									},{
+									  "id":"005",
+									  "title": "福建省",
+									  "parentId": "0",
+									  "basicData": {"data1": "自定义数据11111", "data2": "自定义数据22222", "data3": "自定义'我带了单引号'33333"}
+									}]
+									}
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="recordData">
+					<legend>recordData用法<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></legend>
+					<div class="layui-field-box">
+						<p>recordData记录当前节点渲染时后台提供的data数据中除树必须数据之外的其他的用户自定义数据，需要配置开启record:true。</p>
+						<p>当你需要用到这个数据时，可以直接从点击事件中取出该参数。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 300px;overflow: auto;"><ul id="asyncTreeRecord" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#asyncTreeRecord",
+									  url: "../json/case/asyncTreeRecord.json",
+									  record: true // 开启数据记录模式
+									});
+									
+									// 点击节点名称获取获取basicData的值
+									dtree.on("node('asyncTreeRecord')" ,function(obj){
+									  var recordData = obj.param.recordData;  // 取出
+									  
+									  layer.msg(JSON.stringify(recordData));  //输出
+									});
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="data数据一览">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [{
+									  "id":"001",
+									  "title": "湖南省",
+									  "parentId": "0",
+									  "zdy": "1",
+									  "zdy2": "2",
+									  "zdy3": {"data1": "自定义数据11", "data2": "自定义数据22", "data3": "自定义'我带了单引号'33"}
+									},{
+									  "id":"002",
+									  "title": "湖北省",
+									  "parentId": "0",
+									  "zdy": "1",
+									  "zdy2": "2",
+									  "zdy3": {"data1": "自定义数据11", "data2": "自定义数据22", "data3": "自定义'我带了单引号'33"}
+									},{
+									  "id":"003",
+									  "title": "广东省",
+									  "parentId": "0",
+									  "zdy": "1",
+									  "zdy2": "2",
+									  "zdy3": {"data1": "自定义数据11", "data2": "自定义数据22", "data3": "自定义'我带了单引号'33"}
+									},{
+									  "id":"004",
+									  "title": "浙江省",
+									  "parentId": "0",
+									  "zdy": "1",
+									  "zdy2": "2",
+									  "zdy3": {"data1": "自定义数据11", "data2": "自定义数据22", "data3": "自定义'我带了单引号'33"}
+									},{
+									  "id":"005",
+									  "title": "福建省",
+									  "parentId": "0",
+									  "zdy": "1",
+									  "zdy2": "2",
+									  "zdy3": {"data1": "自定义数据11", "data2": "自定义数据22", "data3": "自定义'我带了单引号'33"}
+									}]
+									}
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="ybjzbeforesend">
+					<legend>异步加载之前回调（beforeSend）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></legend>
+					<div class="layui-field-box">
+						<p>树异步加载发送ajax请求之前的回调函数，可在此本次修改ajax请求的全部参数项（修改self中的项对应的value）。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTreeBef" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#asyncTreeBef",
+									  url: "/DTreeHelper/toolbar/query",
+									  initLevel: "1",
+									  beforeSend: function(ajax, XMLHttpRequest, self){
+									    console.log(ajax.data);  //获取当前ajax操作本身的data数据
+									    if(ajax.data && ajax.data.nodeId == "002") { //判断数据中的nodeId数据值是否为002
+									      ajax.data.context="湖北省1";
+									      delete ajax.data.level;
+									      
+									      // 将修改后的值进行序列化
+									      var param = dtree.serialize("", ajax.data);
+									      // 将序列化的值放入Ajax的值栈
+									      self.data = param;
+									      // 如返回false,则本次ajax将不会调用。
+									      return true;
+									    }
+									    console.log(self);
+									    return true;
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+						<p>在开发者模式下检测query请求，当你点击“湖北省节点时”，可以看到发送个后端的data数据已经被修改。</p>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="ybjzsuccess">
+					<legend>异步加载成功回调（success）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally新增）</span></legend>
+					<div class="layui-field-box">
+						<p>树异步加载成功后，判定数据有效时的回调函数，在解析数据和done回调之前执行。</p>
+						<p>现在支持在增量加载时，加载子节点也可以回调该方法。<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTreeSuc" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-normal" id="asyncTreeSuc_btn">点击按钮重载树</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									// 回调函数中会带有三个参数，1是本次加载的数据，2是组件的根节点的jQuery对象，3是表示是否第一次加载，可以打开控制台看看是什么参数哦
+									dtree.render({
+									  elem: "#asyncTreeSuc",
+									  url: "../json/case/asyncTree6.json",
+									  success: function(data, obj, first){  
+									    console.log(data);
+									    console.log(obj);
+									    console.log(first);
+									  }
+									});
+									
+									dtree.on("node('asyncTreeSuc')" ,function(obj){
+									  layer.msg(JSON.stringify(obj.param));  
+									});
+									
+									// 点击按钮触发重载
+									$("#asyncTreeSuc_btn").click(function(){
+									  dtree.reload("asyncTree7",{
+									    url: "../json/case/asyncTree1.json",
+									    initLevel: "1",
+									    success: function(data, obj, first){
+									      obj.attr("data-id","-1"); // 修改ul的data-id
+									    }
+									  });
+									})
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="ybjzhd">
+					<legend>异步加载完毕后回调（done）</legend>
+					<div class="layui-field-box">
+						<p>有时，你需要在树异步加载完毕后在，success回调和解析之后，在执行一些自定义的方法，就好像table组件中有done回调一样，dtree中也有。</p>
+						<p>现在支持在增量加载时，加载子节点也可以回调该方法。<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTree7" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-normal" id="asyncTree7_btn">点击按钮重载树</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#asyncTree7",
+									  url: "../json/case/asyncTree6.json",
+									  done: function(data, obj, first){  // 异步加载完毕后回调，参数：1是本次加载的数据，2是组件的根节点的jQuery对象，3是表示是否第一次加载，可以打开控制台看看是什么参数哦
+									    console.log(data);
+									    console.log(obj);
+									    console.log(first);
+									  },
+									  error: function(XMLHttpRequest, textStatus, errorThrown){  //异步加载异常时回调
+									    console.log("error");
+									  },
+									  complete: function(XMLHttpRequest, textStatus){ //异步加载完成时回调
+									    console.log("complete");
+									  }
+									});
+									
+									dtree.on("node('asyncTree7')" ,function(obj){
+									  layer.msg(JSON.stringify(obj.param));  
+									});
+									
+									// 点击按钮触发重载
+									$("#asyncTree7_btn").click(function(){
+									  dtree.reload("asyncTree7",{
+									    url: "../json/case/asyncTree1.json",
+									    initLevel: "1",
+									    done: function(data, obj, first){
+									      if(first) {
+									        dtree.dataInit("asyncTree7", "003002"); // 选中深圳市
+									      }
+									    }
+									  });
+									})
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="headers">
+					<legend>添加headers属性</legend>
+					<div class="layui-field-box">
+						<p>该属性即为ajax请求的headers属性，一般用于前后端分离项目中，给后端发送token。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTree8" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#asyncTree8",
+									  initLevel: 1,
+									  url: "../json/case/asyncTree1.json",
+									  headers: {"token":"123456789"}
+									});
+								</pre>
+								下面是发起请求时，Chrome调式模式提供的headers预览
+								<pre class="layui-code" lay-title="Request Headers">
+									Reqeust Headers
+									Accept: application/json, text/javascript, */*; q=0.01
+									Accept-Encoding: gzip, deflate, br
+									Accept-Language: zh-CN,zh;q=0.9
+									Connection: keep-alive
+									Content-Length: 0
+									Host: localhost:7078
+									Origin: http://localhost:7078
+									Referer: http://localhost:7078/DTreeHelper/case/async.html
+									token: 123456789  // 该参数被携带
+									User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36
+									X-Requested-With: XMLHttpRequest
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs257">
+				<fieldset class="layui-elem-field layui-field-title" id="asyncLoad">
+					<legend>异步初始化加载层级（asyncLoad）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></legend>
+					<div class="layui-field-box">
+						<p>你可以指定异步加载的某一个节点初始化加载层级。</p>
+						<p>当你配置了asyncLoad，在树初始化加载之后，仍会去你配置的asyncLoad数组里尝试加载下一级节点，如果中间某一级节点的ID匹配不上，或者已经加载完成，则终止加载。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 500px;overflow: auto;"><ul id="asyncTreeLoad" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#asyncTreeLoad",
+									  url: "/DTreeHelper/toolbar/query",
+									  initLevel: "1",
+									  asyncLoad: ["003","003001"], // 指定初始化加载时的下一次加载的父节点ID数组
+									  done: function(res, $ul, first){
+									    // 示例加载广东省（003），广州市（003001），并初始化选中天河区（003001001）
+									    var data = res.data;
+									    for(var i=0; i&lt;data.length; i++) {
+									      var d = data[i];
+									      if(d.id == '003001001') {
+									        dtree.dataInit("asyncTreeLoad", "003001001"); // 增量加载下尝试初始化选中
+									        break;
+									      }
+									    }
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">你会发现，使用异步加载是如此的方便，当然参数的传递不仅仅局限于此，如果你配置了复选框，则还会带上复选框的数据，默认参数汇总请查看基础文档的defaultRequest。</blockquote>
+			</div>
+			
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="async.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = ["basicData用法","recordData用法","异步初始化加载层级","异步加载之前回调"];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		// 1.asyncTree1
+		dtree.render({
+			elem: "#asyncTree1",
+			url: "../json/case/asyncTree1.json",
+			method: "get",
+			async: false
+		});
+		
+		dtree.on("node('asyncTree1')" ,function(obj){
+			layer.msg(JSON.stringify(obj.param));
+		});
+		
+		
+		// 2.asyncTree2
+		dtree.render({
+			elem: "#asyncTree2",
+			url: "../json/case/asyncTree2.json",
+            method: "get",
+			response: {statusCode: 0, rootName: "dataTree"}
+		});
+		
+		dtree.on("node('asyncTree2')" ,function(obj){
+			layer.msg(JSON.stringify(obj.param));
+		});
+		
+		// 2.asyncTree3
+		dtree.render({
+			elem: "#asyncTree3",
+			url: "../json/case/asyncTree3.json",
+            method: "get",
+			request: {"username": "zhangsan"}
+		});
+		
+		dtree.on("node('asyncTree3')" ,function(obj){
+			layer.msg(JSON.stringify(obj.param));
+		});
+		
+		//4. asyncTree4
+		dtree.render({
+			elem: "#asyncTree4",
+			url: "../json/case/asyncTree4.json",
+            method: "get",
+			initLevel: 1,
+			cache: false // 关闭缓存机制后，则每次加载都会取最新的数据
+		});
+		
+		dtree.on("node('asyncTree4')" ,function(obj){
+			layer.msg(JSON.stringify(obj.param));
+		});
+		
+		//5. asyncTree5
+		dtree.render({
+			elem: "#asyncTree5",
+			url: "../json/case/asyncTree4.json",
+            method: "get",
+			initLevel: 1,
+			cache: false, // 关闭缓存机制后，则每次加载都会取最新的数据
+			defaultRequest:{nodeId:"tree.id",parentId:"tree.pId"}
+		});
+		
+		dtree.on("node('asyncTree5')" ,function(obj){
+		  layer.msg(JSON.stringify(obj.param));
+		});
+		
+		//6. asyncTree6
+		dtree.render({
+			elem: "#asyncTree6",
+			url: "../json/case/asyncTree6.json",
+            method: "get"
+		});
+		
+		dtree.on("node('asyncTree6')" ,function(obj){
+			var basicData = obj.param.basicData;
+			//basicData = dtree.unescape(basicData);
+			//var basicDataJSON = JSON.parse(basicData);
+			
+		 	layer.msg(JSON.stringify(basicData));
+		});
+		
+		//6. asyncTreeRecord
+		dtree.render({
+			elem: "#asyncTreeRecord",
+			url: "../json/case/asyncTreeRecord.json",
+            method: "get",
+			record: true
+		});
+		
+		dtree.on("node('asyncTreeRecord')" ,function(obj){
+			var recordData = obj.param.recordData;
+			//recordData = dtree.unescape(recordData);
+			//var recordDataJSON = JSON.parse(recordData);
+			
+		 	layer.msg(JSON.stringify(recordData));
+		});
+		
+		dtree.render({
+		  	elem: "#asyncTreeBef",
+		  	url: "/DTreeHelper/toolbar/query",
+			method: "get",
+		  	initLevel: "1",
+		  	beforeSend: function(ajax, XMLHttpRequest, self){
+				console.log(ajax)
+			  	if(ajax.data && ajax.data.nodeId == "002") {
+				  	ajax.data.context="湖北省1";
+				  	delete ajax.data.level;
+				  	var param = dtree.serialize("", ajax.data);
+				  	self.data = param;
+				  	return true;
+			  	}
+			  	console.log(self);
+			  	return true;
+		  },
+		  success: function(data, obj){  
+			  console.log("success");
+		  	  console.log(data);
+		      console.log(obj);
+		  }
+		});
+			
+		dtree.render({
+            elem: "#asyncTreeSuc",
+            url: "../json/case/asyncTree6.json",
+            method: "get",
+            success: function(data, obj){
+                console.log("success");
+                console.log(data);
+                console.log(obj);
+            }
+		});
+			
+		dtree.on("node('asyncTreeSuc')" ,function(obj){
+		  layer.msg(JSON.stringify(obj.param));  
+		});
+		
+		// 点击按钮触发重载
+		$("#asyncTreeSuc_btn").click(function(){
+            dtree.reload("asyncTreeSuc",{
+                url: "../json/case/asyncTree1.json",
+                method: "get",
+                initLevel: "1",
+                success: function(data, obj){
+                    obj.attr("data-id","-1"); // 修改ul的data-id
+                }
+            });
+		});
+			
+		
+		//6. asyncTree7
+		dtree.render({
+			elem: "#asyncTree7",
+			url: "../json/case/asyncTree6.json",
+            method: "get",
+			done: function(data, obj, first){
+				console.log(data);
+				console.log(obj);
+			}
+		});
+		
+		dtree.on("node('asyncTree7')" ,function(obj){
+		 	layer.msg(JSON.stringify(obj.param));
+		});
+		
+		$("#asyncTree7_btn").click(function(){
+			dtree.reload("asyncTree7",{
+				url: "../json/case/asyncTree1.json",
+                method: "get",
+				initLevel: "1",
+				done: function(data, obj, first){
+					if(first) {
+						dtree.dataInit("asyncTree7", "003002");
+					}
+				}
+			});
+		});
+		
+		//8. asyncTree8
+		dtree.render({
+			elem: "#asyncTree8",
+			url: "../json/case/asyncTree1.json",
+            method: "get",
+			initLevel: 1,
+			headers: {"token":"123456789"}
+		});
+		
+		//9. asyncTreeLoad
+		dtree.render({
+			elem: "#asyncTreeLoad",
+			url: "/DTreeHelper/toolbar/query",
+            method: "get",
+			initLevel: "1",
+			asyncLoad: ["003","003001"],
+			done: function(res, $ul, first){
+				var data = res.data;
+				for(var i=0; i<data.length; i++) {
+					var d = data[i];
+					if(d.id == '003001001') {
+						dtree.dataInit("asyncTreeLoad", "003001001");
+						break;
+					}
+				}
+			}
+		});
+		
+	/*	var test = util.timeAgo("2018-12-20 11:20:00", true);
+		console.log(test);*/
+		
+	});
+</script>
+</html>

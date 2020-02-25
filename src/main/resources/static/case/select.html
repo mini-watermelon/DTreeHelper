@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">下拉树的使用，并且支持dtree的全部属性！</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+							<div class="layui-timeline-content layui-text">
+								<h3 class="layui-timeline-title version-title"></h3>
+								<ul data-vlog="vs257">
+									<li>【修复】select模块修复：当设置默认值时，存在点击select面板后，默认值消失的问题。</li>
+									<li>【修复】select模块修复：带复选框的下拉树设置默认值无效的问题。</li>
+									<li>【优化】select模块优化：自适应当前组件的位置，向上或向下展开树。</li>
+									<li>【新增】基础属性新增：selectCardHeight，树面板的高度</li>
+								</ul>
+								<ul data-vlog="vs256">
+									<li>【修复】标签属性修复：ul标签上data-value属性设置无效的问题</li>
+									<li>【优化】基础方法优化：render，支持加载下拉树</li>
+									<li>【优化】基础方法优化：reload，支持重载下拉树</li>
+									<li>【新增】事件监听：changeSelect，下拉树面板开闭状态改变后，触发事件。</li>
+									<li>【新增】内置方法新增：reloadSelectSetting，重新设置下拉树的基本参数</li>
+									<li>【新增】内置方法新增：reloadSelectDom，重新渲染下拉树的Dom结构</li>
+									<li>【新增】内置方法新增：selectCheckboxVal，设置复选框模式中的下拉树的值</li>
+									<li>【新增】内置方法新增：selectSetting，设置下拉树的初始元素</li>
+									<li>【新增】内置方法新增：renderSelectDom，渲染下拉树的Dom结构</li>
+								</ul>
+								<ul data-vlog="vs255">
+									<li>【新增】标签属性新增：ul标签上新增data-value属性，用于指定下拉树的初始展示值</li>
+									<li>【新增】基础属性新增：select，设置树模式为下拉树</li>
+									<li>【新增】基础属性新增：selectTips，设置下拉树时的输入框提示文字</li>
+									<li>【新增】基础属性新增：selectInputName，设置下拉树内部表单标签的name</li>
+									<li>【新增】基础方法新增：renderSelect，初始化下拉树</li>
+									<li>【新增】基础方法新增：selectVal，设置下拉树的初始展示值</li>
+									<li>【新增】内置方法新增：selectVal，设置下拉树的初始展示值</li>
+									<li>【新增】内置方法新增：selectSetting，设置下拉树的初始元素</li>
+									<li>【新增】内置方法新增：renderSelectDom，渲染下拉树的Dom结构</li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="simpleUse">
+					<legend>常规用法（renderSelect）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></legend>
+					<div class="layui-field-box">
+						<p>如何使用下拉树，你可以如此这般的使用它。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<ul id="selTree1" class="dtree" data-id="0"></ul></div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									&lt;ul id="selTree1" class="dtree" data-id="0" &gt;&lt;/ul&gt;
+									dtree.renderSelect({
+									  elem: "#selTree1",
+									  width: "100%", // 指定树的宽度
+									  url: "../json/case/asyncTree1.json"
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="simpleUse2">
+					<legend>常规用法2（render）</legend>
+					<div class="layui-field-box">
+						<p>其实也可以在render方法使用下拉树，只需要配置<b>select:true</b> 即可。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<ul id="selTree12" class="dtree" data-id="0"></ul></div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#selTree12",
+									  width: "100%",
+									  url: "../json/case/asyncTree1.json",
+									  select: true //指定下拉树模式
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="reloadSelect">
+					<legend>重新加载下拉树（reload）</legend>
+					<div class="layui-field-box">
+						<p>与常规reload一致，但可以重置下拉树的参数。<button class="layui-btn layui-btn-normal" id="selTree5_btn">点击按钮重新渲染下拉树</button></p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<ul id="selTree5" class="dtree" data-id="0"></ul>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									&lt;ul id="selTree5" class="dtree" data-id="0" &gt;&lt;/ul&gt;
+									dtree.renderSelect({
+									  elem: "#selTree5",
+									  url: "../json/case/asyncTree1.json"
+									});
+									
+									$("#selTree5_btn").click(function(){
+									  dtree.reload("selTree5",{   
+									    url: "../json/case/asyncTree6.json",
+									    selectTips: "我想做一个不成熟的提示语"
+									  });
+									});
+									
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="updateTips">
+					<legend>指定显示框默认文字（selectTips）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></legend>
+					<div class="layui-field-box">
+						<p>你可以改变下拉树默认的提示文字。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<ul id="selTree2" class="dtree" data-id="0"></ul></div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.renderSelect({
+									  elem: "#selTree2",
+									  url: "../json/case/asyncTree1.json",
+									  selectTips: "我想做一个成熟的提示语"
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="selectInitVal">
+					<legend>指定下拉树的默认显示值（selectInitVal）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></legend>
+					<div class="layui-field-box">
+						<p>你可以改变下拉树的初始值。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<ul id="selTree3" class="dtree" data-id="0" data-value="001003"></ul></div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									// 你可以在ul标签上指定data-value
+									&lt;ul id="selTree3" class="dtree" data-id="0" data-value="001003"&gt;&lt;/ul&gt;&lt;/div&gt;
+									dtree.renderSelect({
+									  elem: "#selTree3",
+									  url: "../json/case/asyncTree1.json",
+									  selectInitVal: "001003", // 你可以在这里指定默认值
+									  done: function(res, $ul, first){
+									    if(first) {
+									      dtree.dataInit("selTree3", "001003");
+									      // 也可以在这里指定，第二个参数如果不填，则会自动返显当前选中的数据
+									      var selectParam = dtree.selectVal("selTree3"); 
+									    }
+									    
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="selectInputName">
+					<legend>指定下拉树的表单名称（selectInputName）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></legend>
+					<div class="layui-field-box">
+						<p>你可以给隐藏的表单输入框指定名称，前提是这些值都是树可以返回的。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<ul id="selTree4" class="dtree" data-id="0"></ul></div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									&lt;ul id="selTree4" class="dtree" data-id="0" &gt;&lt;/ul&gt;&lt;/div&gt;
+									dtree.renderSelect({
+									  elem: "#selTree4",
+									  url: "../json/case/asyncTree1.json",
+									  selectInputName: {
+									    nodeId: "nodeId",
+									    context: "context"
+									  }
+									});
+									
+									dtree.on('node("selTree4")', function(obj){
+									  var param = dtree.selectVal("selTree4");
+									  layer.msg(JSON.stringify(param));
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="selectChooses">
+					<legend>下拉多选（checkbar）</legend>
+					<div class="layui-field-box">
+						<p>你可以配合复选框使用，在你勾选复选框时，数据便会实时回填。<button class="layui-btn layui-btn-normal" id="selTree6_btn">点击按钮重置选择<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></button></p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<ul id="selTree6" class="dtree" data-id="-1"></ul>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									&lt;ul id="selTree6" class="dtree" data-id="0" &gt;&lt;/ul&gt;
+									var SelTree6 = dtree.renderSelect({
+									  elem: "#selTree6",
+									  url: "../json/case/checkarrTree1.json",
+									  checkbar: true, // 设置复选框
+									  checkbarType: "self",
+									  selectInitVal: "001001,001003", // 设置默认值
+									  done: function(){
+									    // dtree.chooseDataInit("selTree6", "001001,001003");
+									    // dtree.selectVal("selTree6"); // 也可以在这里指定，第二个参数如果不填，则会自动读取
+									  }
+									});
+									
+									dtree.on('chooseDone("selTree6")', function(obj){
+									  var param = dtree.selectVal("selTree6");
+									  layer.msg(JSON.stringify(param));
+									});
+									
+									$("#selTree6_btn").click(function(){
+									  SelTree6.selectResetVal();
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="selectSearch">
+					<legend>下拉搜索（menubar）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.5新增）</span></legend>
+					<div class="layui-field-box">
+						<p>配合menubar模块，实现下拉搜索的功能，支持带复选框和不带复选框。<button class="layui-btn layui-btn-normal" id="selTree71_btn">带复选框数据</button><button class="layui-btn layui-btn-normal" id="selTree72_btn">单选数据</button></p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<ul id="selTree7" class="dtree" data-id="0"></ul></div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									&lt;ul id="selTree7" class="dtree" data-id="0" &gt;&lt;/ul&gt;
+									var SelTree7 = dtree.renderSelect({
+									  elem: "#selTree7",
+									  url: "../json/case/asyncTree1.json",
+									  selectTips: "单选数据示例",
+									  menubar: true, //开启菜单栏
+									  checkbar: false
+									});
+									
+									$("#selTree71_btn").click(function(){
+									  dtree.reload("selTree7",{
+									    url: "../json/case/checkbarTree1.json",
+									    selectTips: "带复选框数据示例",
+									    checkbar: true
+									  });
+									});
+									
+									$("#selTree72_btn").click(function(){
+									  dtree.reload("selTree7",{
+									    url: "../json/case/asyncTree1.json",
+									    selectTips: "单选数据示例",
+									    checkbar: false
+									  });
+									});
+									
+									dtree.on('changeSelect("selTree7")', function(obj){
+									  console.log(obj);
+									  if(!obj.show) {
+									    // 不指定selectInputName情况下的获取节点id方式
+									    var nodeId = obj.param["selTree7_select_nodeId"];
+									    // 内置函数回滚树的结构，并且附上选中状态
+									    SelTree7.rollbackHtml(nodeId);
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="selectCardHeight">
+					<legend>下拉面板高度指定（selectCardHeight）</legend>
+					<div class="layui-field-box">
+						<p>指定下拉面板展开的高度，如果不指定，默认是350。<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.7新增）</span></p>
+						<p>将下拉树输入框拉到最底部，树会自动向上展开，可以试试。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<ul id="selTree8" class="dtree" data-id="-1"></ul>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									&lt;ul id="selTree8" class="dtree" data-id="0" &gt;&lt;/ul&gt;
+									var SelTree8 = dtree.renderSelect({
+									  elem: "#selTree8",
+									  url: "../json/case/asyncTree1.json",
+									  selectCardHeight: "150",
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">dtree坚持不懈，推出各种场景的适配方案，旨在全方位满足你的需求。</blockquote>
+			</div>
+			
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="select.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = ["常规用法","常规用法2","指定显示框默认文字","下拉树的默认显示值","指定表单名称","重新加载下拉树","下拉多选/选择重置","下拉搜索","下拉面板高度"];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		// 1.selTree1
+		dtree.renderSelect({
+			elem: "#selTree1",
+			width: "100%",
+			url: "../json/case/commonTree3.json",
+            method: "get",
+		//	toolbar: true,
+		//	menubar: true,
+		//	checkbar: true
+		});
+		
+		dtree.render({
+		    elem: "#selTree12",
+		    width: "100%", // 可以在这里指定树的宽度来填满div
+		    url: "../json/case/asyncTree1.json",
+            method: "get",
+		    select: true
+		});
+		
+		
+		// 2.selTree2
+		dtree.renderSelect({
+            elem: "#selTree2",
+            url: "../json/case/asyncTree1.json",
+            method: "get",
+            selectTips: "我想做一个成熟的提示语"
+		});
+		
+		// 3.selTree3
+		dtree.renderSelect({
+            elem: "#selTree3",
+            url: "../json/case/asyncTree1.json",
+            method: "get",
+            //selectInitVal: "001003", // 你可以在这里指定默认值
+            done: function(){
+                //dtree.dataInit("selTree3", "001003");
+                //dtree.selectVal("selTree3"); // 也可以在这里指定，第二个参数如果不填，则会自动读取
+            }
+		});
+		
+		// 4.selTree4
+		dtree.renderSelect({
+            elem: "#selTree4",
+            url: "../json/case/asyncTree1.json",
+            method: "get",
+            selectInputName: {
+                nodeId: "nodeId",
+                context: "context"
+            }
+		});
+		
+		dtree.on('node("selTree4")', function(obj){
+			// 这个方法还可以返回你设置的元素的json串
+			var param = dtree.selectVal("selTree4");
+			layer.msg(JSON.stringify(param));
+		});
+		
+		// 5.selTree5
+		dtree.renderSelect({
+            elem: "#selTree5",
+            url: "../json/case/asyncTree1.json",
+            method: "get"
+		});
+		
+		$("#selTree5_btn").click(function(){
+			dtree.reload("selTree5",{
+				url: "../json/case/asyncTree6.json",
+                method: "get",
+				selectTips: "我想做一个不成熟的提示语"
+			});
+		});
+		
+		// 6.selTree6
+		var SelTree6 = dtree.renderSelect({
+            elem: "#selTree6",
+            url: "../json/case/checkbarTree1.json",
+            method: "get",
+            checkbar: true,
+            checkbarType: "self",
+            selectInitVal: "001001,001003",
+            done: function(){
+                // dtree.chooseDataInit("selTree6", "001001,001003");
+                // dtree.selectVal("selTree6"); // 也可以在这里指定，第二个参数如果不填，则会自动读取
+                //dtree.initAllCheck("selTree6");
+            }
+		});
+		
+		dtree.on('chooseDone("selTree6")', function(obj){
+			var param = dtree.selectVal("selTree6");
+			layer.msg(JSON.stringify(param));
+		});
+		
+		$("#selTree6_btn").click(function(){
+			SelTree6.selectResetVal();
+		});
+		
+		// 7.selTree7
+		var SelTree7 = dtree.renderSelect({
+            elem: "#selTree7",
+            url: "../json/case/asyncTree1.json",
+            method: "get",
+            selectTips: "单选数据示例",
+            menubar: true,
+            checkbar: false
+		  
+		});
+		
+		$("#selTree71_btn").click(function(){
+			dtree.reload("selTree7",{
+				url: "../json/case/checkbarTree1.json",
+                method: "get",
+				selectTips: "带复选框数据示例",
+				checkbar: true
+			});
+		});
+		
+		$("#selTree72_btn").click(function(){
+			dtree.reload("selTree7",{
+				url: "../json/case/asyncTree1.json",
+                method: "get",
+				selectTips: "单选数据示例",
+				checkbar: false
+			});
+		});
+		
+		dtree.on('changeSelect("selTree7")', function(obj){
+			console.log(obj);
+			if(!obj.show) {
+				var nodeId = obj.param["selTree7_select_nodeId"];
+				SelTree7.rollbackHtml(nodeId);
+			}
+		});
+		
+		// 8.selTree8
+		var SelTree8 = dtree.renderSelect({
+            elem: "#selTree8",
+            url: "../json/case/asyncTree1.json",
+            method: "get",
+            selectCardHeight: "150"
+		});
+		
+	});
+</script>
+</html>

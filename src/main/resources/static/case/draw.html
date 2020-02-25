@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>layui.dtree帮助手册</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <script type="text/javascript" src="../layui/layui.js"></script>
+
+    <link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+    <link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+    <link rel="stylesheet" href="case.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+<div class="container">
+    <div class="layui-row layui-col-space10">
+        <div class="layui-fluid">
+            <div class="div_h3title">
+                <i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+                <span>dtree 数据树文档 - layui.dtree</span>
+            </div>
+        </div>
+
+        <div class="layui-fluid">
+            <blockquote class="layui-elem-quote">以下介绍了节点的拖拽功能</blockquote>
+            <blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+            <blockquote class="layui-elem-quote">
+				<ul class="layui-timeline">
+					<li class="layui-timeline-item">
+						<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+							<div class="layui-timeline-content layui-text">
+								<h3 class="layui-timeline-title version-title"></h3>
+								<ul></ul>
+							</div>
+						</li>
+					</ul>
+			</blockquote>
+        </div>
+
+        <div class="layui-fluid" data-vs="vs250">
+            <fieldset class="layui-elem-field layui-field-title" id="openDraw">
+                <legend>开启拖拽</legend>
+                <div class="layui-field-box">
+                    <p>如你所见。</p>
+                    <div class="layui-row layui-col-space10" style="margin-top: 10px;">
+                        <div class="layui-col-lg4"><div style="height: 200px;overflow: auto;"><ul id="drawTree" class="dtree" data-id="0"></ul></div></div>
+                        <div class="layui-col-lg8">
+                        	<pre class="layui-code" lay-title="JavaScript">
+								dtree.render({
+								  elem: "#drawTree",
+								  url: "../json/case/drawTree.json",
+								  drawable: true // 开启拖拽
+								});
+							</pre>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="layui-fluid">
+            <blockquote class="layui-elem-quote">开发者说：我dtree就算没人用，倒数排名，也不会开发拖拽功能！</blockquote>
+            <blockquote class="layui-elem-quote">开发者说：真香。</blockquote>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="draw.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
+<script type="text/javascript">
+    layui.extend({
+        dtree: '{/}../layui_ext/dtree/dtree'
+    }).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+        var element = layui.element,
+            layer = layui.layer,
+            table = layui.table,
+            util = layui.util,
+            dtree = layui.dtree,
+            $ = layui.$;
+
+        layui.code();	// 代码修饰器
+        util.fixbar();	// 置顶按钮
+
+        if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+            layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+        }
+
+        // 右侧弹出层
+        layer.open({
+            type: 1,
+            title: "目录",
+            content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+            area:["180px", "500px"],
+            offset:["50px","85%"],
+            resize: false,
+            shade: 0,
+            success: function(layero, index){
+                var DTree = dtree.render({
+                    elem: "#menuTree",
+                    data: menuTree,
+                    type: "all",
+                    icon: "-1",
+                    initLevel: "3",
+                    formatter: {
+                        title: function(data){
+                            var tt = data.title;
+                            var tts = ["开启拖拽"];
+                            for(var i=0; i<tts.length; i++) {
+                                if(tt == tts[i]) {
+                                    tt += "&nbsp;<span class='layui-badge-dot'></span>";
+                                }
+                            }
+                            return tt;
+                        }
+                    }
+                });
+
+                dtree.on("node('menuTree')", function(obj){
+                    var nodeId = obj.param.nodeId;
+                    $("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+                });
+            }
+        });
+
+        dtree.render({
+            elem: "#drawTree",
+            url: "../json/case/drawTree.json",
+            method: "get",
+            drawable: true
+        });
+        
+        /* dtree.on("node(drawTree)", function(obj){
+        	console.log(obj.param);
+        }); */
+
+    });
+</script>
+</html>

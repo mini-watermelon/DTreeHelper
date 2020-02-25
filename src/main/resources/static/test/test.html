@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+<link rel="stylesheet" href="font/iconfont.css">
+
+<link rel="stylesheet" href="test.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+#test{position: absolute;max-height: 500px;height: 350px;overflow: auto;width: 100%;z-index: 123;display: none;border:1px solid silver;top: 42px;}
+.layui-show{display: block!important;}
+</style>
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">测试。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="yjfxk">
+					<legend>示例</legend>
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-tab" lay-filter="demo">
+							  <div class="layui-tab-content">
+							    <div class="layui-tab-item layui-show">
+							    	<div style="height: 450px;overflow: auto;"><ul id="testTree" class="dtree" data-id="-1"></ul></div>
+							    </div>
+							  </div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<!-- <div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="yjfxk">
+					<legend>示例</legend>
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-tab" lay-filter="demo">
+							  <ul class="layui-tab-title">
+							    <li class="layui-this">点击我进行测试</li>
+							  </ul>
+							  <div class="layui-tab-content">
+							    <div class="layui-tab-item layui-show">
+							    	<div style="height: 450px;overflow: auto;"><ul id="testTree" class="dtree" data-id="0"></ul></div>
+							    </div>
+							  </div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div> -->
+			<!-- <div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="jdybjz">
+					<legend>示例</legend>
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 450px;overflow: auto;" id="toolbarDiv"><ul id="testTree" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" dtree-id="testTree" dtree-menu="moveDown">展开节点</button>
+								<button class="layui-btn layui-btn-normal" dtree-id="testTree" dtree-menu="moveUp">收缩节点</button>
+								<button class="layui-btn layui-btn-normal" dtree-id="testTree" dtree-menu="searchNode">查找节点</button>
+								<button class="layui-btn layui-btn-normal" dtree-id="testTree" dtree-menu="zdy">自定义</button>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div> -->
+			<!-- <div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="jdybjz">
+					<legend>示例</legend>
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12">
+								<div class="layui-form layui-form-panel">
+									<div class="layui-form-item">
+										<label class="layui-form-label">城市：</label>
+										<div class="layui-input-block">
+											<div class="layui-unselect layui-form-select" id="city">
+												<div class="layui-select-title">
+													<input type="text" name="city" id="input_city" placeholder="请选择" readonly="" class="layui-input layui-unselect">
+													<i class="layui-edge"></i>
+												</div>
+											</div>
+											<div class="layui-card" id="test">
+												<div class="layui-card-body">
+													<div id="toolbarDiv"><ul id="testTree" class="dtree" data-id="0" style="width: 100%;"></ul></div>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+																		<div class="layui-form-item">
+										<label class="layui-form-label">用户名：</label>
+										<div class="layui-input-block">
+											<input type="text" id="nodeId" name="nodeId" class="layui-input"/>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">性别：</label>
+										<div class="layui-input-block">
+											<select>
+												<option>男</option>
+												<option>女</option>
+											</select>
+										</div>
+									</div>
+									
+									<div class="layui-form-item">
+										<label class="layui-form-label">备注：</label>
+										<div class="layui-input-block">
+											<input type="text" id="level" name="level" class="layui-input"/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div> -->
+			<div style="height: 540px;overflow: auto;" id="toolbarDiv">
+			
+			
+			<ul id="demoTree" class="dtree" data-id="001"></ul>
+			
+			
+			
+			<!-- <ul id="demoTree" class="dtree" data-id="0">
+			    <li class="d-click-checkbar dtree-nav-item" data-id="001" data-pid="0" dtree-id="demoTree" data-index="1">
+			        <div class="dtree-nav-div dtree-theme-item" data-id="001" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-jian dtree-theme-dtreefont dtree-theme-ficon" data-spread="open" data-id="001" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-wenjianjiazhankai dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="open"
+			            data-id="001" dtree-id="demoTree" data-iconclass=""></i>
+			            <div class="dtree-nav-checkbox-div" data-id="001" dtree-id="demoTree">
+			            <i class="dtreefont dtree-icon-fuxuankuang dtree-disabled dtree-theme-dtreefont dtree-theme-checkbox" data-id="001" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			            </div>
+			            <cite class="t-click" data-id="001" data-leaf="node">湖南省</cite>
+			            <em class="dtree-toolbar-fixed">
+						  <a dtree-tool="addToolbar" title="新增节点"><i class="dtreefont dtree-icon-roundadd"></i></a>
+						  <a dtree-tool="editToolbar" title="新增节点"><i class="dtreefont dtree-icon-bianji"></i></a>
+						  <a dtree-tool="delToolbar" title="新增节点"><i class="dtreefont dtree-icon-roundclose"></i></a>
+			            </em>
+			        </div>
+			        <ul class="dtree-nav-ul-sid dtree-nav-show" data-id="001" dtree-id="demoTree">
+			            <li class="d-click-checkbar dtree-nav-item" data-id="001001" data-pid="001" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="001001" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="001001" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="001001" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="001001" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="001001" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="001001" data-leaf="leaf">长沙市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="001001" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="001002" data-pid="001" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="001002" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="001002" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="001002" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="001002" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="001002" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="001002" data-leaf="leaf">株洲市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="001002" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="001003" data-pid="001" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="001003" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="001003" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="001003" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="001003" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="001003" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="001003" data-leaf="leaf">湘潭市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="001003" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="001004" data-pid="001" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="001004" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="001004" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="001004" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="001004" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="001004" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="001004" data-leaf="leaf">衡阳市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="001004" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="001005" data-pid="001" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="001005" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="001005" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="001005" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="001005" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="001005" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="001005" data-leaf="leaf">郴州市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="001005" dtree-id="demoTree"></ul>
+			            </li>
+			        </ul>
+			    </li>
+			    <li class="d-click-checkbar dtree-nav-item" data-id="002" data-pid="0" dtree-id="demoTree" data-index="1">
+			        <div class="dtree-nav-div dtree-theme-item" data-id="002" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-jian dtree-theme-dtreefont dtree-theme-ficon" data-spread="open" data-id="002" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-wenjianjiazhankai dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="open"
+			            data-id="002" dtree-id="demoTree" data-iconclass=""></i>
+			            <div class="dtree-nav-checkbox-div" data-id="002" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="002" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			            </div><cite class="t-click" data-id="002" data-leaf="node">湖北省</cite>
+			        </div>
+			        <ul class="dtree-nav-ul-sid dtree-nav-show" data-id="002" dtree-id="demoTree">
+			            <li class="d-click-checkbar dtree-nav-item" data-id="002001" data-pid="undefined" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="002001" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="002001" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="002001" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="002001" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="002001" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="002001" data-leaf="leaf">武汉市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="002001" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="002002" data-pid="002" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="002002" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="002002" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="002002" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="002002" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="002002" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="002002" data-leaf="leaf">黄冈市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="002002" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="002003" data-pid="002" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="002003" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="002003" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="002003" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="002003" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="002003" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="002003" data-leaf="leaf">潜江市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="002003" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="002004" data-pid="002" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="002004" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="002004" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="002004" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="002004" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="002004" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="002004" data-leaf="leaf">荆州市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="002004" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="002005" data-pid="002" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="002005" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="002005" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="002005" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="002005" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="002005" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="002005" data-leaf="leaf">襄阳市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="002005" dtree-id="demoTree"></ul>
+			            </li>
+			        </ul>
+			    </li>
+			    <li class="d-click-checkbar dtree-nav-item" data-id="003" data-pid="0" dtree-id="demoTree" data-index="1">
+			        <div class="dtree-nav-div dtree-theme-item" data-id="003" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-jian dtree-theme-dtreefont dtree-theme-ficon" data-spread="open" data-id="003" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-wenjianjiazhankai dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="open"
+			            data-id="003" dtree-id="demoTree" data-iconclass=""></i>
+			            <div class="dtree-nav-checkbox-div" data-id="003" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="003" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			            </div><cite class="t-click" data-id="003" data-leaf="node">广东省</cite>
+			        </div>
+			        <ul class="dtree-nav-ul-sid dtree-nav-show" data-id="003" dtree-id="demoTree">
+			            <li class="d-click-checkbar dtree-nav-item" data-id="003001" data-pid="003" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="003001" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-jia dtree-theme-dtreefont dtree-theme-ficon" data-spread="close" data-id="003001" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-weibiaoti5 dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="close"
+			                    data-id="003001" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="003001" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="003001" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="003001" data-leaf="node">广州市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="003001" dtree-id="demoTree">
+			                    <li class="d-click-checkbar dtree-nav-item" data-id="003001001" data-pid="003001" dtree-id="demoTree" data-index="3">
+			                        <div class="dtree-nav-div dtree-theme-item" data-id="003001001" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="003001001" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                            data-id="003001001" dtree-id="demoTree" data-iconclass=""></i>
+			                            <div class="dtree-nav-checkbox-div" data-id="003001001" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="003001001" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                            </div><cite class="t-click" data-id="003001001" data-leaf="leaf">天河区</cite>
+			                        </div>
+			                        <ul class="dtree-nav-ul-sid" data-id="003001001" dtree-id="demoTree"></ul>
+			                    </li>
+			                    <li class="d-click-checkbar dtree-nav-item" data-id="003001002" data-pid="003001" dtree-id="demoTree" data-index="3">
+			                        <div class="dtree-nav-div dtree-theme-item" data-id="003001002" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="003001002" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                            data-id="003001002" dtree-id="demoTree" data-iconclass=""></i>
+			                            <div class="dtree-nav-checkbox-div" data-id="003001002" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="003001002" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                            </div><cite class="t-click" data-id="003001002" data-leaf="leaf">花都区</cite>
+			                        </div>
+			                        <ul class="dtree-nav-ul-sid" data-id="003001002" dtree-id="demoTree"></ul>
+			                    </li>
+			                </ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="003002" data-pid="003" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="003002" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="003002" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="003002" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="003002" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="003002" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="003002" data-leaf="leaf">深圳市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="003002" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="003003" data-pid="003" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="003003" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="003003" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="003003" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="003003" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="003003" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="003003" data-leaf="leaf">中山市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="003003" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="003004" data-pid="003" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="003004" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="003004" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="003004" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="003004" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="003004" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="003004" data-leaf="leaf">东莞市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="003004" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="003005" data-pid="003" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="003005" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="003005" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="003005" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="003005" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="003005" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="003005" data-leaf="leaf">珠海市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="003005" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="003006" data-pid="003" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="003006" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="003006" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="003006" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="003006" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="003006" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="003006" data-leaf="leaf">韶关市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="003006" dtree-id="demoTree"></ul>
+			            </li>
+			        </ul>
+			    </li>
+			    <li class="d-click-checkbar dtree-nav-item" data-id="004" data-pid="0" dtree-id="demoTree" data-index="1">
+			        <div class="dtree-nav-div dtree-theme-item" data-id="004" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-jian dtree-theme-dtreefont dtree-theme-ficon" data-spread="open" data-id="004" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-wenjianjiazhankai dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="open"
+			            data-id="004" dtree-id="demoTree" data-iconclass=""></i>
+			            <div class="dtree-nav-checkbox-div" data-id="004" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="004" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			            </div><cite class="t-click" data-id="004" data-leaf="node">浙江省</cite>
+			        </div>
+			        <ul class="dtree-nav-ul-sid dtree-nav-show" data-id="004" dtree-id="demoTree">
+			            <li class="d-click-checkbar dtree-nav-item" data-id="004001" data-pid="004" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="004001" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="004001" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="004001" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="004001" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="004001" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="004001" data-leaf="leaf">杭州市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="004001" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="004002" data-pid="004" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="004002" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="004002" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="004002" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="004002" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="004002" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="004002" data-leaf="leaf">温州市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="004002" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="004003" data-pid="004" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="004003" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="004003" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="004003" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="004003" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="004003" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="004003" data-leaf="leaf">绍兴市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="004003" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="004004" data-pid="004" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="004004" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="004004" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="004004" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="004004" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="004004" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="004004" data-leaf="leaf">金华市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="004004" dtree-id="demoTree"></ul>
+			            </li>
+			            <li class="d-click-checkbar dtree-nav-item" data-id="004005" data-pid="004" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="004005" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="004005" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="004005" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="004005" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="004005" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="004005" data-leaf="leaf">义乌市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="004005" dtree-id="demoTree"></ul>
+			            </li>
+			        </ul>
+			    </li>
+			    <li class="d-click-checkbar dtree-nav-item" data-id="005" data-pid="0" dtree-id="demoTree" data-index="1">
+			        <div class="dtree-nav-div dtree-theme-item" data-id="005" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-jian dtree-theme-dtreefont dtree-theme-ficon" data-spread="open" data-id="005" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-wenjianjiazhankai dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="open"
+			            data-id="005" dtree-id="demoTree" data-iconclass=""></i>
+			            <div class="dtree-nav-checkbox-div" data-id="005" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="005" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			            </div><cite class="t-click" data-id="005" data-leaf="node">福建省</cite>
+			        </div>
+			        <ul class="dtree-nav-ul-sid dtree-nav-show" data-id="005" dtree-id="demoTree">
+			            <li class="d-click-checkbar dtree-nav-item" data-id="005001" data-pid="005" dtree-id="demoTree" data-index="2">
+			                <div class="dtree-nav-div dtree-theme-item" data-id="005001" dtree-id="demoTree" dtree-click="itemNodeClick" data-basic="" data-record="" d-contextmenu="true"><i class="dtreefont dtree-icon-dian dtree-theme-dtreefont dtree-theme-ficon" data-spread="last" data-id="005001" dtree-id="demoTree"></i><i class="dtreefont dtree-icon-fenzhijigou dtreefont-special dtree-theme-dtreefont dtree-theme-icon" data-spread="last"
+			                    data-id="005001" dtree-id="demoTree" data-iconclass=""></i>
+			                    <div class="dtree-nav-checkbox-div" data-id="005001" dtree-id="demoTree"><i class="dtreefont dtree-icon-fuxuankuang dtree-theme-dtreefont dtree-theme-checkbox" data-id="005001" dtree-id="demoTree" data-checked="0" data-initchecked="0" data-type="0" dtree-click="checkNodeClick" data-par=".d-click-checkbar"></i>
+			                    </div><cite class="t-click" data-id="005001" data-leaf="leaf">厦门市</cite>
+			                </div>
+			                <ul class="dtree-nav-ul-sid" data-id="005001" dtree-id="demoTree"></ul>
+			            </li>
+			        </ul>
+			    </li>
+			</ul> -->
+			
+			
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree', 'form'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			form = layui.form,
+			$ = layui.$;
+		
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		var data = [{"last":false,"children":[{"last":false,"children":[],"name":"昆明供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"16","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"曲靖供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"19","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"红河供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"20","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"玉溪供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"21","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"大理供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"22","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"楚雄供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"23","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"昭通供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"24","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"普洱供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"25","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"西双版纳供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"26","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"临沧供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"27","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"文山供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"28","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"保山供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"29","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"德宏供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"30","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"丽江供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"31","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"迪庆供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"32","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"怒江供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"33","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"云南电力试验研究院（集团）有限公司","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"34","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"瑞丽供电局","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"35","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true},{"last":false,"children":[],"name":"云南文山电力股份有限公司","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"36","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true}],"name":"云南电网有限责任公司","basicData":{"otherInfo":{},"type":0},"checked":false,"id":"15","type":0,"iconClass":"dtree-icon-fenzhijigou","url":"","spread":true}];
+		
+		
+		var DTree = dtree.render({
+	        elem: '#testTree',
+	        asyncLoad: ['0', '003', '003001'],
+	        dataFormat: "list",
+	        url: '/DTreeHelper/toolbar/query',
+            method: "get",
+	        width: '100%',
+	        scroll: '#toolbarDiv',
+	        accordion: true,
+	        success: function(res, $ul, first) {
+	        	if(first) {
+	        		res.data.push({id: '0', title: '根节点', last: false, spread: false, parentId: '-1'})
+	        	}
+	        },
+	        done: function(res, $ul, first) {
+	        	
+	        }
+	 	});
+		
+		dtree.on('node("testTree")', function(obj) {
+			
+    	});
+
+		
+		
+		/* var d = dtree.render({
+			elem: "#testTree",
+			data : data,
+			dataStyle: "layuiStyle",
+			response:{
+				title:"name",
+				rootName:"data"
+			},
+			dot:false,
+			menubar:true,
+			skin:"layui",
+			initLevel:1
+			//dataFormat: "list",
+			//skin: "layui"
+		}) */
+		
+		/* var DTree;
+		element.on("tab(demo)", function(data){
+			console.log(typeof DTree);
+			if(typeof DTree !== 'object'){
+				DTree = dtree.render({
+					elem: "#testTree",
+					url: "../json/case/checkbarTree1.json",
+					icon: "2",
+					checkbar: true
+				});
+			} else {
+				dtree.reload(DTree, {
+					url: "../json/case/checkbarTree1.json",
+				});
+			}
+			 
+			DTree = dtree.render({
+				elem: "#testTree",
+				url: "../json/case/checkbarTree1.json",
+				icon: "2",
+				checkbar: true
+			});
+			
+		}); */
+		
+		/* DTree = dtree.render({
+			elem: "#testTree",
+			url: "../json/case/checkbarTree1.json",
+			icon: "2",
+			checkbar: true,
+			toolbar:true,
+			toolbarShow:[],
+			scroll:"#toolbarDiv",
+			toolbarExt:[{toolbarId: "test",icon:"dtree-icon-wefill",title:"我是自定义",handler: function(node){layer.msg(JSON.stringify(node));}}],
+			menubar:true,
+			menubarTips:{
+				toolbar:["moveDown","moveUp",{menubarId:"test1",icon:"dtree-icon-home1",title:"我是测试1",handler:function(node){layer.msg(JSON.stringify(node));}},{menubarId:"test2",icon:"dtree-icon-wefill",title:"我是测试2",handler:function(node){layer.msg(JSON.stringify(node));}}],
+				freedom:[{menubarId:"zdy",handler:function(node){layer.msg(JSON.stringify(node));}}]
+			}
+		});
+		
+		dtree.on("changeTree(testTree)",function(obj){
+			console.log(obj);
+		});
+		
+		dtree.on("node(testTree)",function(obj){
+			console.log(obj);
+		}); */
+		
+		/* var DTree = dtree.render({
+			elem: "#testTree",
+			url: "../json/case/checkbarTree1.json",
+			icon: "2"
+		});
+		
+		$("#city").on("click",function(){
+			$(this).toggleClass("layui-form-selected");
+			$("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
+		});
+		
+		dtree.on("node(testTree)", function(obj){
+			$("#input_city").val(obj.param.context);
+			$("#city").toggleClass("layui-form-selected");
+			$("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
+		}); */
+		
+		/* var DTree = dtree.render({
+			elem: "#demoTree",
+			url: "../json/test/test.json",
+			icon: "2",
+		//	dataStyle: "layuiStyle",
+		//	dataFormat:"list",
+		//	errDataShow: true,
+		//	response:{statusCode:0, message:"msg"},
+		//	accordion: true,
+			checkbar: true,
+			checkbarType:"no-all",
+			toolbar:true,
+			toolbarWay:"follow",
+		//	toolbarShow:[],
+			scroll:"#toolbarDiv",
+		//	toolbarExt:[{toolbarId: "test",icon:"dtree-icon-wefill",title:"我是自定义",handler: function(node){layer.msg(JSON.stringify(node));}}],
+			menubar:true,
+			menubarTips:{
+			//	toolbar:["moveDown","moveUp",{menubarId:"test1",icon:"dtree-icon-home1",title:"我是测试1",handler:function(node){layer.msg(JSON.stringify(node));}},{menubarId:"test2",icon:"dtree-icon-wefill",title:"我是测试2",handler:function(node){layer.msg(JSON.stringify(node));}}],
+				freedom:[{menubarId:"zdy",handler:function(node){layer.msg(JSON.stringify(node));}}]
+			},
+			formatter: {
+				title: function(data){
+					var s = data.title;
+					if (data.children){
+						s += ' <span style=\'color:blue\'>(' + data.children.length + ')</span>';
+					}
+					return s;
+				}
+			},
+			done: function(res, $ul, first){
+			//dtree.click("demoTree","005");
+			}
+		});
+		
+		dtree.on("node(demoTree)", function(obj){
+			layer.msg(JSON.stringify(obj));
+		}); */
+		
+	});
+</script>
+</html>

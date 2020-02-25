@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="layui/css/layui.css">
+<script type="text/javascript" src="layui/layui.js"></script>
+<link rel="stylesheet" href="layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="layui_ext/dtree/font/dtreefont.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<style>
+	.version-ul{text-align: right;padding: 0 70px;}
+	.version-ul .layui-nav-child{text-align: left;}
+	.finish{position: absolute;right: 0;top: 0;width: 70px; height: 60px;text-align: center;line-height: 60px;cursor: pointer;}
+	*[data-vs^="vs"]{display: none;}
+	
+	.layui-search{width: 230px;height: 60px;line-height: 60px;margin-left: 200px;position: absolute;}
+	.dtree-select{position: absolute;max-height: 500px;height: 350px;overflow: auto;width: 100%;z-index: 123;display: none;border:1px solid silver;top: 42px;}
+	.layui-show{display: block!important;}
+	
+	*[data-vlog^="vs"]{display: none;}
+</style>
+
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+			<div class="layui-logo"><a class="logo" href="javascript: void(0);" style="color: #009688;" title="作者寄语">dtree帮助手册</a></div>
+			<!-- <div class="layui-search layui-form" lay-filter="search-form">
+				<div class="layui-form-item" style="margin-bottom: 0px;padding-top: 10px;">
+					<div class="layui-input-block" style="margin-left: 0px">
+						<div class="layui-unselect layui-form-select" id="search_module">
+							<div class="layui-select-title">
+								<input type="text" name="search_name" id="search_id" placeholder="树功能属性一览" readonly="" class="layui-input layui-unselect">
+								<i class="layui-edge"></i>
+							</div>
+						</div>
+						<div class="layui-card dtree-select" id="selectTree">
+							<div class="layui-card-body">
+								<div id="toolbarDiv"><ul id="searchTree" class="dtree" data-id="0" style="width: 100%;"></ul></div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div> -->
+			<ul class="layui-nav version-ul" lay-filter="version-ul" style="margin-left: 400px;position: absolute;padding: 0;right: 70px;">
+			  <li class="layui-nav-item">
+			    <a href="javascript:;">文档版本：<span class="version-span">&nbsp;</span></a>
+			    <dl class="layui-nav-child version-li"></dl>
+			  </li>
+			  <li class="layui-nav-item">
+			    <!-- <a href="https://gitee.com/miniwatermelon/DTreeHelper" target="_blank">组件下载：<span class="version-download">v9.9.9（gitee持续更新）</span></a> -->
+			    <a href="version/dtree_v2.5.7_20200119.zip">组件下载：<span class="version-download">v2.5.7（20200119）（正式版）</span></a>
+			    <dl class="layui-nav-child"> 
+			      <!-- <dd><a href="https://gitee.com/miniwatermelon/DTreeHelper" target="_blank">v2.5.7（20200119）（正式版）</a></dd> -->
+			      <dd><a href="version/dtree_v2.5.7_20200119.zip" target="_blank">v2.5.7（2020119）（正式版）</a></dd>
+			      <dd><a href="version/dtree_v2.5.6_20191024.zip" target="_blank">v2.5.6（20191024）（正式版）</a></dd>
+			      <dd><a href="version/dtree_v2.5.5_201910122222.zip" target="_blank">v2.5.5（20191012）（正式版）</a></dd>
+			      <dd><a href="version/dtree_v2.5.4_201906141500.zip" target="_blank">v2.5.4（20190614）（正式版）</a></dd>
+			      <dd><a href="version/dtree_v2.5.0_201906010100.zip" target="_blank">v2.5.0（20190601）（正式版）</a></dd>
+			      <dd><a href="version/dtree_v2.5.0_201905202036.zip" target="_blank">v2.5.0（20190520）（正式版）</a></dd>
+			      <dd><a href="version/dtree_v2.4.5_finally_201812221902.zip">v2.4.5_finally（20181222）（正式版）</a></dd>
+			      <dd><a href="version/dtree_v2.4.5_finally_201812211200.zip">v2.4.5_finally（20181221）（正式版）</a></dd>
+			      <dd><a href="version/dtree_v2.4.5_finally_beta_201812071033.zip">v2.4.5_finally_beta（20181207）（公测版）</a></dd>
+			    </dl>
+			  </li>
+			</ul>
+			<div class="finish"><a href="JavaScript:void(0)"><img src="finish/s.png" class="layui-nav-img"></span></a></div>
+		</div>
+		
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<ul class="layui-nav layui-nav-tree" lay-filter="operate">
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="log/log.html">开发者日志<span class='layui-badge-dot'></span></a>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed layui-this">
+						<a href="javascript:void(0);" data-id="doc/basicDoc.html">基础文档<span class='layui-badge-dot'></span></a>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);">案例演示</a>
+						<dl class="layui-nav-child">
+							<dd><a href="javascript:void(0);" data-id="case/common.html">常见使用<span data-vlog="vs257" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/complex.html">数据格式<span data-vlog="vs250" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/async.html">异步加载<span data-vlog="vs257" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/open.html">弹出框选中回调<span data-vlog="vs256" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/checkbar.html">开启复选框<span data-vlog="vs257" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/menubar.html">开启菜单栏<span data-vlog="vs250" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/toolbar.html">开启工具栏<span data-vlog="vs255" class='layui-badge-dot'></span></a></dd>
+							<!-- <dd data-vs="vs250"><a href="javascript:void(0);" data-id="case/draw.html">开启拖拽<span class='layui-badge-dot'></span></a></dd> -->
+							<dd><a href="javascript:void(0);" data-id="case/iframe.html">开启iframe<span data-vlog="vs255" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/select.html">使用下拉树<span data-vlog="vs257" class='layui-badge-dot'></span></a></dd>
+							<dd><a href="javascript:void(0);" data-id="case/style.html">图标及配色方案<span data-vlog="vs255" class='layui-badge-dot'></span></a></dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="depend/icon.html">依赖图标</a>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="other/other.html">其他可实现功能</a>
+					</li>
+					<!-- <li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="example/example.html">开启全部功能</a>
+					</li> -->
+					<!-- <li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="question/question.html">常见问题解答</a>
+					</li> -->
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="layuiadmin/layuiadmin.html">集成到layuiAdmin</a>
+					</li> 
+					<!-- <li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="test/test.html">测试</a>
+					</li> -->
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="online/online.html">在线运行</a>
+					</li> 
+					<!-- <li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="finish/finish.html">小额赞赏~</a>
+					</li> -->
+					<!-- <li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:void(0);" data-id="msg/msg.html">反馈留言（试用）</a>
+					</li> -->
+				</ul>
+			</div>
+		</div>
+		
+		<div class="layui-body">
+			<iframe id="iframe_page" name="iframePage" src="doc/basicDoc.html" frameborder="0" style="width: 100%;height: 99%;"></iframe>
+		</div>
+		
+		<div class="layui-footer">
+			@ layui.dtree(基于layui2.5.5)
+		</div>
+		
+	</div>
+</body>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}layui_ext/dtree/dtree'
+	}).use(['element','layer', 'dtree', 'form'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			form = layui.form,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		form.render();
+		
+		// 存储所有跟文档版本信息相关的记录
+		var version = {
+			"vs257":"v2.5.7（20200119）（正式版）",
+			"vs256":"v2.5.6（20191024）（正式版）", 
+			"vs255":"v2.5.5（20191012）（正式版）", 
+			"vs254":"v2.5.4（20190614）（正式版）", 
+			"vs250":"v2.5.0（20190601）（正式版）", 
+			"vs245finally":"v2.4.5_finally（20181222）（正式版）"
+		};
+		
+		for(var key in version){
+			$(".version-li").append("<dd><a href='javascript:void(0);' data-version='"+key+"'>"+version[key]+"</a></dd>");
+		}
+		element.render();
+		
+		layui.data("dtree-version", {
+			key: "versionCls",
+			value: version
+		});
+		
+		// 查询当前用户是否选择了对应的版本信息
+		var versionCls = layui.data("dtree-version-now").versionClsNow;
+		if(!versionCls) {
+			// 不存在，则默认将version中的第一个元素放入
+			for(var key in version){
+				versionCls = key;
+				layui.data("dtree-version-now",{key: "versionClsNow", value: versionCls});
+				$(".version-span").html(version[versionCls]);
+				showEle();
+				break;
+			}
+		} else {
+			// 存在，则将version-span中的信息修改为此
+			var init = true;
+			$(".version-span").html(version[versionCls]);
+			for(var key in version){
+				if(key != versionCls) {
+					console.log(versionCls);
+					if(versionCls == "vs257") break;
+					init = false;
+					layer.confirm("当前选择文档非最新，是否切换到最新？",{icon: 3, title:'提示'}, function(index){
+						versionCls = key;
+						console.log(versionCls);
+						layui.data("dtree-version-now",{key: "versionClsNow", value: versionCls});
+						$(".version-span").html(version[versionCls]);
+						showEle();
+						layer.close(index);
+					}, function(index){
+						showEle();
+						layer.close(index);
+					});
+				}
+				break;
+			}
+			
+			if(init){
+				showEle();
+			}
+		}
+		
+		function showEle(){ 
+			var flag = false;
+			// 根据versionCls的值来选择需要显示的元素
+			for(var key in version){
+				if(key != versionCls) {
+					if(flag){
+						$("*[data-vs='"+key+"']").show();
+					}
+					continue;
+				}
+				
+				$("*[data-vs='"+key+"']").show();
+				flag = true;
+				
+			}
+			
+			showAuthorMsg();
+		}
+		
+		element.on("nav(version-ul)", function(elem){
+			var dvs = $(elem).attr("data-version");
+			layui.data("dtree-version-now",{key: "versionClsNow", value: dvs});
+			location.reload();
+		});
+		
+		// 根据versionCls的值来选择需要显示的元素
+		$("*[data-vlog='"+versionCls+"']").show();
+
+		
+		// 统计访问
+        $.post("http://www.wisdomelon.com/insertVisitor2", {moduleName: "dtree"});
+
+		element.on("nav(operate)", function(elem){
+			var $iframe = $("#iframe_page");
+			var did = $(elem).attr("data-id");
+			$iframe.attr("src",did);
+		});
+		
+		$(".finish").click(function(){
+			layer.open({
+				type:2,
+				title:"小额赞赏",
+				content:"finish/finish.html",
+				area:["80%","90%"]
+			})
+		});
+		
+		$(".logo").click(function(){
+			layer.open({
+				type: 2,
+				title: "作者寄语",
+				area: ["600px", "80%"],
+				content: "msg.html",
+				btn: ["期待再次起航"]
+			});
+		});
+		
+		// 作者寄语
+		function showAuthorMsg() {
+			// layui.data("dtree-author-msg", {key: "msg", remove: true});
+			var msg = layui.data("dtree-author-msg", "msg");
+			if(!msg) {
+				layer.open({
+					type: 2,
+					title: "作者寄语",
+					anim: 1,
+					area: ["600px", "80%"],
+					content: "msg.html",
+					btn: ["期待再次起航"],
+					yes: function(index, layero) {
+						layui.data("dtree-author-msg", {key: "msg", value: "readed"});
+						layer.close(index);
+					},
+					cancel: function(index, layero) {
+						layui.data("dtree-author-msg", {key: "msg", value: "readed"});
+						layer.close(index);
+					},
+					end: function() {
+						layui.data("dtree-author-msg", {key: "msg", value: "readed"});
+					}
+				});
+			}
+		}
+		
+		// 搜索功能
+		/* var searchTree = dtree.render({
+			elem: "#searchTree",
+			url: "json/module/module.js",
+			icon: "-1",
+			dataFormat:"list",
+			dataStyle:"layuiStyle",
+			accordion:true,
+			type:"all"
+		}); */
+		
+		/* $("#search_module").on("click",function(){
+			$(this).toggleClass("layui-form-selected");
+			$("#selectTree").toggleClass("layui-show layui-anim layui-anim-upbit");
+		});
+		
+		dtree.on("node(searchTree)", function(obj){
+			if(!obj.param.leaf){
+				var $div = obj.dom;
+				searchTree.clickSpread($div);
+			} else {
+				$("#search_id").val(obj.param.context);
+				$("#search_module").toggleClass("layui-form-selected");
+				$("#selectTree").toggleClass("layui-show layui-anim layui-anim-upbit");
+				layer.msg("功能完善中，敬请期待。。。");
+			}
+		}); */
+	});
+</script>
+</html>

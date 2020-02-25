@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">menubar模块往往会跟checkbar、toolbar组合使用，以达到最强的功能，menubar的三种指定方式并不是互斥的，也就是说，默认的功能可以在三种不同的指定方式中同时出现。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title version-title"></h3>
+									<ul data-vlog="vs250">
+										<li class="bug">【修复】menubar模块修复：将dtree放在form中，menubar的默认按钮单击之后会提交表单的问题。</li>
+										<li>【新增】menubar模块新增：menubar内置新增三个默认方法：checkAll：全选，unCheckAll：全不选，invertAll：反选</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+				</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="jdsy">
+					<legend>menubar的默认显示</legend>
+					<div class="layui-field-box">
+						<p>当你配置了menubar参数时，在树的上方就会出现一排小图标，每个图标都有提示性的文字告知。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="menubarTree1" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#menubarTree1",
+									  url: "../json/case/menubarTree1.json",
+									  initLevel: 1,
+									  menubar:true,
+									  checkbar: true,  
+									  menubarFun: {
+									    remove: function(checkbarNodes){ // 必须将该方法实现了，节点才会真正的从后台删除哦
+									      return true;
+									    }
+									  }
+									});
+									
+									dtree.on("node('menubarTree1')", function(data){
+									  layer.msg(JSON.stringify(data.param));
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="toolbar">
+					<legend>menubar依附工具栏（menubarTips）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
+					<div class="layui-field-box">
+						<p>当你按照如下配置时，点击鼠标右键，可以看到你与上个示例不同的效果。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;" id="toolbarDiv"><ul id="menubarTree2" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#menubarTree2",
+									  url: "../json/case/menubarTree1.json",
+									  initLevel: 1,
+									  toolbar:true, // 开启工具栏
+									  scroll:"#toolbarDiv", // 工具栏绑定div
+									  toolbarShow:[], // 工具栏自带的按钮制空
+									  menubar:true,
+									  menubarTips:{
+									    toolbar:["moveDown","moveUp"],  // 指定工具栏吸附的menubar按钮
+									    group:[] // 按钮组制空
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="freedom">
+					<legend>menubar自由指定（menubarTips）<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
+					<div class="layui-field-box">
+						<p>当你觉得默认的图标样式不尽如人意，且你又不想绑定右键菜单时，你当然可以自由指定menubar了！。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="menubarTree3" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" dtree-id="menubarTree3" dtree-menu="moveDown">展开全部节点</button>
+								<button class="layui-btn layui-btn-normal" dtree-id="menubarTree3" dtree-menu="moveUp">收缩全部节点</button>
+								<button class="layui-btn layui-btn-normal" dtree-id="menubarTree3" dtree-menu="searchNode">查找节点</button>
+								<button class="layui-btn layui-btn-normal" dtree-id="menubarTree3" dtree-menu="zdy">自定义</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#menubarTree3",
+									  url: "../json/case/menubarTree1.json",
+									  initLevel: 1,
+									  menubar:true,
+									  menubarTips:{
+									    freedom:[{menubarId:"zdy",handler:function(node){layer.msg(JSON.stringify(node));}}], // 指定自定义按钮。非freedom的自定义指定还需提供icon和title参数
+									    group:[] // 按钮组制空
+									  }
+									});
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<p>是不是觉得非常灵活，你甚至没有配置默认的功能，功能也可以照常指定出来，原因就是树会在<span style="color:#FF5722;">当前页面的所有元素中寻找拥有dtree-id和dtree-menu属性的元素，会为同时拥有这些元素的属性动态绑定事件。</span></p>
+								<pre class="layui-code" lay-title="HTML按钮示例" lay-encode="true">
+									<button class="layui-btn layui-btn-normal" dtree-id="menubarTree3" dtree-menu="moveDown">展开全部节点</button>
+									<button class="layui-btn layui-btn-normal" dtree-id="menubarTree3" dtree-menu="moveUp">收缩全部节点</button>
+									<button class="layui-btn layui-btn-normal" dtree-id="menubarTree3" dtree-menu="searchNode">查找节点</button>
+									<button class="layui-btn layui-btn-normal" dtree-id="menubarTree3" dtree-menu="zdy">自定义</button>
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="searchNode">
+					<legend>模拟menubar查询节点<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.4.5_finally_beta新增）</span></legend>
+					<div class="layui-field-box">
+						<p>menubar自带的查询功能是一个layer的弹出层，很多时候你可能不想使用这种方式，以下介绍了如何用内置函数实现节点的模糊查询功能</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="menubarTree4" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<div class="layui-input-inline">
+									<input class="layui-input" id="searchInput" value="" placeholder="输入查询节点内容...">
+								</div>
+								<div class="layui-input-inline">
+									<button class="layui-btn layui-btn-normal" id="search_btn">查询</button>
+								</div>
+								<pre class="layui-code" lay-title="JavaScript">
+									var DTree = dtree.render({
+									  elem: "#menubarTree4",
+									  url: "../json/case/menubarTree1.json",
+									  initLevel: 1,
+									  done: function(data, obj, first){
+									    if(first) {
+									      $("#search_btn").unbind("click");
+									      $("#search_btn").click(function(){
+									        var value = $("#searchInput").val();
+									        if(value){
+									          var flag = DTree.searchNode(value); // 内置方法查找节点
+									          if (!flag) {layer.msg("该名称节点不存在！", {icon:5});}
+									        } else {
+									          DTree.menubarMethod().refreshTree(); // 内置方法刷新树
+									        }
+									      });
+									    }
+									  }
+									});
+								</pre>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="HTML示例" lay-encode="true">
+									<div class="layui-input-inline">
+									  <input class="layui-input" id="searchInput" value="" placeholder="输入查询节点内容...">
+									</div>
+									<div class="layui-input-inline">
+									  <button class="layui-btn layui-btn-normal" id="search_btn">查询</button>
+									</div>
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid" data-vs="vs250">
+				<fieldset class="layui-elem-field layui-field-title" id="addRoot">
+					<legend>自定义添加根节点示例<span style="color:#FF5722;font-size: 12px;font-style: italic;">（v2.5.0新增）</span></legend>
+					<div class="layui-field-box">
+						<p>当你想添加节点时，dtree只提供了绑定在节点上的添加节点，但是实际上你可以在菜单栏中指定自定义的添加根节点的方法。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 600px;overflow: auto;"><ul id="menubarTree5" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" dtree-id="menubarTree5" dtree-menu="addRoot">添加根节点</button>
+								<pre class="layui-code" lay-title="JavaScript">
+								var jsonData = [{"id":"001","title": "湖南省","parentId": "0","children":[{"id":"001001","title": "长沙市","parentId": "001"}]}];
+									
+									dtree.render({
+									  elem: "#menubarTree5",
+									  data: jsonData,
+									  initLevel: 1,
+									  type: "all",
+									  menubar:true,
+									  menubarTips:{
+									    group:[],  // 你也可以在这里指定这个方法
+									    freedom:[{menubarId:"addRoot",handler:function(node, $div){
+									      var id = parseInt(Math.random() * 1000000000);  // 构建ID
+									      var tt = parseInt(Math.random() * 100) + "xx省"; // 构建名称
+									      var json = {"id":id,"title": tt,"parentId": "0","last":false};
+									      jsonData.push(json);  // 添加数据
+									      dtree.reload("menubarTree5", {data: jsonData});  // 重载树
+									    }}]
+									  }
+									});
+								</pre>
+								<pre class="layui-code" lay-title="HTML按钮示例" lay-encode="true">
+									<button class="layui-btn layui-btn-normal" dtree-id="menubarTree5" dtree-menu="addRoot">添加根节点</button>
+								</pre>
+							</div>
+							<p>其实很多情况下不是树没有功能，而是需要各位使用者，学以致用。</p>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">菜单栏的设计满足了绝大部分用户的切身需求，本人会不断努力，争取越做越强大。</blockquote>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="menubar.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = [];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		// 1.menubarTree1
+		dtree.render({
+			elem: "#menubarTree1",
+			url: "../json/case/menubarTree1.json",
+            method: "get",
+			initLevel: 1,
+			menubar:true,
+			checkbar:true,
+			menubarFun: {
+				remove: function(checkbarNodes){
+					console.log(checkbarNodes)
+				    return true;
+				}
+			}
+		});
+		
+		dtree.on("node('menubarTree1')", function(data){
+			layer.msg(JSON.stringify(data.param));
+		});
+		
+		// 2.menubarTree2
+		dtree.render({
+			elem: "#menubarTree2",
+			url: "../json/case/menubarTree1.json",
+            method: "get",
+			initLevel: 1,
+			menubar:true,
+			menubarTips:{
+				toolbar:["moveDown","moveUp"],
+				group:[]
+			},
+			toolbar:true,
+			scroll:"#toolbarDiv",
+			toolbarShow:[] // 工具栏自带的按钮制空
+		});
+		
+		// 3.menubarTree3
+		dtree.render({
+			elem: "#menubarTree3",
+			url: "../json/case/menubarTree1.json",
+            method: "get",
+			initLevel: 1,
+			menubar:true,
+			menubarTips:{
+				group:[],
+				freedom:[{menubarId:"zdy",handler:function(node, $div){layer.msg(JSON.stringify(node));}}]
+			}
+		});
+		
+		// 4.menubarTree4
+		var DTree4 = dtree.render({
+			elem: "#menubarTree4",
+			url: "../json/case/menubarTree1.json",
+            method: "get",
+			initLevel: 1,
+			done: function(data, obj, first){
+				if(first) {
+					$("#search_btn").unbind("click");
+					$("#search_btn").click(function(){
+						var value = $("#searchInput").val();
+						if(value){
+							var flag = DTree4.searchNode(value);
+							if (!flag) {
+								layer.msg("该名称节点不存在！", {icon:5});
+							}
+						} else {
+							DTree4.menubarMethod().refreshTree();
+						}
+					});
+				}
+			}
+		});
+		
+		// 4.menubarTree5
+		
+		var jsonData = [{
+			"id":"001",
+			"title": "湖南省",
+			"parentId": "0",
+			"children":[{
+				"id":"001001",
+				"title": "长沙市",
+				"parentId": "001"
+			}]
+		}];
+					
+		dtree.render({
+			elem: "#menubarTree5",
+			data: jsonData,
+			initLevel: 1,
+			type: "all",
+			menubar:true,
+			menubarTips:{
+				group:[],
+				freedom:[{menubarId:"addRoot",handler:function(node, $div){
+					var id = parseInt(Math.random() * 1000000000);
+					var tt = parseInt(Math.random() * 100) + "xx省";
+					var json = {
+							"id":id,
+							"title": tt,
+							"parentId": "0",
+							"last":false
+						};
+					jsonData.push(json);
+					dtree.reload("menubarTree5", {data: jsonData});
+				}}]
+			}
+		});
+		
+	});
+</script>
+</html>

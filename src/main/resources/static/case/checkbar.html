@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+
+	<div class="container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-fluid">
+				<div class="div_h3title">
+					<i class="dtreefont dtree-icon-fenguangbaobiao"></i>
+					<span>dtree 数据树文档 - layui.dtree</span>
+				</div>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">checkbar模块应该是整个组件里最亮眼的模块之一了，它囊括了非常丰富的功能，支持多级复选框，支持复选框的多重选中形式等，可以应对多种极其恶心的业务需求，想想就感到开心。</blockquote>
+				<blockquote class="layui-elem-quote">当你选择开启复选框时，除了必须指定checkbar:true之外，数据中必须存在checkArr字段，复选框才能正常显示。</blockquote>
+				<blockquote class="layui-elem-quote">模块加载名称：dtree</blockquote>
+				<blockquote class="layui-elem-quote">
+					<ul class="layui-timeline">
+						<li class="layui-timeline-item">
+							<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+							<div class="layui-timeline-content layui-text">
+								<h3 class="layui-timeline-title version-title"></h3>
+								<ul data-vlog="vs257">
+									<li>【新增】基础方法新增：getCheckbarJsonArrParam，获取基于返回参数的树的复选框参数，选中数据横向存储</li>
+									<li>【优化】内置方法优化：chooseDataInit，现支持单个数据、带分隔符的字符串、数组、二维数组（多级复选框）。</li>
+								</ul>
+								<ul data-vlog="vs256">
+									<li>【新增】内置方法新增：getCheckbarJsonArrParam，获取基于返回参数的树的复选框参数数组</li>
+									<li>【新增】内置方法新增：checkAllNode，复选框全选</li>
+									<li>【新增】内置方法新增：cancelCheckedNode，取消全部复选框选中</li>
+									<li>【新增】内置方法新增：invertCheckedNode，反选复选框</li>
+									<li>【新增】内置方法新增：removeCheckedNode，删除选中节点</li>
+								</ul>
+								<ul data-vlog="vs250">
+									<li>【新增】基础方法新增：initNoAllCheck： 复选框半选状态初始化设置</li>
+									<li>【新增】基础方法新增：initAllCheck： 复选框选中状态初始化设置</li>
+									<li>【新增】checkbar模块新增：checkbarData新增属性："halfChoose"，用于记录选中和半选中的数据</li>
+								</ul>
+							</div>
+						</li>
+						</ul>
+				</blockquote>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="jdsy">
+					<legend>checkbar的5中选中方式（checkbarType）</legend>
+					<div class="layui-field-box">
+						<p>一般来说，简单的复选框选中形式只有一种，就是上下级联关系，而组件除了满足这一种之外，还满足了另外的四种选中形式：半选、单向级联、独立、仅存一个。以下分别做展示</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg6"><p>上下级联（all）</p><div style="height: 350px;overflow: auto;"><ul id="checkbarTree1" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg6"><p>半选（no-all）</p><div style="height: 350px;overflow: auto;"><ul id="checkbarTree2" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg4"><p>单向级联（p-casc）</p><div style="height: 350px;overflow: auto;"><ul id="checkbarTree3" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg4"><p>独立（self）</p><div style="height: 350px;overflow: auto;"><ul id="checkbarTree4" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg4"><p>仅存一个（only）</p><div style="height: 350px;overflow: auto;"><ul id="checkbarTreeOnly" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg12">
+								<p>这五种不同的展示，仅仅只是一个配置项不同而已</p>
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#checkbarTree1",
+									  url: "../json/case/checkbarTree1.json",
+									  checkbar: true,  
+									  checkbarType: "all" // 默认就是all，其他的值为： no-all  p-casc   self  only
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="checkarr">
+					<legend>checkArr的4种写法</legend>
+					<div class="layui-field-box">
+						<p>为了适配多种复选框的配置方式，checkArr字段现提供4种配置的写法。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg12"><div style="height: 175px;overflow: auto;"><ul id="checkarrTree1" class="dtree" data-id="0"></ul></div></div>
+							<p>checkbar的配置方式已不再多说，下面介绍checkArr的4种形态的数据，注意重点关注checkArr字段的不同之处。如果数据中指定了type属性，则type必须从0开始。如果指定了checked属性，则checked属性的值范围为：0-未选中，1-选中，2-半选。</p>
+							<div class="layui-col-lg6">
+								<pre class="layui-code" lay-title="标准写法，JSON数组格式，支持多级复选框">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [{
+									  "id":"001",
+									  "title": "湖南省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"}],
+									  "children":[]
+									},{
+									  "id":"002",
+									  "title": "湖北省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"}],
+									  "children":[]
+									},{
+									  "id":"003",
+									  "title": "广东省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"}],
+									  "children":[]
+									},{
+									  "id":"004",
+									  "title": "浙江省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"}],
+									  "children":[]
+									},{
+									  "id":"005",
+									  "title": "福建省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"}],
+									  "children":[]
+									}]
+									}
+								</pre>
+							</div>
+							<div class="layui-col-lg6">
+								<pre class="layui-code" lay-title="简洁写法，JSON对象格式，仅支持一级复选框">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [{
+									  "id":"001",
+									  "title": "湖南省",
+									  "parentId": "0",
+									  "checkArr": {"type": "0", "checked": "0"},
+									  "children":[]
+									},{
+									  "id":"002",
+									  "title": "湖北省",
+									  "parentId": "0",
+									  "checkArr": {"type": "0", "checked": "0"},
+									  "children":[]
+									},{
+									  "id":"003",
+									  "title": "广东省",
+									  "parentId": "0",
+									  "checkArr": {"type": "0", "checked": "0"},
+									  "children":[]
+									},{
+									  "id":"004",
+									  "title": "浙江省",
+									  "parentId": "0",
+									  "checkArr": {"type": "0", "checked": "0"},
+									  "children":[]
+									},{
+									  "id":"005",
+									  "title": "福建省",
+									  "parentId": "0",
+									  "checkArr": {"type": "0", "checked": "0"},
+									  "children":[]
+									}]
+									}
+								</pre>
+							</div>
+							<div class="layui-col-lg6">
+								<pre class="layui-code" lay-title="字符串格式，带[]则支持多级，不带则仅支持一级">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [{
+									  "id":"001",
+									  "title": "湖南省",
+									  "parentId": "0",
+									  "checkArr": "{\"type\": \"0\", \"checked\": \"0\"}",
+									  "children":[]
+									},{
+									  "id":"002",
+									  "title": "湖北省",
+									  "parentId": "0",
+									  "checkArr": "{\"type\": \"0\", \"checked\": \"0\"}",
+									  "children":[]
+									},{
+									  "id":"003",
+									  "title": "广东省",
+									  "parentId": "0",
+									  "checkArr": "{\"type\": \"0\", \"checked\": \"0\"}",
+									  "children":[]
+									},{
+									  "id":"004",
+									  "title": "浙江省",
+									  "parentId": "0",
+									  "checkArr": "{\"type\": \"0\", \"checked\": \"0\"}",
+									  "children":[]
+									},{
+									  "id":"005",
+									  "title": "福建省",
+									  "parentId": "0",
+									  "checkArr": "{\"type\": \"0\", \"checked\": \"0\"}",
+									  "children":[]
+									}]
+									}
+								</pre>
+							</div>
+							<div class="layui-col-lg6">
+								<pre class="layui-code" lay-title="字符串格式，简洁写法，仅支持一级复选框，checked属性直接由checkArr表示">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [{
+									  "id":"001",
+									  "title": "湖南省",
+									  "parentId": "0",
+									  "checkArr": "0",
+									  "children":[]
+									},{
+									  "id":"002",
+									  "title": "湖北省",
+									  "parentId": "0",
+									  "checkArr": "0",
+									  "children":[]
+									},{
+									  "id":"003",
+									  "title": "广东省",
+									  "parentId": "0",
+									  "checkArr": "0",
+									  "children":[]
+									},{
+									  "id":"004",
+									  "title": "浙江省",
+									  "parentId": "0",
+									  "checkArr": "0",
+									  "children":[]
+									},{
+									  "id":"005",
+									  "title": "福建省",
+									  "parentId": "0",
+									  "checkArr": "0",
+									  "children":[]
+									}]
+									}
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="all">
+					<legend>checkbar的4种数据记录（checkbarData）</legend>
+					<div class="layui-field-box">
+						<p>复选框数据回调时，记录数据的4中方式。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg3"><button class="layui-btn layui-btn-normal" id="checkbarTreea_btna">获取选中复选框节点值</button><div style="height: 500px;overflow: auto;"><ul id="checkbarTreea" class="dtree" data-id="0" style="width: 240px;"></ul></div></div>
+							<div class="layui-col-lg3"><button class="layui-btn layui-btn-normal" id="checkbarTreea_btnb">获取变更的复选框节点值</button><div style="height: 500px;overflow: auto;"><ul id="checkbarTreeb" class="dtree" data-id="0" style="width: 240px;"></ul></div></div>
+							<div class="layui-col-lg3"><button class="layui-btn layui-btn-normal" id="checkbarTreea_btnc">获取所有复选框节点值</button><div style="height: 500px;overflow: auto;"><ul id="checkbarTreec" class="dtree" data-id="0" style="width: 240px;"></ul></div></div>
+							<div class="layui-col-lg3"><button class="layui-btn layui-btn-normal" id="checkbarTreea_btnd">获取选中和半选的复选框节点值</button><div style="height: 500px;overflow: auto;"><ul id="checkbarTreed" class="dtree" data-id="0" style="width: 240px;"></ul></div></div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#checkbarTreea",
+									  url: "../json/case/checkbarTree1.json",
+									  checkbar: true,
+									  checkbarData: "choose" // 记录选中（默认）， "change"：记录变更， "all"：记录全部， "halfChoose"："记录选中和半选（V2.5.0新增）"
+									});
+									
+									$("#checkbarTreea_btna").click(function(){
+									  var params = dtree.getCheckbarNodesParam("checkbarTreea");
+									  layer.msg(JSON.stringify(params));
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="more">
+					<legend>多级checkbar（checkArr中体现多级）</legend>
+					<div class="layui-field-box">
+						<p>以下展示了2级复选框，实际上复选框支持N级</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="checkbarTree5" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<button class="layui-btn layui-btn-normal" id="checkbarTree5_btna">获取选中复选框值（形态1）</button>
+								<button class="layui-btn layui-btn-normal" id="checkbarTree5_btnb">获取选中复选框值（形态2）</button>
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#checkbarTree5",
+									  url: "../json/case/checkbarTree5.json",
+									  checkbar: true  
+									  }
+									});
+									$("#checkbarTree5_btna").click(function(){ // 形态1
+									  var params = dtree.getCheckbarNodesParam("checkbarTree5");
+									  layer.msg(JSON.stringify(params));
+									});
+									$("#checkbarTree5_btnb").click(function(){ // 形态2
+									  var params = dtree.getCheckbarJsonArrParam("checkbarTree5");
+									  layer.msg(JSON.stringify(params));
+									});
+								</pre>
+								<p>多级复选框，只需要在返回的checkArr参数中，新增一个json串即可，注意：type表示当前节点的第几个复选框，可不能乱填哦</p>
+							</div>
+							<div class="layui-col-lg12">
+								<pre class="layui-code" lay-title="多级复选框的数据示例">
+									{
+									"status":{"code":200,"message":"操作成功"},
+									"data": [{
+									  "id":"001",
+									  "title": "湖南省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"},{"type": "1", "checked": "0"}],
+									  "children":[...]
+									},{
+									  "id":"002",
+									  "title": "湖北省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"},{"type": "1", "checked": "0"}],
+									  "children":[...]
+									},{
+									  "id":"003",
+									  "title": "广东省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"},{"type": "1", "checked": "0"}],
+									  "children":[..]
+									},{
+									  "id":"004",
+									  "title": "浙江省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"},{"type": "1", "checked": "0"}],
+									  "children":[...]
+									},{
+									  "id":"005",
+									  "title": "福建省",
+									  "parentId": "0",
+									  "checkArr": [{"type": "0", "checked": "0"},{"type": "1", "checked": "0"}],
+									  "children":[...]
+									}]
+									}
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="initchoose">
+					<legend>初始化选中节点</legend>
+					<div class="layui-field-box">
+						<p>除了可以从返回数据中指定节点的选中（checked属性的值为：0-未选中，1-选中，2-半选。）之外，还可以在树加载完毕之后的done回调里给树节点选中。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="checkbarTreeInitchoose" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#checkbarTreeInitchoose",
+									  url: "../json/case/checkbarTree1.json",
+									  checkbar:true,
+									  done: function(res, $ul, first){
+									    if(first) {
+									      dtree.chooseDataInit("checkbarTreeInitchoose","001001,001002"); // 初始化选中
+									      // 或者是
+									      // dtree.chooseDataInit("checkbarTreeInitchoose",["001001","001002"]); // 初始化选中
+									      // 多级复选框下使用二维数组初始化
+									      // dtree.chooseDataInit("checkbarTreeInitchoose",[["001001","001002"],["001003","001004"]]);
+									    }
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="initcheck">
+					<legend>初始化返选节点</legend>
+					<div class="layui-field-box">
+						<p>如果在某些状态下，原始数据中父节点的选中或半选状态并没有被带上，那么你也可以在done回调里，将这些状态反选到树上。</p>
+						<p>示例中就是将“湖南省”节点反选成为了半选状态。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="checkbarTreeInitcheck" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									dtree.render({
+									  elem: "#checkbarTreeInitcheck",
+									  url: "../json/case/checkbarTree1.json",
+									  checkbar:true,
+									  checkbarType:"no-all", //半选
+									  done: function(res, $ul, first){
+									    if(first) {
+									      dtree.chooseDataInit("checkbarTreeInitcheck","001001,001002");
+									      // 反选半选状态
+									      dtree.initNoAllCheck("checkbarTreeInitcheck");
+									    }
+									  }
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="clicknode">
+					<legend>点击节点选中checkbar（使用内置函数选中）</legend>
+					<div class="layui-field-box">
+						<p>复选框的选中事件是绑定在复选框图标上的，但是你依然可以通过点击节点来选中/不选/半选复选框，复选框的选中形式也是完全由checkbarType来控制。</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 350px;overflow: auto;"><ul id="checkbarTreeNode" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									var DTreeNode = dtree.render({
+									  elem: "#checkbarTreeNode",
+									  url: "../json/case/checkbarTree1.json",
+									  checkbar: true,
+									  checkbarType: "all" 
+									  }
+									});
+									
+									// 绑定节点点击事件
+									dtree.on("node(checkbarTreeNode)", function(obj){
+									  var nodeId = obj.param.nodeId;
+									  
+									  DTreeNode.clickNodeCheckbar(nodeId);// 点击节点选中复选框
+									  
+									  var checkbarNodes = dtree.getCheckbarNodesParam("checkbarTreeNode");
+									  layer.msg(JSON.stringify(checkbarNodes));
+									});
+								</pre>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="before">
+					<legend>checkbar选中前回调（checkbarFun）</legend>
+					<div class="layui-field-box">
+						<p>当你需要在复选框选中前做一些事情时，你可以实现这个方法</p>
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4"><div style="height: 850px;overflow: auto;"><ul id="checkbarTree6" class="dtree" data-id="0"></ul></div></div>
+							<div class="layui-col-lg8">
+								<pre class="layui-code" lay-title="JavaScript">
+									var DTree = dtree.render({
+									  elem: "#checkbarTree5",
+									  url: "../json/case/checkbarTree5.json",
+									  checkbar: true,
+									  checkbarFun: {
+									    chooseBefore: function($i, node){
+									      console.log(node);
+									      var flag = true;
+									      if(node.leaf == false){ // 非最后一级节点
+									        flag = false;
+									        if(node.checked == "0"){
+									          DTree.checkStatus($i).check();  // 先将当前节点选中
+									          layer.confirm("确认？",{icon:3},function(index){
+									            layer.msg("success");
+									            DTree.checkStatus($i).noCheck();  // 恢复选中状态
+									            DTree.changeCheck();  // 真正根据选中关系选中
+									            layer.close(index);
+									          },function(index){
+									            layer.msg("cancel");
+									            DTree.checkStatus($i).noCheck();
+									            layer.close(index);
+									          });
+									        } else if(node.checked == "1") {
+									          DTree.checkStatus($i).noCheck();
+									          layer.confirm("确认？",{icon:3},function(index){
+									            layer.msg("success");
+									            DTree.checkStatus($i).check();
+									            DTree.changeCheck();
+									            layer.close(index);
+									          },function(index){
+									            layer.msg("cancel");
+									            DTree.checkStatus($i).check();
+									            layer.close(index);
+									          });
+									        }
+									      }
+									      return flag;  // 注意，如果执行了某些操作，此处必须为false，否则，默认返回true。
+									    }
+									  }
+									});
+								</pre>
+								<p>该功能应该不是特别常用，一般情况下也无需重置该方法，各位看官看看就好。</p>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			
+			<div class="layui-fluid">
+				<blockquote class="layui-elem-quote">checkbar的其他功能就不在过多的演示了，相信你看了这么多的示例，自己可以照着文档做出你想要的效果了。</blockquote>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="checkbar.js"></script>
+<script type="text/javascript" src="../depend/version.js"></script>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['element','layer', 'table', 'code' ,'util', 'dtree'], function(){
+		var element = layui.element,
+			layer = layui.layer,
+			table = layui.table,
+			util = layui.util,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		layui.code();	// 代码修饰器
+		util.fixbar();	// 置顶按钮
+		
+		if(document.location.protocol != "http:" && document.location.protocol != "https:") {
+		    layer.msg("如需要使用异步加载，则需要将项目发布到服务器",{icon:7});
+		}
+		
+		// 右侧弹出层
+		layer.open({
+			type: 1,
+			title: "目录",
+			content: '<ul id="menuTree" class="dtree" data-id="menuTree" style="width:159px;"></ul>',
+			area:["180px", "500px"],
+			offset:["50px","85%"],
+			resize: false,
+			shade: 0,
+			success: function(layero, index){
+				var DTree = dtree.render({
+					elem: "#menuTree",
+					data: menuTree,
+					type: "all",
+					icon: "-1",
+					initLevel: "3",
+					formatter: {
+						title: function(data){
+							var tt = data.title;
+							var tts = ["点击节点选中","多级checkbar"];
+							for(var i=0; i<tts.length; i++) {
+								if(tt == tts[i]) {
+									tt += "&nbsp;<span class='layui-badge-dot'></span>";
+								}
+							}
+							return tt;
+						}
+					}
+				});
+				
+				dtree.on("node('menuTree')", function(obj){
+					var nodeId = obj.param.nodeId;
+					$("html, body").animate({ scrollTop: $("#"+nodeId).offset().top-50 }, {duration: 500,easing: "swing"});
+				});
+			}
+		});
+		
+		// 1.checkbarTree1
+		dtree.render({
+			elem: "#checkbarTree1",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true // 默认就是强级联
+		});
+		
+		dtree.on("chooseDone('checkbarTree1')" ,function(obj){
+			  layer.msg(JSON.stringify(obj.checkbarParams)); // 选中的所有复选框的参数
+		});
+		
+		// 1.checkbarTree2
+		dtree.render({
+			elem: "#checkbarTree2",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true,
+			checkbarType:"no-all" //半选
+		});
+		
+		dtree.on("chooseDone('checkbarTree2')" ,function(obj){
+			  layer.msg(JSON.stringify(obj.checkbarParams)); // 选中的所有复选框的参数
+		});
+		
+		// 1.checkbarTree3
+		dtree.render({
+			elem: "#checkbarTree3",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true,
+			checkbarType:"p-casc" //单向级联
+		});
+		
+		dtree.on("chooseDone('checkbarTree3')" ,function(obj){
+			layer.msg(JSON.stringify(obj.checkbarParams)); // 选中的所有复选框的参数
+		});
+		
+		// 1.checkbarTree4
+		dtree.render({
+			elem: "#checkbarTree4",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true,
+			checkbarType:"self" //独立
+		});
+		
+		dtree.on("chooseDone('checkbarTree4')" ,function(obj){
+			layer.msg(JSON.stringify(obj.checkbarParams)); // 选中的所有复选框的参数
+		});
+		
+		// 1.checkbarTreeOnly
+		dtree.render({
+			elem: "#checkbarTreeOnly",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true,
+			checkbarType:"only" //仅存一个
+		});
+		
+		dtree.on("chooseDone('checkbarTreeOnly')" ,function(obj){
+			layer.msg(JSON.stringify(obj.checkbarParams)); // 选中的所有复选框的参数
+		});
+		
+		
+		// 2.checkbarTreea
+		dtree.render({
+			elem: "#checkbarTreea",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true,
+			checkbarData: "choose"
+		});
+		
+		// 2.checkbarTreeb
+		dtree.render({
+			elem: "#checkbarTreeb",
+			url: "../json/case/checkbarTreeb.json",
+            method: "get",
+			checkbar:true,
+			checkbarData: "change"
+		});
+		
+		// 2.checkbarTreec
+		dtree.render({
+			elem: "#checkbarTreec",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true,
+			checkbarData: "all"
+		});
+		
+		// 2.checkbarTreed
+		dtree.render({
+			elem: "#checkbarTreed",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true,
+			checkbarType: "no-all",
+			checkbarData: "halfChoose"
+		});
+		
+		$("#checkbarTreea_btna").click(function(){
+			var params = dtree.getCheckbarNodesParam("checkbarTreea");
+			layer.msg(JSON.stringify(params));
+		});
+		
+		$("#checkbarTreea_btnb").click(function(){
+			var params = dtree.getCheckbarNodesParam("checkbarTreeb");
+			layer.msg(JSON.stringify(params));
+		});
+		
+		$("#checkbarTreea_btnc").click(function(){
+			var params = dtree.getCheckbarNodesParam("checkbarTreec");
+			layer.msg(JSON.stringify(params));
+		});
+		
+		$("#checkbarTreea_btnd").click(function(){
+			var params = dtree.getCheckbarNodesParam("checkbarTreed");
+			layer.msg(JSON.stringify(params));
+		});
+		
+		// 1.checkarrTree1
+		dtree.render({
+			elem: "#checkarrTree1",
+			url: "../json/case/checkarrTree3.json",
+            method: "get",
+			checkbar:true // 默认就是强级联
+		});
+		
+		// 2.checkbarTree5
+		dtree.render({
+			elem: "#checkbarTree5",
+			url: "../json/case/checkbarTree5.json",
+            method: "get",
+			checkbar:true,
+			done: function(res, $ul, first){
+				if(first) {
+					//dtree.chooseDataInit("checkbarTree5",[["001001","001002"],["001003","001004"]]);
+				}
+			}
+		});
+		
+		$("#checkbarTree5_btna").click(function(){
+			var params = dtree.getCheckbarNodesParam("checkbarTree5");
+			layer.msg(JSON.stringify(params));
+			console.log(params);
+		});
+		
+		$("#checkbarTree5_btnb").click(function(){
+			var params = dtree.getCheckbarJsonArrParam("checkbarTree5");
+			layer.msg(JSON.stringify(params));
+			console.log(params);
+		});
+		
+		// 2.checkbarTreeInitchoose
+		dtree.render({
+			elem: "#checkbarTreeInitchoose",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true,
+			done: function(res, $ul, first){
+				if(first) {
+					dtree.chooseDataInit("checkbarTreeInitchoose","001001,001002");
+				}
+			}
+		});
+		
+		// 2.checkbarTreeInitcheck
+		dtree.render({
+			elem: "#checkbarTreeInitcheck",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true,
+			checkbarType:"no-all",
+			done: function(res, $ul, first){
+				if(first) {
+					dtree.chooseDataInit("checkbarTreeInitcheck","001001,001002");
+					dtree.initNoAllCheck("checkbarTreeInitcheck");
+				}
+			}
+		});
+		
+		// 2.checkbarTreeNode
+		var DTreeNode = dtree.render({
+			elem: "#checkbarTreeNode",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true
+		});
+		
+		dtree.on("node(checkbarTreeNode)", function(obj){
+			var nodeId = obj.param.nodeId;
+			/* var $checkbar = DTreeNode.getNodeDom(nodeId).checkbox();
+			DTreeNode.temp = [$checkbar];
+			DTreeNode.changeCheck(); */
+			DTreeNode.clickNodeCheckbar(nodeId);
+			var checkbarNodes = dtree.getCheckbarNodesParam("checkbarTreeNode");
+			layer.msg(JSON.stringify(checkbarNodes));
+		});
+		
+		// 2.checkbarTree6
+		var DTree = dtree.render({
+			elem: "#checkbarTree6",
+			url: "../json/case/checkbarTree1.json",
+            method: "get",
+			checkbar:true,
+			checkbarFun: {
+				chooseBefore: function($i, node){
+					console.log(node);
+					var flag = true;
+					if(node.leaf == false){	// 非最后一级节点.
+						flag = false;
+						if(node.checked == "0"){
+							DTree.checkStatus($i).check();
+							layer.confirm("确认？",{icon:3},function(index){
+								layer.msg("success");
+								DTree.checkStatus($i).noCheck();
+								DTree.changeCheck();
+								layer.close(index);
+							},function(index){
+								layer.msg("cancel");
+								DTree.checkStatus($i).noCheck();
+								layer.close(index);
+							})
+						} else if(node.checked == "1") {
+							DTree.checkStatus($i).noCheck();
+							layer.confirm("确认？",{icon:3},function(index){
+								layer.msg("success");
+								DTree.checkStatus($i).check();
+								DTree.changeCheck();
+								layer.close(index);
+							},function(index){
+								layer.msg("cancel");
+								DTree.checkStatus($i).check();
+								layer.close(index);
+							})
+						}
+					}
+					return flag;
+				},
+				chooseDone: function(nodes){
+					console.log(nodes);
+				}
+			}
+		});
+		
+		dtree.on("chooseDone('checkbarTree6')", function(param){
+			console.log(param);
+		});
+		
+
+	});
+</script>
+</html>

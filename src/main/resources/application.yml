@@ -1,0 +1,3 @@
+server:
+  context-path: /DTreeHelper
+  port: 2600
